@@ -44,6 +44,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_mantenimientos = new javax.swing.JMenu();
         op_Centro_distribucion = new javax.swing.JMenuItem();
         op_Personal = new javax.swing.JMenuItem();
+        op_Cliente = new javax.swing.JMenuItem();
         op_Producto = new javax.swing.JMenuItem();
         op_Almacenes = new javax.swing.JMenuItem();
         op_Racks = new javax.swing.JMenuItem();
@@ -86,6 +87,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             }
         });
         menu_mantenimientos.add(op_Personal);
+
+        op_Cliente.setText("Cliente");
+        op_Cliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_ClienteActionPerformed(evt);
+            }
+        });
+        menu_mantenimientos.add(op_Cliente);
 
         op_Producto.setText("Productos");
         op_Producto.addActionListener(new java.awt.event.ActionListener() {
@@ -287,6 +296,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_op_AlmacenesActionPerformed
 
+    private void op_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ClienteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_op_ClienteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -303,6 +316,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Cambio_Contraseña;
     private javax.swing.JMenuItem op_Carga_Datos;
     private javax.swing.JMenuItem op_Centro_distribucion;
+    private javax.swing.JMenuItem op_Cliente;
     private javax.swing.JMenuItem op_Guia_Transportista;
     private javax.swing.JMenuItem op_Internamiento_Productos;
     private javax.swing.JMenuItem op_Movimiento_Interno;
