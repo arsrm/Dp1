@@ -177,7 +177,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
             }
         ));
         tbl_client.setColumnSelectionAllowed(true);
-        tbl_client.setShowGrid(true);
+        tbl_client.setShowGrid(false);
         jScrollPane1.setViewportView(tbl_client);
 
         btn_new.setText("Nuevo");
@@ -234,7 +234,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
 
          this.dispose();
        menuaux.setEnabled(true);
-       
+       menuaux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     /**
