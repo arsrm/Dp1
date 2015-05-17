@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 public class Users {
 
     private Integer idUser;
-    private String Names;
+    private String name;
     private String password;
     private Timestamp created_at;
     private Timestamp update_at;
@@ -17,12 +17,12 @@ public class Users {
 
     }
 
-    public String getNames() {
-        return Names;
+    public String getname() {
+        return name;
     }
 
-    public void setNames(String Names) {
-        this.Names = Names;
+    public void setname(String name) {
+        this.name = name;
     }
     public Integer getIdUser() {
         return idUser;

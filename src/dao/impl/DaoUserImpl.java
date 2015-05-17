@@ -25,7 +25,7 @@ public class DaoUserImpl implements DaoUsers {
         List<Users> list = null;
         String sql = "SELECT "
                 + "idUser,"
-                + "Names "
+                + "name "
                 + "password "
                 + "created_at "
                 + "update_at "
@@ -45,7 +45,7 @@ public class DaoUserImpl implements DaoUsers {
                     Users c = new Users();
 
                     c.setIdUser(rs.getInt(1));
-                    c.setNames(rs.getString(2));
+                    c.setname(rs.getString(2));
                     c.setPassword(rs.getString(3));
                     c.setCreated_at(rs.getTimestamp(4));
                     c.setUpdate_at(rs.getTimestamp(5));
@@ -72,7 +72,7 @@ public class DaoUserImpl implements DaoUsers {
     public String usersIns(Users users) {
         String result = null;
         String sql = "INSERT INTO User("
-                + "Names"
+                + "name"
                 + "password"
                 + "created_at"
                 + "update_at"
@@ -85,7 +85,7 @@ public class DaoUserImpl implements DaoUsers {
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, users.getNames());
+                ps.setString(1, users.getname());
                 ps.setString(2, users.getPassword());
                 ps.setTimestamp(3, users.getCreated_at());
                 ps.setTimestamp(4, users.getUpdate_at());
@@ -148,7 +148,7 @@ public class DaoUserImpl implements DaoUsers {
     public Users usersGet(Integer iduser) {
         Users users = null;
         String sql = "SELECT "
-                + "Names "
+                + "name "
                 + "password "
                 + "created_at "
                 + "update_at "
@@ -167,7 +167,7 @@ public class DaoUserImpl implements DaoUsers {
                     users = new Users();
 
                     users.setIdUser(rs.getInt(1));
-                    users.setNames(rs.getString(2));
+                    users.setname(rs.getString(2));
                     users.setPassword(rs.getString(3));
                     users.setCreated_at(rs.getTimestamp(4));
                     users.setUpdate_at(rs.getTimestamp(5));
@@ -194,7 +194,7 @@ public class DaoUserImpl implements DaoUsers {
     public String usersUpd(Users users) {
         String result = null;
         String sql = "UPDATE  User SET "
-                + "Names=? "
+                + "name=? "
                 + "password=? "
                 + "created_at=? "
                 + "update_at=? "
@@ -207,7 +207,7 @@ public class DaoUserImpl implements DaoUsers {
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, users.getNames());
+                ps.setString(1, users.getname());
                 ps.setString(2, users.getPassword());
                 ps.setTimestamp(3, users.getCreated_at());
                 ps.setTimestamp(4, users.getUpdate_at());
@@ -242,7 +242,7 @@ public class DaoUserImpl implements DaoUsers {
         
         String sql = "SELECT "
                + "idUser,"
-                + "Names, "
+                + "name, "
                 + "password, "
                 + "created_at, "
                 + "update_at, "
@@ -280,7 +280,7 @@ public class DaoUserImpl implements DaoUsers {
         List<Object[]> list = null;
         String sql = "SELECT "
                 + "idUser,"
-                + "Names "
+                + "name "
                 + "password "
                 + "created_at "
                 + "update_at "
