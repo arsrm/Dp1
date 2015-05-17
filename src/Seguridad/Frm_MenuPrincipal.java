@@ -7,13 +7,14 @@
 package Seguridad;
 
 import Mantenimientos.Frm_Centro_Distribucion;
+import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Product;
 import Mantenimientos.Frm_Rack;
 import Mantenimientos.Frm_WH;
 
 /**
  *
- * @author Gustavo
+ * @author Alejo
  */
 public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
@@ -297,7 +298,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_AlmacenesActionPerformed
 
     private void op_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ClienteActionPerformed
-        // TODO add your handling code here:
+        Frm_Client_Search frm_Client_Search = new Frm_Client_Search(this);
+        frm_Client_Search.setVisible(true);
+        frm_Client_Search.setLocation(300, 100);
+        this.setEnabled(false);
+       
     }//GEN-LAST:event_op_ClienteActionPerformed
 
     /**
