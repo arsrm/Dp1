@@ -8,8 +8,8 @@ package Seguridad;
 
 import Mantenimientos.Frm_Centro_Distribucion;
 import Mantenimientos.Frm_Client_Search;
-import Mantenimientos.Frm_Product;
-import Mantenimientos.Frm_Rack;
+import Mantenimientos.Frm_Product_Search;
+import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_WH;
 
 /**
@@ -243,7 +243,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_Reporte_Stock_fechaActionPerformed
 
     private void op_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ProductoActionPerformed
-        Frm_Product frmProducts = new Frm_Product(this);
+        Frm_Product_Search frmProducts = new Frm_Product_Search(this);
         frmProducts.setVisible(true);
         frmProducts.setLocation(450, 150);        
         this.setEnabled(false);
@@ -283,10 +283,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_RacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_RacksActionPerformed
         // TODO add your handling code here:
-        Frm_Rack frm_rack = new Frm_Rack(this);
-        frm_rack.setVisible(true);
-        frm_rack.setLocation(450, 150);
-        this.setVisible(false);
+        Frm_Rack_Search frm_rack_search = new Frm_Rack_Search(this);
+        frm_rack_search.setVisible(true);
+        frm_rack_search.setLocation(300, 100);
+        this.setEnabled(false);
     }//GEN-LAST:event_op_RacksActionPerformed
 
     private void op_AlmacenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_AlmacenesActionPerformed

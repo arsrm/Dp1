@@ -2,17 +2,16 @@ package Mantenimientos;
 
 import Seguridad.Frm_MenuPrincipal;
 
-
 public class Frm_Client_Search extends javax.swing.JFrame {
 
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+
     public Frm_Client_Search(Frm_MenuPrincipal menu) {
-       setTitle("Mantenimiento de Clientes");
+        setTitle("Mantenimiento de Clientes");
         menuaux = menu;
-       initComponents();
+        initComponents();
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -230,15 +229,21 @@ public class Frm_Client_Search extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
 
-         this.dispose();
-       menuaux.setEnabled(true);
-       menuaux.setVisible(true);
+        this.dispose();
+        menuaux.setEnabled(true);
+        menuaux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {
+        // TODO add your handling code here:
+        this.dispose();
+        menuaux.setVisible(true);
+        menuaux.setEnabled(true);
+    }
 
     /**
      * @param args the command line arguments
      */
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
