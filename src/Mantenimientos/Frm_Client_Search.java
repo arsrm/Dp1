@@ -9,6 +9,8 @@ public class Frm_Client_Search extends javax.swing.JFrame {
     public Frm_Client_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Clientes");
         menuaux = menu;
+        menuaux.setEnabled(false);
+        
         initComponents();
     }
 
@@ -229,16 +231,20 @@ public class Frm_Client_Search extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
 
-        this.dispose();
+        
         menuaux.setEnabled(true);
         menuaux.setVisible(true);
+        this.dispose();
+        
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
-        this.dispose();
+      
         menuaux.setVisible(true);
         menuaux.setEnabled(true);
+          this.dispose();
+        
     }
 
     /**
