@@ -20,7 +20,6 @@ public class Frm_Client extends javax.swing.JFrame {
     public Frm_Client(Frm_Client_Search client) {
        setTitle("Datos del Cliente");
         aux = client;
-        aux.setEnabled(false);
         initComponents();
     }
 
@@ -48,8 +47,7 @@ public class Frm_Client extends javax.swing.JFrame {
         btn_save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         pnl_client.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
@@ -177,17 +175,21 @@ public class Frm_Client extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        aux.setEnabled(true);
-        aux.setVisible(true);
         this.dispose();
+        aux.setVisible(true);
         
     }//GEN-LAST:event_btn_saveActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
+        
+        this.dispose();
+        aux.setVisible(true);
+        
+    } 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-         aux.setEnabled(true);
-        aux.setVisible(true);
         this.dispose();
+        aux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     /**
