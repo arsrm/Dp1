@@ -20,6 +20,7 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
         
        setTitle("CAMBIAR CONTRASEÑA"); 
        logiin=loginn;
+       logiin.setEnabled(false);
        initComponents();
     }
 
@@ -153,14 +154,18 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
+         logiin.setEnabled(true);
         logiin.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
         // TODO add your handling code here:
+        logiin.setEnabled(true);
         logiin.setVisible(true);
         this.dispose();
+       
+        
     }//GEN-LAST:event_btn_acceptActionPerformed
 
     
