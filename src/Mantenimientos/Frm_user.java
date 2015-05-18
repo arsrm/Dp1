@@ -9,8 +9,7 @@ public class Frm_user extends javax.swing.JFrame {
         
         setTitle("Mantenimiento de Usuarios"); 
         frm_user_search =user_menu;
-     
-      
+        
         initComponents();
     }
 
@@ -192,6 +191,7 @@ public class Frm_user extends javax.swing.JFrame {
         
        this.dispose();
         frm_user_search.setVisible(true);
+        frm_user_search.setEnabled(true);
         
     } 
     /**
