@@ -13,6 +13,10 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         
         initComponents();
     }
+    
+    public Frm_Client_Search() {
+        
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -160,6 +164,11 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         );
 
         btn_new.setText("Nuevo");
+        btn_new.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newActionPerformed(evt);
+            }
+        });
 
         btn_delete.setText("Eliminar");
 
@@ -226,6 +235,14 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
+        // TODO add your handling code here:
+        Frm_Client frm_Client = new Frm_Client(this);
+        frm_Client.setVisible(true);
+        frm_Client.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_btn_newActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
