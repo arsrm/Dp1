@@ -218,6 +218,7 @@ public class Frm_Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        JOptionPane.showMessageDialog(this, "Está saliendo del Programa");
         System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
