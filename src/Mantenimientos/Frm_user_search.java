@@ -8,8 +8,12 @@ public class Frm_user_search extends javax.swing.JFrame {
     
     public Frm_user_search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Personal");
-        auxmenu.setEnabled(false);
+        auxmenu=menu;
+        auxmenu.setEnabled(true);
         initComponents();
+    }
+    public Frm_user_search() {
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -32,7 +36,7 @@ public class Frm_user_search extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
         pnl_center.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
@@ -116,10 +120,20 @@ public class Frm_user_search extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         btn_new.setText("Nuevo");
+        btn_new.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newActionPerformed(evt);
+            }
+        });
 
         btn_delete.setText("Eliminar");
 
         btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,6 +169,29 @@ public class Frm_user_search extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
+        // TODO add your handling code here:
+        Frm_user frm_user = new Frm_user(this);
+        frm_user.setVisible(true);
+        frm_user.setLocationRelativeTo(null);
+         this.setVisible(false);    
+    }//GEN-LAST:event_btn_newActionPerformed
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        // TODO add your handling code here:
+        auxmenu.setEnabled(true);
+        auxmenu.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+     private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
+        
+       auxmenu.setEnabled(true);
+        auxmenu.setVisible(true);
+        this.dispose();
+    }                                 
 
     /**
      * @param args the command line arguments
