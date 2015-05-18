@@ -245,7 +245,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private void op_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ProductoActionPerformed
         Frm_Product_Search frmProducts = new Frm_Product_Search(this);
         frmProducts.setVisible(true);
-        frmProducts.setLocation(450, 150);        
+        frmProducts.setLocationRelativeTo(null);      
         this.setEnabled(false);
     }//GEN-LAST:event_op_ProductoActionPerformed
 
@@ -269,7 +269,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
           frm_Restablecer_contrasena frmRestablecer_contrasena = new frm_Restablecer_contrasena(this);
          frmRestablecer_contrasena.setVisible(true);
-         frmRestablecer_contrasena.setLocation(450, 150);
+         frmRestablecer_contrasena.setLocationRelativeTo(null);
          this.setVisible(false);
     }//GEN-LAST:event_op_Cambio_ContraseñaActionPerformed
 
@@ -277,7 +277,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Centro_Distribucion frm_centro_distribucion = new Frm_Centro_Distribucion(this);
         frm_centro_distribucion.setVisible(true);
-        frm_centro_distribucion.setLocation(450, 150);
+        frm_centro_distribucion.setLocationRelativeTo(null);
          this.setVisible(false);
     }//GEN-LAST:event_op_Centro_distribucionActionPerformed
 
@@ -285,7 +285,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Rack_Search frm_rack_search = new Frm_Rack_Search(this);
         frm_rack_search.setVisible(true);
-        frm_rack_search.setLocation(300, 100);
+        frm_rack_search.setLocationRelativeTo(null);
         this.setEnabled(false);
     }//GEN-LAST:event_op_RacksActionPerformed
 
@@ -293,14 +293,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_WH frm_wh = new Frm_WH(this);
         frm_wh.setVisible(true);
-        frm_wh.setLocation(450, 150);
+        frm_wh.setLocationRelativeTo(null);
         this.setVisible(false);
     }//GEN-LAST:event_op_AlmacenesActionPerformed
 
     private void op_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ClienteActionPerformed
         Frm_Client_Search frm_Client_Search = new Frm_Client_Search(this);
         frm_Client_Search.setVisible(true);
-        frm_Client_Search.setLocation(300, 100);
+        frm_Client_Search.setLocationRelativeTo(null);
         this.setEnabled(false);
        
     }//GEN-LAST:event_op_ClienteActionPerformed
