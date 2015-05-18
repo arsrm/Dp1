@@ -246,7 +246,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         Frm_Product_Search frmProducts = new Frm_Product_Search(this);
         frmProducts.setVisible(true);
         frmProducts.setLocationRelativeTo(null);      
-        this.setEnabled(false);
+        
     }//GEN-LAST:event_op_ProductoActionPerformed
 
     private void op_Carga_DatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Carga_DatosActionPerformed
@@ -267,10 +267,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_Cambio_ContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Cambio_ContraseñaActionPerformed
         // TODO add your handling code here:
-          frm_Restablecer_contrasena frmRestablecer_contrasena = new frm_Restablecer_contrasena(this);
+         frm_Restablecer_contrasena frmRestablecer_contrasena = new frm_Restablecer_contrasena(this);
          frmRestablecer_contrasena.setVisible(true);
          frmRestablecer_contrasena.setLocationRelativeTo(null);
-         this.setVisible(false);
+         
+         
     }//GEN-LAST:event_op_Cambio_ContraseñaActionPerformed
 
     private void op_Centro_distribucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Centro_distribucionActionPerformed
