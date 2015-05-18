@@ -6,11 +6,12 @@
 
 package Seguridad;
 
-import Mantenimientos.Frm_Distribution_Center;
 import Mantenimientos.Frm_Client_Search;
+import Mantenimientos.Frm_Distribution_Center;
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_Warehouse_Search;
+import Mantenimientos.Frm_user_search;
 
 /**
  *
@@ -238,7 +239,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void op_PersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PersonalActionPerformed
-        // TODO add your handling code her
+
+         Frm_user_search frm_user = new Frm_user_search(this);
+        frm_user.setVisible(true);
+        frm_user.setLocationRelativeTo(null); 
         
     }//GEN-LAST:event_op_PersonalActionPerformed
 
