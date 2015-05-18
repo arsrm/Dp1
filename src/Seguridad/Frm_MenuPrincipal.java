@@ -6,11 +6,11 @@
 
 package Seguridad;
 
-import Mantenimientos.Frm_Centro_Distribucion;
+import Mantenimientos.Frm_Distribution_Center;
 import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
-import Mantenimientos.Frm_WH;
+import Mantenimientos.Frm_Warehouse_Search;
 
 /**
  *
@@ -284,10 +284,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_Centro_distribucionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Centro_distribucionActionPerformed
         // TODO add your handling code here:
-        Frm_Centro_Distribucion frm_centro_distribucion = new Frm_Centro_Distribucion(this);
+        Frm_Distribution_Center frm_centro_distribucion = new Frm_Distribution_Center(this);
         frm_centro_distribucion.setVisible(true);
         frm_centro_distribucion.setLocationRelativeTo(null);
-         this.setVisible(false);
     }//GEN-LAST:event_op_Centro_distribucionActionPerformed
 
     private void op_RacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_RacksActionPerformed
@@ -299,10 +298,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_AlmacenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_AlmacenesActionPerformed
         // TODO add your handling code here:
-        Frm_WH frm_wh = new Frm_WH(this);
-        frm_wh.setVisible(true);
-        frm_wh.setLocationRelativeTo(null);
-        this.setVisible(false);
+        Frm_Warehouse_Search frm_warehouse = new Frm_Warehouse_Search(this);
+        frm_warehouse.setVisible(true);
+        frm_warehouse.setLocation(300,100);
+        frm_warehouse.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_AlmacenesActionPerformed
 
     private void op_ClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ClienteActionPerformed

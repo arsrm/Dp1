@@ -46,6 +46,8 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         cbo_distribution_center = new javax.swing.JComboBox();
         cbo_warehouse = new javax.swing.JComboBox();
         btn_search = new javax.swing.JButton();
+        lbl_id = new javax.swing.JLabel();
+        txt_id = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_rack = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
@@ -71,6 +73,8 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         btn_search.setText("Buscar");
 
+        lbl_id.setText("ID");
+
         javax.swing.GroupLayout pnl_searchLayout = new javax.swing.GroupLayout(pnl_search);
         pnl_search.setLayout(pnl_searchLayout);
         pnl_searchLayout.setHorizontalGroup(
@@ -82,12 +86,14 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                     .addGroup(pnl_searchLayout.createSequentialGroup()
                         .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_distribution_center)
-                            .addComponent(lbl_warehouse))
+                            .addComponent(lbl_warehouse)
+                            .addComponent(lbl_id))
                         .addGap(45, 45, 45)
                         .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
-                            .addComponent(cbo_warehouse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(cbo_warehouse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(185, Short.MAX_VALUE))
         );
         pnl_searchLayout.setVerticalGroup(
             pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,6 +107,10 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                     .addComponent(lbl_warehouse)
                     .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_id)
+                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_search)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -113,9 +123,10 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Descripcion", "Nro. Pisos", "Nro.Columnas"
             }
         ));
+        tbl_rack.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tbl_rack);
 
         btn_new.setText("Nuevo");
@@ -160,14 +171,14 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_cancel)
                     .addComponent(btn_delete))
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -234,8 +245,10 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_warehouse;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_distribution_center;
+    private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JPanel pnl_search;
     private javax.swing.JTable tbl_rack;
+    private javax.swing.JTextField txt_id;
     // End of variables declaration//GEN-END:variables
 }
