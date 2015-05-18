@@ -177,6 +177,7 @@ public class Frm_Client extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
         aux.setVisible(true);
+        aux.setEnabled(true);
         
     }//GEN-LAST:event_btn_saveActionPerformed
 
@@ -184,12 +185,14 @@ public class Frm_Client extends javax.swing.JFrame {
         
         this.dispose();
         aux.setVisible(true);
-        
+        aux.setEnabled(true);
     } 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        aux.setVisible(true);
+         aux.setVisible(true);
+         aux.setEnabled(true);
+        
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     /**
