@@ -8,6 +8,7 @@ package Seguridad;
 
 import dao.DaoUsers;
 import dao.impl.DaoUserImpl;
+import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 import static tool.Convierte.aInteger;
 
@@ -47,6 +48,17 @@ public class Frm_Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
+        });
+
+        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel1KeyPressed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         jLabel4.setText("INICIAR SESION");
@@ -58,6 +70,17 @@ public class Frm_Login extends javax.swing.JFrame {
         txt_usuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_usuarioActionPerformed(evt);
+            }
+        });
+        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_usuarioKeyPressed(evt);
+            }
+        });
+
+        txt_contrasenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txt_contrasenhaKeyPressed(evt);
             }
         });
 
@@ -75,6 +98,14 @@ public class Frm_Login extends javax.swing.JFrame {
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAceptarActionPerformed(evt);
+            }
+        });
+        btnAceptar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnAceptarKeyTyped(evt);
+            }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btnAceptarKeyPressed(evt);
             }
         });
 
@@ -170,6 +201,7 @@ public class Frm_Login extends javax.swing.JFrame {
         String pass = new String(txt_contrasenha.getPassword()); 
          
          Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+         
           if (perfil == 1 ){
         Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
@@ -200,6 +232,146 @@ public class Frm_Login extends javax.swing.JFrame {
     private void txt_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_usuarioActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+                 DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_contrasenha.getPassword()); 
+
+             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+            
+              if (perfil == 1 ){
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true) ;
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
+            }
+            if(perfil == 0){
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_usuario.setText("");
+            txt_contrasenha.setText("");
+            
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void btnAceptarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAceptarKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarKeyTyped
+
+    private void btnAceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAceptarKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+                 DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_contrasenha.getPassword()); 
+
+             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+            
+              if (perfil == 1 ){
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true) ;
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
+            }
+            if(perfil == 0){
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_usuario.setText("");
+            txt_contrasenha.setText("");
+            
+        }
+        
+    }//GEN-LAST:event_btnAceptarKeyPressed
+
+    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+                 DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_contrasenha.getPassword()); 
+
+             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+           
+              if (perfil == 1 ){
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true) ;
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
+            }
+            if(perfil == 0){
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_usuario.setText("");
+            txt_contrasenha.setText("");
+            
+        }
+    }//GEN-LAST:event_jPanel1KeyPressed
+
+    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+                 DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_contrasenha.getPassword()); 
+
+             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+           
+              if (perfil == 1 ){
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true) ;
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
+            }
+            if(perfil == 0){
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_usuario.setText("");
+            txt_contrasenha.setText("");
+            
+        }
+    }//GEN-LAST:event_txt_usuarioKeyPressed
+
+    private void txt_contrasenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contrasenhaKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+                 DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_contrasenha.getPassword()); 
+
+             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
+           
+              if (perfil == 1 ){
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true) ;
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
+            }
+            if(perfil == 0){
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_usuario.setText("");
+            txt_contrasenha.setText("");
+            
+        }
+    }//GEN-LAST:event_txt_contrasenhaKeyPressed
 
     /**
      * @param args the command line arguments
