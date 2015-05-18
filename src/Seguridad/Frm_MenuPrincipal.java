@@ -70,6 +70,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_cerrarsesion = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+                formWindowLostFocus(evt);
+            }
+        });
 
         menu_mantenimientos.setText("Mantenimientos");
 
@@ -283,11 +291,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_Centro_distribucionActionPerformed
 
     private void op_RacksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_RacksActionPerformed
-        // TODO add your handling code here:
         Frm_Rack_Search frm_rack_search = new Frm_Rack_Search(this);
         frm_rack_search.setVisible(true);
+        frm_rack_search.setLocation(300, 100);        
         frm_rack_search.setLocationRelativeTo(null);
-        this.setEnabled(false);
     }//GEN-LAST:event_op_RacksActionPerformed
 
     private void op_AlmacenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_AlmacenesActionPerformed
@@ -305,6 +312,16 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         this.setEnabled(false);
        
     }//GEN-LAST:event_op_ClienteActionPerformed
+
+    private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
+        // TODO add your handling code here:
+        this.setEnabled(false);
+    }//GEN-LAST:event_formWindowLostFocus
+
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+        // TODO add your handling code here:
+        this.setEnabled(true);
+    }//GEN-LAST:event_formWindowGainedFocus
 
     /**
      * @param args the command line arguments

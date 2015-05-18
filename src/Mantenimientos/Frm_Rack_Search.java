@@ -16,12 +16,12 @@ import java.awt.Color;
 public class Frm_Rack_Search extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_rack
+     * Creates new form Frm_rack_search
      */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();
     
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
-        setTitle("Rack"); 
+        setTitle("Mantenimiento de Racks"); 
         setBackground(Color.yellow);
         menuaux = menu;
         initComponents();
@@ -53,6 +53,11 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_search.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
@@ -169,27 +174,21 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-        // TODO add your handling code here:
         this.dispose();
         menuaux.setVisible(true);
-        menuaux.setEnabled(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
     
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        // TODO add your handling code here:
-        this.dispose();
-        menuaux.setEnabled(true);
-        menuaux.setVisible(true);
-        
-    }
-    
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        // TODO add your handling code here:
         Frm_Rack frm_rack = new Frm_Rack(this);
         frm_rack.setVisible(true);
         frm_rack.setLocation(300, 100);
-        this.setVisible(false);
+        this.setVisible(false);        
     }//GEN-LAST:event_btn_newActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        this.dispose();
+        menuaux.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

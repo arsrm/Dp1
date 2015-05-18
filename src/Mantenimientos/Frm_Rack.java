@@ -6,7 +6,6 @@
 
 package Mantenimientos;
 
-import Seguridad.Frm_MenuPrincipal;
 import java.awt.Color;
 
 /**
@@ -21,7 +20,7 @@ public class Frm_Rack extends javax.swing.JFrame {
     Frm_Rack_Search menu_padre = new Frm_Rack_Search();
     
     public Frm_Rack(Frm_Rack_Search menu) {
-        setTitle("Rack"); 
+        setTitle("Mantenimiento de Racks"); 
         setBackground(Color.yellow);
         menu_padre = menu;
         initComponents();
@@ -59,6 +58,11 @@ public class Frm_Rack extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_datos_generales.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
@@ -213,17 +217,14 @@ public class Frm_Rack extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_anchoActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-        // TODO add your handling code here:
         this.dispose();
         menu_padre.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
-       
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        // TODO add your handling code here:
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         this.dispose();
         menu_padre.setVisible(true);
-        menu_padre.setEnabled(true);
-    }
+    }//GEN-LAST:event_formWindowClosed
     
     /**
      * @param args the command line arguments
