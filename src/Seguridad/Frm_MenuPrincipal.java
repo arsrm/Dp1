@@ -12,6 +12,7 @@ import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_Warehouse_Search;
 import Mantenimientos.Frm_user_search;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -267,6 +268,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void menu_cerrarsesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_cerrarsesionMouseClicked
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Cerrando Sesion");
         login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_menu_cerrarsesionMouseClicked
