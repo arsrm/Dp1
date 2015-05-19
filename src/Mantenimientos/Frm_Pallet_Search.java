@@ -34,7 +34,6 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     public Frm_Pallet_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet");
         menuaux = menu;
-        menuaux.setEnabled(false);
         initComponents();
         cbo_pallet_act.setSelectedIndex(-1);
         cbo_pallet_state.setSelectedIndex(-1);
@@ -70,20 +69,21 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         scrl_pallet = new javax.swing.JScrollPane();
         tbl_pallet = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
-        btn_update = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosed(java.awt.event.WindowEvent evt) {
-                formWindowClosed(evt);
-            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
         });
 
-        pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Criterios de Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 12))); // NOI18N
+        pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Criterios de Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 12))); // NOI18N
+        pnl_pallet.setToolTipText("");
 
         btn_search.setText("Buscar");
 
@@ -214,14 +214,19 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_update.setText("Modificar");
-        btn_update.addActionListener(new java.awt.event.ActionListener() {
+        btn_delete.setText("Eliminar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_updateActionPerformed(evt);
+                btn_deleteActionPerformed(evt);
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -230,13 +235,12 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(btn_new)
-                        .addGap(70, 70, 70)
-                        .addComponent(btn_update)
-                        .addGap(56, 56, 56)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_delete)
-                        .addGap(135, 135, 135))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_cancel))
                     .addComponent(pnl_pallet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(scrl_pallet, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap(35, Short.MAX_VALUE))
@@ -251,8 +255,8 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new)
-                    .addComponent(btn_update)
-                    .addComponent(btn_delete))
+                    .addComponent(btn_delete)
+                    .addComponent(btn_cancel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -272,7 +276,7 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         //this.dispose();       
-        this.setVisible(false);
+        this.dispose();
         menuaux.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
@@ -284,29 +288,32 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_newActionPerformed
 
-    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        Frm_Pallet frm_pallet = new Frm_Pallet(menuaux,this);
-        frm_pallet.setVisible(true);
-        frm_pallet.setLocationRelativeTo(null);
-         this.setVisible(false);  
-    }//GEN-LAST:event_btn_updateActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        this.setVisible(false);
         menuaux.setVisible(true);
-
+        this.dispose();
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosing
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        // TODO add your handling code here:
+        menuaux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_btn_deleteActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_new;
     private javax.swing.JButton btn_search;
-    private javax.swing.JButton btn_update;
     private javax.swing.JComboBox cbo_pallet_act;
     private javax.swing.JComboBox cbo_pallet_state;
     private com.toedter.calendar.JDateChooser dch_FecFin;
