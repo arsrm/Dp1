@@ -42,6 +42,9 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         btn_internment = new javax.swing.JButton();
         lbl_quantity = new javax.swing.JLabel();
         txt_quantityPallet = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        lbl_orderInterment = new javax.swing.JLabel();
+        txt_idOrderInt = new javax.swing.JTextField();
         pnl_massive_load = new javax.swing.JPanel();
         lbl_route = new javax.swing.JLabel();
         txt_route = new javax.swing.JTextField();
@@ -56,32 +59,42 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
 
-        pnl_product_int.setBorder(javax.swing.BorderFactory.createTitledBorder("Internamineto de Producto"));
+        pnl_product_int.setBorder(javax.swing.BorderFactory.createTitledBorder("Carga Manual"));
 
         lbl_Product.setText("Producto");
 
-        btn_internment.setText("Internar Producto");
+        btn_internment.setText("Guardar");
 
         lbl_quantity.setText("Cantidad de Pallets");
+
+        jButton1.setText("Agregar Producto");
+
+        lbl_orderInterment.setText("ID Orden de Internamiento");
 
         javax.swing.GroupLayout pnl_product_intLayout = new javax.swing.GroupLayout(pnl_product_int);
         pnl_product_int.setLayout(pnl_product_intLayout);
         pnl_product_intLayout.setHorizontalGroup(
             pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_product_intLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_internment)
-                .addGap(27, 27, 27))
             .addGroup(pnl_product_intLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_quantity)
-                    .addComponent(lbl_Product))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_product, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_quantityPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnl_product_intLayout.createSequentialGroup()
+                        .addComponent(btn_internment)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_product_intLayout.createSequentialGroup()
+                        .addComponent(lbl_orderInterment)
+                        .addGap(30, 30, 30)
+                        .addComponent(txt_idOrderInt, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_quantity)
+                            .addComponent(lbl_Product))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_product, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_quantityPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap())
         );
         pnl_product_intLayout.setVerticalGroup(
             pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,14 +102,18 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
                 .addGap(17, 17, 17)
                 .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_Product)
-                    .addComponent(txt_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_orderInterment)
+                    .addComponent(txt_idOrderInt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_quantity)
                     .addComponent(txt_quantityPallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_internment)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_product_intLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_internment)
+                    .addComponent(jButton1))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnl_massive_load.setBorder(javax.swing.BorderFactory.createTitledBorder("Carga Masiva"));
@@ -210,13 +227,13 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(pnl_product_int, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(pnl_product_int, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_massive_load, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_order, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
 
         pack();
@@ -246,14 +263,17 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
     private javax.swing.JButton btn_massive_load;
     private javax.swing.JButton btn_save;
     private javax.swing.JButton btn_search;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_Product;
+    private javax.swing.JLabel lbl_orderInterment;
     private javax.swing.JLabel lbl_quantity;
     private javax.swing.JLabel lbl_route;
     private javax.swing.JPanel pnl_massive_load;
     private javax.swing.JPanel pnl_order;
     private javax.swing.JPanel pnl_product_int;
     private javax.swing.JTable tbl_order;
+    private javax.swing.JTextField txt_idOrderInt;
     private javax.swing.JTextField txt_product;
     private javax.swing.JTextField txt_quantityPallet;
     private javax.swing.JTextField txt_route;
