@@ -259,6 +259,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_seguridad.setText("Seguridad");
 
         op_Perfiles.setText("Perfiles");
+        op_Perfiles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_PerfilesActionPerformed(evt);
+            }
+        });
         menu_seguridad.add(op_Perfiles);
 
         op_Cambio_Contraseña.setText("Cambio de Contraseña");
@@ -502,6 +507,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_pallet.setLocationRelativeTo(null);
         // TODO add your handling code here:
     }//GEN-LAST:event_op_PalletActionPerformed
+
+    private void op_PerfilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PerfilesActionPerformed
+        // TODO add your handling code here:
+        Frm_Profile_Search frm_profile_search = new Frm_Profile_Search(this);
+        frm_profile_search.setVisible(true);
+        frm_profile_search.setLocation(300, 100);        
+        frm_profile_search.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_PerfilesActionPerformed
     //gzavala-fin 19/05
     
                                                     

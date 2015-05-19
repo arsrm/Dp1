@@ -185,6 +185,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Perfiles"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_PerfilesActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Cambio_Contrase&#xf1;a">
               <Properties>
