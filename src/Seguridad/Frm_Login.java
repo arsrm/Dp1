@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Seguridad;
 
 import dao.DaoUsers;
@@ -23,7 +22,7 @@ public class Frm_Login extends javax.swing.JFrame {
      */
     public Frm_Login() {
         initComponents();
-        setTitle("Gestión de Almacenes"); 
+        setTitle("Gestión de Almacenes");
     }
 
     /**
@@ -183,30 +182,38 @@ public class Frm_Login extends javax.swing.JFrame {
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
         DaoUsers daoUsers = new DaoUserImpl();
-       
-        String pass = new String(txt_contrasenha.getPassword()); 
-         
-         Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-         
-          if (perfil == 1 ){
-        Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-        mp.setVisible(true) ;
-        mp.setExtendedState(MAXIMIZED_BOTH);
-        
-        this.setVisible(false);
+        String pass = new String(txt_contrasenha.getPassword());
+
+        Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
+
+        if (perfil == 1) {
+            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+            mp.setVisible(true);
+            mp.setExtendedState(MAXIMIZED_BOTH);
+
+            this.setVisible(false);
         }
-        if(perfil == 0){
+        if (perfil == 0) {
             JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
         }
-        
+
         txt_contrasenha.setText("");
         txt_usuario.setText("");
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        JOptionPane.showMessageDialog(this, "Está saliendo del ");
-        System.exit(0);
+//        JOptionPane.showMessageDialog(this, "Está saliendo del ");
+//        System.exit(0);
+        String message = "¿Está seguro que desea salir?";
+        String title = "Salir";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void txt_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usuarioActionPerformed
@@ -217,26 +224,26 @@ public class Frm_Login extends javax.swing.JFrame {
 
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
-                 DaoUsers daoUsers = new DaoUserImpl();
+            DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword()); 
+            String pass = new String(txt_contrasenha.getPassword());
 
-             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-            
-              if (perfil == 1 ){
-            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
 
-            mp.setVisible(true) ;
-            mp.setExtendedState(MAXIMIZED_BOTH);
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-            this.setVisible(false);
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
             }
-            if(perfil == 0){
+            if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
             txt_usuario.setText("");
             txt_contrasenha.setText("");
-            
+
         }
     }//GEN-LAST:event_formKeyPressed
 
@@ -248,54 +255,54 @@ public class Frm_Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
-                 DaoUsers daoUsers = new DaoUserImpl();
+            DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword()); 
+            String pass = new String(txt_contrasenha.getPassword());
 
-             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-            
-              if (perfil == 1 ){
-            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
 
-            mp.setVisible(true) ;
-            mp.setExtendedState(MAXIMIZED_BOTH);
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-            this.setVisible(false);
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
             }
-            if(perfil == 0){
+            if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
             txt_usuario.setText("");
             txt_contrasenha.setText("");
-            
+
         }
-        
+
     }//GEN-LAST:event_btnAceptarKeyPressed
 
     private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
-                 DaoUsers daoUsers = new DaoUserImpl();
+            DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword()); 
+            String pass = new String(txt_contrasenha.getPassword());
 
-             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-           
-              if (perfil == 1 ){
-            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
 
-            mp.setVisible(true) ;
-            mp.setExtendedState(MAXIMIZED_BOTH);
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-            this.setVisible(false);
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
             }
-            if(perfil == 0){
+            if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
             txt_usuario.setText("");
             txt_contrasenha.setText("");
-            
+
         }
     }//GEN-LAST:event_jPanel1KeyPressed
 
@@ -303,26 +310,26 @@ public class Frm_Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
-                 DaoUsers daoUsers = new DaoUserImpl();
+            DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword()); 
+            String pass = new String(txt_contrasenha.getPassword());
 
-             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-           
-              if (perfil == 1 ){
-            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
 
-            mp.setVisible(true) ;
-            mp.setExtendedState(MAXIMIZED_BOTH);
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-            this.setVisible(false);
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
             }
-            if(perfil == 0){
+            if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
             txt_usuario.setText("");
             txt_contrasenha.setText("");
-            
+
         }
     }//GEN-LAST:event_txt_usuarioKeyPressed
 
@@ -330,26 +337,26 @@ public class Frm_Login extends javax.swing.JFrame {
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
-                 DaoUsers daoUsers = new DaoUserImpl();
+            DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword()); 
+            String pass = new String(txt_contrasenha.getPassword());
 
-             Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass );
-           
-              if (perfil == 1 ){
-            Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
 
-            mp.setVisible(true) ;
-            mp.setExtendedState(MAXIMIZED_BOTH);
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
 
-            this.setVisible(false);
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
             }
-            if(perfil == 0){
+            if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
             txt_usuario.setText("");
             txt_contrasenha.setText("");
-            
+
         }
     }//GEN-LAST:event_txt_contrasenhaKeyPressed
 

@@ -315,9 +315,18 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void menu_cerrarsesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_cerrarsesionMouseClicked
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Cerrando Sesion");
-        login.setVisible(true);
-        this.dispose();
+//        JOptionPane.showMessageDialog(this, "Cerrando Sesion");
+//        login.setVisible(true);
+//        this.dispose();
+        String message = "¿Está seguro que desea cerrar sesión?";
+        String title = "Cerrar Sesión";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+           login.setVisible(true);
+           this.dispose();
+        }
+        
     }//GEN-LAST:event_menu_cerrarsesionMouseClicked
 
     private void op_Cambio_ContraseñaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_op_Cambio_ContraseñaMouseClicked
