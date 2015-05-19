@@ -24,7 +24,6 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
     
     public Frm_Distribution_Center(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Centro de Distribución"); 
-        setBackground(Color.yellow);
         menuaux = menu;
         initComponents();
     }
