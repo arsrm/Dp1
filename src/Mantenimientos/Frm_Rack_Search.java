@@ -22,7 +22,6 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Racks"); 
-        setBackground(Color.yellow);
         menuaux = menu;
         initComponents();
     }
@@ -192,7 +191,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         Frm_Rack frm_rack = new Frm_Rack(this);
         frm_rack.setVisible(true);
-        frm_rack.setLocation(300, 100);
+        frm_rack.setLocation(null);
         this.setVisible(false);        
     }//GEN-LAST:event_btn_newActionPerformed
 

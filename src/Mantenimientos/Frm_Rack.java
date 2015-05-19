@@ -21,7 +21,6 @@ public class Frm_Rack extends javax.swing.JFrame {
     
     public Frm_Rack(Frm_Rack_Search menu) {
         setTitle("Mantenimiento de Racks"); 
-        setBackground(Color.yellow);
         menu_padre = menu;
         initComponents();
     }
