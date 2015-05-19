@@ -10,14 +10,14 @@ package Seguridad;
  *
  * @author Alejo
  */
-public class frm_Restablecer_contrasena extends javax.swing.JFrame {
+public class Frm_Change_Password extends javax.swing.JFrame {
 
     /**
-     * Creates new form frm_Restablecer_contrasena
+     * Creates new form Frm_Change_Password
      */
     Frm_MenuPrincipal menuaux= new Frm_MenuPrincipal();
     
-    public frm_Restablecer_contrasena(Frm_MenuPrincipal menu) {
+    public Frm_Change_Password(Frm_MenuPrincipal menu) {
         menuaux = menu ;
         initComponents();
     }

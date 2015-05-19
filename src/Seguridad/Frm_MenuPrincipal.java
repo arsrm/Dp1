@@ -70,7 +70,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Carga_Datos = new javax.swing.JMenuItem();
         menu_seguridad = new javax.swing.JMenu();
         op_Perfiles = new javax.swing.JMenuItem();
-        op_Usuarios = new javax.swing.JMenuItem();
         op_Cambio_Contraseña = new javax.swing.JMenuItem();
         menu_reportes = new javax.swing.JMenu();
         op_Reporte_Internamiento = new javax.swing.JMenuItem();
@@ -222,14 +221,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Perfiles.setText("Perfiles");
         menu_seguridad.add(op_Perfiles);
 
-        op_Usuarios.setText("Usuarios");
-        op_Usuarios.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                op_UsuariosActionPerformed(evt);
-            }
-        });
-        menu_seguridad.add(op_Usuarios);
-
         op_Cambio_Contraseña.setText("Cambio de Contraseña");
         op_Cambio_Contraseña.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -307,10 +298,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_op_PersonalActionPerformed
 
-    private void op_UsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_UsuariosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_op_UsuariosActionPerformed
-
     private void op_Reporte_Stock_fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_Stock_fechaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_op_Reporte_Stock_fechaActionPerformed
@@ -341,7 +328,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_Cambio_ContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Cambio_ContraseñaActionPerformed
         // TODO add your handling code here:
-         frm_Restablecer_contrasena frmRestablecer_contrasena = new frm_Restablecer_contrasena(this);
+         Frm_Change_Password frmRestablecer_contrasena = new Frm_Change_Password(this);
          frmRestablecer_contrasena.setVisible(true);
          frmRestablecer_contrasena.setLocationRelativeTo(null);
          
@@ -463,7 +450,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Reporte_Libre_disponibilidad;
     private javax.swing.JMenuItem op_Reporte_Stock_fecha;
     private javax.swing.JMenuItem op_Reporte_diferencia_Inventario;
-    private javax.swing.JMenuItem op_Usuarios;
     private javax.swing.JMenuItem searchDispatchMenuItem;
     private javax.swing.JMenuItem searchOrderMenuItem;
     private javax.swing.JMenuItem searchPickingMenuItem;
