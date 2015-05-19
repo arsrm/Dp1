@@ -74,16 +74,72 @@
                 <Property name="text" type="java.lang.String" value="Internamiento de Productos"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="op_Salida_Productos">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Salida de  Productos"/>
-              </Properties>
-            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Movimiento_Interno">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Movimiento Interno"/>
               </Properties>
             </MenuItem>
+            <Menu class="javax.swing.JMenu" name="jMenu1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Pedido"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="loadOrderMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Cargar &#xd3;rdenes de Pedido"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadOrderMenuItemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="searchOrderMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Pedido"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchOrderMenuItemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Entrega"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="searchPickingMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Entrega"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchPickingMenuItemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="generatePickingMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Generar &#xd3;rdenes de Pedido"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatePickingMenuItemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Despacho"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="searchDispatchMenuItem">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Despacho"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchDispatchMenuItemActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="op_Carga_Datos">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Carga de Datos"/>
