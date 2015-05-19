@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Operaciones;
 
 import Seguridad.Frm_MenuPrincipal;
@@ -19,10 +18,14 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
      * Creates new form Frm_ProductInternment_Search
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+
     public Frm_ProductInternment_Search(Frm_MenuPrincipal menu) {
         menuaux = menu;
         setTitle("Buscar Orden de Internamiento");
         initComponents();
+    }
+
+    public Frm_ProductInternment_Search() {
     }
 
     /**
@@ -45,7 +48,6 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         pnl_criterios.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
@@ -97,6 +99,11 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+        });
+        tbl_order.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_orderMouseClicked(evt);
             }
         });
         jScrollPane1.setViewportView(tbl_order);
@@ -165,9 +172,23 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
-    private void formWindowClosed(ActionEvent evt){
+    private void tbl_orderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_orderMouseClicked
+        if (evt.getSource() == tbl_order) {
+            int rowSel = tbl_order.getSelectedRow();
+            int colSel = tbl_order.getSelectedColumn();
+            if (colSel == 0) {
+                Frm_ProductInterment_Detail frm_prodIntDetail = new Frm_ProductInterment_Detail(this);
+                frm_prodIntDetail.setVisible(true);;
+                frm_prodIntDetail.setLocation(300, 100);
+                frm_prodIntDetail.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_tbl_orderMouseClicked
+
+    private void formWindowClosed(ActionEvent evt) {
         menuaux.setVisible(true);
-        this.dispose();       
+        this.dispose();
     }
 
 

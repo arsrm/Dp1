@@ -90,6 +90,8 @@ public class Frm_Product extends javax.swing.JFrame {
 
         jLabel1.setText("Condición de Almacén");
 
+        cbo_conditionWH.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "\"Refrigerado\"", "\"No refrigerado\"" }));
+
         lbl_weightPerBox.setText("Peso Neto por Caja");
 
         javax.swing.GroupLayout pnl_ProductLayout = new javax.swing.GroupLayout(pnl_Product);
