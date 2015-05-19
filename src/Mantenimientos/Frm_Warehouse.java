@@ -23,7 +23,6 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     
     public Frm_Warehouse(Frm_Warehouse_Search menu) {
         setTitle("Mantenimiento de Almacenes"); 
-        setBackground(Color.yellow);
         menu_padre = menu;
         initComponents();
     }
