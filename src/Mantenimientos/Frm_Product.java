@@ -20,9 +20,9 @@ public class Frm_Product extends javax.swing.JFrame {
      * Creates new form Frm_Product
      */
     Frm_Product_Search menu_padre = new Frm_Product_Search();
-    
+
     public Frm_Product(Frm_Product_Search menu) {
-        setTitle("Mantenimiento de Productos");
+        setTitle("Mantenimiento de Productos");    
         menu_padre = menu;
         initComponents();
     }
@@ -57,6 +57,8 @@ public class Frm_Product extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(800, 600));
+        setResizable(false);
 
         btn_Save.setText("Guardar");
         btn_Save.addActionListener(new java.awt.event.ActionListener() {
@@ -66,6 +68,7 @@ public class Frm_Product extends javax.swing.JFrame {
         });
 
         pnl_Product.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
+        pnl_Product.setPreferredSize(new java.awt.Dimension(800, 600));
 
         lbl_boxesPerPallet.setText("Cantidad de Cajas por Pallet");
 
@@ -125,7 +128,7 @@ public class Frm_Product extends javax.swing.JFrame {
                                     .addGroup(pnl_ProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txt_weightPerBox, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(391, Short.MAX_VALUE))
         );
         pnl_ProductLayout.setVerticalGroup(
             pnl_ProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,7 +165,7 @@ public class Frm_Product extends javax.swing.JFrame {
                 .addGroup(pnl_ProductLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(214, Short.MAX_VALUE))
         );
 
         btn_cancel.setText("Cancelar");
@@ -176,29 +179,27 @@ public class Frm_Product extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(btn_Save)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_cancel)
+                .addGap(81, 81, 81))
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnl_Product, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btn_Save)
-                        .addGap(321, 321, 321)
-                        .addComponent(btn_cancel)))
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addComponent(pnl_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_Product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_Save))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(btn_cancel)))
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addComponent(pnl_Product, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_cancel)
+                    .addComponent(btn_Save))
+                .addContainerGap(95, Short.MAX_VALUE))
         );
 
         pack();
@@ -215,21 +216,21 @@ public class Frm_Product extends javax.swing.JFrame {
 
     private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
         // TODO add your handling code here:
-         Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado el producto con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
                 menu_padre.setVisible(true);
                 menu_padre.setLocationRelativeTo(null);
                 this.dispose();
             }
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
-    
+
     private void frmWindowClosed(java.awt.event.WindowEvent evt) {
+        menu_padre.setVisible(true);        
         this.dispose();
-        menu_padre.setVisible(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
