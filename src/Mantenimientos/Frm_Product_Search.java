@@ -203,7 +203,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         Frm_Product frmProduct = new Frm_Product(this);
         frmProduct.setVisible(true);
-        frmProduct.setLocation(450, 150);
+        frmProduct.setLocationRelativeTo(null);
         this.setVisible(false);
     }//GEN-LAST:event_btn_newActionPerformed
 
