@@ -62,6 +62,11 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
         lbl_dateFin.setText("Fecha Fin");
 
         btn_GenerarReporte.setText("Generar Reporte");
+        btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_GenerarReporteActionPerformed(evt);
+            }
+        });
 
         btn_Exportar.setText("Exportar");
         btn_Exportar.addActionListener(new java.awt.event.ActionListener() {
@@ -171,6 +176,10 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btn_ExportarActionPerformed
+
+    private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);

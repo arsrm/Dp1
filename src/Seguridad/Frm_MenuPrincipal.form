@@ -209,16 +209,25 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reporte de Internamiento"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Reporte_InternamientoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Guia_Transportista">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Guia de Transportista "/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Guia_TransportistaActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Reporte_Despacho">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Reporte de Despacho"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Reporte_DespachoActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Reporte_diferencia_Inventario">
               <Properties>

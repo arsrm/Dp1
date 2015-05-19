@@ -19,6 +19,9 @@ import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
+import Reportes.Frm_DispatchReport;
+import Reportes.Frm_InternmentReport;
+import Reportes.Frm_TransportGuide;
 //gzavala inicio 19/05 
 import Mantenimientos.Frm_Pallet;
 import Mantenimientos.Frm_Pallet_Search;
@@ -284,12 +287,27 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_reportes.setText("Reportes");
 
         op_Reporte_Internamiento.setText("Reporte de Internamiento");
+        op_Reporte_Internamiento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Reporte_InternamientoActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Reporte_Internamiento);
 
         op_Guia_Transportista.setText("Guia de Transportista ");
+        op_Guia_Transportista.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Guia_TransportistaActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Guia_Transportista);
 
         op_Reporte_Despacho.setText("Reporte de Despacho");
+        op_Reporte_Despacho.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Reporte_DespachoActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Reporte_Despacho);
 
         op_Reporte_diferencia_Inventario.setText("Reporte de diferencia de Inventario");
@@ -515,6 +533,27 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_profile_search.setLocation(300, 100);        
         frm_profile_search.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_PerfilesActionPerformed
+
+    private void op_Reporte_DespachoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_DespachoActionPerformed
+       Frm_DispatchReport depRep = new Frm_DispatchReport(this);
+       depRep.setVisible(true);
+       depRep.setLocationRelativeTo(null);
+       this.setEnabled(false);
+    }//GEN-LAST:event_op_Reporte_DespachoActionPerformed
+
+    private void op_Reporte_InternamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_InternamientoActionPerformed
+       Frm_InternmentReport intRep = new Frm_InternmentReport(this);
+       intRep.setVisible(true);
+       intRep.setLocationRelativeTo(null);
+       this.setEnabled(false);
+    }//GEN-LAST:event_op_Reporte_InternamientoActionPerformed
+
+    private void op_Guia_TransportistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Guia_TransportistaActionPerformed
+        Frm_TransportGuide guide = new Frm_TransportGuide(this);
+       guide.setVisible(true);
+       guide.setLocationRelativeTo(null);
+       this.setEnabled(false);
+    }//GEN-LAST:event_op_Guia_TransportistaActionPerformed
     //gzavala-fin 19/05
     
                                                     
