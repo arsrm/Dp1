@@ -6,6 +6,9 @@
 
 package Mantenimientos;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Alejandro
@@ -180,8 +183,16 @@ public class Frm_Client extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        aux.setVisible(true);    
+        Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al cliente con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(ok_option==JOptionPane.OK_OPTION){
+                aux.setVisible(true);
+                aux.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        } 
     }//GEN-LAST:event_btn_saveActionPerformed
 
    

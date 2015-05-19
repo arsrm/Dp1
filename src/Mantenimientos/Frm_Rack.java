@@ -7,6 +7,8 @@
 package Mantenimientos;
 
 import java.awt.Color;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -173,6 +175,11 @@ public class Frm_Rack extends javax.swing.JFrame {
         );
 
         btn_save.setText("Guardar");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -224,6 +231,20 @@ public class Frm_Rack extends javax.swing.JFrame {
         this.dispose();
         menu_padre.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        // TODO add your handling code here:
+          Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al rack con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(ok_option==JOptionPane.OK_OPTION){
+                menu_padre.setVisible(true);
+                menu_padre.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_btn_saveActionPerformed
     
     /**
      * @param args the command line arguments

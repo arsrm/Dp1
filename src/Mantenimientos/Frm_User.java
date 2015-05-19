@@ -1,6 +1,9 @@
 
 package Mantenimientos;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class Frm_User extends javax.swing.JFrame {
 
    Frm_User_Search frm_user_search=new Frm_User_Search();
@@ -176,8 +179,16 @@ public class Frm_User extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        frm_user_search.setVisible(true);
+         Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al usuario con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(ok_option==JOptionPane.OK_OPTION){
+                frm_user_search.setVisible(true);
+                frm_user_search.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        } 
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed

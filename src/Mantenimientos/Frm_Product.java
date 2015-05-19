@@ -7,6 +7,8 @@ package Mantenimientos;
 
 import java.awt.Color;
 import java.awt.event.WindowEvent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -57,6 +59,11 @@ public class Frm_Product extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         btn_Save.setText("Guardar");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SaveActionPerformed(evt);
+            }
+        });
 
         pnl_Product.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
@@ -205,6 +212,20 @@ public class Frm_Product extends javax.swing.JFrame {
         this.dispose();
         menu_padre.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        // TODO add your handling code here:
+         Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado el producto con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(ok_option==JOptionPane.OK_OPTION){
+                menu_padre.setVisible(true);
+                menu_padre.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        }
+    }//GEN-LAST:event_btn_SaveActionPerformed
     
     private void frmWindowClosed(java.awt.event.WindowEvent evt) {
         this.dispose();
