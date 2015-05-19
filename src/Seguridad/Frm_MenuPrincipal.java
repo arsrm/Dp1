@@ -19,6 +19,10 @@ import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
+//gzavala inicio 19/05 
+import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_Pallet_Search;
+//gzavala fin 19/05 
 import javax.swing.JOptionPane;
 
 /**
@@ -153,6 +157,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_mantenimientos.add(op_Racks);
 
         op_Pallet.setText("Pallet");
+        op_Pallet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_PalletActionPerformed(evt);
+            }
+        });
         menu_mantenimientos.add(op_Pallet);
 
         menu_principal.add(menu_mantenimientos);
@@ -485,6 +494,15 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowClosing
 
+    //gzavala-inicio 19/05
+    private void op_PalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PalletActionPerformed
+        Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+        frm_pallet.setVisible(true);
+        frm_pallet.setLocation(450,150);
+        frm_pallet.setLocationRelativeTo(null);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_op_PalletActionPerformed
+    //gzavala-fin 19/05
     
                                                     
 
