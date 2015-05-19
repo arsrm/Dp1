@@ -15,6 +15,7 @@
 package Mantenimientos;
 
 import Seguridad.Frm_MenuPrincipal;
+import Mantenimientos.Frm_Pallet;
 
 /**
  *
@@ -27,6 +28,9 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
 
+    public Frm_Pallet_Search()
+    {
+     }       
     public Frm_Pallet_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet");
         menuaux = menu;
@@ -65,8 +69,16 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         cbo_pallet_state = new javax.swing.JComboBox();
         scrl_pallet = new javax.swing.JScrollPane();
         tbl_pallet = new javax.swing.JTable();
+        btn_new = new javax.swing.JButton();
+        btn_update = new javax.swing.JButton();
+        btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Criterios de Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 12))); // NOI18N
 
@@ -113,6 +125,9 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addComponent(lbl_Rack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(228, 228, 228))
+                    .addGroup(pnl_palletLayout.createSequentialGroup()
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(lbl_status_act, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -123,15 +138,8 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                             .addComponent(txt_IdPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_Rack)
                             .addComponent(dch_FecIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cbo_pallet_act, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(pnl_palletLayout.createSequentialGroup()
-                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_Rack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnl_palletLayout.createSequentialGroup()
-                                .addGap(108, 108, 108)
-                                .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(57, 57, 57)))
-                .addGap(46, 46, 46)
+                            .addComponent(cbo_pallet_act, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(46, 46, 46)))
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_palletLayout.createSequentialGroup()
                         .addComponent(lbl_ean)
@@ -148,6 +156,10 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                             .addComponent(dch_FecFin, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                             .addComponent(cbo_pallet_state, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(20, 20, 20))
+            .addGroup(pnl_palletLayout.createSequentialGroup()
+                .addGap(242, 242, 242)
+                .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_palletLayout.setVerticalGroup(
             pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -178,35 +190,53 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                     .addComponent(lbl_status_act)
                     .addComponent(lbl_status_pallet)
                     .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(14, 14, 14)
+                .addComponent(btn_search))
         );
-
-        lbl_ean.getAccessibleContext().setAccessibleName("Codigo EAN");
 
         tbl_pallet.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "IdPallet", "Codigo EAN", "Descripcion", "Rack", "Celda", "Ubicacion_Celda", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "Estado Actividad"
             }
         ));
         scrl_pallet.setViewportView(tbl_pallet);
+
+        btn_new.setText("Nuevo");
+        btn_new.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newActionPerformed(evt);
+            }
+        });
+
+        btn_update.setText("Modificar");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
+
+        btn_delete.setText("Eliminar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(pnl_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(scrl_pallet))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addGap(46, 46, 46)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_new)
+                        .addGap(70, 70, 70)
+                        .addComponent(btn_update)
+                        .addGap(56, 56, 56)
+                        .addComponent(btn_delete)
+                        .addGap(135, 135, 135))
+                    .addComponent(pnl_pallet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrl_pallet, javax.swing.GroupLayout.Alignment.LEADING))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +245,12 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
                 .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_new)
+                    .addComponent(btn_update)
+                    .addComponent(btn_delete))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnl_pallet.getAccessibleContext().setAccessibleName("Criterios de búsqueda");
@@ -231,12 +266,37 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_IdPalletActionPerformed
 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        //this.setVisible(false);
+        menuaux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
+
+    private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
+        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        frm_pallet.setVisible(true);
+        frm_pallet.setLocationRelativeTo(null);
+        this.setVisible(false);  
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_newActionPerformed
+
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        frm_pallet.setVisible(true);
+        frm_pallet.setLocationRelativeTo(null);
+         this.setVisible(false);  
+    }//GEN-LAST:event_btn_updateActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_new;
     private javax.swing.JButton btn_search;
+    private javax.swing.JButton btn_update;
     private javax.swing.JComboBox cbo_pallet_act;
     private javax.swing.JComboBox cbo_pallet_state;
     private com.toedter.calendar.JDateChooser dch_FecFin;
