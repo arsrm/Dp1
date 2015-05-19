@@ -11,7 +11,7 @@ import Mantenimientos.Frm_Distribution_Center;
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_Warehouse_Search;
-import Mantenimientos.Frm_user_search;
+import Mantenimientos.Frm_User_Search;
 import Operaciones.Frm_CargarOrdenesPedidos;
 import Operaciones.Frm_VerOrdenesDespacho;
 import Operaciones.Frm_VerOrdenesEntrega;
@@ -301,7 +301,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_PersonalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PersonalActionPerformed
 
-         Frm_user_search frm_user = new Frm_user_search(this);
+         Frm_User_Search frm_user = new Frm_User_Search(this);
         frm_user.setVisible(true);
         frm_user.setLocationRelativeTo(null); 
         

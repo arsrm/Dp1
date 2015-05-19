@@ -1,11 +1,11 @@
 
 package Mantenimientos;
 
-public class Frm_user extends javax.swing.JFrame {
+public class Frm_User extends javax.swing.JFrame {
 
-   Frm_user_search frm_user_search=new Frm_user_search();
+   Frm_User_Search frm_user_search=new Frm_User_Search();
    
-    public Frm_user(Frm_user_search user_menu) {
+    public Frm_User(Frm_User_Search user_menu) {
         
         setTitle("Mantenimiento de Usuarios"); 
         frm_user_search =user_menu;

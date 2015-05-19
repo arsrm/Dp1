@@ -2,17 +2,17 @@ package Mantenimientos;
 
 import Seguridad.Frm_MenuPrincipal;
 
-public class Frm_user_search extends javax.swing.JFrame {
+public class Frm_User_Search extends javax.swing.JFrame {
 
     Frm_MenuPrincipal auxmenu = new Frm_MenuPrincipal();
     
-    public Frm_user_search(Frm_MenuPrincipal menu) {
+    public Frm_User_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Personal");
         auxmenu=menu;
         auxmenu.setEnabled(true);
         initComponents();
     }
-    public Frm_user_search() {
+    public Frm_User_Search() {
        
     }
 
@@ -172,7 +172,7 @@ public class Frm_user_search extends javax.swing.JFrame {
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         // TODO add your handling code here:
-        Frm_user frm_user = new Frm_user(this);
+        Frm_User frm_user = new Frm_User(this);
         frm_user.setVisible(true);
         frm_user.setLocationRelativeTo(null);
          this.setVisible(false);    
