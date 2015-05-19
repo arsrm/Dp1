@@ -213,12 +213,13 @@ public class Frm_Login extends javax.swing.JFrame {
         if(perfil == 0){
             JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
         }
-        txt_usuario.setText("");
+        
         txt_contrasenha.setText("");
+        txt_usuario.setText("");
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        JOptionPane.showMessageDialog(this, "Está saliendo del Programa");
+        JOptionPane.showMessageDialog(this, "Está saliendo del ");
         System.exit(0);
     }//GEN-LAST:event_btnCancelarActionPerformed
 
