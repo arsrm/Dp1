@@ -32,6 +32,8 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         menuaux = menu;
         menuaux.setEnabled(false);
         initComponents();
+        cbo_pallet_act.setSelectedIndex(-1);
+        cbo_pallet_state.setSelectedIndex(-1);
     }
 
     /**
@@ -43,26 +45,216 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnl_pallet = new javax.swing.JPanel();
+        btn_search = new javax.swing.JButton();
+        cbo_pallet_act = new javax.swing.JComboBox();
+        lbl_IdPallet = new javax.swing.JLabel();
+        txt_IdPallet = new javax.swing.JTextField();
+        lbl_ean = new javax.swing.JLabel();
+        txt_EAN = new javax.swing.JTextField();
+        lbl_status_act = new javax.swing.JLabel();
+        lbl_Rack = new javax.swing.JLabel();
+        txt_Rack = new javax.swing.JTextField();
+        lbl_cell = new javax.swing.JLabel();
+        txt_celda = new javax.swing.JTextField();
+        lbl_FecIni = new javax.swing.JLabel();
+        dch_FecIni = new com.toedter.calendar.JDateChooser();
+        lbl_FecFin = new javax.swing.JLabel();
+        dch_FecFin = new com.toedter.calendar.JDateChooser();
+        lbl_status_pallet = new javax.swing.JLabel();
+        cbo_pallet_state = new javax.swing.JComboBox();
+        scrl_pallet = new javax.swing.JScrollPane();
+        tbl_pallet = new javax.swing.JTable();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Criterios de Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 12))); // NOI18N
+
+        btn_search.setText("Buscar");
+
+        cbo_pallet_act.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Activo", "Inactivo", "" }));
+        cbo_pallet_act.setSelectedIndex(-1);
+        cbo_pallet_act.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_pallet_actActionPerformed(evt);
+            }
+        });
+
+        lbl_IdPallet.setText("Id.Pallet");
+
+        txt_IdPallet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_IdPalletActionPerformed(evt);
+            }
+        });
+
+        lbl_ean.setText("Codigo EAN");
+
+        lbl_status_act.setText("Estado Actividad");
+
+        lbl_Rack.setText("Id.Rack");
+
+        lbl_cell.setText("Id.Celda");
+
+        lbl_FecIni.setText("Fecha Inicial");
+
+        lbl_FecFin.setText("Fecha Final");
+
+        lbl_status_pallet.setText("Estado Pallet");
+
+        cbo_pallet_state.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Estado1", "Estado2", "Estado3", "" }));
+        cbo_pallet_state.setSelectedIndex(-1);
+
+        javax.swing.GroupLayout pnl_palletLayout = new javax.swing.GroupLayout(pnl_pallet);
+        pnl_pallet.setLayout(pnl_palletLayout);
+        pnl_palletLayout.setHorizontalGroup(
+            pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_palletLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(lbl_status_act, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_FecIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(lbl_IdPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_IdPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_Rack)
+                            .addComponent(dch_FecIni, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cbo_pallet_act, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_Rack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_palletLayout.createSequentialGroup()
+                                .addGap(108, 108, 108)
+                                .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(57, 57, 57)))
+                .addGap(46, 46, 46)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addComponent(lbl_ean)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                        .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_cell)
+                            .addComponent(lbl_status_pallet)
+                            .addComponent(lbl_FecFin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_celda)
+                            .addComponent(dch_FecFin, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                            .addComponent(cbo_pallet_state, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(20, 20, 20))
+        );
+        pnl_palletLayout.setVerticalGroup(
+            pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lbl_IdPallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_IdPallet)
+                        .addComponent(lbl_ean)
+                        .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_Rack)
+                    .addComponent(txt_Rack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_cell)
+                    .addComponent(txt_celda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(21, 21, 21)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lbl_FecIni)
+                        .addComponent(dch_FecIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_FecFin)
+                    .addComponent(dch_FecFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cbo_pallet_act, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_status_act)
+                    .addComponent(lbl_status_pallet)
+                    .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        lbl_ean.getAccessibleContext().setAccessibleName("Codigo EAN");
+
+        tbl_pallet.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        scrl_pallet.setViewportView(tbl_pallet);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(pnl_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrl_pallet))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(70, Short.MAX_VALUE))
         );
+
+        pnl_pallet.getAccessibleContext().setAccessibleName("Criterios de búsqueda");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbo_pallet_actActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_pallet_actActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbo_pallet_actActionPerformed
+
+    private void txt_IdPalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_IdPalletActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_IdPalletActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_search;
+    private javax.swing.JComboBox cbo_pallet_act;
+    private javax.swing.JComboBox cbo_pallet_state;
+    private com.toedter.calendar.JDateChooser dch_FecFin;
+    private com.toedter.calendar.JDateChooser dch_FecIni;
+    private javax.swing.JLabel lbl_FecFin;
+    private javax.swing.JLabel lbl_FecIni;
+    private javax.swing.JLabel lbl_IdPallet;
+    private javax.swing.JLabel lbl_Rack;
+    private javax.swing.JLabel lbl_cell;
+    private javax.swing.JLabel lbl_ean;
+    private javax.swing.JLabel lbl_status_act;
+    private javax.swing.JLabel lbl_status_pallet;
+    private javax.swing.JPanel pnl_pallet;
+    private javax.swing.JScrollPane scrl_pallet;
+    private javax.swing.JTable tbl_pallet;
+    private javax.swing.JTextField txt_EAN;
+    private javax.swing.JTextField txt_IdPallet;
+    private javax.swing.JTextField txt_Rack;
+    private javax.swing.JTextField txt_celda;
     // End of variables declaration//GEN-END:variables
 }
