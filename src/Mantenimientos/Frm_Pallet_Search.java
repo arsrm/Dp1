@@ -78,6 +78,9 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
         });
 
         pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Criterios de Busqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 2, 12))); // NOI18N
@@ -268,13 +271,13 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        //this.setVisible(false);
+        //this.dispose();       
+        this.setVisible(false);
         menuaux.setVisible(true);
-        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        Frm_Pallet frm_pallet = new Frm_Pallet(menuaux, this);
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
         this.setVisible(false);  
@@ -282,11 +285,18 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_newActionPerformed
 
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
-        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        Frm_Pallet frm_pallet = new Frm_Pallet(menuaux,this);
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
          this.setVisible(false);  
     }//GEN-LAST:event_btn_updateActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        this.setVisible(false);
+        menuaux.setVisible(true);
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowClosing
 
     /**
      * @param args the command line arguments

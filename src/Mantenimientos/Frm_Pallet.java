@@ -5,6 +5,8 @@
  */
 
 package Mantenimientos;
+
+import Seguridad.Frm_MenuPrincipal;
 import Mantenimientos.Frm_Pallet_Search;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,11 +19,13 @@ public class Frm_Pallet extends javax.swing.JFrame {
     /**
      * Creates new form Frm_Pallet
      */
-    Frm_Pallet_Search  mnuprev = new Frm_Pallet_Search(); 
+    Frm_Pallet_Search  ventprev = new Frm_Pallet_Search(); 
+    Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
             
-    public Frm_Pallet(Frm_Pallet_Search menuant) {
+    public Frm_Pallet(Frm_MenuPrincipal menuprin , Frm_Pallet_Search ventant) {
         setTitle("Datos del Pallet");
-        mnuprev = menuant;
+        menuaux=menuprin; 
+        ventprev = ventant;
         initComponents();
     }
 
@@ -34,6 +38,19 @@ public class Frm_Pallet extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btn_save = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
+        lbl_pallet_state = new javax.swing.JLabel();
+        cbo_pallet_state = new javax.swing.JComboBox();
+        lbl_description = new javax.swing.JLabel();
+        txt_description = new javax.swing.JTextField();
+        lbl_cod_EAN = new javax.swing.JLabel();
+        txt_cod_EAN = new javax.swing.JTextField();
+        lbl_rack = new javax.swing.JLabel();
+        cbo_rack = new javax.swing.JComboBox();
+        jLabel1 = new javax.swing.JLabel();
+        txt_cell = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
@@ -41,30 +58,157 @@ public class Frm_Pallet extends javax.swing.JFrame {
             }
         });
 
+        btn_save.setText("Guardar");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
+
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
+
+        lbl_pallet_state.setText("Estado Pallet");
+
+        cbo_pallet_state.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Estado1", "Estado2", "Estado3", "" }));
+        cbo_pallet_state.setSelectedIndex(-1);
+
+        lbl_description.setText("Descripcion  ");
+
+        txt_description.setToolTipText("");
+
+        lbl_cod_EAN.setText("Codigo EAN");
+
+        lbl_rack.setText("Rack");
+
+        cbo_rack.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Rack1", "Rack2", "Rack3", " ", " " }));
+        cbo_rack.setSelectedIndex(-1);
+
+        jLabel1.setText("Celda");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(btn_save)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 218, Short.MAX_VALUE)
+                .addComponent(btn_cancel)
+                .addGap(88, 88, 88))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lbl_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbl_rack, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(52, 52, 52))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(lbl_description, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(lbl_cod_EAN, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(38, 38, 38)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(68, 68, 68)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cbo_pallet_state, 0, 126, Short.MAX_VALUE)
+                        .addComponent(txt_description)
+                        .addComponent(txt_cod_EAN))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txt_cell, javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(cbo_rack, javax.swing.GroupLayout.Alignment.LEADING, 0, 117, Short.MAX_VALUE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_description)
+                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cod_EAN)
+                    .addComponent(txt_cod_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_rack)
+                    .addComponent(cbo_rack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt_cell, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_save)
+                    .addComponent(btn_cancel))
+                .addGap(23, 23, 23))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        mnuprev.setVisible(true);
-        this.dispose();
+        this.setVisible(false);
+        //this.dispose();
+        ventprev.setVisible(true);
+        menuaux.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado datos del Pallet con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            if(ok_option==JOptionPane.OK_OPTION){
+                ventprev.setVisible(true);
+                ventprev.setLocationRelativeTo(null);
+                //this.dispose();
+                this.setVisible(false);
+            }
+        }         // TODO add your handling code here:
+    }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        //this.dispose();
+        ventprev.setVisible(true);
+        menuaux.setVisible(true);
+
+    }//GEN-LAST:event_btn_cancelActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_save;
+    private javax.swing.JComboBox cbo_pallet_state;
+    private javax.swing.JComboBox cbo_rack;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lbl_cod_EAN;
+    private javax.swing.JLabel lbl_description;
+    private javax.swing.JLabel lbl_pallet_state;
+    private javax.swing.JLabel lbl_rack;
+    private javax.swing.JTextField txt_cell;
+    private javax.swing.JTextField txt_cod_EAN;
+    private javax.swing.JTextField txt_description;
     // End of variables declaration//GEN-END:variables
 }
