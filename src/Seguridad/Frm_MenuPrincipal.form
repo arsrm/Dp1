@@ -84,20 +84,20 @@
                 <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Pedido"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="loadOrderMenuItem">
+                <MenuItem class="javax.swing.JMenuItem" name="op_loadRequestOrders">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Cargar &#xd3;rdenes de Pedido"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="loadOrderMenuItemActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_loadRequestOrdersActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="searchOrderMenuItem">
+                <MenuItem class="javax.swing.JMenuItem" name="op_RequestOrderSearch">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Pedido"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchOrderMenuItemActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_RequestOrderSearchActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -107,20 +107,20 @@
                 <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Entrega"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="searchPickingMenuItem">
+                <MenuItem class="javax.swing.JMenuItem" name="op_PickingOrderSearch">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Entrega"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchPickingMenuItemActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_PickingOrderSearchActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="generatePickingMenuItem">
+                <MenuItem class="javax.swing.JMenuItem" name="op_GenerateDispatchOrders">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Generar &#xd3;rdenes de Pedido"/>
+                    <Property name="text" type="java.lang.String" value="Generar &#xd3;rdenes de Despacho"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatePickingMenuItemActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_GenerateDispatchOrdersActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>
@@ -130,12 +130,35 @@
                 <Property name="text" type="java.lang.String" value="&#xd3;rdenes de Despacho"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="searchDispatchMenuItem">
+                <MenuItem class="javax.swing.JMenuItem" name="op_DispatchOrderSearch">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Ver &#xd3;rdenes de Despacho"/>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchDispatchMenuItemActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_DispatchOrderSearchActionPerformed"/>
+                  </Events>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
+            <Menu class="javax.swing.JMenu" name="jMenu4">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Devoluci&#xf3;n de Productos"/>
+              </Properties>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="op_RegisterReturn">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Registrar Devoluci&#xf3;n"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_RegisterReturnActionPerformed"/>
+                  </Events>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="op_ReturnSearch">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Ver Devoluciones"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_ReturnSearchActionPerformed"/>
                   </Events>
                 </MenuItem>
               </SubComponents>

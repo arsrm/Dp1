@@ -12,10 +12,13 @@ import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_Warehouse_Search;
 import Mantenimientos.Frm_User_Search;
-import Operaciones.Frm_CargarOrdenesPedidos;
-import Operaciones.Frm_VerOrdenesDespacho;
-import Operaciones.Frm_VerOrdenesEntrega;
-import Operaciones.Frm_VerOrdenesPedidos;
+import Operaciones.Frm_DispatchOrder_Generator;
+import Operaciones.Frm_DispatchOrder_Search;
+import Operaciones.Frm_Load_RequestOrder;
+import Operaciones.Frm_PickingOrder_Search;
+import Operaciones.Frm_RequestOrder_Search;
+import Operaciones.Frm_ReturnProducts;
+import Operaciones.Frm_ReturnProducts_Search;
 import javax.swing.JOptionPane;
 
 /**
@@ -60,13 +63,16 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Internamiento_Productos = new javax.swing.JMenuItem();
         op_Movimiento_Interno = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        loadOrderMenuItem = new javax.swing.JMenuItem();
-        searchOrderMenuItem = new javax.swing.JMenuItem();
+        op_loadRequestOrders = new javax.swing.JMenuItem();
+        op_RequestOrderSearch = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
-        searchPickingMenuItem = new javax.swing.JMenuItem();
-        generatePickingMenuItem = new javax.swing.JMenuItem();
+        op_PickingOrderSearch = new javax.swing.JMenuItem();
+        op_GenerateDispatchOrders = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        searchDispatchMenuItem = new javax.swing.JMenuItem();
+        op_DispatchOrderSearch = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        op_RegisterReturn = new javax.swing.JMenuItem();
+        op_ReturnSearch = new javax.swing.JMenuItem();
         op_Carga_Datos = new javax.swing.JMenuItem();
         menu_seguridad = new javax.swing.JMenu();
         op_Perfiles = new javax.swing.JMenuItem();
@@ -161,55 +167,75 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
         jMenu1.setText("Órdenes de Pedido");
 
-        loadOrderMenuItem.setText("Cargar Órdenes de Pedido");
-        loadOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        op_loadRequestOrders.setText("Cargar Órdenes de Pedido");
+        op_loadRequestOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadOrderMenuItemActionPerformed(evt);
+                op_loadRequestOrdersActionPerformed(evt);
             }
         });
-        jMenu1.add(loadOrderMenuItem);
+        jMenu1.add(op_loadRequestOrders);
 
-        searchOrderMenuItem.setText("Ver Órdenes de Pedido");
-        searchOrderMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        op_RequestOrderSearch.setText("Ver Órdenes de Pedido");
+        op_RequestOrderSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchOrderMenuItemActionPerformed(evt);
+                op_RequestOrderSearchActionPerformed(evt);
             }
         });
-        jMenu1.add(searchOrderMenuItem);
+        jMenu1.add(op_RequestOrderSearch);
 
         menu_operaciones.add(jMenu1);
 
         jMenu2.setText("Órdenes de Entrega");
 
-        searchPickingMenuItem.setText("Ver Órdenes de Entrega");
-        searchPickingMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        op_PickingOrderSearch.setText("Ver Órdenes de Entrega");
+        op_PickingOrderSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchPickingMenuItemActionPerformed(evt);
+                op_PickingOrderSearchActionPerformed(evt);
             }
         });
-        jMenu2.add(searchPickingMenuItem);
+        jMenu2.add(op_PickingOrderSearch);
 
-        generatePickingMenuItem.setText("Generar Órdenes de Pedido");
-        generatePickingMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        op_GenerateDispatchOrders.setText("Generar Órdenes de Despacho");
+        op_GenerateDispatchOrders.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generatePickingMenuItemActionPerformed(evt);
+                op_GenerateDispatchOrdersActionPerformed(evt);
             }
         });
-        jMenu2.add(generatePickingMenuItem);
+        jMenu2.add(op_GenerateDispatchOrders);
 
         menu_operaciones.add(jMenu2);
 
         jMenu3.setText("Órdenes de Despacho");
 
-        searchDispatchMenuItem.setText("Ver Órdenes de Despacho");
-        searchDispatchMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        op_DispatchOrderSearch.setText("Ver Órdenes de Despacho");
+        op_DispatchOrderSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchDispatchMenuItemActionPerformed(evt);
+                op_DispatchOrderSearchActionPerformed(evt);
             }
         });
-        jMenu3.add(searchDispatchMenuItem);
+        jMenu3.add(op_DispatchOrderSearch);
 
         menu_operaciones.add(jMenu3);
+
+        jMenu4.setText("Devolución de Productos");
+
+        op_RegisterReturn.setText("Registrar Devolución");
+        op_RegisterReturn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_RegisterReturnActionPerformed(evt);
+            }
+        });
+        jMenu4.add(op_RegisterReturn);
+
+        op_ReturnSearch.setText("Ver Devoluciones");
+        op_ReturnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_ReturnSearchActionPerformed(evt);
+            }
+        });
+        jMenu4.add(op_ReturnSearch);
+
+        menu_operaciones.add(jMenu4);
 
         op_Carga_Datos.setText("Carga de Datos");
         op_Carga_Datos.addActionListener(new java.awt.event.ActionListener() {
@@ -389,40 +415,62 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         this.setEnabled(true);
     }//GEN-LAST:event_formWindowGainedFocus
 
-    private void searchPickingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchPickingMenuItemActionPerformed
+    private void op_PickingOrderSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PickingOrderSearchActionPerformed
         // TODO add your handling code here:}
-        Frm_VerOrdenesEntrega frm_voe = new Frm_VerOrdenesEntrega(this);
-        frm_voe.setVisible(true);
-        frm_voe.setLocation(450,150);
-    }//GEN-LAST:event_searchPickingMenuItemActionPerformed
+        Frm_PickingOrder_Search frm_spo = new Frm_PickingOrder_Search(this);
+        frm_spo.setVisible(true);
+        frm_spo.setLocation(450,150);
+        frm_spo.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_PickingOrderSearchActionPerformed
 
-    private void generatePickingMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatePickingMenuItemActionPerformed
+    private void op_GenerateDispatchOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_GenerateDispatchOrdersActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_generatePickingMenuItemActionPerformed
+        Frm_DispatchOrder_Generator frm_dog = new Frm_DispatchOrder_Generator(this);
+        frm_dog.setVisible(true);
+        frm_dog.setLocation(450,150);
+        frm_dog.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_GenerateDispatchOrdersActionPerformed
 
-    private void searchDispatchMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchDispatchMenuItemActionPerformed
+    private void op_DispatchOrderSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_DispatchOrderSearchActionPerformed
         // TODO add your handling code here:
-        Frm_VerOrdenesDespacho frm_vod = new Frm_VerOrdenesDespacho(this);
+        Frm_DispatchOrder_Search frm_vod = new Frm_DispatchOrder_Search(this);
         frm_vod.setVisible(true);
         frm_vod.setLocation(450,150);
-    }//GEN-LAST:event_searchDispatchMenuItemActionPerformed
+        frm_vod.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_DispatchOrderSearchActionPerformed
 
-    private void loadOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadOrderMenuItemActionPerformed
+    private void op_loadRequestOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_loadRequestOrdersActionPerformed
         // TODO add your handling code here:
-        Frm_CargarOrdenesPedidos frm_op = new Frm_CargarOrdenesPedidos(this);
+        Frm_Load_RequestOrder frm_op = new Frm_Load_RequestOrder(this);
         frm_op.setVisible(true);
         frm_op.setLocation(450, 150);
-        frm_op.setLocationRelativeTo(null);
-        
-        
-    }//GEN-LAST:event_loadOrderMenuItemActionPerformed
+        frm_op.setLocationRelativeTo(null);        
+    }//GEN-LAST:event_op_loadRequestOrdersActionPerformed
 
-    private void searchOrderMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchOrderMenuItemActionPerformed
+    private void op_RequestOrderSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_RequestOrderSearchActionPerformed
         // TODO add your handling code here:
-         Frm_VerOrdenesPedidos frm_vop = new Frm_VerOrdenesPedidos(this);
-        frm_vop.setVisible(true);
-        frm_vop.setLocation(450, 150);
-    }//GEN-LAST:event_searchOrderMenuItemActionPerformed
+        Frm_RequestOrder_Search frm_sro = new Frm_RequestOrder_Search(this);
+        frm_sro.setVisible(true);
+        frm_sro.setLocation(450, 150);
+        frm_sro.setLocationRelativeTo(null);  
+    }//GEN-LAST:event_op_RequestOrderSearchActionPerformed
+
+    private void op_RegisterReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_RegisterReturnActionPerformed
+        // TODO add your handling code here:
+        Frm_ReturnProducts frm_rp = new Frm_ReturnProducts(this);
+        frm_rp.setVisible(true);
+        frm_rp.setLocation(450, 150);
+        frm_rp.setLocationRelativeTo(null); 
+        
+    }//GEN-LAST:event_op_RegisterReturnActionPerformed
+
+    private void op_ReturnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ReturnSearchActionPerformed
+        // TODO add your handling code here:
+        Frm_ReturnProducts_Search frm_rps = new Frm_ReturnProducts_Search(this);
+        frm_rps.setVisible(true);
+        frm_rps.setLocation(450, 150);
+        frm_rps.setLocationRelativeTo(null); 
+    }//GEN-LAST:event_op_ReturnSearchActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
@@ -447,11 +495,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JMenuItem generatePickingMenuItem;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenuItem loadOrderMenuItem;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu menu_cerrarsesion;
     private javax.swing.JMenu menu_mantenimientos;
     private javax.swing.JMenu menu_operaciones;
@@ -463,22 +510,26 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Carga_Datos;
     private javax.swing.JMenuItem op_Centro_distribucion;
     private javax.swing.JMenuItem op_Cliente;
+    private javax.swing.JMenuItem op_DispatchOrderSearch;
+    private javax.swing.JMenuItem op_GenerateDispatchOrders;
     private javax.swing.JMenuItem op_Guia_Transportista;
     private javax.swing.JMenuItem op_Internamiento_Productos;
     private javax.swing.JMenuItem op_Movimiento_Interno;
     private javax.swing.JMenuItem op_Pallet;
     private javax.swing.JMenuItem op_Perfiles;
     private javax.swing.JMenuItem op_Personal;
+    private javax.swing.JMenuItem op_PickingOrderSearch;
     private javax.swing.JMenuItem op_Producto;
     private javax.swing.JMenuItem op_Racks;
+    private javax.swing.JMenuItem op_RegisterReturn;
     private javax.swing.JMenuItem op_Reporte_Despacho;
     private javax.swing.JMenuItem op_Reporte_Internamiento;
     private javax.swing.JMenuItem op_Reporte_Kardex_segun_fecha;
     private javax.swing.JMenuItem op_Reporte_Libre_disponibilidad;
     private javax.swing.JMenuItem op_Reporte_Stock_fecha;
     private javax.swing.JMenuItem op_Reporte_diferencia_Inventario;
-    private javax.swing.JMenuItem searchDispatchMenuItem;
-    private javax.swing.JMenuItem searchOrderMenuItem;
-    private javax.swing.JMenuItem searchPickingMenuItem;
+    private javax.swing.JMenuItem op_RequestOrderSearch;
+    private javax.swing.JMenuItem op_ReturnSearch;
+    private javax.swing.JMenuItem op_loadRequestOrders;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,17 +9,20 @@ package Operaciones;
 import Seguridad.*;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 /**
  *
  * @author Alejo
  */
-public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
+public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     /**
      * Creates new form Frm_CambiarLog
      */
-    public Frm_CargarOrdenesPedidos(Frm_MenuPrincipal menu) {
+    public Frm_Load_RequestOrder(Frm_MenuPrincipal menu) {
        menuaux=menu;
        menuaux.setEnabled(false);
        setTitle("CARGAR ÓRDENES DE PEDIDO");
@@ -37,13 +40,14 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
 
         loadPane2 = new javax.swing.JPanel();
         loadLabel2 = new javax.swing.JLabel();
-        loadFileTxt = new javax.swing.JTextField();
-        searchFileButton2 = new javax.swing.JButton();
+        txt_LoadFile = new javax.swing.JTextField();
+        btn_Search = new javax.swing.JButton();
         loadButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        exitButton2 = new javax.swing.JButton();
+        jTable_Orders = new javax.swing.JTable();
+        btn_Exit = new javax.swing.JButton();
+        btn_Save = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -57,10 +61,10 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
 
         loadLabel2.setText("Ruta:");
 
-        searchFileButton2.setText("Buscar");
-        searchFileButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_Search.setText("Buscar");
+        btn_Search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchFileButton2ActionPerformed(evt);
+                btn_SearchActionPerformed(evt);
             }
         });
 
@@ -71,16 +75,16 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
         loadPane2Layout.setHorizontalGroup(
             loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(loadPane2Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(190, 190, 190)
                 .addGroup(loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(loadButton2)
                     .addGroup(loadPane2Layout.createSequentialGroup()
                         .addComponent(loadLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(loadFileTxt, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(loadButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchFileButton2)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(txt_LoadFile, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btn_Search)))
+                .addContainerGap(238, Short.MAX_VALUE))
         );
         loadPane2Layout.setVerticalGroup(
             loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -88,16 +92,16 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadLabel2)
-                    .addComponent(loadFileTxt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchFileButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_LoadFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_Search))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(loadButton2)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Pedido"));
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_Orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -108,13 +112,25 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
                 "Número de Orden", "Cliente", "Fecha Enviada", "Estado"
             }
         ));
-        jTable3.setColumnSelectionAllowed(true);
-        jScrollPane3.setViewportView(jTable3);
+        jTable_Orders.setColumnSelectionAllowed(true);
+        jTable_Orders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_OrdersMouseClicked(evt);
+            }
+        });
+        jScrollPane3.setViewportView(jTable_Orders);
 
-        exitButton2.setText("Salir");
-        exitButton2.addActionListener(new java.awt.event.ActionListener() {
+        btn_Exit.setText("Salir");
+        btn_Exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitButton2ActionPerformed(evt);
+                btn_ExitActionPerformed(evt);
+            }
+        });
+
+        btn_Save.setText("Guardar");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SaveActionPerformed(evt);
             }
         });
 
@@ -123,58 +139,65 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(exitButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(btn_Save)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(exitButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_Save)
+                    .addComponent(btn_Exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(loadPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(loadPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addContainerGap()
                 .addComponent(loadPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButton2ActionPerformed
+    private void btn_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExitActionPerformed
         // TODO add your handling code here:
         menuaux.setVisible(true);
         menuaux.setEnabled(true);
         this.dispose();
-    }//GEN-LAST:event_exitButton2ActionPerformed
+    }//GEN-LAST:event_btn_ExitActionPerformed
 
-    private void searchFileButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchFileButton2ActionPerformed
+    private void btn_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SearchActionPerformed
         // TODO add your handling code here:
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("SELECCIONAR ARCHIVO DE ÓRDENES DE PEDIDO");
         chooser.showDialog(this, null);
         String directory = chooser.getSelectedFile().getAbsolutePath();
-        loadFileTxt.setText(directory);
-    }//GEN-LAST:event_searchFileButton2ActionPerformed
+        txt_LoadFile.setText(directory);
+    }//GEN-LAST:event_btn_SearchActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
@@ -184,6 +207,23 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
         this.dispose();
         
     }//GEN-LAST:event_formWindowClosing
+
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        // TODO add your handling code here:
+        Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            
+            
+        } 
+      
+    }//GEN-LAST:event_btn_SaveActionPerformed
+
+    private void jTable_OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrdersMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTable_OrdersMouseClicked
  private void formWindowClosed(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
       
@@ -202,14 +242,15 @@ public class Frm_CargarOrdenesPedidos extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton exitButton2;
+    private javax.swing.JButton btn_Exit;
+    private javax.swing.JButton btn_Save;
+    private javax.swing.JButton btn_Search;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable3;
+    private javax.swing.JTable jTable_Orders;
     private javax.swing.JButton loadButton2;
-    private javax.swing.JTextField loadFileTxt;
     private javax.swing.JLabel loadLabel2;
     private javax.swing.JPanel loadPane2;
-    private javax.swing.JButton searchFileButton2;
+    private javax.swing.JTextField txt_LoadFile;
     // End of variables declaration//GEN-END:variables
 }

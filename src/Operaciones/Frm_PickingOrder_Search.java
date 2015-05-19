@@ -7,20 +7,26 @@
 package Operaciones;
 
 import Seguridad.Frm_MenuPrincipal;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Luis Miguel
  */
-public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
+public class Frm_PickingOrder_Search extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     /**
      * Creates new form Frm_VerOrdenesEntrega1
      */
-    public Frm_VerOrdenesEntrega(Frm_MenuPrincipal menu) {
+    public Frm_PickingOrder_Search(Frm_MenuPrincipal menu) {
         setTitle("ÓRDENES DE ENTREGA");
         menuaux = menu;
         initComponents();
+    }
+    
+    public Frm_PickingOrder_Search(){
+        
     }
 
     /**
@@ -34,68 +40,55 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        dayTxtField = new javax.swing.JTextField();
-        monthTxtField = new javax.swing.JTextField();
-        yearTxtField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        searchButton = new javax.swing.JButton();
+        btn_Search = new javax.swing.JButton();
+        jDate_DeliverDate = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
-        cancelButton = new javax.swing.JButton();
+        jTable_Orders = new javax.swing.JTable();
+        btn_Delete = new javax.swing.JButton();
+        btn_Cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios Búsqueda"));
 
         jLabel1.setText("Fecha Entrega:");
 
-        jLabel2.setText("/");
-
-        jLabel3.setText("/");
-
-        searchButton.setText("Buscar Órdenes de Entrega");
+        btn_Search.setText("Buscar Órdenes de Entrega");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(241, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
-                .addComponent(dayTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addGap(7, 7, 7)
-                .addComponent(monthTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(yearTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(searchButton)
-                .addContainerGap())
+                .addComponent(btn_Search)
+                .addGap(150, 150, 150))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(dayTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(monthTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(yearTxtField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3)
-                    .addComponent(searchButton))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_Search)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel1)))
+                .addGap(14, 14, 14))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Entrega"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTable_Orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -103,7 +96,7 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Número de Orden", "Cliente", "Estado", "Anular"
+                "Número de Orden", "Cliente", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
@@ -114,14 +107,24 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jTable_Orders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable_OrdersMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(jTable_Orders);
 
-        jButton1.setText("Eliminar");
-
-        cancelButton.setText("Cancelar");
-        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+        btn_Delete.setText("Eliminar");
+        btn_Delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cancelButtonActionPerformed(evt);
+                btn_DeleteActionPerformed(evt);
+            }
+        });
+
+        btn_Cancel.setText("Cancelar");
+        btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelActionPerformed(evt);
             }
         });
 
@@ -132,11 +135,11 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(btn_Delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cancelButton)
+                        .addComponent(btn_Cancel)
                         .addGap(4, 4, 4))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -146,8 +149,8 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(cancelButton))
+                    .addComponent(btn_Delete)
+                    .addComponent(btn_Cancel))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -165,8 +168,8 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -175,25 +178,56 @@ public class Frm_VerOrdenesEntrega extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+    private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
         // TODO add your handling code here:
+        menuaux.setEnabled(true);
         this.dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
+        
+    }//GEN-LAST:event_btn_CancelActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        menuaux.setEnabled(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void jTable_OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrdersMouseClicked
+        // TODO add your handling code here:
+        if(evt.getSource()==jTable_Orders){
+            int rowSel = jTable_Orders.getSelectedRow();
+            int colSel = jTable_Orders.getSelectedColumn();
+            if (colSel==0){
+              Frm_PickingOrder_Detail frm_dod = new Frm_PickingOrder_Detail(this);
+              
+              frm_dod.setVisible(true);
+              frm_dod.setLocationRelativeTo(null);
+              this.setVisible(false);  
+            }
+        }
+    }//GEN-LAST:event_jTable_OrdersMouseClicked
+
+    private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
+        // TODO add your handling code here:
+        Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han eliminado las órdenes de entrega con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            
+            
+        } 
+    }//GEN-LAST:event_btn_DeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton cancelButton;
-    private javax.swing.JTextField dayTxtField;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btn_Cancel;
+    private javax.swing.JButton btn_Delete;
+    private javax.swing.JButton btn_Search;
+    private com.toedter.calendar.JDateChooser jDate_DeliverDate;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField monthTxtField;
-    private javax.swing.JButton searchButton;
-    private javax.swing.JTextField yearTxtField;
+    private javax.swing.JTable jTable_Orders;
     // End of variables declaration//GEN-END:variables
 }
