@@ -6,10 +6,8 @@ public class Frm_User extends javax.swing.JFrame {
    Frm_User_Search frm_user_search=new Frm_User_Search();
    
     public Frm_User(Frm_User_Search user_menu) {
-        
         setTitle("Mantenimiento de Usuarios"); 
         frm_user_search =user_menu;
-        
         initComponents();
     }
 
@@ -39,6 +37,11 @@ public class Frm_User extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_user.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
         pnl_user.setToolTipText("");
@@ -175,25 +178,23 @@ public class Frm_User extends javax.swing.JFrame {
         // TODO add your handling code here:
         this.dispose();
         frm_user_search.setVisible(true);
-        
-        
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-        
         this.dispose();
         frm_user_search.setVisible(true);
         
     }//GEN-LAST:event_btn_cancelActionPerformed
 
-      private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        
-       this.dispose();
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        this.dispose();
         frm_user_search.setVisible(true);
-        frm_user_search.setEnabled(true);
         
-    } 
+    }//GEN-LAST:event_formWindowClosed
+
+    
     /**
      * @param args the command line arguments
      */

@@ -9,7 +9,6 @@ public class Frm_User_Search extends javax.swing.JFrame {
     public Frm_User_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Personal");
         auxmenu=menu;
-        auxmenu.setEnabled(true);
         initComponents();
     }
     public Frm_User_Search() {
@@ -38,6 +37,11 @@ public class Frm_User_Search extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_center.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
 
@@ -180,19 +184,18 @@ public class Frm_User_Search extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-        auxmenu.setEnabled(true);
         auxmenu.setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_btn_cancelActionPerformed
 
-     private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        
-       auxmenu.setEnabled(true);
-        auxmenu.setVisible(true);
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
         this.dispose();
-    }                                 
+        auxmenu.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
+    
     /**
      * @param args the command line arguments
      */

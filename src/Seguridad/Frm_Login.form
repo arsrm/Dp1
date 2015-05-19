@@ -78,14 +78,9 @@
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="172" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="op_cambiar_contrasenha" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" attributes="0">
-                                  <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                  <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
-                              </Group>
-                          </Group>
+                          <Component id="btnAceptar" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btnCancelar" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="108" max="32767" attributes="0"/>
@@ -115,9 +110,7 @@
                       <Component id="btnAceptar" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                       <Component id="btnCancelar" alignment="3" min="-2" pref="31" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="op_cambiar_contrasenha" min="-2" pref="27" max="-2" attributes="0"/>
-                  <EmptySpace pref="31" max="32767" attributes="0"/>
+                  <EmptySpace pref="70" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -185,17 +178,6 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="  "/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="op_cambiar_contrasenha">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="66" red="0" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Cambiar Contrase&#xf1;a"/>
-          </Properties>
-          <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="op_cambiar_contrasenhaMouseClicked"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

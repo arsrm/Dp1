@@ -49,6 +49,11 @@ public class Frm_Client extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_client.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
@@ -176,24 +181,21 @@ public class Frm_Client extends javax.swing.JFrame {
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        aux.setVisible(true);
-        aux.setEnabled(true);
-        
+        aux.setVisible(true);    
     }//GEN-LAST:event_btn_saveActionPerformed
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {                                  
-        
-        this.dispose();
-        aux.setVisible(true);
-        aux.setEnabled(true);
-    } 
+   
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
-         aux.setVisible(true);
-         aux.setEnabled(true);
-        
+        aux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        this.dispose();
+        aux.setVisible(true);
+    }//GEN-LAST:event_formWindowClosed
 
     /**
      * @param args the command line arguments

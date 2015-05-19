@@ -15,14 +15,14 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
     /**
      * Creates new form Frm_CambiarLog
      */
-    Frm_Login logiin = new Frm_Login();
-    public Frm_CambiarLog(Frm_Login loginn) {
-        
+    
+    Frm_MenuPrincipal menuaux =new Frm_MenuPrincipal();
+    public Frm_CambiarLog(Frm_MenuPrincipal menu) {
+        menuaux = menu;
        setTitle("CAMBIAR CONTRASEÑA"); 
-       logiin=loginn;
-       logiin.setEnabled(false);
        initComponents();
     }
+   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -45,8 +45,12 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
         btn_contrasenha_nueva = new javax.swing.JPasswordField();
         btn_contrasenha_confirma = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         btn_cancel.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         btn_cancel.setText("Cancelar");
@@ -154,19 +158,26 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-         logiin.setEnabled(true);
-        logiin.setVisible(true);
+         
+        menuaux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
         // TODO add your handling code here:
-        logiin.setEnabled(true);
-        logiin.setVisible(true);
+       
+        menuaux.setVisible(true);
         this.dispose();
        
         
     }//GEN-LAST:event_btn_acceptActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        menuaux.setVisible(true);
+        this.dispose();
+        
+    }//GEN-LAST:event_formWindowClosed
 
     
     

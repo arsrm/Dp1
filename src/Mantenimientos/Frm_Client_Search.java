@@ -9,7 +9,6 @@ public class Frm_Client_Search extends javax.swing.JFrame {
     public Frm_Client_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Clientes");
         menuaux = menu;
-        menuaux.setEnabled(false);
         initComponents();
     }
     
@@ -41,6 +40,11 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setLocationByPlatform(true);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_client.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
@@ -226,11 +230,8 @@ public class Frm_Client_Search extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-
-        menuaux.setEnabled(true);
         menuaux.setVisible(true);
         this.dispose();
-        
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
@@ -241,14 +242,13 @@ public class Frm_Client_Search extends javax.swing.JFrame {
          this.setVisible(false);  
     }//GEN-LAST:event_btn_newActionPerformed
 
-    private void formWindowClosed(java.awt.event.WindowEvent evt) {
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-      
-        menuaux.setEnabled(true);
         menuaux.setVisible(true);
         this.dispose();
-        
-    }
+    }//GEN-LAST:event_formWindowClosed
+
+    
 
     /**
      * @param args the command line arguments
