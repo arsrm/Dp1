@@ -21,7 +21,6 @@ public class Frm_Product extends javax.swing.JFrame {
     
     public Frm_Product(Frm_Product_Search menu) {
         setTitle("Mantenimiento de Productos");
-        setBackground(Color.yellow);
         menu_padre = menu;
         initComponents();
     }
