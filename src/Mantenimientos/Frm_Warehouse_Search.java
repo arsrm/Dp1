@@ -22,7 +22,6 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
     
     public Frm_Warehouse_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Almacenes"); 
-        setBackground(Color.yellow);
         menuaux = menu;
         initComponents();
     }
@@ -190,7 +189,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Warehouse frm_warehouse = new Frm_Warehouse(this);
         frm_warehouse.setVisible(true);
-        frm_warehouse.setLocation(300, 100);
+        frm_warehouse.setLocationRelativeTo(null);
         this.setVisible(false); 
     }//GEN-LAST:event_btn_newActionPerformed
 
