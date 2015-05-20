@@ -6,7 +6,6 @@
 
 package Mantenimientos;
 
-import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -36,7 +35,7 @@ public class Frm_Rack extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnl_datos_generales = new javax.swing.JPanel();
+        pnl_rack = new javax.swing.JPanel();
         lbl_resistance_weigth_per_floor = new javax.swing.JLabel();
         txt_nro_columnas = new javax.swing.JTextField();
         lbl_warehouse = new javax.swing.JLabel();
@@ -65,7 +64,7 @@ public class Frm_Rack extends javax.swing.JFrame {
             }
         });
 
-        pnl_datos_generales.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
+        pnl_rack.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
         lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso");
 
@@ -95,15 +94,15 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         lbl_distribution_center.setText("Centro de Distribucion");
 
-        javax.swing.GroupLayout pnl_datos_generalesLayout = new javax.swing.GroupLayout(pnl_datos_generales);
-        pnl_datos_generales.setLayout(pnl_datos_generalesLayout);
-        pnl_datos_generalesLayout.setHorizontalGroup(
-            pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_rackLayout = new javax.swing.GroupLayout(pnl_rack);
+        pnl_rack.setLayout(pnl_rackLayout);
+        pnl_rackLayout.setHorizontalGroup(
+            pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_rackLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
-                        .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnl_rackLayout.createSequentialGroup()
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_length)
                             .addComponent(lbl_width)
                             .addComponent(lbl_floor_numbers)
@@ -112,7 +111,7 @@ public class Frm_Rack extends javax.swing.JFrame {
                             .addComponent(lbl_column_numbers)
                             .addComponent(lbl_description))
                         .addGap(30, 30, 30)
-                        .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_largo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_ancho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_nro_pisos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,30 +119,30 @@ public class Frm_Rack extends javax.swing.JFrame {
                             .addComponent(txt_nro_columnas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_resistencia_peso_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_description)))
-                    .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
-                        .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_rackLayout.createSequentialGroup()
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_distribution_center)
                             .addComponent(lbl_warehouse))
                         .addGap(45, 45, 45)
-                        .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(203, Short.MAX_VALUE))
         );
-        pnl_datos_generalesLayout.setVerticalGroup(
-            pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_datos_generalesLayout.createSequentialGroup()
+        pnl_rackLayout.setVerticalGroup(
+            pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_rackLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_distribution_center)
                     .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_warehouse)
                     .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(47, 47, 47)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_rackLayout.createSequentialGroup()
                         .addComponent(lbl_description)
                         .addGap(18, 18, 18)
                         .addComponent(lbl_length)
@@ -151,7 +150,7 @@ public class Frm_Rack extends javax.swing.JFrame {
                         .addComponent(lbl_width)
                         .addGap(18, 18, 18)
                         .addComponent(lbl_floor_numbers))
-                    .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
+                    .addGroup(pnl_rackLayout.createSequentialGroup()
                         .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txt_largo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -160,15 +159,15 @@ public class Frm_Rack extends javax.swing.JFrame {
                         .addGap(11, 11, 11)
                         .addComponent(txt_nro_pisos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txt_altura_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_height_per_floor))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_resistance_weigth_per_floor)
                     .addComponent(txt_resistencia_peso_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_column_numbers)
                     .addComponent(txt_nro_columnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(74, Short.MAX_VALUE))
@@ -194,7 +193,7 @@ public class Frm_Rack extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_datos_generales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_rack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(60, 60, 60)
@@ -207,7 +206,7 @@ public class Frm_Rack extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_datos_generales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_rack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_save)
@@ -295,7 +294,7 @@ public class Frm_Rack extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_resistance_weigth_per_floor;
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JLabel lbl_width;
-    private javax.swing.JPanel pnl_datos_generales;
+    private javax.swing.JPanel pnl_rack;
     private javax.swing.JTextField txt_altura_por_piso;
     private javax.swing.JTextField txt_ancho;
     private javax.swing.JTextField txt_description;

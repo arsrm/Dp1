@@ -19,7 +19,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnl_center = new javax.swing.JPanel();
+        pnl_user = new javax.swing.JPanel();
         lbl_center = new javax.swing.JLabel();
         lbl_profile = new javax.swing.JLabel();
         btn_search = new javax.swing.JButton();
@@ -30,7 +30,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
         lbl_name = new javax.swing.JLabel();
         txt_name = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_user = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
@@ -43,7 +43,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
             }
         });
 
-        pnl_center.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
+        pnl_user.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
 
         lbl_center.setText("Centro de Distribucion");
 
@@ -59,58 +59,53 @@ public class Frm_User_Search extends javax.swing.JFrame {
 
         lbl_name.setText("Nombres");
 
-        javax.swing.GroupLayout pnl_centerLayout = new javax.swing.GroupLayout(pnl_center);
-        pnl_center.setLayout(pnl_centerLayout);
-        pnl_centerLayout.setHorizontalGroup(
-            pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_centerLayout.createSequentialGroup()
-                .addGap(98, 98, 98)
-                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_search)
-                    .addGroup(pnl_centerLayout.createSequentialGroup()
-                        .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_centerLayout.createSequentialGroup()
-                                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_center)
-                                    .addComponent(lbl_profile, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbl_id))
-                                .addGap(36, 36, 36))
-                            .addGroup(pnl_centerLayout.createSequentialGroup()
-                                .addComponent(lbl_name)
-                                .addGap(122, 122, 122)))
-                        .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(cbo_profile, javax.swing.GroupLayout.Alignment.LEADING, 0, 183, Short.MAX_VALUE)
-                                .addComponent(cbo_center, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(172, Short.MAX_VALUE))
+        javax.swing.GroupLayout pnl_userLayout = new javax.swing.GroupLayout(pnl_user);
+        pnl_user.setLayout(pnl_userLayout);
+        pnl_userLayout.setHorizontalGroup(
+            pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_userLayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_center)
+                    .addComponent(lbl_profile, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_id)
+                    .addComponent(lbl_name))
+                .addGap(26, 26, 26)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(btn_search)
+                        .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(cbo_center, 0, 400, Short.MAX_VALUE)
+                            .addComponent(cbo_profile, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txt_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
-        pnl_centerLayout.setVerticalGroup(
-            pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_centerLayout.createSequentialGroup()
+        pnl_userLayout.setVerticalGroup(
+            pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_userLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
-                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_center)
                     .addComponent(cbo_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_profile, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbo_profile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_id))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_name)
-                    .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGroup(pnl_userLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_name))
+                .addGap(18, 18, 18)
                 .addComponent(btn_search)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_user.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -121,7 +116,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
                 "DNI", "Nombres", "Centro Distribución", "Perfil", "Estado", "Seleccionar"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_user);
 
         btn_new.setText("Nuevo");
         btn_new.addActionListener(new java.awt.event.ActionListener() {
@@ -146,29 +141,31 @@ public class Frm_User_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_center, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1)
+                    .addComponent(pnl_user, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(16, 16, 16)
                         .addComponent(btn_new)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_cancel)))
+                        .addComponent(btn_cancel)
+                        .addGap(11, 11, 11))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(pnl_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(pnl_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new)
                     .addComponent(btn_delete)
                     .addComponent(btn_cancel))
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -209,12 +206,12 @@ public class Frm_User_Search extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_center;
     private javax.swing.JComboBox cbo_profile;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_center;
     private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_name;
     private javax.swing.JLabel lbl_profile;
-    private javax.swing.JPanel pnl_center;
+    private javax.swing.JPanel pnl_user;
+    private javax.swing.JTable tbl_user;
     private javax.swing.JTextField txt_id;
     private javax.swing.JTextField txt_name;
     // End of variables declaration//GEN-END:variables

@@ -39,7 +39,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnl_search = new javax.swing.JPanel();
+        pnl_rack = new javax.swing.JPanel();
         lbl_distribution_center = new javax.swing.JLabel();
         lbl_warehouse = new javax.swing.JLabel();
         cbo_distribution_center = new javax.swing.JComboBox();
@@ -60,7 +60,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             }
         });
 
-        pnl_search.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
+        pnl_rack.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
         lbl_distribution_center.setText("Centro de Distribucion");
 
@@ -74,39 +74,39 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         lbl_id.setText("ID");
 
-        javax.swing.GroupLayout pnl_searchLayout = new javax.swing.GroupLayout(pnl_search);
-        pnl_search.setLayout(pnl_searchLayout);
-        pnl_searchLayout.setHorizontalGroup(
-            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_searchLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_rackLayout = new javax.swing.GroupLayout(pnl_rack);
+        pnl_rack.setLayout(pnl_rackLayout);
+        pnl_rackLayout.setHorizontalGroup(
+            pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_rackLayout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btn_search)
-                    .addGroup(pnl_searchLayout.createSequentialGroup()
-                        .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_rackLayout.createSequentialGroup()
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_distribution_center)
                             .addComponent(lbl_warehouse)
                             .addComponent(lbl_id))
                         .addGap(45, 45, 45)
-                        .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
                             .addComponent(cbo_warehouse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(185, Short.MAX_VALUE))
         );
-        pnl_searchLayout.setVerticalGroup(
-            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_searchLayout.createSequentialGroup()
+        pnl_rackLayout.setVerticalGroup(
+            pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_rackLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_distribution_center)
                     .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_warehouse)
                     .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_id)
                     .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -153,7 +153,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnl_rack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
@@ -169,7 +169,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_search, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_rack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -191,7 +191,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         Frm_Rack frm_rack = new Frm_Rack(this);
         frm_rack.setVisible(true);
-        frm_rack.setLocation(null);
+        frm_rack.setLocationRelativeTo(null);
         this.setVisible(false);        
     }//GEN-LAST:event_btn_newActionPerformed
 
@@ -246,7 +246,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_distribution_center;
     private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_warehouse;
-    private javax.swing.JPanel pnl_search;
+    private javax.swing.JPanel pnl_rack;
     private javax.swing.JTable tbl_rack;
     private javax.swing.JTextField txt_id;
     // End of variables declaration//GEN-END:variables

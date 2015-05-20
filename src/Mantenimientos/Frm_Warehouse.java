@@ -6,7 +6,6 @@
 
 package Mantenimientos;
 
-import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -36,7 +35,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        pnl_datos_generales = new javax.swing.JPanel();
+        pnl_warehouse = new javax.swing.JPanel();
         lbl_type_condition = new javax.swing.JLabel();
         txt_description = new javax.swing.JTextField();
         cbo_distribution_center = new javax.swing.JComboBox();
@@ -53,7 +52,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
             }
         });
 
-        pnl_datos_generales.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
+        pnl_warehouse.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
         lbl_type_condition.setText("Tipo de Condición");
 
@@ -61,44 +60,43 @@ public class Frm_Warehouse extends javax.swing.JFrame {
 
         cbo_type_condition.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
 
-        lbl_description.setText("Descripcion");
+        lbl_description.setText("Descripción");
 
-        lbl_distribution_center.setText("Centro de Distribucion");
+        lbl_distribution_center.setText("Centro de Distribución");
 
-        javax.swing.GroupLayout pnl_datos_generalesLayout = new javax.swing.GroupLayout(pnl_datos_generales);
-        pnl_datos_generales.setLayout(pnl_datos_generalesLayout);
-        pnl_datos_generalesLayout.setHorizontalGroup(
-            pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_datos_generalesLayout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_warehouseLayout = new javax.swing.GroupLayout(pnl_warehouse);
+        pnl_warehouse.setLayout(pnl_warehouseLayout);
+        pnl_warehouseLayout.setHorizontalGroup(
+            pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_warehouseLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_distribution_center)
                     .addComponent(lbl_type_condition)
                     .addComponent(lbl_description))
-                .addGap(45, 45, 45)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txt_description, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(28, 28, 28)
+                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
-        pnl_datos_generalesLayout.setVerticalGroup(
-            pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_datos_generalesLayout.createSequentialGroup()
+        pnl_warehouseLayout.setVerticalGroup(
+            pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_warehouseLayout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_distribution_center)
                     .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_type_condition)
                     .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(44, 44, 44)
-                .addGroup(pnl_datos_generalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_description)
                     .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(263, Short.MAX_VALUE))
+                .addContainerGap(220, Short.MAX_VALUE))
         );
 
         btn_save.setText("Guardar");
@@ -121,25 +119,25 @@ public class Frm_Warehouse extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_datos_generales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_warehouse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(30, 30, 30)
                 .addComponent(btn_save)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
-                .addGap(85, 85, 85))
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_datos_generales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_warehouse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_save)
                     .addComponent(btn_cancel))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
@@ -157,7 +155,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-         Object[] options = {"OK"};
+        Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al Almacén con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -212,7 +210,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_distribution_center;
     private javax.swing.JLabel lbl_type_condition;
-    private javax.swing.JPanel pnl_datos_generales;
+    private javax.swing.JPanel pnl_warehouse;
     private javax.swing.JTextField txt_description;
     // End of variables declaration//GEN-END:variables
 }

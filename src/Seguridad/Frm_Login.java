@@ -34,15 +34,14 @@ public class Frm_Login extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        txt_usuario = new javax.swing.JTextField();
-        txt_contrasenha = new javax.swing.JPasswordField();
-        jLabel1 = new javax.swing.JLabel();
-        btnCancelar = new javax.swing.JButton();
-        btnAceptar = new javax.swing.JButton();
+        jpn_login = new javax.swing.JPanel();
+        txt_user = new javax.swing.JTextField();
+        txt_password = new javax.swing.JPasswordField();
         jLabel6 = new javax.swing.JLabel();
+        lbl_user = new javax.swing.JLabel();
+        lbl_password = new javax.swing.JLabel();
+        btn_accept = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
@@ -52,112 +51,89 @@ public class Frm_Login extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.addKeyListener(new java.awt.event.KeyAdapter() {
+        jpn_login.setBorder(javax.swing.BorderFactory.createTitledBorder("Login"));
+        jpn_login.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jPanel1KeyPressed(evt);
+                jpn_loginKeyPressed(evt);
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel4.setText("INICIAR SESION");
-
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel3.setText("USUARIO :");
-
-        txt_usuario.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        txt_usuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_usuarioActionPerformed(evt);
-            }
-        });
-        txt_usuario.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_user.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_usuarioKeyPressed(evt);
+                txt_userKeyPressed(evt);
             }
         });
 
-        txt_contrasenha.addKeyListener(new java.awt.event.KeyAdapter() {
+        txt_password.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txt_contrasenhaKeyPressed(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel1.setText("CONTRASENA :");
-
-        btnCancelar.setText("CANCELAR");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
-
-        btnAceptar.setText("ACEPTAR");
-        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAceptarActionPerformed(evt);
-            }
-        });
-        btnAceptar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                btnAceptarKeyTyped(evt);
-            }
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnAceptarKeyPressed(evt);
+                txt_passwordKeyPressed(evt);
             }
         });
 
         jLabel6.setText("  ");
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(63, 63, 63)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        lbl_user.setText("Usuario");
+
+        lbl_password.setText("Contraseña");
+
+        javax.swing.GroupLayout jpn_loginLayout = new javax.swing.GroupLayout(jpn_login);
+        jpn_login.setLayout(jpn_loginLayout);
+        jpn_loginLayout.setHorizontalGroup(
+            jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpn_loginLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_contrasenha, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(172, 172, 172)
-                        .addComponent(btnAceptar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCancelar)))
-                .addContainerGap(108, Short.MAX_VALUE))
+            .addGroup(jpn_loginLayout.createSequentialGroup()
+                .addGap(94, 94, 94)
+                .addGroup(jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_user)
+                    .addComponent(lbl_password))
+                .addGap(61, 61, 61)
+                .addGroup(jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(107, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        jpn_loginLayout.setVerticalGroup(
+            jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpn_loginLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_contrasenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addComponent(jLabel6)
+                .addGap(30, 30, 30)
+                .addGroup(jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_user)
+                    .addComponent(txt_user, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(26, 26, 26)
+                .addGroup(jpn_loginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_password)
+                    .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
+
+        btn_accept.setText("Aceptar");
+        btn_accept.setMaximumSize(new java.awt.Dimension(73, 23));
+        btn_accept.setMinimumSize(new java.awt.Dimension(73, 23));
+        btn_accept.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_acceptActionPerformed(evt);
+            }
+        });
+        btn_accept.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_acceptKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btn_acceptKeyTyped(evt);
+            }
+        });
+
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -165,27 +141,135 @@ public class Frm_Login extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jpn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(btn_accept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_cancel)
+                .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addComponent(jpn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_accept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_cancel))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+//        JOptionPane.showMessageDialog(this, "Está saliendo del ");
+//        System.exit(0);
+        String message = "¿Está seguro que desea salir?";
+        String title = "Salir";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+            DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_password.getPassword());
+
+            Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
+
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
+            }
+            if (perfil == 0) {
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_user.setText("");
+            txt_password.setText("");
+
+        }
+    }//GEN-LAST:event_formKeyPressed
+
+    private void jpn_loginKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jpn_loginKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+            DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_password.getPassword());
+
+            Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
+
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
+            }
+            if (perfil == 0) {
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_user.setText("");
+            txt_password.setText("");
+
+        }
+    }//GEN-LAST:event_jpn_loginKeyPressed
+
+    private void btn_acceptKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_acceptKeyPressed
+        // TODO add your handling code here:
+        int key = evt.getKeyCode();
+        if (key == KeyEvent.VK_ENTER) {
+            DaoUsers daoUsers = new DaoUserImpl();
+
+            String pass = new String(txt_password.getPassword());
+
+            Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
+
+            if (perfil == 1) {
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+
+                mp.setVisible(true);
+                mp.setExtendedState(MAXIMIZED_BOTH);
+
+                this.setVisible(false);
+            }
+            if (perfil == 0) {
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+            txt_user.setText("");
+            txt_password.setText("");
+
+        }
+    }//GEN-LAST:event_btn_acceptKeyPressed
+
+    private void btn_acceptKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btn_acceptKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_acceptKeyTyped
+
+    private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
 
         DaoUsers daoUsers = new DaoUserImpl();
 
-        String pass = new String(txt_contrasenha.getPassword());
+        String pass = new String(txt_password.getPassword());
 
-        Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
+        Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
 
         if (perfil == 1) {
             Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
@@ -199,36 +283,19 @@ public class Frm_Login extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
         }
 
-        txt_contrasenha.setText("");
-        txt_usuario.setText("");
-    }//GEN-LAST:event_btnAceptarActionPerformed
+        txt_password.setText("");
+        txt_user.setText("");
+    }//GEN-LAST:event_btn_acceptActionPerformed
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-//        JOptionPane.showMessageDialog(this, "Está saliendo del ");
-//        System.exit(0);
-        String message = "¿Está seguro que desea salir?";
-        String title = "Salir";
-        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-        JOptionPane.setDefaultLocale(null);
-        if (reply == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
-
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
-    private void txt_usuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_usuarioActionPerformed
+    private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_usuarioActionPerformed
-
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
-
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword());
+            String pass = new String(txt_password.getPassword());
 
-            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
+            Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
 
             if (perfil == 1) {
                 Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
@@ -241,25 +308,21 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_usuario.setText("");
-            txt_contrasenha.setText("");
+            txt_user.setText("");
+            txt_password.setText("");
 
         }
-    }//GEN-LAST:event_formKeyPressed
+    }//GEN-LAST:event_txt_passwordKeyPressed
 
-    private void btnAceptarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAceptarKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAceptarKeyTyped
-
-    private void btnAceptarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnAceptarKeyPressed
+    private void txt_userKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_userKeyPressed
         // TODO add your handling code here:
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_contrasenha.getPassword());
+            String pass = new String(txt_password.getPassword());
 
-            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
+            Integer perfil = daoUsers.acceder((txt_user.getText()), pass);
 
             if (perfil == 1) {
                 Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
@@ -272,93 +335,11 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_usuario.setText("");
-            txt_contrasenha.setText("");
+            txt_user.setText("");
+            txt_password.setText("");
 
         }
-
-    }//GEN-LAST:event_btnAceptarKeyPressed
-
-    private void jPanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel1KeyPressed
-        // TODO add your handling code here:
-        int key = evt.getKeyCode();
-        if (key == KeyEvent.VK_ENTER) {
-            DaoUsers daoUsers = new DaoUserImpl();
-
-            String pass = new String(txt_contrasenha.getPassword());
-
-            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
-
-            if (perfil == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
-
-                mp.setVisible(true);
-                mp.setExtendedState(MAXIMIZED_BOTH);
-
-                this.setVisible(false);
-            }
-            if (perfil == 0) {
-                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
-            }
-            txt_usuario.setText("");
-            txt_contrasenha.setText("");
-
-        }
-    }//GEN-LAST:event_jPanel1KeyPressed
-
-    private void txt_usuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usuarioKeyPressed
-        // TODO add your handling code here:
-        int key = evt.getKeyCode();
-        if (key == KeyEvent.VK_ENTER) {
-            DaoUsers daoUsers = new DaoUserImpl();
-
-            String pass = new String(txt_contrasenha.getPassword());
-
-            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
-
-            if (perfil == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
-
-                mp.setVisible(true);
-                mp.setExtendedState(MAXIMIZED_BOTH);
-
-                this.setVisible(false);
-            }
-            if (perfil == 0) {
-                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
-            }
-            txt_usuario.setText("");
-            txt_contrasenha.setText("");
-
-        }
-    }//GEN-LAST:event_txt_usuarioKeyPressed
-
-    private void txt_contrasenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_contrasenhaKeyPressed
-        // TODO add your handling code here:
-        int key = evt.getKeyCode();
-        if (key == KeyEvent.VK_ENTER) {
-            DaoUsers daoUsers = new DaoUserImpl();
-
-            String pass = new String(txt_contrasenha.getPassword());
-
-            Integer perfil = daoUsers.acceder((txt_usuario.getText()), pass);
-
-            if (perfil == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
-
-                mp.setVisible(true);
-                mp.setExtendedState(MAXIMIZED_BOTH);
-
-                this.setVisible(false);
-            }
-            if (perfil == 0) {
-                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
-            }
-            txt_usuario.setText("");
-            txt_contrasenha.setText("");
-
-        }
-    }//GEN-LAST:event_txt_contrasenhaKeyPressed
+    }//GEN-LAST:event_txt_userKeyPressed
 
     /**
      * @param args the command line arguments
@@ -396,14 +377,13 @@ public class Frm_Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAceptar;
-    private javax.swing.JButton btnCancelar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JButton btn_accept;
+    private javax.swing.JButton btn_cancel;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPasswordField txt_contrasenha;
-    private javax.swing.JTextField txt_usuario;
+    private javax.swing.JPanel jpn_login;
+    private javax.swing.JLabel lbl_password;
+    private javax.swing.JLabel lbl_user;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_user;
     // End of variables declaration//GEN-END:variables
 }
