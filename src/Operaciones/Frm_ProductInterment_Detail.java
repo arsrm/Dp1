@@ -49,7 +49,6 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalle de Orden de Internamiento");
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
 
         pnl_generalData.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
@@ -105,15 +104,23 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID Producto", "Nombre", "Cantidad Pallets"
+                "ID Producto", "Nombre", "Cantidad Pallets", "Estado", "Seleccionar"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         btn_Cancel.setText("Cancelar");

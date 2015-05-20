@@ -26,12 +26,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="pnl_product_int" max="32767" attributes="0"/>
-                  <Component id="pnl_massive_load" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                  <Component id="pnl_massive_load" alignment="0" max="32767" attributes="0"/>
+                  <Component id="pnl_product_int" alignment="0" max="32767" attributes="0"/>
                   <Component id="pnl_order" max="32767" attributes="0"/>
               </Group>
-              <EmptySpace pref="41" max="32767" attributes="0"/>
+              <EmptySpace pref="36" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -39,12 +39,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-              <Component id="pnl_product_int" min="-2" max="-2" attributes="0"/>
+              <Component id="pnl_product_int" max="32767" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnl_massive_load" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="pnl_order" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="60" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -66,24 +66,37 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="btn_internment" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_saveManual" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="lbl_orderInterment" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                           <Component id="txt_idOrderInt" min="-2" pref="150" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_quantity" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_Product" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btn_addProduct" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Component id="lbl_Product" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="txt_idProduct" min="-2" pref="133" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_quantity" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace max="32767" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lbl_validate" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="txt_quantityPallet" max="32767" attributes="0"/>
+                                          <Component id="txt_nameProduct" pref="132" max="32767" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                              </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txt_product" min="-2" pref="133" max="-2" attributes="0"/>
-                              <Component id="txt_quantityPallet" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
-                          </Group>
+                          <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -96,21 +109,28 @@
                   <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_Product" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_product" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_idProduct" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_orderInterment" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_idOrderInt" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
+                  <Component id="lbl_validate" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_quantity" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_quantityPallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btn_internment" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jButton1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_nameProduct" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="txt_quantityPallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_quantity" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btn_saveManual" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_addProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -118,12 +138,15 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_Product">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Producto"/>
+            <Property name="text" type="java.lang.String" value="C&#xf3;digo de Producto"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_product">
+        <Component class="javax.swing.JTextField" name="txt_idProduct">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_idProductFocusLost"/>
+          </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btn_internment">
+        <Component class="javax.swing.JButton" name="btn_saveManual">
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>
@@ -135,17 +158,29 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txt_quantityPallet">
         </Component>
-        <Component class="javax.swing.JButton" name="jButton1">
+        <Component class="javax.swing.JButton" name="btn_addProduct">
           <Properties>
             <Property name="text" type="java.lang.String" value="Agregar Producto"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_orderInterment">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ID Orden de Internamiento"/>
+            <Property name="text" type="java.lang.String" value="N&#xb0; Orden de Internamiento"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_idOrderInt">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Nombre de Producto"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_nameProduct">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_validate">
         </Component>
       </SubComponents>
     </Container>
@@ -172,7 +207,7 @@
                       </Group>
                       <Group type="102" attributes="0">
                           <Component id="txt_route" min="-2" pref="479" max="-2" attributes="0"/>
-                          <EmptySpace pref="27" max="32767" attributes="0"/>
+                          <EmptySpace pref="32" max="32767" attributes="0"/>
                           <Component id="btn_search" min="-2" pref="119" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                       </Group>
@@ -239,7 +274,7 @@
                           <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="btn_save" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_saveMassive" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_Cancel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
@@ -256,7 +291,7 @@
                   <EmptySpace pref="24" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_Cancel" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="btn_save" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_saveMassive" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -314,7 +349,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_CancelActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="btn_save">
+        <Component class="javax.swing.JButton" name="btn_saveMassive">
           <Properties>
             <Property name="text" type="java.lang.String" value="Guardar"/>
           </Properties>

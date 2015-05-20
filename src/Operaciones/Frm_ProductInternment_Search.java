@@ -38,9 +38,13 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
     private void initComponents() {
 
         pnl_criterios = new javax.swing.JPanel();
-        lbl_orderDate = new javax.swing.JLabel();
-        jDate_OrderDate = new com.toedter.calendar.JDateChooser();
+        lbl_orderDateIni = new javax.swing.JLabel();
+        jDate_OrderDateIni = new com.toedter.calendar.JDateChooser();
         btn_search = new javax.swing.JButton();
+        lbl_orderInt = new javax.swing.JLabel();
+        txt_orderInternment = new javax.swing.JTextField();
+        lbl_orderDateEnd = new javax.swing.JLabel();
+        jDate_orderDateEnd = new com.toedter.calendar.JDateChooser();
         pnl_results = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_order = new javax.swing.JTable();
@@ -52,21 +56,33 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
 
         pnl_criterios.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
-        lbl_orderDate.setText("Fecha de Orden");
+        lbl_orderDateIni.setText("Fecha Inicio");
 
         btn_search.setText("Buscar");
+
+        lbl_orderInt.setText("N° Orden de Internamiento");
+
+        lbl_orderDateEnd.setText("Fecha Fin");
 
         javax.swing.GroupLayout pnl_criteriosLayout = new javax.swing.GroupLayout(pnl_criterios);
         pnl_criterios.setLayout(pnl_criteriosLayout);
         pnl_criteriosLayout.setHorizontalGroup(
             pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_criteriosLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_search)
+                .addGap(35, 35, 35))
             .addGroup(pnl_criteriosLayout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(lbl_orderDate)
-                .addGap(38, 38, 38)
-                .addComponent(jDate_OrderDate, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_search)
+                .addGroup(pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_orderDateIni)
+                    .addComponent(lbl_orderInt)
+                    .addComponent(lbl_orderDateEnd))
+                .addGap(42, 42, 42)
+                .addGroup(pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_orderInternment)
+                    .addComponent(jDate_OrderDateIni, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                    .addComponent(jDate_orderDateEnd, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_criteriosLayout.setVerticalGroup(
@@ -74,10 +90,19 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
             .addGroup(pnl_criteriosLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addGroup(pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_search)
-                    .addComponent(jDate_OrderDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_orderDate))
-                .addContainerGap(62, Short.MAX_VALUE))
+                    .addComponent(jDate_OrderDateIni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_orderDateIni))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_orderDateEnd)
+                    .addComponent(jDate_orderDateEnd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(pnl_criteriosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_orderInt)
+                    .addComponent(txt_orderInternment, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addComponent(btn_search)
+                .addContainerGap())
         );
 
         pnl_results.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Internamiento"));
@@ -123,13 +148,15 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
             pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_resultsLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jScrollPane1)
+                .addGroup(pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnl_resultsLayout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39))
                     .addGroup(pnl_resultsLayout.createSequentialGroup()
                         .addComponent(btn_delete)
-                        .addGap(532, 532, 532)
-                        .addComponent(btn_cancel)))
-                .addGap(66, 66, 66))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_cancel)
+                        .addGap(49, 49, 49))))
         );
         pnl_resultsLayout.setVerticalGroup(
             pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,16 +179,16 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pnl_criterios, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnl_results, javax.swing.GroupLayout.PREFERRED_SIZE, 742, Short.MAX_VALUE))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_criterios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_results, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(127, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         pack();
@@ -196,11 +223,15 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_search;
-    private com.toedter.calendar.JDateChooser jDate_OrderDate;
+    private com.toedter.calendar.JDateChooser jDate_OrderDateIni;
+    private com.toedter.calendar.JDateChooser jDate_orderDateEnd;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_orderDate;
+    private javax.swing.JLabel lbl_orderDateEnd;
+    private javax.swing.JLabel lbl_orderDateIni;
+    private javax.swing.JLabel lbl_orderInt;
     private javax.swing.JPanel pnl_criterios;
     private javax.swing.JPanel pnl_results;
     private javax.swing.JTable tbl_order;
+    private javax.swing.JTextField txt_orderInternment;
     // End of variables declaration//GEN-END:variables
 }
