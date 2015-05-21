@@ -63,6 +63,11 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_product_int.setBorder(javax.swing.BorderFactory.createTitledBorder("Carga Manual"));
 
@@ -79,6 +84,7 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         lbl_quantity.setText("Cantidad de Pallets");
 
         btn_addProduct.setText("Agregar Producto");
+        btn_addProduct.setEnabled(false);
 
         lbl_orderInterment.setText("N° Orden de Internamiento");
 
@@ -285,26 +291,22 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
     private void txt_idProductFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_idProductFocusLost
         int op = Integer.parseInt(txt_idProduct.getText());
         if (op == 1) {
-            lbl_validate.setText("El producto existe");
-            lbl_validate.setForeground(Color.green);
-//            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.green));
-//            txt_nameProduct.setForeground(Color.green);
+            btn_addProduct.setEnabled(false);
+            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.green));
             txt_nameProduct.setText("Morochas");       
             btn_addProduct.setEnabled(true);
-        } else {
-            lbl_validate.setText("El producto no existe");
-            lbl_validate.setForeground(Color.red);
-            btn_addProduct.setEnabled(false);
-//            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.red));
-//            txt_nameProduct.setForeground(Color.red);
-            txt_nameProduct.setText("Producto no existe");
+        } else {            
+            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.red));
+            txt_nameProduct.setForeground(Color.red);
+            txt_nameProduct.setText("El producto no existe");
         }
     }//GEN-LAST:event_txt_idProductFocusLost
 
-    private void formWindowClosed(ActionEvent evt) {
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         menuaux.setVisible(true);
         this.dispose();
-    }
+    }//GEN-LAST:event_formWindowClosed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;

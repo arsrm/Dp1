@@ -50,6 +50,11 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Detalle de Orden de Internamiento");
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_generalData.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
@@ -191,10 +196,11 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_CancelActionPerformed
 
-    private void formWindowClosed ( ActionEvent evt){
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         menupadre.setVisible(true);
         this.dispose();
-    }
+    }//GEN-LAST:event_formWindowClosed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;

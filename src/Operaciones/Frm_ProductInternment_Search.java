@@ -53,6 +53,11 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_criterios.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
@@ -213,10 +218,11 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tbl_orderMouseClicked
 
-    private void formWindowClosed(ActionEvent evt) {
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         menuaux.setVisible(true);
         this.dispose();
-    }
+    }//GEN-LAST:event_formWindowClosed
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
