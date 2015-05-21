@@ -1,14 +1,15 @@
 package dao.impl;
 
-import dao.DaoUsers;
 import Model.Users;
+import dao.DaoUsers;
+import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import enlaceBD.ConectaDb;
+import static org.mindrot.BCrypt.checkpw;
 import static tool.Convierte.aInteger;
 
 
@@ -239,7 +240,7 @@ public class DaoUserImpl implements DaoUsers {
     public Integer acceder(String usuario, String clave) {
 
         Integer cap=0;
-        
+        String pwd="" ; 
         String sql = "SELECT "
                + "idUser,"
                 + "name, "
@@ -249,7 +250,7 @@ public class DaoUserImpl implements DaoUsers {
                 + "deleted_at, "
                 + "Profile_idProfile, "
                 + "Distribution_Center_idDistribution_Center "
-                + "FROM User where idUser='" + usuario + "' and password= '" + clave + "' ";
+                + "FROM User where idUser='" + usuario + "' ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -257,8 +258,10 @@ public class DaoUserImpl implements DaoUsers {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                     cap = rs.getInt(7);
-       
+                    pwd = rs.getString(3);
+                     if (checkpw(clave, pwd)){
+                       cap = rs.getInt(7);
+                     }
                 }
                 
             } catch (SQLException e) {
