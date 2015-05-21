@@ -9,7 +9,6 @@ public class Users {
     private String password;
     private Timestamp created_at;
     private Timestamp update_at;
-    private Timestamp deleted_at;
     private Integer Profile_idProfile;
     private Integer Distribution_Center_idDistribution_Center;
 
@@ -54,14 +53,6 @@ public class Users {
 
     public void setUpdate_at(Timestamp update_at) {
         this.update_at = update_at;
-    }
-
-    public Timestamp getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(Timestamp deleted_at) {
-        this.deleted_at = deleted_at;
     }
 
     public Integer getProfile_idProfile() {

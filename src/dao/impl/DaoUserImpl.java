@@ -30,7 +30,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password "
                 + "created_at "
                 + "update_at "
-                + "deleted_at "
                 + "Profile_idProfile "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User";
@@ -50,7 +49,6 @@ public class DaoUserImpl implements DaoUsers {
                     c.setPassword(rs.getString(3));
                     c.setCreated_at(rs.getTimestamp(4));
                     c.setUpdate_at(rs.getTimestamp(5));
-                    c.setDeleted_at(rs.getTimestamp(6));
                     c.setIdUser(rs.getInt(7));
                     c.setDistribution_Center_idDistribution_Center(rs.getInt(8));
                     list.add(c);
@@ -77,7 +75,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password"
                 + "created_at"
                 + "update_at"
-                + "deleted_at"
                 + "Profile_idProfile"
                 + "Distribution_Center_idDistribution_Center"
                 + ") VALUES(?,?,?,?,?,?,?)";
@@ -90,7 +87,6 @@ public class DaoUserImpl implements DaoUsers {
                 ps.setString(2, users.getPassword());
                 ps.setTimestamp(3, users.getCreated_at());
                 ps.setTimestamp(4, users.getUpdate_at());
-                ps.setTimestamp(5, users.getDeleted_at());
                 ps.setInt(6, users.getProfile_idProfile());
                 ps.setInt(7, users.getDistribution_Center_idDistribution_Center());
 
@@ -153,7 +149,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password "
                 + "created_at "
                 + "update_at "
-                + "deleted_at "
                 + "Profile_idProfile "
                 + "FROM User WHERE idUser=?";
 
@@ -172,7 +167,6 @@ public class DaoUserImpl implements DaoUsers {
                     users.setPassword(rs.getString(3));
                     users.setCreated_at(rs.getTimestamp(4));
                     users.setUpdate_at(rs.getTimestamp(5));
-                    users.setDeleted_at(rs.getTimestamp(6));
                     users.setProfile_idProfile(rs.getInt(7));
                     users.setDistribution_Center_idDistribution_Center(rs.getInt(8));
 
@@ -199,7 +193,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password=? "
                 + "created_at=? "
                 + "update_at=? "
-                + "deleted_at=? "
                 + "Profile_idProfile=? "
                 + "Distribution_Center_idDistribution_Center=? "
                 + "WHERE idUser=?";
@@ -212,7 +205,6 @@ public class DaoUserImpl implements DaoUsers {
                 ps.setString(2, users.getPassword());
                 ps.setTimestamp(3, users.getCreated_at());
                 ps.setTimestamp(4, users.getUpdate_at());
-                ps.setTimestamp(5, users.getDeleted_at());
                 ps.setInt(6, users.getProfile_idProfile());
                 ps.setInt(7, users.getDistribution_Center_idDistribution_Center());
                 ps.setInt(8, users.getIdUser());
@@ -247,7 +239,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password, "
                 + "created_at, "
                 + "update_at, "
-                + "deleted_at, "
                 + "Profile_idProfile, "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User where idUser='" + usuario + "' ";
@@ -287,7 +278,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "password "
                 + "created_at "
                 + "update_at "
-                + "deleted_at "
                 + "Profile_idProfile "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User";
