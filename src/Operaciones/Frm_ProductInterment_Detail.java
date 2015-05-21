@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Operaciones;
 
 import Seguridad.Frm_MenuPrincipal;
@@ -18,9 +17,19 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
     /**
      * Creates new form Frm_ProductInterment_Detail
      */
-    Frm_ProductInternment_Search menupadre = new Frm_ProductInternment_Search();
+    Frm_ProductInternment_Search menupadre_Search = new Frm_ProductInternment_Search();
+    Frm_ProductInterment_Load menupadre_Load = new Frm_ProductInterment_Load();
+    int op_menu = 0;
     public Frm_ProductInterment_Detail(Frm_ProductInternment_Search menu) {
-        menupadre = menu;
+        menupadre_Search = menu;
+        op_menu = 1;
+        setTitle("Detalle de Orden de Internamiento");
+        initComponents();
+    }
+
+    public Frm_ProductInterment_Detail(Frm_ProductInterment_Load menu) {
+        menupadre_Load = menu;
+        op_menu = 2;
         setTitle("Detalle de Orden de Internamiento");
         initComponents();
     }
@@ -192,12 +201,20 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
-        menupadre.setVisible(true);
+        if (op_menu == 1) {
+            menupadre_Search.setVisible(true);
+        } else {
+            menupadre_Load.setVisible(true);
+        }
         this.dispose();
     }//GEN-LAST:event_btn_CancelActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        menupadre.setVisible(true);
+        if (op_menu == 1) {
+            menupadre_Search.setVisible(true);
+        } else {
+            menupadre_Load.setVisible(true);
+        }
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
 

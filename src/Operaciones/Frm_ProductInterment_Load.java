@@ -28,6 +28,10 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         menuaux = menu;
         initComponents();
     }
+    
+    public Frm_ProductInterment_Load(){
+    
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,6 +213,11 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
                 "Número de Orden", "Fecha de Ingreso", "Estado"
             }
         ));
+        tbl_order.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_orderMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_order);
 
         btn_Cancel.setText("Cancelar");
@@ -306,6 +315,20 @@ public class Frm_ProductInterment_Load extends javax.swing.JFrame {
         menuaux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
+
+    private void tbl_orderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_orderMouseClicked
+        if (evt.getSource() == tbl_order) {
+            int rowSel = tbl_order.getSelectedRow();
+            int colSel = tbl_order.getSelectedColumn();
+            if (colSel == 0) {
+                Frm_ProductInterment_Detail frm_prodIntDetail = new Frm_ProductInterment_Detail(this);
+                frm_prodIntDetail.setVisible(true);;
+                frm_prodIntDetail.setLocation(300, 100);
+                frm_prodIntDetail.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_tbl_orderMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
