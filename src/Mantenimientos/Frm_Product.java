@@ -5,6 +5,9 @@
  */
 package Mantenimientos;
 
+import Model.Product;
+import dao.DaoProducts;
+import dao.impl.DaoProdImpl;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -20,11 +23,19 @@ public class Frm_Product extends javax.swing.JFrame {
      * Creates new form Frm_Product
      */
     Frm_Product_Search menu_padre = new Frm_Product_Search();
+    /*product indica si la opción para el botón Guardar sera para insertar un nuevo registro (product == null) o
+     para hacer Update a un registro ya existente (product != null) */
+    Product product;
+    DaoProducts daoProducts = new DaoProdImpl();
 
-    public Frm_Product(Frm_Product_Search menu) {
-        setTitle("Mantenimiento de Productos");    
+    public Frm_Product(Frm_Product_Search menu, Product p) {
+        setTitle("Mantenimiento de Productos");
         menu_padre = menu;
+        product = p;
         initComponents();
+        if (product != null) {
+            initializeForm();
+        }
     }
 
     /**
@@ -54,6 +65,8 @@ public class Frm_Product extends javax.swing.JFrame {
         txt_quatityPerBox = new javax.swing.JTextField();
         cbo_conditionWH = new javax.swing.JComboBox();
         lbl_weightPerBox = new javax.swing.JLabel();
+        lbl_ean13 = new javax.swing.JLabel();
+        txt_codEan13 = new javax.swing.JTextField();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -81,6 +94,9 @@ public class Frm_Product extends javax.swing.JFrame {
 
         lbl_trademark.setText("Marca");
 
+        txt_physicalStock.setText("0");
+        txt_physicalStock.setEnabled(false);
+
         txt_name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_nameActionPerformed(evt);
@@ -89,20 +105,23 @@ public class Frm_Product extends javax.swing.JFrame {
 
         lbl_FreeStock.setText("Stock Libre");
 
+        txt_freeStock.setText("0");
+        txt_freeStock.setEnabled(false);
+
         lbl_quantityPerBox.setText("Unidades por Caja");
 
         jLabel1.setText("Condición de Almacén");
 
-        cbo_conditionWH.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "\"Refrigerado\"", "\"No refrigerado\"" }));
-
         lbl_weightPerBox.setText("Peso Neto por Caja (Kg)");
+
+        lbl_ean13.setText("Código EAN13");
 
         javax.swing.GroupLayout pnl_productLayout = new javax.swing.GroupLayout(pnl_product);
         pnl_product.setLayout(pnl_productLayout);
         pnl_productLayout.setHorizontalGroup(
             pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,26 +141,31 @@ public class Frm_Product extends javax.swing.JFrame {
                             .addComponent(txt_freeStock, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbo_conditionWH, 0, 300, Short.MAX_VALUE)))
+                            .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_trademark)
                             .addComponent(lbl_name)
                             .addComponent(lbl_quantityPerBox)
-                            .addComponent(lbl_weightPerBox))
+                            .addComponent(lbl_weightPerBox)
+                            .addComponent(lbl_ean13))
                         .addGap(44, 44, 44)
-                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txt_name, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cbo_trademark, javax.swing.GroupLayout.Alignment.LEADING, 0, 300, Short.MAX_VALUE)
-                                .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(txt_name)
+                            .addComponent(cbo_trademark, 0, 300, Short.MAX_VALUE)
+                            .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_codEan13))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_productLayout.setVerticalGroup(
             pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productLayout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
+                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_ean13)
+                    .addComponent(txt_codEan13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_name)
                     .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -173,7 +197,7 @@ public class Frm_Product extends javax.swing.JFrame {
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         btn_cancel.setText("Cancelar");
@@ -213,23 +237,59 @@ public class Frm_Product extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initializeForm() {
+        txt_codEan13.setEnabled(false);
+        txt_name.setEnabled(false);
+        txt_codEan13.setText(product.getCodeEAN13());
+        txt_name.setText(product.getName());
+        txt_quatityPerBox.setText(product.getQuantityPerBox().toString());
+        txt_weightPerBox.setText(product.getWeightPerBox().toString());
+        txt_boxesPerPallet.setText(product.getQuantityBoxesPerPallet().toString());
+        txt_physicalStock.setText(product.getPhysicalStock().toString());
+        txt_freeStock.setText(product.getFreeStock().toString());
+    }
+
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menu_padre.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        // TODO add your handling code here:
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                this.dispose();
-            }
+                
+        if (product == null) { //Guardar nuevo producto
+            Integer maxIdProduct = daoProducts.ProductsGetMaxID();
+            product = new Product();
+            product.setIdProduct(maxIdProduct + 1);
+            product.setName(txt_name.getText());
+            product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
+            product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
+            product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
+            product.setPhysicalStock(Integer.parseInt(txt_physicalStock.getText()));
+            product.setFreeStock(Integer.parseInt(txt_freeStock.getText()));
+            product.setStatus(1);
+            product.setTrademark(1);
+            product.setTypeConditionWH(1);
+            product.setCodeEAN13(txt_codEan13.getText());
+            daoProducts.ProductsIns(product);
+        } else {
+            product.setIdProduct(2);
+            product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
+            product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
+            product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
+            product.setTypeConditionWH(1);
+            
+            daoProducts.ProductsUpd(product);
         }
+//        Object[] options = {"OK"};
+//        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+//                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+//            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+//            if (ok_option == JOptionPane.OK_OPTION) {
+//                menu_padre.setVisible(true);
+//                menu_padre.setLocationRelativeTo(null);
+//                this.dispose();
+//            }
+//        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void txt_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nameActionPerformed
@@ -238,7 +298,7 @@ public class Frm_Product extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        menu_padre.setVisible(true);        
+        menu_padre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
@@ -250,6 +310,7 @@ public class Frm_Product extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lbl_FreeStock;
     private javax.swing.JLabel lbl_boxesPerPallet;
+    private javax.swing.JLabel lbl_ean13;
     private javax.swing.JLabel lbl_name;
     private javax.swing.JLabel lbl_physicalStock;
     private javax.swing.JLabel lbl_quantityPerBox;
@@ -257,6 +318,7 @@ public class Frm_Product extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_weightPerBox;
     private javax.swing.JPanel pnl_product;
     private javax.swing.JTextField txt_boxesPerPallet;
+    private javax.swing.JTextField txt_codEan13;
     private javax.swing.JTextField txt_freeStock;
     private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_physicalStock;

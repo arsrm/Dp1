@@ -15,18 +15,18 @@ import java.sql.Timestamp;
 public class Product {
     
     private Integer idProduct;
-    private String trademark;
-    private String description;
+    private Integer trademark;
+    private String name;
     private Integer quantityPerBox;
     private Integer weightPerBox;
     private Integer quantityBoxesPerPallet;
     private Integer physicalStock;
     private Integer freeStock; 
     private Timestamp created_at;
-    private Timestamp update_at;
-    private Timestamp deleted_at;
-    private Integer typeProduct;
-    private Integer palletId;
+    private Timestamp update_at;    
+    private Integer typeConditionWH;
+    private String codeEAN13;  
+    private Integer status;
 
     /**
      * @return the idProduct
@@ -45,29 +45,29 @@ public class Product {
     /**
      * @return the trademark
      */
-    public String getTrademark() {
+    public Integer getTrademark() {
         return trademark;
     }
 
     /**
      * @param trademark the trademark to set
      */
-    public void setTrademark(String trademark) {
+    public void setTrademark(Integer trademark) {
         this.trademark = trademark;
     }
 
     /**
      * @return the description
      */
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param description the description to set
+     * @param name the description to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -168,45 +168,46 @@ public class Product {
         this.update_at = update_at;
     }
 
-    /**
-     * @return the deleted_at
-     */
-    public Timestamp getDeleted_at() {
-        return deleted_at;
-    }
-
-    /**
-     * @param deleted_at the deleted_at to set
-     */
-    public void setDeleted_at(Timestamp deleted_at) {
-        this.deleted_at = deleted_at;
-    }
 
     /**
      * @return the typeProduct
      */
-    public Integer getTypeProduct() {
-        return typeProduct;
+    public Integer getTypeConditionWH() {
+        return typeConditionWH;
     }
 
     /**
-     * @param typeProduct the typeProduct to set
+     * @param typeConditionWH the typeProduct to set
      */
-    public void setTypeProduct(Integer typeProduct) {
-        this.typeProduct = typeProduct;
+    public void setTypeConditionWH(Integer typeConditionWH) {
+        this.typeConditionWH = typeConditionWH;
     }
 
     /**
-     * @return the idPallet
+     * @return the codeEAN13
      */
-    public Integer getPalletId() {
-        return palletId;
+    public String getCodeEAN13() {
+        return codeEAN13;
     }
 
     /**
-     * @param idPallet the idPallet to set
+     * @param codeEAN13 the codeEAN13 to set
      */
-    public void setPalletId(Integer palletId) {
-        this.palletId = palletId;
+    public void setCodeEAN13(String codeEAN13) {
+        this.codeEAN13 = codeEAN13;
+    }
+
+    /**
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

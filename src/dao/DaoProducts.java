@@ -17,13 +17,15 @@ public interface DaoProducts {
 
     public List<Product> ProductsQry();
 
-//    public String ProductsIns(Product product);
+    public String ProductsIns(Product product);
 //
-//    public String ProductsDel(List<Integer> ids);
+    public String ProductsDel(List<Integer> ids);
 //
-//    public Users ProductsGet(Integer idProduct);
+    public Product ProductsGet(Integer idProduct);
 //
-//    public String usersUpd(Product product);
+    public String ProductsUpd(Product product);
 
 //    public List<Object[]> usersCbo();    
+    
+    public Integer ProductsGetMaxID ();
 }

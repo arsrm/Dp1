@@ -5,9 +5,19 @@
  */
 package Mantenimientos;
 
+import Model.Product;
+import Operaciones.Frm_ProductInterment_Detail;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoProducts;
+import dao.impl.DaoProdImpl;
 import java.awt.Color;
 import java.awt.event.WindowListener;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,11 +29,15 @@ public class Frm_Product_Search extends javax.swing.JFrame {
      * Creates new form Frm_Products
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    DaoProducts daoProducts = new DaoProdImpl();
+    DefaultTableModel modelo;
 
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
         menuaux = menu;
         initComponents();
+        modelo = (DefaultTableModel) tbl_product.getModel();
+        initilizeTable();
     }
 
     public Frm_Product_Search() {
@@ -48,7 +62,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         cbo_trademark = new javax.swing.JComboBox();
         btn_search = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tlb_product = new javax.swing.JTable();
+        tbl_product = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
@@ -119,7 +133,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 .addGap(42, 42, 42))
         );
 
-        tlb_product.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_product.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null, null},
                 {null, null, null, null, null, null, null},
@@ -138,7 +152,12 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tlb_product);
+        tbl_product.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_productMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_product);
 
         btn_new.setText("Nuevo");
         btn_new.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +226,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_Product frmProduct = new Frm_Product(this);
+        Frm_Product frmProduct = new Frm_Product(this, null);
         frmProduct.setVisible(true);
         frmProduct.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -218,6 +237,38 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         menuaux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
+    private void tbl_productMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_productMouseClicked
+        Product prod = null;
+        Integer idProductSel;
+        if (evt.getSource() == tbl_product) {
+            int rowSel = tbl_product.getSelectedRow();
+            int colSel = tbl_product.getSelectedColumn();
+//            idProductSel = Integer.parseInt(tbl_product.getValueAt(rowSel, 0).toString());
+            prod = daoProducts.ProductsGet(2);
+
+            Frm_Product frm_product = new Frm_Product(this, prod);
+            frm_product.setVisible(true);;
+            frm_product.setLocation(300, 100);
+            frm_product.setLocationRelativeTo(null);
+            this.setVisible(false);
+
+        }
+    }//GEN-LAST:event_tbl_productMouseClicked
+
+    private void initilizeTable() {
+        List<Product> list = new ArrayList<Product>();
+        list = daoProducts.ProductsQry();
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getName(), list.get(i).getTrademark(),
+                    list.get(i).getPhysicalStock(), list.get(i).getFreeStock(), list.get(i).getStatus()};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
@@ -231,7 +282,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_name;
     private javax.swing.JLabel lbl_trademark;
     private javax.swing.JPanel pnl_product;
-    private javax.swing.JTable tlb_product;
+    private javax.swing.JTable tbl_product;
     private javax.swing.JTextField txt_idProduct;
     private javax.swing.JTextField txt_name;
     // End of variables declaration//GEN-END:variables
