@@ -190,9 +190,7 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
             String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
+            
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -209,7 +207,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -234,10 +232,6 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
             
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
@@ -256,7 +250,7 @@ public class Frm_Login extends javax.swing.JFrame {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
                    
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -281,10 +275,7 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
+            
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -300,7 +291,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -327,10 +318,7 @@ public class Frm_Login extends javax.swing.JFrame {
         Integer id = aInteger(txt_user.getText());
         Integer perfil = daoUsers.login((txt_user.getText()), pass);
         Users user = daoUsers.usersGet(id);
-            String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
+          
         //validar la clave  sino la cambiamos
         if (perfil != 0) {
             Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -347,7 +335,7 @@ public class Frm_Login extends javax.swing.JFrame {
 
             Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
             if (flagpwd == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                 mp.setVisible(true);
                 mp.setExtendedState(MAXIMIZED_BOTH);
                 this.setVisible(false);
@@ -371,10 +359,7 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
+            
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -390,7 +375,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -415,10 +400,7 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            String name = null;
-            if (user!=null){
-                name = user.getname();
-            }
+            
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -434,7 +416,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);

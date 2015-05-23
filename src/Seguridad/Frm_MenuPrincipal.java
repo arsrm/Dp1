@@ -14,6 +14,7 @@ import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_User_Search;
 import Mantenimientos.Frm_Warehouse_Search;
+import Model.Users;
 import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
@@ -52,10 +53,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     }
     
-    public Frm_MenuPrincipal(Frm_Login log,String name) {
+    public Frm_MenuPrincipal(Frm_Login log,Users user) {
         initComponents();
         login = log;
-        lbl_name.setText(name);
+        lbl_name.setText(user.getname());
     }
 
     /**
