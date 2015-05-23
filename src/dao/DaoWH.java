@@ -16,12 +16,12 @@ public interface DaoWH {
     
      public List<Warehouse> whQry();
     
-    public String whIns(Warehouse whs);
+    public String whIns(Warehouse wh);
     
-    public String whDel(List<Integer> ids);
+    public String whsDel(List<Integer> ids);
     
-    public Warehouse whGet(Integer iduser);
+    public Warehouse whGet(Integer idWh);
     
-    public String whUpd(Warehouse warehouse);
+    public String whUpd(Warehouse wh);
    
 }
