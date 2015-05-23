@@ -140,7 +140,7 @@ public class Frm_Change_Password_Admin extends javax.swing.JFrame {
         DaoUsers daoUsers = new DaoUserImpl();
         Integer id = aInteger(txt_id_user.getText());
         
-        if((daoUsers.usersGet(id)!=null)&&(daoUsers.usersGet(id).getIdUser()!=0)){
+        if((daoUsers.usersGet(id)!=null)){
            if(pass.compareTo(pass_new)==0){
                    Object[] options = {"OK"};
                 if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 

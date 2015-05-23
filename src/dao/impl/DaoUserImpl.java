@@ -139,7 +139,7 @@ public class DaoUserImpl implements DaoUsers {
         Users users =null;
         Integer id=0;
         String sql = "select idUser,name,password,password_change,status,"
-                +"Profile_idProfile,Distribution_Center_idDistribution_Center where idUser = ?";
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center From  User where idUser = ?";
 
 
         Connection cn = db.getConnection();
