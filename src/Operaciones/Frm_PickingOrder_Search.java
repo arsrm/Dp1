@@ -38,15 +38,21 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        btn_Search = new javax.swing.JButton();
-        jDate_DeliverDate = new com.toedter.calendar.JDateChooser();
-        jPanel2 = new javax.swing.JPanel();
+        pnl_orders = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable_Orders = new javax.swing.JTable();
-        btn_Delete = new javax.swing.JButton();
-        btn_Cancel = new javax.swing.JButton();
+        table_orders = new javax.swing.JTable();
+        btn_delete = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
+        pnl_search = new javax.swing.JPanel();
+        lbl_date_to = new javax.swing.JLabel();
+        jdate_date_to = new com.toedter.calendar.JDateChooser();
+        lbl_date_from = new javax.swing.JLabel();
+        jdate_date_from = new com.toedter.calendar.JDateChooser();
+        lbl_client_filter = new javax.swing.JLabel();
+        txt_client_id = new javax.swing.JTextField();
+        txt_name_client = new javax.swing.JTextField();
+        btn_search_client = new javax.swing.JButton();
+        btn_search_order = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -55,40 +61,9 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios Búsqueda"));
+        pnl_orders.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Entrega"));
 
-        jLabel1.setText("Fecha Entrega:");
-
-        btn_Search.setText("Buscar Órdenes de Entrega");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(241, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_Search)
-                .addGap(150, 150, 150))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_Search)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel1)))
-                .addGap(14, 14, 14))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Entrega"));
-
-        jTable_Orders.setModel(new javax.swing.table.DefaultTableModel(
+        table_orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -107,51 +82,117 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                 return types [columnIndex];
             }
         });
-        jTable_Orders.addMouseListener(new java.awt.event.MouseAdapter() {
+        table_orders.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable_OrdersMouseClicked(evt);
+                table_ordersMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(jTable_Orders);
+        jScrollPane1.setViewportView(table_orders);
 
-        btn_Delete.setText("Eliminar");
-        btn_Delete.addActionListener(new java.awt.event.ActionListener() {
+        btn_delete.setText("Eliminar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_DeleteActionPerformed(evt);
+                btn_deleteActionPerformed(evt);
             }
         });
 
-        btn_Cancel.setText("Cancelar");
-        btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_CancelActionPerformed(evt);
+                btn_cancelActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_ordersLayout = new javax.swing.GroupLayout(pnl_orders);
+        pnl_orders.setLayout(pnl_ordersLayout);
+        pnl_ordersLayout.setHorizontalGroup(
+            pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_ordersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btn_Delete)
+                    .addGroup(pnl_ordersLayout.createSequentialGroup()
+                        .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_Cancel)
+                        .addComponent(btn_cancel)
                         .addGap(4, 4, 4))))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+        pnl_ordersLayout.setVerticalGroup(
+            pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_ordersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Delete)
-                    .addComponent(btn_Cancel))
+                .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_delete)
+                    .addComponent(btn_cancel))
                 .addContainerGap(20, Short.MAX_VALUE))
+        );
+
+        pnl_search.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios Búsqueda"));
+
+        lbl_date_to.setText("Fecha Pedido Hasta:");
+
+        lbl_date_from.setText("Fecha Pedido Desde:");
+
+        lbl_client_filter.setText("Cliente:");
+
+        txt_name_client.setEditable(false);
+
+        btn_search_client.setText("Buscar");
+
+        btn_search_order.setText("Buscar Órdenes de Despacho");
+        btn_search_order.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_search_orderActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnl_searchLayout = new javax.swing.GroupLayout(pnl_search);
+        pnl_search.setLayout(pnl_searchLayout);
+        pnl_searchLayout.setHorizontalGroup(
+            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
+                .addContainerGap(153, Short.MAX_VALUE)
+                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_date_from, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_client_filter, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnl_searchLayout.createSequentialGroup()
+                        .addComponent(jdate_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(lbl_date_to)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jdate_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnl_searchLayout.createSequentialGroup()
+                        .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(btn_search_client)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txt_name_client)))
+                .addGap(186, 186, 186))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(btn_search_order))
+        );
+        pnl_searchLayout.setVerticalGroup(
+            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_name_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_search_client)
+                    .addComponent(lbl_client_filter))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jdate_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_date_to)
+                    .addComponent(lbl_date_from)
+                    .addComponent(jdate_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_search_order))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -160,30 +201,29 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(pnl_search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         menuaux.setEnabled(true);
         this.dispose();
         
-    }//GEN-LAST:event_btn_CancelActionPerformed
+    }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
@@ -191,11 +231,11 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
-    private void jTable_OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrdersMouseClicked
+    private void table_ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ordersMouseClicked
         // TODO add your handling code here:
-        if(evt.getSource()==jTable_Orders){
-            int rowSel = jTable_Orders.getSelectedRow();
-            int colSel = jTable_Orders.getSelectedColumn();
+        if(evt.getSource()==table_orders){
+            int rowSel = table_orders.getSelectedRow();
+            int colSel = table_orders.getSelectedColumn();
             if (colSel==0){
               Frm_PickingOrder_Detail frm_dod = new Frm_PickingOrder_Detail(this);
               
@@ -204,9 +244,9 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
               this.setVisible(false);  
             }
         }
-    }//GEN-LAST:event_jTable_OrdersMouseClicked
+    }//GEN-LAST:event_table_ordersMouseClicked
 
-    private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
@@ -216,18 +256,28 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             
             
         } 
-    }//GEN-LAST:event_btn_DeleteActionPerformed
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_search_orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_orderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_search_orderActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_Cancel;
-    private javax.swing.JButton btn_Delete;
-    private javax.swing.JButton btn_Search;
-    private com.toedter.calendar.JDateChooser jDate_DeliverDate;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_search_client;
+    private javax.swing.JButton btn_search_order;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable_Orders;
+    private com.toedter.calendar.JDateChooser jdate_date_from;
+    private com.toedter.calendar.JDateChooser jdate_date_to;
+    private javax.swing.JLabel lbl_client_filter;
+    private javax.swing.JLabel lbl_date_from;
+    private javax.swing.JLabel lbl_date_to;
+    private javax.swing.JPanel pnl_orders;
+    private javax.swing.JPanel pnl_search;
+    private javax.swing.JTable table_orders;
+    private javax.swing.JTextField txt_client_id;
+    private javax.swing.JTextField txt_name_client;
     // End of variables declaration//GEN-END:variables
 }

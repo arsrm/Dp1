@@ -38,16 +38,16 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loadPane2 = new javax.swing.JPanel();
+        pnl_load = new javax.swing.JPanel();
         loadLabel2 = new javax.swing.JLabel();
         txt_LoadFile = new javax.swing.JTextField();
         btn_Search = new javax.swing.JButton();
         loadButton2 = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        lbl_orders = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable_Orders = new javax.swing.JTable();
-        btn_Exit = new javax.swing.JButton();
-        btn_Save = new javax.swing.JButton();
+        table_orders = new javax.swing.JTable();
+        btn_exit = new javax.swing.JButton();
+        btn_save = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -57,7 +57,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             }
         });
 
-        loadPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Cargar Pedidos"));
+        pnl_load.setBorder(javax.swing.BorderFactory.createTitledBorder("Cargar Pedidos"));
 
         loadLabel2.setText("Ruta:");
 
@@ -70,15 +70,15 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
         loadButton2.setText("Cargar Órdenes de Pedido");
 
-        javax.swing.GroupLayout loadPane2Layout = new javax.swing.GroupLayout(loadPane2);
-        loadPane2.setLayout(loadPane2Layout);
-        loadPane2Layout.setHorizontalGroup(
-            loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loadPane2Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnl_loadLayout = new javax.swing.GroupLayout(pnl_load);
+        pnl_load.setLayout(pnl_loadLayout);
+        pnl_loadLayout.setHorizontalGroup(
+            pnl_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_loadLayout.createSequentialGroup()
                 .addGap(190, 190, 190)
-                .addGroup(loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(loadButton2)
-                    .addGroup(loadPane2Layout.createSequentialGroup()
+                    .addGroup(pnl_loadLayout.createSequentialGroup()
                         .addComponent(loadLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(txt_LoadFile, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -86,11 +86,11 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                         .addComponent(btn_Search)))
                 .addContainerGap(238, Short.MAX_VALUE))
         );
-        loadPane2Layout.setVerticalGroup(
-            loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(loadPane2Layout.createSequentialGroup()
+        pnl_loadLayout.setVerticalGroup(
+            pnl_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_loadLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(loadPane2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(loadLabel2)
                     .addComponent(txt_LoadFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Search))
@@ -99,9 +99,9 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Pedido"));
+        lbl_orders.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Pedido"));
 
-        jTable_Orders.setModel(new javax.swing.table.DefaultTableModel(
+        table_orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -112,51 +112,51 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                 "Número de Orden", "Cliente", "Fecha Enviada", "Estado"
             }
         ));
-        jTable_Orders.setColumnSelectionAllowed(true);
-        jTable_Orders.addMouseListener(new java.awt.event.MouseAdapter() {
+        table_orders.setColumnSelectionAllowed(true);
+        table_orders.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jTable_OrdersMouseClicked(evt);
+                table_ordersMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(jTable_Orders);
+        jScrollPane3.setViewportView(table_orders);
 
-        btn_Exit.setText("Salir");
-        btn_Exit.addActionListener(new java.awt.event.ActionListener() {
+        btn_exit.setText("Salir");
+        btn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ExitActionPerformed(evt);
+                btn_exitActionPerformed(evt);
             }
         });
 
-        btn_Save.setText("Guardar");
-        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+        btn_save.setText("Guardar");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_SaveActionPerformed(evt);
+                btn_saveActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        javax.swing.GroupLayout lbl_ordersLayout = new javax.swing.GroupLayout(lbl_orders);
+        lbl_orders.setLayout(lbl_ordersLayout);
+        lbl_ordersLayout.setHorizontalGroup(
+            lbl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lbl_ordersLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lbl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(btn_Save)
+                    .addGroup(lbl_ordersLayout.createSequentialGroup()
+                        .addComponent(btn_save)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_Exit, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btn_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
+        lbl_ordersLayout.setVerticalGroup(
+            lbl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lbl_ordersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Save)
-                    .addComponent(btn_Exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(lbl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_save)
+                    .addComponent(btn_exit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -166,29 +166,29 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(loadPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lbl_orders, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnl_load, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(loadPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_load, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lbl_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_ExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExitActionPerformed
+    private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
         // TODO add your handling code here:
         menuaux.setVisible(true);
         menuaux.setEnabled(true);
         this.dispose();
-    }//GEN-LAST:event_btn_ExitActionPerformed
+    }//GEN-LAST:event_btn_exitActionPerformed
 
     private void btn_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SearchActionPerformed
         // TODO add your handling code here:
@@ -208,7 +208,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         
     }//GEN-LAST:event_formWindowClosing
 
-    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
@@ -219,11 +219,11 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             
         } 
       
-    }//GEN-LAST:event_btn_SaveActionPerformed
+    }//GEN-LAST:event_btn_saveActionPerformed
 
-    private void jTable_OrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable_OrdersMouseClicked
+    private void table_ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ordersMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTable_OrdersMouseClicked
+    }//GEN-LAST:event_table_ordersMouseClicked
  private void formWindowClosed(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
       
@@ -242,15 +242,15 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_Exit;
-    private javax.swing.JButton btn_Save;
     private javax.swing.JButton btn_Search;
-    private javax.swing.JPanel jPanel3;
+    private javax.swing.JButton btn_exit;
+    private javax.swing.JButton btn_save;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable_Orders;
+    private javax.swing.JPanel lbl_orders;
     private javax.swing.JButton loadButton2;
     private javax.swing.JLabel loadLabel2;
-    private javax.swing.JPanel loadPane2;
+    private javax.swing.JPanel pnl_load;
+    private javax.swing.JTable table_orders;
     private javax.swing.JTextField txt_LoadFile;
     // End of variables declaration//GEN-END:variables
 }

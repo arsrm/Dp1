@@ -7,25 +7,26 @@ package Seguridad;
 
 import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Distribution_Center;
+//gzavala inicio 19/05 
+import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_Pallet_Search;
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
-import Mantenimientos.Frm_Warehouse_Search;
 import Mantenimientos.Frm_User_Search;
+import Mantenimientos.Frm_Warehouse_Search;
 import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
 import Operaciones.Frm_PickingOrder_Search;
+import Operaciones.Frm_ProductInterment_Load;
+import Operaciones.Frm_ProductInternment_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_TransportGuide;
-//gzavala inicio 19/05 
-import Mantenimientos.Frm_Pallet;
-import Mantenimientos.Frm_Pallet_Search;
-import Operaciones.Frm_ProductInterment_Load;
-import Operaciones.Frm_ProductInternment_Search;
+import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
 import java.awt.event.ActionEvent;
 //gzavala fin 19/05 
 import javax.swing.JOptionPane;
@@ -101,6 +102,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Reporte_Kardex_segun_fecha = new javax.swing.JMenuItem();
         op_Reporte_Stock_fecha = new javax.swing.JMenuItem();
         op_Reporte_Libre_disponibilidad = new javax.swing.JMenuItem();
+        menu_simulation = new javax.swing.JMenu();
+        op_generator_simulation = new javax.swing.JMenuItem();
         menu_cerrarsesion = new javax.swing.JMenu();
 
         jMenuItem1.setText("jMenuItem1");
@@ -366,6 +369,18 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
         menu_principal.add(menu_reportes);
 
+        menu_simulation.setText("Simulación Algorítmica");
+
+        op_generator_simulation.setText("Realizar Simulación");
+        op_generator_simulation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_generator_simulationActionPerformed(evt);
+            }
+        });
+        menu_simulation.add(op_generator_simulation);
+
+        menu_principal.add(menu_simulation);
+
         menu_cerrarsesion.setText("Cerrar Sesión");
         menu_cerrarsesion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -380,11 +395,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGap(0, 549, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 279, Short.MAX_VALUE)
+            .addGap(0, 281, Short.MAX_VALUE)
         );
 
         pack();
@@ -608,6 +623,15 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private void op_Movimiento_InternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Movimiento_InternoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_op_Movimiento_InternoActionPerformed
+
+    private void op_generator_simulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_generator_simulationActionPerformed
+        // TODO add your handling code here:
+        Frm_Algorithmic_Simulator frm_as = new Frm_Algorithmic_Simulator(this);
+        frm_as.setVisible(true);
+        frm_as.setLocation(300,100);
+        frm_as.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_op_generator_simulationActionPerformed
     //gzavala-fin 19/05
 
     /**
@@ -630,6 +654,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuBar menu_principal;
     private javax.swing.JMenu menu_reportes;
     private javax.swing.JMenu menu_seguridad;
+    private javax.swing.JMenu menu_simulation;
     private javax.swing.JMenuItem op_Almacenes;
     private javax.swing.JMenuItem op_Cambio_Contraseña;
     private javax.swing.JMenuItem op_Carga_Datos;
@@ -654,6 +679,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Reporte_diferencia_Inventario;
     private javax.swing.JMenuItem op_RequestOrderSearch;
     private javax.swing.JMenuItem op_ReturnSearch;
+    private javax.swing.JMenuItem op_generator_simulation;
     private javax.swing.JMenuItem op_loadIntermentOrder;
     private javax.swing.JMenuItem op_loadRequestOrders;
     private javax.swing.JMenuItem op_searchInternmentOrder;
