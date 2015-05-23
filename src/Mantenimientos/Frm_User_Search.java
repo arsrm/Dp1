@@ -7,7 +7,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
     Frm_MenuPrincipal auxmenu = new Frm_MenuPrincipal();
     
     public Frm_User_Search(Frm_MenuPrincipal menu) {
-        setTitle("Mantenimiento de Personal");
+        setTitle("Mantenimiento de Usuario");
         auxmenu=menu;
         initComponents();
     }
