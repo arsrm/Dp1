@@ -29,8 +29,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "idUser,"
                 + "name "
                 + "password "
-                + "created_at "
-                + "update_at "
                 + "Profile_idProfile "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User";
@@ -48,10 +46,8 @@ public class DaoUserImpl implements DaoUsers {
                     c.setIdUser(rs.getInt(1));
                     c.setname(rs.getString(2));
                     c.setPassword(rs.getString(3));
-                    c.setCreated_at(rs.getTimestamp(4));
-                    c.setUpdate_at(rs.getTimestamp(5));
-                    c.setIdUser(rs.getInt(7));
-                    c.setDistribution_Center_idDistribution_Center(rs.getInt(8));
+                    c.setIdUser(rs.getInt(4));
+                    c.setDistribution_Center_idDistribution_Center(rs.getInt(5));
                     list.add(c);
                 }
 
@@ -72,11 +68,9 @@ public class DaoUserImpl implements DaoUsers {
     public String usersIns(Users users) {
         String result = null;
         String sql = "INSERT INTO User("
-                + "name"
-                + "password"
-                + "created_at"
-                + "update_at"
-                + "Profile_idProfile"
+                + "name "
+                + "password "
+                + "Profile_idProfile "
                 + "Distribution_Center_idDistribution_Center"
                 + ") VALUES(?,?,?,?,?,?,?)";
 
@@ -86,8 +80,6 @@ public class DaoUserImpl implements DaoUsers {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, users.getname());
                 ps.setString(2, users.getPassword());
-                ps.setTimestamp(3, users.getCreated_at());
-                ps.setTimestamp(4, users.getUpdate_at());
                 ps.setInt(6, users.getProfile_idProfile());
                 ps.setInt(7, users.getDistribution_Center_idDistribution_Center());
 
@@ -143,13 +135,11 @@ public class DaoUserImpl implements DaoUsers {
     }
 
     @Override
-    public Integer usersGet(Integer iduser) {
+    public Users usersGet(Integer iduser) {
+        Users users =null;
         Integer id=0;
-        String sql = "SELECT "
-
-                + "idUser "
-                + "FROM User WHERE idUser= ?";
-
+        String sql = "select idUser,name,password,password_change,status,"
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center where idUser = ?";
 
 
         Connection cn = db.getConnection();
@@ -160,21 +150,17 @@ public class DaoUserImpl implements DaoUsers {
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-
-                  id=rs.getInt(1);
-
-                    Users users = new Users();
-
+                     users = new Users();
                     users.setIdUser(rs.getInt(1));
                     users.setname(rs.getString(2));
                     users.setPassword(rs.getString(3));
-                    users.setCreated_at(rs.getTimestamp(4));
-                    users.setUpdate_at(rs.getTimestamp(5));
-                    users.setProfile_idProfile(rs.getInt(7));
-                    users.setDistribution_Center_idDistribution_Center(rs.getInt(8));
+                    users.setPassword_change(rs.getInt(4));
+                    users.setStatus(rs.getInt(5));
+                    users.setProfile_idProfile(rs.getInt(6));
+                    users.setDistribution_Center_idDistribution_Center(rs.getInt(7));
                 }
             } catch (SQLException e) {
-                id=0;
+               users=null;
             } finally {
                 try {
                     cn.close();
@@ -183,7 +169,7 @@ public class DaoUserImpl implements DaoUsers {
             }
         }
 
-        return id;
+        return users;
     }
 
     @Override
@@ -192,8 +178,6 @@ public class DaoUserImpl implements DaoUsers {
         String sql = "UPDATE  User SET "
                 + "name=? "
                 + "password=? "
-                + "created_at=? "
-                + "update_at=? "
                 + "Profile_idProfile=? "
                 + "Distribution_Center_idDistribution_Center=? "
                 + "WHERE idUser=?";
@@ -204,11 +188,9 @@ public class DaoUserImpl implements DaoUsers {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, users.getname());
                 ps.setString(2, users.getPassword());
-                ps.setTimestamp(3, users.getCreated_at());
-                ps.setTimestamp(4, users.getUpdate_at());
-                ps.setInt(6, users.getProfile_idProfile());
-                ps.setInt(7, users.getDistribution_Center_idDistribution_Center());
-                ps.setInt(8, users.getIdUser());
+                ps.setInt(3, users.getProfile_idProfile());
+                ps.setInt(4, users.getDistribution_Center_idDistribution_Center());
+                ps.setInt(5, users.getIdUser());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -269,8 +251,6 @@ public class DaoUserImpl implements DaoUsers {
                + "idUser,"
                 + "name, "
                 + "password, "
-                + "created_at, "
-                + "update_at, "
                 + "Profile_idProfile, "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User where idUser='" + usuario + "' ";
@@ -283,7 +263,7 @@ public class DaoUserImpl implements DaoUsers {
                 while (rs.next()) {
                     pwd = rs.getString(3);
                      if (checkpw(clave, pwd)){
-                       cap = rs.getInt(7);
+                       cap = rs.getInt(4);
                      }
                 }
                 
@@ -308,8 +288,6 @@ public class DaoUserImpl implements DaoUsers {
                 + "idUser,"
                 + "name "
                 + "password "
-                + "created_at "
-                + "update_at "
                 + "Profile_idProfile "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User";
@@ -327,11 +305,8 @@ public class DaoUserImpl implements DaoUsers {
                     c[0] = rs.getInt(1);
                     c[1] = rs.getString(2);
                     c[2] = rs.getString(3);
-                    c[3] = rs.getTimestamp(4);
-                    c[4] = rs.getTimestamp(5);
-                    c[5] = rs.getTimestamp(6);
-                    c[6] = rs.getInt(7);
-                    c[7] = rs.getInt(8);
+                    c[4] = rs.getInt(7);
+                    c[5] = rs.getInt(8);
                     list.add(c);
                 }
 
