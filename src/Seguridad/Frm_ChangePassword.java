@@ -6,21 +6,30 @@
 
 package Seguridad;
 
+import dao.DaoUsers;
+import dao.impl.DaoUserImpl;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static tool.Convierte.aInteger;
+
 /**
  *
  * @author Alejo
  */
-public class Frm_CambiarLog extends javax.swing.JFrame {
+public class Frm_ChangePassword extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_CambiarLog
+     * Creates new form Frm_ChangePassword
      */
     
-    Frm_MenuPrincipal menuaux =new Frm_MenuPrincipal();
-    public Frm_CambiarLog(Frm_MenuPrincipal menu) {
-        menuaux = menu;
+    Frm_Login frm_Login=new Frm_Login();
+    public Frm_ChangePassword(Frm_Login login,Integer id) {
+       frm_Login=login;
        setTitle("CAMBIAR CONTRASEÑA"); 
        initComponents();
+       frm_Login.setVisible(false);
+       txt_id.setText(id.toString());
+       txt_id.setEnabled(false);
     }
    
 
@@ -35,15 +44,13 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
 
         btn_cancel = new javax.swing.JButton();
         btn_accept = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        btn_usuario = new javax.swing.JTextField();
-        btn_contrasenha_anterior = new javax.swing.JPasswordField();
-        btn_contrasenha_nueva = new javax.swing.JPasswordField();
-        btn_contrasenha_confirma = new javax.swing.JPasswordField();
+        lbl_modifypwd = new javax.swing.JLabel();
+        lbl_user = new javax.swing.JLabel();
+        lbl_newpwd = new javax.swing.JLabel();
+        lbl_confirm_newpwd = new javax.swing.JLabel();
+        txt_id = new javax.swing.JTextField();
+        txt_newpwd = new javax.swing.JPasswordField();
+        txt_confirmpwd = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -68,28 +75,23 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        jLabel1.setText("Modificar Contraseña");
+        lbl_modifypwd.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        lbl_modifypwd.setText("Modificar Contraseña");
 
-        jLabel2.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel2.setText("Usuario : ");
+        lbl_user.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lbl_user.setText("Usuario : ");
 
-        jLabel3.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel3.setText("Contraseña anterior: ");
+        lbl_newpwd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lbl_newpwd.setText("Nueva Contraseña");
 
-        jLabel4.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel4.setText("Nueva Contraseña");
+        lbl_confirm_newpwd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        lbl_confirm_newpwd.setText("Confirmar Contraseña nueva : ");
 
-        jLabel5.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-        jLabel5.setText("Confirmar Contraseña nueva : ");
+        txt_id.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
-        btn_usuario.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txt_newpwd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
-        btn_contrasenha_anterior.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-
-        btn_contrasenha_nueva.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
-
-        btn_contrasenha_confirma.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        txt_confirmpwd.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,56 +103,49 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbl_confirm_newpwd, javax.swing.GroupLayout.PREFERRED_SIZE, 171, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(btn_contrasenha_confirma, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txt_confirmpwd, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(167, 167, 167)
                                 .addComponent(btn_accept)
                                 .addGap(18, 18, 18)
                                 .addComponent(btn_cancel))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(btn_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel4))
-                                    .addGap(73, 73, 73)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(btn_contrasenha_anterior, javax.swing.GroupLayout.DEFAULT_SIZE, 154, Short.MAX_VALUE)
-                                        .addComponent(btn_contrasenha_nueva))))))
+                                        .addComponent(lbl_user)
+                                        .addComponent(lbl_newpwd))
+                                    .addGap(85, 85, 85)
+                                    .addComponent(txt_newpwd, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(132, 132, 132)
-                        .addComponent(jLabel1)))
+                        .addComponent(lbl_modifypwd)))
                 .addGap(0, 20, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(33, 33, 33)
-                .addComponent(jLabel1)
+                .addComponent(lbl_modifypwd)
                 .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(btn_usuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(btn_contrasenha_anterior, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(btn_contrasenha_nueva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_user)
+                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(btn_contrasenha_confirma, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_newpwd)
+                    .addComponent(txt_newpwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_confirm_newpwd)
+                    .addComponent(txt_confirmpwd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancel)
                     .addComponent(btn_accept))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         pack();
@@ -159,22 +154,54 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
          
-        menuaux.setVisible(true);
+        frm_Login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
         // TODO add your handling code here:
        
-        menuaux.setVisible(true);
-        this.dispose();
-       
+        String pass = new String(txt_newpwd.getPassword());
+        String  pass_new = new String(txt_confirmpwd.getPassword());
+        
+        DaoUsers daoUsers = new DaoUserImpl();
+        Integer id = aInteger(txt_id.getText());
+        
+        if(daoUsers.usersGet(id)!=0){
+           if(pass.compareTo(pass_new)==0){
+                   Object[] options = {"OK"};
+                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha creado la clave con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    if(ok_option==JOptionPane.OK_OPTION){
+                        Integer flag =1;
+                        String result= daoUsers.setpasword(id,pass,flag);
+                        txt_id.setText("");
+                        txt_newpwd.setText("");
+                        txt_confirmpwd.setText("");
+                        frm_Login.setVisible(true);
+                        this.dispose();
+                        
+                    }
+                } 
+            }
+            else {
+                JOptionPane.showMessageDialog(this, "Las contraseñas deben ser iguales");
+
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this, "El usuario no existe");
+        }
+        
+        
+        
         
     }//GEN-LAST:event_btn_acceptActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
-        menuaux.setVisible(true);
+        frm_Login.setVisible(true);
         this.dispose();
         
     }//GEN-LAST:event_formWindowClosed
@@ -191,14 +218,12 @@ public class Frm_CambiarLog extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_accept;
     private javax.swing.JButton btn_cancel;
-    private javax.swing.JPasswordField btn_contrasenha_anterior;
-    private javax.swing.JPasswordField btn_contrasenha_confirma;
-    private javax.swing.JPasswordField btn_contrasenha_nueva;
-    private javax.swing.JTextField btn_usuario;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lbl_confirm_newpwd;
+    private javax.swing.JLabel lbl_modifypwd;
+    private javax.swing.JLabel lbl_newpwd;
+    private javax.swing.JLabel lbl_user;
+    private javax.swing.JPasswordField txt_confirmpwd;
+    private javax.swing.JTextField txt_id;
+    private javax.swing.JPasswordField txt_newpwd;
     // End of variables declaration//GEN-END:variables
 }

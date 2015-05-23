@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import org.mindrot.BCrypt;
 import static org.mindrot.BCrypt.checkpw;
 import static tool.Convierte.aInteger;
 
@@ -142,15 +143,14 @@ public class DaoUserImpl implements DaoUsers {
     }
 
     @Override
-    public Users usersGet(Integer iduser) {
-        Users users = null;
+    public Integer usersGet(Integer iduser) {
+        Integer id=0;
         String sql = "SELECT "
-                + "name "
-                + "password "
-                + "created_at "
-                + "update_at "
-                + "Profile_idProfile "
-                + "FROM User WHERE idUser=?";
+
+                + "idUser "
+                + "FROM User WHERE idUser= ?";
+
+
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -160,7 +160,10 @@ public class DaoUserImpl implements DaoUsers {
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    users = new Users();
+
+                  id=rs.getInt(1);
+
+                    Users users = new Users();
 
                     users.setIdUser(rs.getInt(1));
                     users.setname(rs.getString(2));
@@ -169,11 +172,9 @@ public class DaoUserImpl implements DaoUsers {
                     users.setUpdate_at(rs.getTimestamp(5));
                     users.setProfile_idProfile(rs.getInt(7));
                     users.setDistribution_Center_idDistribution_Center(rs.getInt(8));
-
                 }
-
             } catch (SQLException e) {
-                users = null;
+                id=0;
             } finally {
                 try {
                     cn.close();
@@ -182,7 +183,7 @@ public class DaoUserImpl implements DaoUsers {
             }
         }
 
-        return users;
+        return id;
     }
 
     @Override
@@ -228,8 +229,39 @@ public class DaoUserImpl implements DaoUsers {
         return result;
     }
 
+    
+     @Override
+    public String setpasword(Integer id , String password,Integer flag){
+        String result = null;
+         String hashed = BCrypt.hashpw(password, BCrypt.gensalt(12));
+         String sql = "UPDATE  User SET "
+                + "password= '"+ hashed +"' ,"
+                + "password_change= '"+flag+"' "
+                + "WHERE idUser='"+id+"'";
+
+            Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
     @Override
-    public Integer acceder(String usuario, String clave) {
+    public Integer login(String usuario, String clave) {
 
         Integer cap=0;
         String pwd="" ; 
@@ -314,6 +346,37 @@ public class DaoUserImpl implements DaoUsers {
         }
 
         return list;
+    }
+    
+    @Override
+    public Integer getflagpwd(Integer id){
+     Integer cap=-1;
+        String sql = "SELECT "
+               + "idUser,"
+                + "password_change "
+                + "FROM User where idUser='" + id + "' ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    cap = rs.getInt(2);
+                }
+                
+            } catch (SQLException e) {
+
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+          
+        }
+       
+        return cap;
     }
 
 }
