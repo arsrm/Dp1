@@ -5,6 +5,7 @@
  */
 package Seguridad;
 
+import Model.Users;
 import dao.DaoUsers;
 import dao.impl.DaoUserImpl;
 import java.awt.event.KeyEvent;
@@ -187,7 +188,11 @@ public class Frm_Login extends javax.swing.JFrame {
             String pass = new String(txt_password.getPassword());
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
-            
+            Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -204,7 +209,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -228,6 +233,12 @@ public class Frm_Login extends javax.swing.JFrame {
             String pass = new String(txt_password.getPassword());
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
+            Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
+            
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -244,7 +255,8 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                   
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -268,6 +280,11 @@ public class Frm_Login extends javax.swing.JFrame {
             String pass = new String(txt_password.getPassword());
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
+            Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -283,7 +300,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -309,6 +326,11 @@ public class Frm_Login extends javax.swing.JFrame {
         String pass = new String(txt_password.getPassword());
         Integer id = aInteger(txt_user.getText());
         Integer perfil = daoUsers.login((txt_user.getText()), pass);
+        Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
         //validar la clave  sino la cambiamos
         if (perfil != 0) {
             Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -325,7 +347,7 @@ public class Frm_Login extends javax.swing.JFrame {
 
             Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
             if (flagpwd == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                 mp.setVisible(true);
                 mp.setExtendedState(MAXIMIZED_BOTH);
                 this.setVisible(false);
@@ -348,6 +370,11 @@ public class Frm_Login extends javax.swing.JFrame {
             String pass = new String(txt_password.getPassword());
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
+            Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -363,7 +390,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -387,6 +414,11 @@ public class Frm_Login extends javax.swing.JFrame {
             String pass = new String(txt_password.getPassword());
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
+            Users user = daoUsers.usersGet(id);
+            String name = null;
+            if (user!=null){
+                name = user.getname();
+            }
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
@@ -402,7 +434,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,name);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);

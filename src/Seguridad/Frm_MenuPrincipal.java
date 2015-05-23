@@ -36,7 +36,7 @@ import javax.swing.JOptionPane;
  * @author Alejo
  */
 public class Frm_MenuPrincipal extends javax.swing.JFrame {
-
+   
     /**
      * Creates new form MenuPrincipal
      */
@@ -50,6 +50,12 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     public Frm_MenuPrincipal() {
 
+    }
+    
+    public Frm_MenuPrincipal(Frm_Login log,String name) {
+        initComponents();
+        login = log;
+        lbl_name.setText(name);
     }
 
     /**
@@ -65,6 +71,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        lbl_welcome = new javax.swing.JLabel();
+        lbl_name = new javax.swing.JLabel();
         menu_principal = new javax.swing.JMenuBar();
         menu_mantenimientos = new javax.swing.JMenu();
         op_Centro_distribucion = new javax.swing.JMenuItem();
@@ -126,6 +134,12 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+
+        lbl_welcome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_welcome.setText("Bienvenido:");
+
+        lbl_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_name.setText("Nombre");
 
         menu_mantenimientos.setText("Mantenimientos");
 
@@ -395,11 +409,21 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 549, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_welcome)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_name)
+                .addContainerGap(379, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 281, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(250, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_welcome)
+                    .addComponent(lbl_name))
+                .addContainerGap())
         );
 
         pack();
@@ -648,6 +672,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JLabel lbl_name;
+    private javax.swing.JLabel lbl_welcome;
     private javax.swing.JMenu menu_cerrarsesion;
     private javax.swing.JMenu menu_mantenimientos;
     private javax.swing.JMenu menu_operaciones;
