@@ -7,11 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static tool.Convierte.aInteger;
 
-public class Frm_Change_Password extends javax.swing.JFrame {
+public class Frm_Change_Password_Admin extends javax.swing.JFrame {
 
     Frm_MenuPrincipal menuaux= new Frm_MenuPrincipal();
     
-    public Frm_Change_Password(Frm_MenuPrincipal menu) {
+    public Frm_Change_Password_Admin(Frm_MenuPrincipal menu) {
         menuaux = menu ;
         initComponents();
     }

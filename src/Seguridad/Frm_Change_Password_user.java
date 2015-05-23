@@ -16,14 +16,14 @@ import static tool.Convierte.aInteger;
  *
  * @author Alejo
  */
-public class Frm_ChangePassword extends javax.swing.JFrame {
+public class Frm_Change_Password_user extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_ChangePassword
+     * Creates new form Frm_Change_Password_user
      */
     
     Frm_Login frm_Login=new Frm_Login();
-    public Frm_ChangePassword(Frm_Login login,Integer id) {
+    public Frm_Change_Password_user(Frm_Login login,Integer id) {
        frm_Login=login;
        setTitle("CAMBIAR CONTRASEÑA"); 
        initComponents();
