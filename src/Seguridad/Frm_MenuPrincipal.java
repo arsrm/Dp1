@@ -437,7 +437,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_Cambio_ContraseñaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Cambio_ContraseñaActionPerformed
         // TODO add your handling code here:
-        Frm_Change_Password frmRestablecer_contrasena = new Frm_Change_Password(this);
+        Frm_Change_Password_Admin frmRestablecer_contrasena = new Frm_Change_Password_Admin(this);
         frmRestablecer_contrasena.setVisible(true);
         frmRestablecer_contrasena.setLocationRelativeTo(null);
 
