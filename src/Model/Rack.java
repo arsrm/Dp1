@@ -16,18 +16,21 @@ import java.sql.Timestamp;
 public class Rack {
     
     public Integer idRack;
+    public String identifier;
     public String description;
     public Double length;
     public Double width;
-    public Integer floor_number;
+    public Integer floor_numbers;
     public Integer height_per_floor;
     public Integer resistance_weigth_per_floor;
     public Integer column_number;
+    public Integer status;
     public Timestamp created_at;
     public Timestamp updated_at;
-    public Timestamp deleted_at;
-    public Integer idWarehouse;
-    public Integer idDistribution_Center;
+    public Integer Warehouse_idWarehouse;
+    public Integer Warehouse_Distribution_Center_idDistribution_Center;
+    public Integer user_created;
+    public Integer user_updated;
     
     public Rack() {
     }
@@ -44,6 +47,20 @@ public class Rack {
      */
     public void setIdRack(Integer idRack) {
         this.idRack = idRack;
+    }
+
+    /**
+     * @return the identifier
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    /**
+     * @param identifier the identifier to set
+     */
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
     /**
@@ -89,17 +106,17 @@ public class Rack {
     }
 
     /**
-     * @return the floor_number
+     * @return the floor_numbers
      */
-    public Integer getFloor_number() {
-        return floor_number;
+    public Integer getFloor_numbers() {
+        return floor_numbers;
     }
 
     /**
-     * @param floor_number the floor_number to set
+     * @param floor_numbers the floor_numbers to set
      */
-    public void setFloor_number(Integer floor_number) {
-        this.floor_number = floor_number;
+    public void setFloor_numbers(Integer floor_numbers) {
+        this.floor_numbers = floor_numbers;
     }
 
     /**
@@ -145,6 +162,20 @@ public class Rack {
     }
 
     /**
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
      * @return the created_at
      */
     public Timestamp getCreated_at() {
@@ -173,46 +204,62 @@ public class Rack {
     }
 
     /**
-     * @return the deleted_at
+     * @return the Warehouse_idWarehouse
      */
-    public Timestamp getDeleted_at() {
-        return deleted_at;
+    public Integer getWarehouse_idWarehouse() {
+        return Warehouse_idWarehouse;
     }
 
     /**
-     * @param deleted_at the deleted_at to set
+     * @param Warehouse_idWarehouse the Warehouse_idWarehouse to set
      */
-    public void setDeleted_at(Timestamp deleted_at) {
-        this.deleted_at = deleted_at;
+    public void setWarehouse_idWarehouse(Integer Warehouse_idWarehouse) {
+        this.Warehouse_idWarehouse = Warehouse_idWarehouse;
     }
 
     /**
-     * @return the idWarehouse
+     * @return the Warehouse_Distribution_Center_idDistribution_Center
      */
-    public Integer getIdWarehouse() {
-        return idWarehouse;
+    public Integer getWarehouse_Distribution_Center_idDistribution_Center() {
+        return Warehouse_Distribution_Center_idDistribution_Center;
     }
 
     /**
-     * @param idWarehouse the idWarehouse to set
+     * @param Warehouse_Distribution_Center_idDistribution_Center the Warehouse_Distribution_Center_idDistribution_Center to set
      */
-    public void setIdWarehouse(Integer idWarehouse) {
-        this.idWarehouse = idWarehouse;
+    public void setWarehouse_Distribution_Center_idDistribution_Center(Integer Warehouse_Distribution_Center_idDistribution_Center) {
+        this.Warehouse_Distribution_Center_idDistribution_Center = Warehouse_Distribution_Center_idDistribution_Center;
     }
 
     /**
-     * @return the idDistribution_Center
+     * @return the user_created
      */
-    public Integer getIdDistribution_Center() {
-        return idDistribution_Center;
+    public Integer getUser_created() {
+        return user_created;
     }
 
     /**
-     * @param idDistribution_Center the idDistribution_Center to set
+     * @param user_created the user_created to set
      */
-    public void setIdDistribution_Center(Integer idDistribution_Center) {
-        this.idDistribution_Center = idDistribution_Center;
+    public void setUser_created(Integer user_created) {
+        this.user_created = user_created;
     }
+
+    /**
+     * @return the user_updated
+     */
+    public Integer getUser_updated() {
+        return user_updated;
+    }
+
+    /**
+     * @param user_updated the user_updated to set
+     */
+    public void setUser_updated(Integer user_updated) {
+        this.user_updated = user_updated;
+    }
+
+    
     
     
 }

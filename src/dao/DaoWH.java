@@ -10,11 +10,15 @@ package dao;
  *
  * @author CHACON
  */
-import java.util.List;
+import Model.Distribution_Center;
 import Model.Warehouse;
+import java.util.ArrayList;
+import java.util.List;
 public interface DaoWH {
     
-     public List<Warehouse> whQry();
+    public ArrayList<Warehouse> whQry();
+    
+    public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center);
     
     public String whIns(Warehouse wh);
     

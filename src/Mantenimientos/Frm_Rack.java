@@ -36,26 +36,29 @@ public class Frm_Rack extends javax.swing.JFrame {
     private void initComponents() {
 
         pnl_rack = new javax.swing.JPanel();
-        lbl_resistance_weigth_per_floor = new javax.swing.JLabel();
-        txt_nro_columnas = new javax.swing.JTextField();
         lbl_warehouse = new javax.swing.JLabel();
-        txt_description = new javax.swing.JTextField();
         cbo_distribution_center = new javax.swing.JComboBox();
-        lbl_floor_numbers = new javax.swing.JLabel();
         cbo_warehouse = new javax.swing.JComboBox();
-        txt_nro_pisos = new javax.swing.JTextField();
-        txt_altura_por_piso = new javax.swing.JTextField();
-        lbl_length = new javax.swing.JLabel();
-        lbl_height_per_floor = new javax.swing.JLabel();
-        lbl_description = new javax.swing.JLabel();
-        txt_resistencia_peso_por_piso = new javax.swing.JTextField();
-        txt_largo = new javax.swing.JTextField();
-        lbl_column_numbers = new javax.swing.JLabel();
-        txt_ancho = new javax.swing.JTextField();
-        lbl_width = new javax.swing.JLabel();
         lbl_distribution_center = new javax.swing.JLabel();
+        lbl_identifier = new javax.swing.JLabel();
+        txt_identifier = new javax.swing.JTextField();
+        lbl_description = new javax.swing.JLabel();
+        txt_description = new javax.swing.JTextField();
         btn_save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
+        jpn_dimension = new javax.swing.JPanel();
+        lbl_height_per_floor = new javax.swing.JLabel();
+        lbl_floor_numbers = new javax.swing.JLabel();
+        txt_floor_numbers = new javax.swing.JTextField();
+        txt_height_per_floor = new javax.swing.JTextField();
+        lbl_column_numbers = new javax.swing.JLabel();
+        txt_resistance_weigth_per_floor = new javax.swing.JTextField();
+        lbl_resistance_weigth_per_floor = new javax.swing.JLabel();
+        txt_column_numbers = new javax.swing.JTextField();
+        lbl_length = new javax.swing.JLabel();
+        txt_length = new javax.swing.JTextField();
+        lbl_width = new javax.swing.JLabel();
+        txt_width = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -66,67 +69,35 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         pnl_rack.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso");
-
         lbl_warehouse.setText("Almacen");
 
         cbo_distribution_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
 
-        lbl_floor_numbers.setText("Nro. Pisos");
-
         cbo_warehouse.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
 
-        lbl_length.setText("Largo (m2)");
+        lbl_distribution_center.setText("Centro de Distribucion");
 
-        lbl_height_per_floor.setText("Altura por Piso");
+        lbl_identifier.setText("ID");
 
         lbl_description.setText("Descripcion");
-
-        lbl_column_numbers.setText("Nro. Columnas");
-
-        txt_ancho.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_anchoActionPerformed(evt);
-            }
-        });
-
-        lbl_width.setText("Ancho (m2)");
-
-        lbl_distribution_center.setText("Centro de Distribucion");
 
         javax.swing.GroupLayout pnl_rackLayout = new javax.swing.GroupLayout(pnl_rack);
         pnl_rack.setLayout(pnl_rackLayout);
         pnl_rackLayout.setHorizontalGroup(
             pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_rackLayout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnl_rackLayout.createSequentialGroup()
-                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_length)
-                            .addComponent(lbl_width)
-                            .addComponent(lbl_floor_numbers)
-                            .addComponent(lbl_height_per_floor)
-                            .addComponent(lbl_resistance_weigth_per_floor)
-                            .addComponent(lbl_column_numbers)
-                            .addComponent(lbl_description))
-                        .addGap(30, 30, 30)
-                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_largo, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_ancho, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_nro_pisos, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_altura_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_nro_columnas, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_resistencia_peso_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_description)))
-                    .addGroup(pnl_rackLayout.createSequentialGroup()
-                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_distribution_center)
-                            .addComponent(lbl_warehouse))
-                        .addGap(45, 45, 45)
-                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(22, 22, 22)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_distribution_center)
+                    .addComponent(lbl_warehouse)
+                    .addComponent(lbl_identifier)
+                    .addComponent(lbl_description))
+                .addGap(37, 37, 37)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(cbo_warehouse, 0, 400, Short.MAX_VALUE)
+                    .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
+                    .addComponent(txt_identifier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_description))
                 .addContainerGap(203, Short.MAX_VALUE))
         );
         pnl_rackLayout.setVerticalGroup(
@@ -140,37 +111,15 @@ public class Frm_Rack extends javax.swing.JFrame {
                 .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_warehouse)
                     .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(47, 47, 47)
-                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_rackLayout.createSequentialGroup()
-                        .addComponent(lbl_description)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_length)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_width)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_floor_numbers))
-                    .addGroup(pnl_rackLayout.createSequentialGroup()
-                        .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_largo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_ancho, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(11, 11, 11)
-                        .addComponent(txt_nro_pisos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_altura_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_height_per_floor))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_resistance_weigth_per_floor)
-                    .addComponent(txt_resistencia_peso_por_piso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(lbl_identifier)
+                    .addComponent(txt_identifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_column_numbers)
-                    .addComponent(txt_nro_columnas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(74, Short.MAX_VALUE))
+                    .addComponent(lbl_description)
+                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         btn_save.setText("Guardar");
@@ -187,39 +136,121 @@ public class Frm_Rack extends javax.swing.JFrame {
             }
         });
 
+        jpn_dimension.setBorder(javax.swing.BorderFactory.createTitledBorder("Dimensiones"));
+
+        lbl_height_per_floor.setText("Altura por Piso");
+
+        lbl_floor_numbers.setText("Nro. Pisos");
+
+        lbl_column_numbers.setText("Nro. Columnas");
+
+        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso");
+
+        lbl_length.setText("Largo (m2)");
+
+        lbl_width.setText("Ancho (m2)");
+
+        txt_width.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_widthActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpn_dimensionLayout = new javax.swing.GroupLayout(jpn_dimension);
+        jpn_dimension.setLayout(jpn_dimensionLayout);
+        jpn_dimensionLayout.setHorizontalGroup(
+            jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                .addGap(23, 23, 23)
+                .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_length)
+                            .addComponent(lbl_width))
+                        .addGap(88, 88, 88)
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(98, 98, 98)
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_floor_numbers)
+                            .addComponent(lbl_column_numbers))
+                        .addGap(45, 45, 45)
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                            .addComponent(lbl_height_per_floor)
+                            .addGap(73, 73, 73)
+                            .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                            .addComponent(lbl_resistance_weigth_per_floor)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(29, Short.MAX_VALUE))
+        );
+        jpn_dimensionLayout.setVerticalGroup(
+            jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_length)
+                    .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_floor_numbers)
+                    .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_width)
+                    .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_column_numbers)
+                    .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(36, 36, 36)
+                .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_height_per_floor)
+                    .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_resistance_weigth_per_floor)
+                    .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(142, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_rack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnl_rack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jpn_dimension, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(25, 25, 25)
                 .addComponent(btn_save)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
-                .addGap(85, 85, 85))
+                .addGap(33, 33, 33))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_rack, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jpn_dimension, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_save)
                     .addComponent(btn_cancel))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void txt_anchoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_anchoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_anchoActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
@@ -244,6 +275,10 @@ public class Frm_Rack extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btn_saveActionPerformed
+
+    private void txt_widthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_widthActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_widthActionPerformed
     
     /**
      * @param args the command line arguments
@@ -285,22 +320,25 @@ public class Frm_Rack extends javax.swing.JFrame {
     private javax.swing.JButton btn_save;
     private javax.swing.JComboBox cbo_distribution_center;
     private javax.swing.JComboBox cbo_warehouse;
+    private javax.swing.JPanel jpn_dimension;
     private javax.swing.JLabel lbl_column_numbers;
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_distribution_center;
     private javax.swing.JLabel lbl_floor_numbers;
     private javax.swing.JLabel lbl_height_per_floor;
+    private javax.swing.JLabel lbl_identifier;
     private javax.swing.JLabel lbl_length;
     private javax.swing.JLabel lbl_resistance_weigth_per_floor;
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JLabel lbl_width;
     private javax.swing.JPanel pnl_rack;
-    private javax.swing.JTextField txt_altura_por_piso;
-    private javax.swing.JTextField txt_ancho;
+    private javax.swing.JTextField txt_column_numbers;
     private javax.swing.JTextField txt_description;
-    private javax.swing.JTextField txt_largo;
-    private javax.swing.JTextField txt_nro_columnas;
-    private javax.swing.JTextField txt_nro_pisos;
-    private javax.swing.JTextField txt_resistencia_peso_por_piso;
+    private javax.swing.JTextField txt_floor_numbers;
+    private javax.swing.JTextField txt_height_per_floor;
+    private javax.swing.JTextField txt_identifier;
+    private javax.swing.JTextField txt_length;
+    private javax.swing.JTextField txt_resistance_weigth_per_floor;
+    private javax.swing.JTextField txt_width;
     // End of variables declaration//GEN-END:variables
 }

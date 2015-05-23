@@ -1,0 +1,140 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+package dao.impl;
+
+
+import Model.Distribution_Center;
+import dao.DaoDistributionCenter;
+import enlaceBD.ConectaDb;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+/**
+ *
+ * @author Luigi
+ */
+public class DaoDistributionCenterImpl implements DaoDistributionCenter{
+    
+   private final ConectaDb db;
+   
+   public DaoDistributionCenterImpl() {
+        db = new ConectaDb();
+   }
+
+   @Override
+    public ArrayList<Distribution_Center> distribution_centerGetQry() {        
+        ArrayList<Distribution_Center> list = new ArrayList<>();
+        String sql = "SELECT "
+                + "idDistribution_Center, "
+                + "name, "
+                + "address, "
+                + "pos_x, "    
+                + "pos_y, "
+                + "status, "
+                + "created_at, "
+                + "updated_at, "
+                + "user_created, "
+                + "user_updated "
+                + "FROM Distribution_Center";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    Distribution_Center c = new Distribution_Center();
+                    c.setIdDistribution_Center(rs.getInt(1));
+                    c.setName(rs.getString(2));
+                    c.setAddress(rs.getString(3));
+                    c.setPos_x(rs.getInt(4));
+                    c.setPos_y(rs.getInt(5));
+                    c.setStatus(rs.getInt(6));                    
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        
+        return list;
+    } 
+   
+   @Override
+    public Distribution_Center distribution_centerGet(Integer idDistribution_Center) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public String distribution_centerUpd(Distribution_Center idDistribution_Center) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Object[]> distribution_centerCbo() {
+        List<Object[]> list = null;
+        String sql = "SELECT "
+                + "idDistribution_Center, "
+                + "name, "
+                + "address, "
+                + "pos_x, "    
+                + "pos_y, "
+                + "status, "
+                + "created_at, "
+                + "updated_at, "
+                + "user_created, "
+                + "user_updated "
+                + "FROM Distribution_Center";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    Object[] c = new Object[10];
+
+                    c[0] = rs.getInt(1);
+                    c[1] = rs.getString(2);
+                    c[2] = rs.getString(3);
+                    c[3] = rs.getInt(4);
+                    c[4] = rs.getInt(5);
+                    c[5] = rs.getInt(6);
+                    c[6] = rs.getTimestamp(7);
+                    c[7] = rs.getTimestamp(8);
+                    c[8] = rs.getInt(9);
+                    c[9] = rs.getInt(10);                    
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
+    }   
+    
+}

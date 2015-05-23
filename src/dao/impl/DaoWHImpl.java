@@ -6,6 +6,7 @@
 
 package dao.impl;
 
+import Model.Distribution_Center;
 import Model.Warehouse;
 import dao.DaoWH;
 import enlaceBD.ConectaDb;
@@ -13,6 +14,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,8 +31,8 @@ public class DaoWHImpl implements DaoWH{
     }
     
     @Override
-    public List<Warehouse> whQry() {
-        List<Warehouse> list = null;
+    public ArrayList<Warehouse> whQry() {
+        ArrayList<Warehouse> list = new ArrayList<>();
         String sql = "SELECT "
                 + "idWarehouse,"
                 + "description, "
@@ -45,7 +47,6 @@ public class DaoWHImpl implements DaoWH{
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
 
-                list = new LinkedList<>();
                 while (rs.next()) {
                     Warehouse w = new Warehouse();
                     
@@ -69,8 +70,45 @@ public class DaoWHImpl implements DaoWH{
         }
 
         return list;
-    }
+    }    
+    
+    @Override
+    public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center) {
+        ArrayList<Warehouse> list = new ArrayList<>();
+        String sql = "SELECT "
+                + "idWarehouse,"
+                + "description "
+                + "FROM Warehouse "
+                + "WHERE Distribution_Center_idDistribution_Center = ?; ";
 
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, distribution_center.getIdDistribution_Center());
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    Warehouse c = new Warehouse();
+                    
+                    c.setIdWH(rs.getInt(1));
+                    c.setDescription(rs.getString(2));                   
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
+    }
+    
     @Override
     public String whIns(Warehouse wh) {
     

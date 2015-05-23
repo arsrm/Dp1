@@ -15,15 +15,15 @@ import java.util.List;
  */
 public interface DaoRack {
     
-    public List<Rack> rackQry();
+    public List<Rack> rackQry(Integer idDistributionCenter, Integer idWarehouse, String idIdentifier);
     
-    public String rackIns(Rack rack);
+    public void rackIns(Rack rack);
     
-    public String rackDel(List<Integer> ids);
+    public void rackDel(Rack rack);
     
-    public Rack rackGet(Integer idRack);
+    public Rack rackGet(String identifier_rack);
     
-    public String rackUpd(Rack rack);
+    public void rackUpd(Rack rack);
     
     public List<Object[]> rackCbo();
     

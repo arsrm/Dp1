@@ -6,8 +6,20 @@
 
 package Mantenimientos;
 
+import Model.Distribution_Center;
+import Model.Rack;
+import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
-import java.awt.Color;
+import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoRackImpl;
+import dao.impl.DaoWHImpl;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,10 +32,27 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
      */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();
     
+    int idDC_current, idWH_current;
+    //Distribution_Center distribution_center_current = new Distribution_Center();
+    DaoDistributionCenterImpl daoDC = new DaoDistributionCenterImpl();
+    ArrayList<Distribution_Center> distribution_centers = new ArrayList<>();
+    DaoWHImpl daoWH = new DaoWHImpl();
+    ArrayList<Warehouse> warehouses = new ArrayList<>();
+    
+    DaoRackImpl daoRack = new DaoRackImpl();
+    DefaultTableModel modelo;
+    
+    
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
-        setTitle("Mantenimiento de Racks"); 
+        setTitle("Mantenimiento de Racks");
         menuaux = menu;
         initComponents();
+        
+        distribution_centers = daoDC.distribution_centerGetQry();
+        for (int i = 0; i < distribution_centers.size(); i++) {
+            this.cbo_distribution_center.addItem(distribution_centers.get(i).getName());
+        }
+        
     }
     
     public Frm_Rack_Search() {
@@ -46,7 +75,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         cbo_warehouse = new javax.swing.JComboBox();
         btn_search = new javax.swing.JButton();
         lbl_id = new javax.swing.JLabel();
-        txt_id = new javax.swing.JTextField();
+        txt_identifier = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_rack = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
@@ -66,11 +95,24 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         lbl_warehouse.setText("Almacén");
 
-        cbo_distribution_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
+        cbo_distribution_center.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_distribution_centerActionPerformed(evt);
+            }
+        });
 
-        cbo_warehouse.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
+        cbo_warehouse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_warehouseActionPerformed(evt);
+            }
+        });
 
         btn_search.setText("Buscar");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         lbl_id.setText("ID");
 
@@ -91,7 +133,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                         .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
                             .addComponent(cbo_warehouse, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txt_identifier, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(185, Short.MAX_VALUE))
         );
         pnl_rackLayout.setVerticalGroup(
@@ -108,7 +150,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_id)
-                    .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_identifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_search)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -116,13 +158,10 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         tbl_rack.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID", "Descripcion", "Nro. Pisos", "Nro.Columnas"
+                "ID", "Descripcion", "Nro. Pisos", "Nro.Columnas", "Estado"
             }
         ));
         tbl_rack.getTableHeader().setReorderingAllowed(false);
@@ -200,6 +239,58 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         menuaux.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        modelo = (DefaultTableModel) tbl_rack.getModel();
+        RefreshGrid();
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void cbo_distribution_centerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_distribution_centerActionPerformed
+        
+        //if(cbo_warehouse.getSelectedItem()!=null) this.cbo_warehouse.removeAllItems();                
+        for (int i = 0; i < distribution_centers.size(); i++) {
+            if (cbo_distribution_center.getSelectedItem().equals(distribution_centers.get(i).getName())) {
+                this.idDC_current = distribution_centers.get(i).getIdDistribution_Center();
+                warehouses = daoWH.whSearchByID(distribution_centers.get(i));
+                for (int j = 0; j < warehouses.size(); j++){
+                    this.cbo_warehouse.addItem(warehouses.get(j).getDescription());
+                }
+                break;
+            }
+        }
+    }//GEN-LAST:event_cbo_distribution_centerActionPerformed
+
+    private void cbo_warehouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_warehouseActionPerformed
+        // TODO add your handling code here:
+        for (int i = 0; i < warehouses.size(); i++) {
+            if (cbo_warehouse.getSelectedItem().equals(warehouses.get(i).getDescription())) {
+                this.idWH_current = warehouses.get(i).getIdWarehouse();
+                break;
+            }
+        }
+    }//GEN-LAST:event_cbo_warehouseActionPerformed
+    
+    public void RefreshGrid(){
+        List<Rack> listRack = daoRack.rackQry(idDC_current,idWH_current,txt_identifier.getText());
+        int sizeListRack = listRack.size();
+        if(modelo!=null){
+            int a =modelo.getRowCount();
+            for(int i=0; i<a; i++) modelo.removeRow(0);
+        }
+        try {
+            for (int ind_p = 0; ind_p < sizeListRack; ind_p++) {
+
+                Object nuevaRow[] = {
+                    listRack.get(ind_p).getIdentifier(),
+                    listRack.get(ind_p).getDescription(),
+                    listRack.get(ind_p).getFloor_numbers(),
+                    listRack.get(ind_p).getColumn_number(),
+                    listRack.get(ind_p).getStatus(),};
+                modelo.addRow(nuevaRow);
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -248,6 +339,6 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JPanel pnl_rack;
     private javax.swing.JTable tbl_rack;
-    private javax.swing.JTextField txt_id;
+    private javax.swing.JTextField txt_identifier;
     // End of variables declaration//GEN-END:variables
 }
