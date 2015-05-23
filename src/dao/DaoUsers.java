@@ -11,7 +11,7 @@ public interface DaoUsers {
     
     public String usersDel(List<Integer> ids);
     
-    public Integer usersGet(Integer iduser);
+    public Users usersGet(Integer iduser);
     
     public String usersUpd(Users users);
     
