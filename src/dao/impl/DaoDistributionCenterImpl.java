@@ -38,11 +38,7 @@ public class DaoDistributionCenterImpl implements DaoDistributionCenter{
                 + "address, "
                 + "pos_x, "    
                 + "pos_y, "
-                + "status, "
-                + "created_at, "
-                + "updated_at, "
-                + "user_created, "
-                + "user_updated "
+                + "status "
                 + "FROM Distribution_Center";
         Connection cn = db.getConnection();
         
@@ -77,7 +73,80 @@ public class DaoDistributionCenterImpl implements DaoDistributionCenter{
    
    @Override
     public Distribution_Center distribution_centerGet(Integer idDistribution_Center) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       Distribution_Center c = null;
+       Integer id=0;
+        String sql = "select idDistribution_Center,name,address,pos_x,pos_y,status "
+                +" From  Distribution_Center where idDistribution_Center = ?";
+
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idDistribution_Center);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    c = new Distribution_Center();
+                    c.setIdDistribution_Center(rs.getInt(1));
+                    c.setName(rs.getString(2));
+                    c.setAddress(rs.getString(3));
+                    c.setPos_x(rs.getInt(4));
+                    c.setPos_y(rs.getInt(5));
+                    c.setStatus(rs.getInt(6));                    
+                  
+                    
+                }
+            } catch (SQLException e) {
+               c=null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+               
+       return c ;  
+    }
+
+   @Override
+    public Distribution_Center distribution_centerGet(String name) {
+       Distribution_Center c = null;
+       Integer id=0;
+        String sql = "select idDistribution_Center,name,address,pos_x,pos_y,status "
+                +" From  Distribution_Center where  name= ?";
+
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, name);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    c = new Distribution_Center();
+                    c.setIdDistribution_Center(rs.getInt(1));
+                    c.setName(rs.getString(2));
+                    c.setAddress(rs.getString(3));
+                    c.setPos_x(rs.getInt(4));
+                    c.setPos_y(rs.getInt(5));
+                    c.setStatus(rs.getInt(6));                    
+                  
+                    
+                }
+            } catch (SQLException e) {
+               c=null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+               
+       return c ;  
     }
 
     @Override
