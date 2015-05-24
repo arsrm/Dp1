@@ -1,5 +1,7 @@
 package tool;
 
+import java.util.regex.Pattern;
+
 public class Convierte {
 
     public static Integer aInteger(String s) {
@@ -29,5 +31,13 @@ public class Convierte {
     }
 
     public Convierte() {
+    }
+    
+    public static boolean esNumero(String cadena){
+        return Pattern.matches("[0-9]+",cadena);
+    }
+    
+    public static boolean esString(String cadena){
+        return Pattern.matches("[a-zA-ZñÑ\\t\\n\\x0b\\r\\f]+",cadena);
     }
 }

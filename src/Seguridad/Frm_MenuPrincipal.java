@@ -152,7 +152,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         });
         menu_mantenimientos.add(op_Centro_distribucion);
 
-        op_Personal.setText("Personal");
+        op_Personal.setText("Usuario");
         op_Personal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 op_PersonalActionPerformed(evt);

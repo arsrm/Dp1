@@ -1,18 +1,51 @@
 package Mantenimientos;
 
+import Model.Distribution_Center;
+import Model.Profile;
+import Model.Users;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoDistributionCenter;
+import dao.DaoProfile;
+import dao.DaoUsers;
+import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoProfileImpl;
+import dao.impl.DaoUserImpl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import static tool.Convierte.aInteger;
 
 public class Frm_User_Search extends javax.swing.JFrame {
 
     Frm_MenuPrincipal auxmenu = new Frm_MenuPrincipal();
     
+    DaoDistributionCenter daoDC = new DaoDistributionCenterImpl();
+    ArrayList<Distribution_Center> distribution_centers = new ArrayList<>();
+    DaoProfile daoprofile = new DaoProfileImpl();
+    List<Profile> profile = new ArrayList<Profile>();
+    DefaultTableModel modelo;
+    DaoUsers daoUsers = new DaoUserImpl();
     public Frm_User_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Usuario");
-        auxmenu=menu;
+        auxmenu = menu;  
         initComponents();
+        modelo = (DefaultTableModel) tbl_user.getModel();
+        distribution_centers = daoDC.distribution_centerGetQry();
+        for (int i = 0; i < distribution_centers.size(); i++) {
+            this.cbo_center.addItem(distribution_centers.get(i).getName());
+        }
+        profile = daoprofile.profileCbo();
+        for (int i = 0; i < profile.size(); i++) {
+            this.cbo_profile.addItem(profile.get(i).getName());
+        }
+     
+        initilizeTable();
+        
+      
     }
+
     public Frm_User_Search() {
-       
+
     }
 
     @SuppressWarnings("unchecked")
@@ -50,10 +83,11 @@ public class Frm_User_Search extends javax.swing.JFrame {
         lbl_profile.setText("Perfil de Usuario");
 
         btn_search.setText("Buscar");
-
-        cbo_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cbo_profile.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         lbl_id.setText("DNI");
 
@@ -115,7 +149,27 @@ public class Frm_User_Search extends javax.swing.JFrame {
             new String [] {
                 "DNI", "Nombres", "Centro Distribución", "Perfil", "Estado", "Seleccionar"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_user.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_userMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_user);
 
         btn_new.setText("Nuevo");
@@ -125,7 +179,12 @@ public class Frm_User_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -170,20 +229,66 @@ public class Frm_User_Search extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    public void initilizeTable() {
+        List<Users> list = new ArrayList<Users>();
+        list = daoUsers.usersQry();
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Integer j=list.get(i).getDistribution_Center_idDistribution_Center();
+                String namecenter=daoDC.distribution_centerGet(j).getName() ;
+                j=list.get(i).getProfile_idProfile();
+                String nameprofile=daoprofile.usersGet(j).getName();
+                String state =null;
+                if (list.get(i).getStatus()==1){
+                    state="Activo";
+                }else {state="Inactivo";}
+                Object[] fila = {list.get(i).getIdUser(), list.get(i).getname(), namecenter,
+                    nameprofile, state,false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+        
+    }
+    
+    public void initilizeTable(List<Users> list) {
+        
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                Integer j=list.get(i).getDistribution_Center_idDistribution_Center();
+                String namecenter=daoDC.distribution_centerGet(j).getName() ;
+                j=list.get(i).getProfile_idProfile();
+                String nameprofile=daoprofile.usersGet(j).getName();
+                String state =null;
+                if (list.get(i).getStatus()==1){
+                    state="Activo";
+                }else {state="Inactivo";}
+                Object[] fila = {list.get(i).getIdUser(), list.get(i).getname(), namecenter,
+                    nameprofile, state,false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         // TODO add your handling code here:
-        Frm_User frm_user = new Frm_User(this);
+        Frm_User frm_user = new Frm_User(this,null);
         frm_user.setVisible(true);
         frm_user.setLocationRelativeTo(null);
-         this.setVisible(false);    
+        this.setVisible(false);
     }//GEN-LAST:event_btn_newActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         auxmenu.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -192,11 +297,54 @@ public class Frm_User_Search extends javax.swing.JFrame {
         auxmenu.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
-    
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+       
+        Integer center = daoDC.distribution_centerGet(cbo_center.getSelectedItem().toString()).getIdDistribution_Center();
+        Integer profile = daoprofile.usersGet(cbo_profile.getSelectedItem().toString()).getIdprofile();
+        Integer id_codigo = aInteger(txt_id.getText());
+        String name = txt_name.getText();
+        List<Users> list = new ArrayList<Users>();
+        list = daoUsers.usersQry_search(center, profile, id_codigo, name);
+        initilizeTable(list);
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        
+        modelo = (DefaultTableModel) tbl_user.getModel();
+        List<Integer> ids=new  ArrayList<Integer>();
+        int col,nr =modelo.getRowCount(); col =6;
+        for (int i=0; i<nr ;i++){
+            Object prueba = modelo.getValueAt(i,5);
+            if ((Boolean)prueba){
+                Integer numm= (Integer)modelo.getValueAt(i, 0);
+               ids.add(numm);
+            }
+        }
+        daoUsers.usersDel(ids);
+        initilizeTable();
+         
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void tbl_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_userMouseClicked
+        Users users = null;
+        Integer idUserSel;
+        if (evt.getSource() == tbl_user) {
+            int rowSel = tbl_user.getSelectedRow();
+            int colSel = tbl_user.getSelectedColumn();
+            idUserSel = (Integer)tbl_user.getValueAt(rowSel, 0);
+            users = daoUsers.usersGet(idUserSel);
+            if (colSel!=5){
+                Frm_User frm_User = new Frm_User(this, users);
+                frm_User.setVisible(true);
+                frm_User.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_tbl_userMouseClicked
+
     /**
      * @param args the command line arguments
      */
-  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;

@@ -6,6 +6,7 @@ import java.util.List;
 public interface DaoUsers {
 
     public List<Users> usersQry();
+    public List<Users> usersQry_search(Integer center, Integer perfil,Integer dni , String name);
     
     public String usersIns(Users users);
     

@@ -25,13 +25,8 @@ public class DaoUserImpl implements DaoUsers {
     @Override
     public List<Users> usersQry() {
         List<Users> list = null;
-        String sql = "SELECT "
-                + "idUser,"
-                + "name "
-                + "password "
-                + "Profile_idProfile "
-                + "Distribution_Center_idDistribution_Center "
-                + "FROM User";
+        String sql =  "select idUser,name,password,password_change,status,"
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center From  User";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -42,12 +37,13 @@ public class DaoUserImpl implements DaoUsers {
                 list = new LinkedList<>();
                 while (rs.next()) {
                     Users c = new Users();
-
                     c.setIdUser(rs.getInt(1));
                     c.setname(rs.getString(2));
                     c.setPassword(rs.getString(3));
-                    c.setIdUser(rs.getInt(4));
-                    c.setDistribution_Center_idDistribution_Center(rs.getInt(5));
+                    c.setPassword_change(rs.getInt(4));
+                    c.setStatus(rs.getInt(5));
+                    c.setProfile_idProfile(rs.getInt(6));
+                    c.setDistribution_Center_idDistribution_Center(rs.getInt(7));
                     list.add(c);
                 }
 
@@ -63,27 +59,77 @@ public class DaoUserImpl implements DaoUsers {
 
         return list;
     }
-
+   
     @Override
-    public String usersIns(Users users) {
-        String result = null;
-        String sql = "INSERT INTO User("
-                + "name "
-                + "password "
-                + "Profile_idProfile "
-                + "Distribution_Center_idDistribution_Center"
-                + ") VALUES(?,?,?,?,?,?,?)";
+    public List<Users> usersQry_search(Integer center, Integer perfil,Integer dni , String name) {
+        List<Users> list = null;
+        String num =null;
+        if (dni==null){num =""; }else {num =dni.toString();}
+        
+        if (name==null)name="";
+        String sql =  "select idUser,name,password,password_change,status,"
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center From  User "
+                + "where Distribution_Center_idDistribution_Center='"
+                +center
+                +"' AND Profile_idProfile ='"+ perfil + "' AND idUser LIKE ? AND name LIKE ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, users.getname());
-                ps.setString(2, users.getPassword());
+                ps.setString(1, "%"+num+"%");
+                ps.setString(2,"%"+name+"%");
+                ResultSet rs = ps.executeQuery();
+                
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    Users c = new Users();
+                    c.setIdUser(rs.getInt(1));
+                    c.setname(rs.getString(2));
+                    c.setPassword(rs.getString(3));
+                    c.setPassword_change(rs.getInt(4));
+                    c.setStatus(rs.getInt(5));
+                    c.setProfile_idProfile(rs.getInt(6));
+                    c.setDistribution_Center_idDistribution_Center(rs.getInt(7));
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
+    }
+    
+    @Override
+    public String usersIns(Users users) {
+        String result = null;
+        String sql = "INSERT INTO User("
+                +"idUser,name,password,password_change,status,"
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center"
+                + ") VALUES(?,?,?,?,?,?,?)";
+         
+        
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, users.getIdUser());
+                ps.setString(2, users.getname());
+                 String hashed = BCrypt.hashpw(users.getPassword(), BCrypt.gensalt(12));
+                ps.setString(3,hashed );
+                ps.setInt(4, users.getPassword_change());
+                ps.setInt(5, users.getStatus());
                 ps.setInt(6, users.getProfile_idProfile());
                 ps.setInt(7, users.getDistribution_Center_idDistribution_Center());
-
                 int ctos = ps.executeUpdate();
+                
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
@@ -104,15 +150,19 @@ public class DaoUserImpl implements DaoUsers {
 
     @Override
     public String usersDel(List<Integer> ids) {
+        int sizelist= ids.size();
         String result = null;
-        String sql = "DELETE FROM User WHERE idUser=?";
-
+        String sql = "UPDATE  User SET "
+                + "status= '0' "
+                + "WHERE idUser=?";
+/*"DELETE FROM User WHERE idUser=?";*/
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                for (Integer x : ids) {
-                    ps.setInt(1, x);
+                for (int x = 0 ; x<sizelist ;x ++) {
+                    int z= ids.get(x);
+                    ps.setInt(1,z);
 
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
@@ -176,9 +226,11 @@ public class DaoUserImpl implements DaoUsers {
     public String usersUpd(Users users) {
         String result = null;
         String sql = "UPDATE  User SET "
-                + "name=? "
-                + "password=? "
-                + "Profile_idProfile=? "
+                + "name=? ,"
+                + "password=? ,"
+                + "password_change=? ,"
+                 + "status=? ,"
+                + "Profile_idProfile=? ,"
                 + "Distribution_Center_idDistribution_Center=? "
                 + "WHERE idUser=?";
 
@@ -187,10 +239,13 @@ public class DaoUserImpl implements DaoUsers {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, users.getname());
-                ps.setString(2, users.getPassword());
-                ps.setInt(3, users.getProfile_idProfile());
-                ps.setInt(4, users.getDistribution_Center_idDistribution_Center());
-                ps.setInt(5, users.getIdUser());
+                 String hashed = BCrypt.hashpw(users.getPassword(), BCrypt.gensalt(12));
+                ps.setString(2, hashed);
+                 ps.setInt(3, users.getPassword_change());
+                 ps.setInt(4, users.getStatus());
+                ps.setInt(5, users.getProfile_idProfile());
+                ps.setInt(6, users.getDistribution_Center_idDistribution_Center());
+                ps.setInt(7, users.getIdUser());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {

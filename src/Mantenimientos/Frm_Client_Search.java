@@ -72,9 +72,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
                     .addGroup(pnl_clientLayout.createSequentialGroup()
                         .addGroup(pnl_clientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lbl_name)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_clientLayout.createSequentialGroup()
-                                .addComponent(lbl_id)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(lbl_id, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGap(46, 46, 46)
                         .addGroup(pnl_clientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -110,7 +108,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {

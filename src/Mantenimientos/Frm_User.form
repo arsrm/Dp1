@@ -48,8 +48,8 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnl_user" max="32767" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <Component id="pnl_user" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btn_save" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -80,16 +80,12 @@
                       <Component id="lbl_profile" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_id" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_name" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_pwd" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_pwd_confirm" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="cbo_profile" pref="400" max="32767" attributes="0"/>
                       <Component id="txt_id" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
                       <Component id="txt_name" alignment="0" pref="400" max="32767" attributes="0"/>
-                      <Component id="txt_pwd" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="txt_pwd_confirm" min="-2" pref="200" max="-2" attributes="0"/>
                       <Component id="cbo_center" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="23" max="32767" attributes="0"/>
@@ -119,17 +115,7 @@
                       <Component id="lbl_name" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_name" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txt_pwd" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_pwd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_pwd_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_pwd_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="124" max="32767" attributes="0"/>
+                  <EmptySpace pref="32" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -143,14 +129,12 @@
         <Component class="javax.swing.JComboBox" name="cbo_center">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbo_centerActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_profile">
           <Properties>
@@ -160,12 +144,7 @@
         <Component class="javax.swing.JComboBox" name="cbo_profile">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
         </Component>
@@ -185,20 +164,6 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_nameActionPerformed"/>
           </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_pwd">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Nueva Contrase&#xf1;a"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_pwd_confirm">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Repetir Contrase&#xf1;a"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JPasswordField" name="txt_pwd">
-        </Component>
-        <Component class="javax.swing.JPasswordField" name="txt_pwd_confirm">
         </Component>
       </SubComponents>
     </Container>
