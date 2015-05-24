@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -87,7 +88,6 @@ public class DaoProdImpl implements DaoProducts {
     public String ProductsIns(Product p) {
         String result = null;
         String sql = "INSERT INTO Product("
-                + "idProduct,"
                 + "name,"
                 + "quantity_per_box,"
                 + "weight_per_box,"
@@ -98,23 +98,22 @@ public class DaoProdImpl implements DaoProducts {
                 + "Type_Condition_idType_Condition,"
                 + "cod_ean13,"
                 + "Trademark_id_Trademark"
-                + ") VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                + ") VALUES(?,?,?,?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, p.getIdProduct());
-                ps.setString(2, p.getName());
-                ps.setInt(3, p.getQuantityPerBox());
-                ps.setInt(4, p.getWeightPerBox());
-                ps.setInt(5, p.getQuantityBoxesPerPallet());
-                ps.setInt(6, p.getPhysicalStock());
-                ps.setInt(7, p.getFreeStock());
-                ps.setInt(8, p.getStatus());
-                ps.setInt(9, p.getTypeConditionWH());
-                ps.setString(10, p.getCodeEAN13());
-                ps.setInt(11, p.getTrademark());
+                ps.setString(1, p.getName());
+                ps.setInt(2, p.getQuantityPerBox());
+                ps.setInt(3, p.getWeightPerBox());
+                ps.setInt(4, p.getQuantityBoxesPerPallet());
+                ps.setInt(5, p.getPhysicalStock());
+                ps.setInt(6, p.getFreeStock());
+                ps.setInt(7, p.getStatus());
+                ps.setInt(8, p.getTypeConditionWH());
+                ps.setString(9, p.getCodeEAN13());
+                ps.setInt(10, p.getTrademark());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -139,17 +138,17 @@ public class DaoProdImpl implements DaoProducts {
     public Product ProductsGet(Integer idProduct) {
         Product p = null;
         String sql = "SELECT "
-                + "p.name,"
-                + "p.quantity_per_box,"
-                + "p.weight_per_box,"
-                + "p.quantity_boxes_per_pallet,"
-                + "p.physical_stock,"
-                + "p.free_stock,"
-                + "p.status,"
-                + "p.cod_ean13,"
-                + "p.Trademark_id_Trademark,"
-                + "p.Type_Condition_idType_Condition "
-                + "FROM Product p WHERE p.idProduct = ?";
+                + "name,"
+                + "quantity_per_box,"
+                + "weight_per_box,"
+                + "quantity_boxes_per_pallet,"
+                + "physical_stock,"
+                + "free_stock,"
+                + "status,"
+                + "cod_ean13,"
+                + "Trademark_id_Trademark,"
+                + "Type_Condition_idType_Condition "
+                + "FROM Product WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -170,8 +169,6 @@ public class DaoProdImpl implements DaoProducts {
                     p.setCodeEAN13(rs.getString(8));
                     p.setTrademark(rs.getInt(9));
                     p.setTypeConditionWH(rs.getInt(10));
-//                    
-//                    ps.executeUpdate();
                 }
 
             } catch (SQLException e) {
@@ -226,17 +223,18 @@ public class DaoProdImpl implements DaoProducts {
 
     public String ProductDel(Integer idProduct) {
         String result = null;
-        String sql = "DELETE "
-                + "FROM Product "
+        String sql = "UPDATE Product SET "
+                + "status = ? "
                 + "WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, idProduct);
-                ResultSet rs = ps.executeQuery();
+                ps.setInt(1, 0);//se cambia a cero el campo status
+                ps.setInt(2, idProduct);
 
+                ps.executeUpdate();
             } catch (SQLException e) {
                 result = e.getMessage();
             } finally {
@@ -259,7 +257,7 @@ public class DaoProdImpl implements DaoProducts {
                 + "quantity_boxes_per_pallet = ?,"
                 + "Type_Condition_idType_Condition = ? "
                 + "WHERE idProduct = ?";
-        
+
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -268,7 +266,7 @@ public class DaoProdImpl implements DaoProducts {
                 ps.setInt(2, p.getWeightPerBox());
                 ps.setInt(3, p.getQuantityBoxesPerPallet());
                 ps.setInt(4, p.getTypeConditionWH());
-                ps.setInt(5, p.getIdProduct());                
+                ps.setInt(5, p.getIdProduct());
 
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -282,6 +280,90 @@ public class DaoProdImpl implements DaoProducts {
             }
         }
         return result;
+    }
+
+    @Override
+    public List<Product> ProductsSearch(Integer idProduct, String name, Integer idTrademark) {
+        String sql = null;
+        List<Product> products = null;
+        if (idProduct != 0) {
+            sql = "SELECT "
+                    + "idProduct,"
+                    + "name,"
+                    + "quantity_per_box,"
+                    + "weight_per_box,"
+                    + "quantity_boxes_per_pallet,"
+                    + "physical_stock,"
+                    + "free_stock,"
+                    + "status,"
+                    + "cod_ean13,"
+                    + "Trademark_id_Trademark,"
+                    + "Type_Condition_idType_Condition "
+                    + "FROM Product "
+                    + "WHERE name LIKE ? AND "
+                    + "Trademark_id_Trademark LIKE ? AND "
+                    + "idProduct LIKE ?";
+        } else {
+            sql = "SELECT "
+                    + "idProduct,"
+                    + "name,"
+                    + "quantity_per_box,"
+                    + "weight_per_box,"
+                    + "quantity_boxes_per_pallet,"
+                    + "physical_stock,"
+                    + "free_stock,"
+                    + "status,"
+                    + "cod_ean13,"
+                    + "Trademark_id_Trademark,"
+                    + "Type_Condition_idType_Condition "
+                    + "FROM Product "
+                    + "WHERE "
+                    + "name LIKE ? AND "
+                    + "Trademark_id_Trademark LIKE ?";
+        }
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, "%" + name + "%");
+                ps.setString(2, "%" + idTrademark + "%");
+
+                if (idProduct != 0) {
+                    ps.setString(3, "%" + idProduct + "%");
+                }
+
+                ResultSet rs = ps.executeQuery();
+
+                products = new LinkedList<>();
+                while (rs.next()) {
+                    Product p = new Product();
+
+                    p.setIdProduct(rs.getInt(1));
+                    p.setName(rs.getString(2));
+                    p.setQuantityPerBox(rs.getInt(3));
+                    p.setWeightPerBox(rs.getInt(4));
+                    p.setQuantityBoxesPerPallet(rs.getInt(5));
+                    p.setPhysicalStock(rs.getInt(6));
+                    p.setFreeStock(rs.getInt(7));
+                    p.setStatus(rs.getInt(8));
+                    p.setCodeEAN13(rs.getString(9));
+                    p.setTrademark(rs.getInt(10));
+                    p.setTypeConditionWH(rs.getInt(11));
+
+                    products.add(p);
+                }
+
+            } catch (SQLException e) {
+                products = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return products;
     }
 
 }

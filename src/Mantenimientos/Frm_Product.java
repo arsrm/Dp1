@@ -6,10 +6,18 @@
 package Mantenimientos;
 
 import Model.Product;
+import Model.Trademark;
+import Model.Type_Condition_WareHouse;
 import dao.DaoProducts;
+import dao.DaoTrademark;
+import dao.DaoTypeConditionWH;
 import dao.impl.DaoProdImpl;
+import dao.impl.DaoTrademarkImpl;
+import dao.impl.DaoTypeConditionWHImpl;
 import java.awt.Color;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -27,12 +35,27 @@ public class Frm_Product extends javax.swing.JFrame {
      para hacer Update a un registro ya existente (product != null) */
     Product product;
     DaoProducts daoProducts = new DaoProdImpl();
+    DaoTypeConditionWH daoTcWH = new DaoTypeConditionWHImpl();
+    DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    List<Type_Condition_WareHouse> tcWhList = null;
+    List<Trademark> trademarkList = null;
+    Trademark trademarkSelected;
+    Type_Condition_WareHouse tcWhSelected;
 
     public Frm_Product(Frm_Product_Search menu, Product p) {
         setTitle("Mantenimiento de Productos");
         menu_padre = menu;
         product = p;
         initComponents();
+        tcWhList = daoTcWH.tcwhQry();
+        for (int i = 0; i < tcWhList.size(); i++) {
+            cbo_conditionWH.addItem(tcWhList.get(i).getDescription());
+        }
+
+        trademarkList = daoTrademark.TrademarkQry();
+        for (int i = 0; i < trademarkList.size(); i++) {
+            cbo_trademark.addItem(trademarkList.get(i).getName());
+        }
         if (product != null) {
             initializeForm();
         }
@@ -105,12 +128,24 @@ public class Frm_Product extends javax.swing.JFrame {
 
         lbl_FreeStock.setText("Stock Libre");
 
+        cbo_trademark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_trademarkActionPerformed(evt);
+            }
+        });
+
         txt_freeStock.setText("0");
         txt_freeStock.setEnabled(false);
 
         lbl_quantityPerBox.setText("Unidades por Caja");
 
         jLabel1.setText("Condición de Almacén");
+
+        cbo_conditionWH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_conditionWHActionPerformed(evt);
+            }
+        });
 
         lbl_weightPerBox.setText("Peso Neto por Caja (Kg)");
 
@@ -238,6 +273,19 @@ public class Frm_Product extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initializeForm() {
+        cbo_trademark.setEnabled(false);
+        for(int i=0; i<trademarkList.size();i++){
+            if(trademarkList.get(i).getId_Trademark() == product.getTrademark()){
+                cbo_trademark.setSelectedItem(trademarkList.get(i).getName());
+            }
+        }
+        
+        cbo_conditionWH.setEnabled(false);
+        for(int i=0; i<tcWhList.size();i++){
+            if(tcWhList.get(i).getIdType_Condition_WareHouse()== product.getTypeConditionWH()){
+                cbo_conditionWH.setSelectedItem(tcWhList.get(i).getDescription());
+            }
+        }        
         txt_codEan13.setEnabled(false);
         txt_name.setEnabled(false);
         txt_codEan13.setText(product.getCodeEAN13());
@@ -252,14 +300,13 @@ public class Frm_Product extends javax.swing.JFrame {
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menu_padre.setVisible(true);
+        menu_padre.initilizeTable();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-                
+
         if (product == null) { //Guardar nuevo producto
-            Integer maxIdProduct = daoProducts.ProductsGetMaxID();
             product = new Product();
-            product.setIdProduct(maxIdProduct + 1);
             product.setName(txt_name.getText());
             product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
             product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
@@ -267,8 +314,8 @@ public class Frm_Product extends javax.swing.JFrame {
             product.setPhysicalStock(Integer.parseInt(txt_physicalStock.getText()));
             product.setFreeStock(Integer.parseInt(txt_freeStock.getText()));
             product.setStatus(1);
-            product.setTrademark(1);
-            product.setTypeConditionWH(1);
+            product.setTrademark(trademarkSelected.getId_Trademark());
+            product.setTypeConditionWH(tcWhSelected.getIdType_Condition_WareHouse());
             product.setCodeEAN13(txt_codEan13.getText());
             daoProducts.ProductsIns(product);
         } else {
@@ -277,19 +324,20 @@ public class Frm_Product extends javax.swing.JFrame {
             product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
             product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
             product.setTypeConditionWH(1);
-            
+
             daoProducts.ProductsUpd(product);
         }
-//        Object[] options = {"OK"};
-//        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-//                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-//            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-//            if (ok_option == JOptionPane.OK_OPTION) {
-//                menu_padre.setVisible(true);
-//                menu_padre.setLocationRelativeTo(null);
-//                this.dispose();
-//            }
-//        }
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                menu_padre.setVisible(true);
+                menu_padre.setLocationRelativeTo(null);
+                menu_padre.initilizeTable();
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void txt_nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_nameActionPerformed
@@ -299,8 +347,29 @@ public class Frm_Product extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         menu_padre.setVisible(true);
-        this.dispose();
+        menu_padre.initilizeTable();
+        this.dispose();        
     }//GEN-LAST:event_formWindowClosed
+
+    private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
+        if (cbo_trademark.getSelectedItem() != null) {
+            for (int i = 0; i < trademarkList.size(); i++) {
+                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                    trademarkSelected = trademarkList.get(i);
+                }
+            }
+        }
+    }//GEN-LAST:event_cbo_trademarkActionPerformed
+
+    private void cbo_conditionWHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_conditionWHActionPerformed
+        if (cbo_conditionWH.getSelectedItem() != null) {
+            for (int i = 0; i < tcWhList.size(); i++) {
+                if (cbo_conditionWH.getSelectedItem().equals(tcWhList.get(i).getDescription())) {
+                    tcWhSelected = tcWhList.get(i);
+                }
+            }
+        }
+    }//GEN-LAST:event_cbo_conditionWHActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;

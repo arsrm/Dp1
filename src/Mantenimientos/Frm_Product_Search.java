@@ -6,10 +6,13 @@
 package Mantenimientos;
 
 import Model.Product;
+import Model.Trademark;
 import Operaciones.Frm_ProductInterment_Detail;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoProducts;
+import dao.DaoTrademark;
 import dao.impl.DaoProdImpl;
+import dao.impl.DaoTrademarkImpl;
 import java.awt.Color;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
@@ -31,12 +34,23 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     DaoProducts daoProducts = new DaoProdImpl();
     DefaultTableModel modelo;
+    List<Integer> idProductDeleteList = new ArrayList<Integer>();
+    List<Trademark> trademarkList = null;
+    DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    Trademark trademarkSelected;
+    Integer idProdSearch;
+    String nameSearch;
+    Integer idTrademarkSearch;
 
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
         menuaux = menu;
         initComponents();
         modelo = (DefaultTableModel) tbl_product.getModel();
+        trademarkList = daoTrademark.TrademarkQry();
+        for (int i = 0; i < trademarkList.size(); i++) {
+            cbo_trademark.addItem(trademarkList.get(i).getName());
+        }
         initilizeTable();
     }
 
@@ -83,7 +97,18 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
         lbl_trademark.setText("Marca");
 
+        txt_idProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_idProductActionPerformed(evt);
+            }
+        });
+
         btn_search.setText("Buscar");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_productLayout = new javax.swing.GroupLayout(pnl_product);
         pnl_product.setLayout(pnl_productLayout);
@@ -166,7 +191,12 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -243,27 +273,96 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         if (evt.getSource() == tbl_product) {
             int rowSel = tbl_product.getSelectedRow();
             int colSel = tbl_product.getSelectedColumn();
-//            idProductSel = Integer.parseInt(tbl_product.getValueAt(rowSel, 0).toString());
-            prod = daoProducts.ProductsGet(2);
+            if (colSel != 6) {
+                idProductSel = Integer.parseInt(tbl_product.getValueAt(rowSel, 0).toString());
+                prod = daoProducts.ProductsGet(idProductSel);
 
-            Frm_Product frm_product = new Frm_Product(this, prod);
-            frm_product.setVisible(true);;
-            frm_product.setLocation(300, 100);
-            frm_product.setLocationRelativeTo(null);
-            this.setVisible(false);
-
+                Frm_Product frm_product = new Frm_Product(this, prod);
+                frm_product.setVisible(true);
+                frm_product.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
         }
     }//GEN-LAST:event_tbl_productMouseClicked
 
-    private void initilizeTable() {
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        for (int i = 0; i < tbl_product.getRowCount(); i++) {
+            if ((Boolean) tbl_product.getValueAt(i, 6)) {
+                idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
+            }
+        }
+        daoProducts.ProductsDel(idProductDeleteList);
+        initilizeTable();
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        String trademark = null;
+        String status = null;
+        if (txt_idProduct.getText().length() !=0) {
+            idProdSearch = Integer.parseInt(txt_idProduct.getText().toString());
+        } else {
+            idProdSearch = 0;
+        }
+
+        String name = txt_name.getText();
+
+        List<Product> productList = new ArrayList<Product>();
+        if (cbo_trademark.getSelectedItem() != null) {
+            for (int i = 0; i < trademarkList.size(); i++) {
+                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                    trademarkSelected = trademarkList.get(i);
+                }
+            }
+        }
+        idTrademarkSearch = trademarkSelected.getId_Trademark();
+        productList = daoProducts.ProductsSearch(idProdSearch, name, idTrademarkSearch);
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < productList.size(); i++) {
+                for (int j = 0; j < trademarkList.size(); j++) {
+                    if (trademarkList.get(j).getId_Trademark() == productList.get(i).getTrademark()) {
+                        trademark = trademarkList.get(j).getName();
+                    }
+                }
+                if (productList.get(i).getStatus() == 0) {
+                    status = "Inactivo";
+                } else {
+                    status = "Activo";
+                }
+                Object[] fila = {productList.get(i).getIdProduct(), productList.get(i).getName(), trademark,
+                    productList.get(i).getPhysicalStock(), productList.get(i).getFreeStock(), status, false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void txt_idProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_idProductActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_idProductActionPerformed
+
+    public void initilizeTable() {
+        String trademark = null;
+        String status = null;
         List<Product> list = new ArrayList<Product>();
         list = daoProducts.ProductsQry();
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         try {
             for (int i = 0; i < list.size(); i++) {
-                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getName(), list.get(i).getTrademark(),
-                    list.get(i).getPhysicalStock(), list.get(i).getFreeStock(), list.get(i).getStatus()};
+                for (int j = 0; j < trademarkList.size(); j++) {
+                    if (trademarkList.get(j).getId_Trademark() == list.get(i).getTrademark()) {
+                        trademark = trademarkList.get(j).getName();
+                    }
+                }
+                if (list.get(i).getStatus() == 0) {
+                    status = "Inactivo";
+                } else {
+                    status = "Activo";
+                }
+                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getName(), trademark,
+                    list.get(i).getPhysicalStock(), list.get(i).getFreeStock(), status, false};
                 modelo.addRow(fila);
             }
         } catch (Exception e) {
