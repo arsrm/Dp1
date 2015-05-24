@@ -3,11 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Mantenimientos;
 
+import Model.Type_Condition_WareHouse;
+import Model.Warehouse;
+import dao.DaoTypeConditionWH;
+import dao.DaoWH;
+import dao.impl.DaoTypeConditionWHImpl;
+import dao.impl.DaoWHImpl;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,11 +27,40 @@ public class Frm_Warehouse extends javax.swing.JFrame {
      * Creates new form Frm_rack
      */
     Frm_Warehouse_Search menu_padre = new Frm_Warehouse_Search();
-    
-    public Frm_Warehouse(Frm_Warehouse_Search menu) {
-        setTitle("Mantenimiento de Almacenes"); 
+
+    Warehouse warehouse;
+    DaoWH daoWH = new DaoWHImpl();
+    DaoTypeConditionWH daoTC = new DaoTypeConditionWHImpl();
+    List<Type_Condition_WareHouse> typeConditionList = null;
+    Type_Condition_WareHouse tcWhSelected;
+   
+
+    public Frm_Warehouse(Frm_Warehouse_Search menu, Warehouse wh) {
+        setTitle("Mantenimiento de Almacenes");
         menu_padre = menu;
+        warehouse = wh;
         initComponents();
+        
+        typeConditionList = daoTC.tcwhQry();
+        int cantTC = typeConditionList.size();
+        cbo_type_condition.addItem("Seleccionar");
+        for (int i = 0; i < cantTC; i++) {
+            cbo_type_condition.addItem(typeConditionList.get(i).getDescription());
+        }
+        if (warehouse != null) {
+            initializeForm();
+        }
+
+    }
+
+    private void initializeForm() {
+        cbo_type_condition.setEnabled(false);
+        for (int i=0; i<typeConditionList.size();i++){
+            if(typeConditionList.get(i).getIdType_Condition_WareHouse() == warehouse.getType_Condition_WareHouse_idType_Condition_WareHouse()){
+                cbo_type_condition.setSelectedItem(typeConditionList.get(i).getDescription());
+            }
+        }
+        txt_description.setText(warehouse.getDescription());
     }
 
     /**
@@ -38,10 +75,10 @@ public class Frm_Warehouse extends javax.swing.JFrame {
         pnl_warehouse = new javax.swing.JPanel();
         lbl_type_condition = new javax.swing.JLabel();
         txt_description = new javax.swing.JTextField();
-        cbo_distribution_center = new javax.swing.JComboBox();
         cbo_type_condition = new javax.swing.JComboBox();
         lbl_description = new javax.swing.JLabel();
         lbl_distribution_center = new javax.swing.JLabel();
+        txt_DistributionCenter = new javax.swing.JTextField();
         btn_save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
@@ -56,13 +93,17 @@ public class Frm_Warehouse extends javax.swing.JFrame {
 
         lbl_type_condition.setText("Tipo de Condición");
 
-        cbo_distribution_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
-
-        cbo_type_condition.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
+        cbo_type_condition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_type_conditionActionPerformed(evt);
+            }
+        });
 
         lbl_description.setText("Descripción");
 
         lbl_distribution_center.setText("Centro de Distribución");
+
+        txt_DistributionCenter.setEnabled(false);
 
         javax.swing.GroupLayout pnl_warehouseLayout = new javax.swing.GroupLayout(pnl_warehouse);
         pnl_warehouse.setLayout(pnl_warehouseLayout);
@@ -78,7 +119,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
                 .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_DistributionCenter, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         pnl_warehouseLayout.setVerticalGroup(
@@ -87,7 +128,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_distribution_center)
-                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_DistributionCenter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_type_condition)
@@ -154,19 +195,44 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        // TODO add your handling code here:
+        if (warehouse == null) { //Guardar nuevo producto
+
+            warehouse = new Warehouse();
+            warehouse.setDescription(txt_description.getText());
+            warehouse.setType_Condition_WareHouse_idType_Condition_WareHouse(tcWhSelected.getIdType_Condition_WareHouse());
+            warehouse.setDistribution_Center_idDistribution_Center(1);
+            warehouse.setStatus(1);
+            daoWH.whIns(warehouse);
+
+        } else {
+            warehouse.setDescription(txt_description.getText());
+            daoWH.whUpd(warehouse);
+        }
+
         Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al Almacén con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al Almacén con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
                 menu_padre.setVisible(true);
                 menu_padre.setLocationRelativeTo(null);
                 this.dispose();
             }
         }
+        menu_padre.initilizeTable();
     }//GEN-LAST:event_btn_saveActionPerformed
-    
+
+    private void cbo_type_conditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_type_conditionActionPerformed
+        if (cbo_type_condition.getSelectedItem() != null) {
+            for (int i = 0; i < typeConditionList.size(); i++) {
+                if (cbo_type_condition.getSelectedItem().equals(typeConditionList.get(i).getDescription())) {
+                    tcWhSelected = typeConditionList.get(i);
+
+                }
+            }
+        }
+    }//GEN-LAST:event_cbo_type_conditionActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -205,12 +271,14 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_save;
-    private javax.swing.JComboBox cbo_distribution_center;
     private javax.swing.JComboBox cbo_type_condition;
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_distribution_center;
     private javax.swing.JLabel lbl_type_condition;
     private javax.swing.JPanel pnl_warehouse;
+    private javax.swing.JTextField txt_DistributionCenter;
     private javax.swing.JTextField txt_description;
     // End of variables declaration//GEN-END:variables
+
+    
 }

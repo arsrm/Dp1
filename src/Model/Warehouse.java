@@ -17,11 +17,9 @@ public class Warehouse {
     private String description;
     private Timestamp created_at;
     private Timestamp update_at;
-    private Timestamp deleted_at;
     private Integer Type_Condition_WareHouse_idType_Condition_WareHouse;
-    private Integer Type_Product_idType_Product;
     private Integer Distribution_Center_idDistribution_Center;
-    private String Warehousecol;
+    private Integer status;
 
     public Integer getStatus() {
         return status;
@@ -30,7 +28,6 @@ public class Warehouse {
     public void setStatus(Integer status) {
         this.status = status;
     }
-    private Integer status;
     public Integer getIdWarehouse() {
         return idWarehouse;
     }
@@ -63,28 +60,12 @@ public class Warehouse {
         this.update_at = update_at;
     }
 
-    public Timestamp getDeleted_at() {
-        return deleted_at;
-    }
-
-    public void setDeleted_at(Timestamp deleted_at) {
-        this.deleted_at = deleted_at;
-    }
-
     public Integer getType_Condition_WareHouse_idType_Condition_WareHouse() {
         return Type_Condition_WareHouse_idType_Condition_WareHouse;
     }
 
     public void setType_Condition_WareHouse_idType_Condition_WareHouse(Integer Type_Condition_WareHouse_idType_Condition_WareHouse) {
         this.Type_Condition_WareHouse_idType_Condition_WareHouse = Type_Condition_WareHouse_idType_Condition_WareHouse;
-    }
-
-    public Integer getType_Product_idType_Product() {
-        return Type_Product_idType_Product;
-    }
-
-    public void setType_Product_idType_Product(Integer Type_Product_idType_Product) {
-        this.Type_Product_idType_Product = Type_Product_idType_Product;
     }
 
     public Integer getDistribution_Center_idDistribution_Center() {
@@ -95,12 +76,5 @@ public class Warehouse {
         this.Distribution_Center_idDistribution_Center = Distribution_Center_idDistribution_Center;
     }
 
-    public String getWarehousecol() {
-        return Warehousecol;
-    }
-
-    public void setWarehousecol(String Warehousecol) {
-        this.Warehousecol = Warehousecol;
-    }
     
 }
