@@ -14,13 +14,5 @@ import java.util.List;
  * @author CHACON
  */
 public interface DaoTypeConditionWH {
-    public List<Type_Condition_WareHouse> tcwhQry();
-    
-    public String tcwhIns(Type_Condition_WareHouse tcwh);
-    
-    public String tcwhDel(List<Integer> ids);
-    
-    public Type_Condition_WareHouse tcwhGet(Integer idtc);
-    
-    public String tcwhUpd(Type_Condition_WareHouse tc);
+    public List<Type_Condition_WareHouse> tcwhQry();   
 }
