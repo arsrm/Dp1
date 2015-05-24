@@ -409,16 +409,16 @@ public class DaoUserImpl implements DaoUsers {
         return cap;
     }
 
-    //gzavala-inicio
+    //gzavala-inicio 
     @Override
     public boolean accesswindow(Integer idrol, String idwindows) {
 
         boolean opcion=false;
         int  status ; 
-        String sql = "select coalesce(status,0)  from user_windows \n" +
-                "where id_user="+ idrol +" \n" +
-                "and id_windows='"+idwindows+"';";
-
+        String sql = "select coalesce(status,0)  from profile_windows  \n" +
+                     "where id_profile="+ idrol +" \n" +
+                     "and id_windows='"+idwindows+"';" ;
+        
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
