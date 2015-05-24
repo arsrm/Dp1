@@ -43,7 +43,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         initComponents();
                typeConditionList = daoTypeWh.tcwhQry();
         int cantTC = typeConditionList.size();
-        cbo_type_condition.addItem("Seleccionar");
+//        cbo_type_condition.addItem("Seleccionar");
         for (int i = 0; i < cantTC; i++) {
             cbo_type_condition.addItem(typeConditionList.get(i).getDescription());
         }
@@ -70,8 +70,6 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         tbl_warehouse = new javax.swing.JTable();
         btn_cancel = new javax.swing.JButton();
         pnl_warehouse = new javax.swing.JPanel();
-        lbl_distribution_center = new javax.swing.JLabel();
-        cbo_distribution_center = new javax.swing.JComboBox();
         btn_search = new javax.swing.JButton();
         lbl_type_condition = new javax.swing.JLabel();
         cbo_type_condition = new javax.swing.JComboBox();
@@ -142,10 +140,6 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
 
         pnl_warehouse.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterio de Búsqueda"));
 
-        lbl_distribution_center.setText("Centro de Distribución");
-
-        cbo_distribution_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
-
         btn_search.setText("Buscar");
         btn_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,7 +149,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
 
         lbl_type_condition.setText("Tipo de Condición");
 
-        jLabel1.setText("ID Almacen");
+        jLabel1.setText("ID");
 
         javax.swing.GroupLayout pnl_warehouseLayout = new javax.swing.GroupLayout(pnl_warehouse);
         pnl_warehouse.setLayout(pnl_warehouseLayout);
@@ -169,24 +163,18 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_warehouseLayout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_distribution_center)
                             .addComponent(lbl_type_condition)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                        .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
-                            .addComponent(cbo_type_condition, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txt_IdWh, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_IdWh, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(197, 197, 197))
         );
         pnl_warehouseLayout.setVerticalGroup(
             pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_warehouseLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_distribution_center)
-                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_type_condition)
                     .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -196,7 +184,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
                     .addComponent(txt_IdWh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addComponent(btn_search)
-                .addGap(39, 39, 39))
+                .addGap(77, 77, 77))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -366,11 +354,9 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_new;
     private javax.swing.JButton btn_search;
-    private javax.swing.JComboBox cbo_distribution_center;
     private javax.swing.JComboBox cbo_type_condition;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_distribution_center;
     private javax.swing.JLabel lbl_type_condition;
     private javax.swing.JPanel pnl_warehouse;
     private javax.swing.JTable tbl_warehouse;

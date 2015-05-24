@@ -84,46 +84,63 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="1" groupAlignment="1" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Group type="103" groupAlignment="1" attributes="0">
-                                          <Component id="lbl_physicalStock" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="lbl_FreeStock" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="lbl_boxesPerPallet" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="lbl_trademark" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_name" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_ean13" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="txt_freeStock" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txt_physicalStock" alignment="0" max="32767" attributes="0"/>
-                              <Component id="txt_boxesPerPallet" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cbo_conditionWH" min="-2" pref="300" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="txt_name" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbo_trademark" alignment="0" max="32767" attributes="0"/>
+                              <Component id="txt_codEan13" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
+                          <Component id="cbo_conditionWH" min="-2" pref="300" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_trademark" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_name" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_quantityPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_weightPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_ean13" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" alignment="1" attributes="0">
+                                          <Group type="103" groupAlignment="1" attributes="0">
+                                              <Component id="lbl_physicalStock" alignment="0" min="-2" max="-2" attributes="0"/>
+                                              <Component id="lbl_FreeStock" alignment="0" min="-2" max="-2" attributes="0"/>
+                                          </Group>
+                                          <EmptySpace min="-2" pref="105" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" alignment="0" attributes="0">
+                                          <Component id="lbl_boxesPerPallet" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txt_freeStock" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txt_physicalStock" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="txt_boxesPerPallet" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lbl_quantityPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lbl_weightPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="txt_quatityPerBox" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                      <Component id="txt_weightPerBox" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="44" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="txt_weightPerBox" min="-2" pref="100" max="-2" attributes="0"/>
-                              <Component id="txt_name" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cbo_trademark" alignment="0" pref="300" max="32767" attributes="0"/>
-                              <Component id="txt_quatityPerBox" alignment="0" min="-2" pref="100" max="-2" attributes="0"/>
-                              <Component id="txt_codEan13" alignment="0" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lbl_unitUnitsPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitWieghtPerBox" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitBoxesPerPallet" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitPhysicalStock" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitFreeStock" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -134,52 +151,64 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_ean13" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_codEan13" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_name" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_name" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="cbo_trademark" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_trademark" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_quantityPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_quatityPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_weightPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_weightPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txt_boxesPerPallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_boxesPerPallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_physicalStock" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_physicalStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lbl_ean13" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_codEan13" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lbl_name" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_name" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="cbo_trademark" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_trademark" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="cbo_conditionWH" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lbl_quantityPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_quatityPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitUnitsPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lbl_weightPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_weightPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitWieghtPerBox" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txt_boxesPerPallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_boxesPerPallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_unitBoxesPerPallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="lbl_physicalStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_physicalStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lbl_unitPhysicalStock" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_FreeStock" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_freeStock" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_unitFreeStock" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_conditionWH" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace pref="65" max="32767" attributes="0"/>
+                  <EmptySpace pref="52" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -189,11 +218,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_boxesPerPallet">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Cantidad de Cajas por Pallet"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_name">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Nombre"/>
           </Properties>
         </Component>
@@ -201,11 +232,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_physicalStock">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Stock F&#xed;sico"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_trademark">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Marca"/>
           </Properties>
         </Component>
@@ -222,6 +255,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_FreeStock">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Stock Libre"/>
           </Properties>
         </Component>
@@ -243,11 +277,13 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_quantityPerBox">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Unidades por Caja"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="Condici&#xf3;n de Almac&#xe9;n"/>
           </Properties>
         </Component>
@@ -265,15 +301,42 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_weightPerBox">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Peso Neto por Caja (Kg)"/>
+            <Property name="horizontalAlignment" type="int" value="2"/>
+            <Property name="text" type="java.lang.String" value="Peso Neto por Caja"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_ean13">
           <Properties>
+            <Property name="horizontalAlignment" type="int" value="2"/>
             <Property name="text" type="java.lang.String" value="C&#xf3;digo EAN13"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_codEan13">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unitUnitsPerBox">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Unidades"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unitWieghtPerBox">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kg."/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unitBoxesPerPallet">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cajas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unitPhysicalStock">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cajas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unitFreeStock">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cajas"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

@@ -90,6 +90,11 @@ public class Frm_Product extends javax.swing.JFrame {
         lbl_weightPerBox = new javax.swing.JLabel();
         lbl_ean13 = new javax.swing.JLabel();
         txt_codEan13 = new javax.swing.JTextField();
+        lbl_unitUnitsPerBox = new javax.swing.JLabel();
+        lbl_unitWieghtPerBox = new javax.swing.JLabel();
+        lbl_unitBoxesPerPallet = new javax.swing.JLabel();
+        lbl_unitPhysicalStock = new javax.swing.JLabel();
+        lbl_unitFreeStock = new javax.swing.JLabel();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -109,12 +114,16 @@ public class Frm_Product extends javax.swing.JFrame {
         pnl_product.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
         pnl_product.setPreferredSize(new java.awt.Dimension(800, 600));
 
+        lbl_boxesPerPallet.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_boxesPerPallet.setText("Cantidad de Cajas por Pallet");
 
+        lbl_name.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_name.setText("Nombre");
 
+        lbl_physicalStock.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_physicalStock.setText("Stock Físico");
 
+        lbl_trademark.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_trademark.setText("Marca");
 
         txt_physicalStock.setText("0");
@@ -126,6 +135,7 @@ public class Frm_Product extends javax.swing.JFrame {
             }
         });
 
+        lbl_FreeStock.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_FreeStock.setText("Stock Libre");
 
         cbo_trademark.addActionListener(new java.awt.event.ActionListener() {
@@ -137,8 +147,10 @@ public class Frm_Product extends javax.swing.JFrame {
         txt_freeStock.setText("0");
         txt_freeStock.setEnabled(false);
 
+        lbl_quantityPerBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_quantityPerBox.setText("Unidades por Caja");
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setText("Condición de Almacén");
 
         cbo_conditionWH.addActionListener(new java.awt.event.ActionListener() {
@@ -147,9 +159,21 @@ public class Frm_Product extends javax.swing.JFrame {
             }
         });
 
-        lbl_weightPerBox.setText("Peso Neto por Caja (Kg)");
+        lbl_weightPerBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lbl_weightPerBox.setText("Peso Neto por Caja");
 
+        lbl_ean13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_ean13.setText("Código EAN13");
+
+        lbl_unitUnitsPerBox.setText("Unidades");
+
+        lbl_unitWieghtPerBox.setText("Kg.");
+
+        lbl_unitBoxesPerPallet.setText("Cajas");
+
+        lbl_unitPhysicalStock.setText("Cajas");
+
+        lbl_unitFreeStock.setText("Cajas");
 
         javax.swing.GroupLayout pnl_productLayout = new javax.swing.GroupLayout(pnl_product);
         pnl_product.setLayout(pnl_productLayout);
@@ -160,79 +184,100 @@ public class Frm_Product extends javax.swing.JFrame {
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(pnl_productLayout.createSequentialGroup()
-                                    .addComponent(jLabel1)
-                                    .addGap(56, 56, 56))
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_productLayout.createSequentialGroup()
-                                    .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lbl_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(lbl_FreeStock, javax.swing.GroupLayout.Alignment.LEADING))
-                                    .addGap(105, 105, 105)))
-                            .addGroup(pnl_productLayout.createSequentialGroup()
-                                .addComponent(lbl_boxesPerPallet)
-                                .addGap(24, 24, 24)))
-                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txt_freeStock, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnl_productLayout.createSequentialGroup()
-                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_trademark)
                             .addComponent(lbl_name)
-                            .addComponent(lbl_quantityPerBox)
-                            .addComponent(lbl_weightPerBox)
                             .addComponent(lbl_ean13))
-                        .addGap(44, 44, 44)
+                        .addGap(92, 92, 92)
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_name)
-                            .addComponent(cbo_trademark, 0, 300, Short.MAX_VALUE)
-                            .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_codEan13))))
+                            .addComponent(cbo_trademark, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txt_codEan13, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(pnl_productLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(56, 56, 56)
+                        .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnl_productLayout.createSequentialGroup()
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_productLayout.createSequentialGroup()
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productLayout.createSequentialGroup()
+                                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(lbl_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(lbl_FreeStock, javax.swing.GroupLayout.Alignment.LEADING))
+                                        .addGap(105, 105, 105))
+                                    .addGroup(pnl_productLayout.createSequentialGroup()
+                                        .addComponent(lbl_boxesPerPallet)
+                                        .addGap(24, 24, 24)))
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txt_freeStock, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(pnl_productLayout.createSequentialGroup()
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_quantityPerBox)
+                                    .addComponent(lbl_weightPerBox))
+                                .addGap(67, 67, 67)
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_unitUnitsPerBox)
+                            .addComponent(lbl_unitWieghtPerBox)
+                            .addComponent(lbl_unitBoxesPerPallet)
+                            .addComponent(lbl_unitPhysicalStock)
+                            .addComponent(lbl_unitFreeStock))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_productLayout.setVerticalGroup(
             pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_ean13)
-                    .addComponent(txt_codEan13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_name)
-                    .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_trademark))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_quantityPerBox)
-                    .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_weightPerBox)
-                    .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_boxesPerPallet))
-                .addGap(15, 15, 15)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_physicalStock)
-                    .addComponent(txt_physicalStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_productLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_ean13)
+                            .addComponent(txt_codEan13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_name)
+                            .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_trademark))
+                        .addGap(19, 19, 19)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(23, 23, 23)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_quantityPerBox)
+                            .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_unitUnitsPerBox))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_weightPerBox)
+                            .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_unitWieghtPerBox))
+                        .addGap(18, 18, 18)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_boxesPerPallet)
+                            .addComponent(lbl_unitBoxesPerPallet))
+                        .addGap(15, 15, 15)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_physicalStock)
+                            .addComponent(txt_physicalStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lbl_unitPhysicalStock)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_FreeStock)
-                    .addComponent(txt_freeStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(65, Short.MAX_VALUE))
+                    .addComponent(txt_freeStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_unitFreeStock))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         btn_cancel.setText("Cancelar");
@@ -384,6 +429,11 @@ public class Frm_Product extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_physicalStock;
     private javax.swing.JLabel lbl_quantityPerBox;
     private javax.swing.JLabel lbl_trademark;
+    private javax.swing.JLabel lbl_unitBoxesPerPallet;
+    private javax.swing.JLabel lbl_unitFreeStock;
+    private javax.swing.JLabel lbl_unitPhysicalStock;
+    private javax.swing.JLabel lbl_unitUnitsPerBox;
+    private javax.swing.JLabel lbl_unitWieghtPerBox;
     private javax.swing.JLabel lbl_weightPerBox;
     private javax.swing.JPanel pnl_product;
     private javax.swing.JTextField txt_boxesPerPallet;
