@@ -409,4 +409,44 @@ public class DaoUserImpl implements DaoUsers {
         return cap;
     }
 
+    //gzavala-inicio
+    @Override
+    public boolean accesswindow(Integer idrol, String idwindows) {
+
+        boolean opcion=false;
+        int  status ; 
+        String sql = "select coalesce(status,0)  from user_windows \n" +
+                "where id_user="+ idrol +" \n" +
+                "and id_windows='"+idwindows+"';";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    status = rs.getInt(1);
+                     if (status==1 ){
+                       opcion=true;
+                     }
+                }
+                
+            } catch (SQLException e) {
+
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+          
+        }
+       
+        return opcion;
+        
+        
+    }
+    //gzavala-fin    
+    
+    
 }

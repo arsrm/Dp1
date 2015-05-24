@@ -23,6 +23,11 @@ public interface DaoUsers {
     public String setpasword(Integer id , String password,Integer flag);
     
     public Integer getflagpwd(Integer id);
+
+    //gzavala-inicio 24/05 15:45
+    public boolean accesswindow(Integer idrol, String idwindows);
+    //gzavala-fin   24/05 15:45 
+    
     
 }
 
