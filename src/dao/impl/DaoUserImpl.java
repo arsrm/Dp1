@@ -415,9 +415,18 @@ public class DaoUserImpl implements DaoUsers {
 
         boolean opcion=false;
         int  status ; 
+        
+        //gzavala-inicio 24/05 16:36
+        /*
         String sql = "select coalesce(status,0)  from profile_windows  \n" +
                      "where id_profile="+ idrol +" \n" +
                      "and id_windows='"+idwindows+"';" ;
+        */
+        String sql = "select count(1) from profile_windows  \n" +
+                    "where id_profile="+idrol+"  \n" +
+                    "and status=1  \n" +
+                    "and id_windows='"+idwindows+"';" ;
+        //gzavala-fin 24/05 16:36
         
         Connection cn = db.getConnection();
         if (cn != null) {
