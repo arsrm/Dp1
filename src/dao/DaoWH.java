@@ -6,9 +6,12 @@
 
 package dao;
 
+import Model.Warehouse;
+import java.util.List;
+
 /**
  *
- * @author CHACON
+ * @author mibisaoficina
  */
 import Model.Distribution_Center;
 import Model.Warehouse;
@@ -16,9 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 public interface DaoWH {
     
-    public ArrayList<Warehouse> whQry();
-    
-    public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center);
+    public List<Warehouse> whQry();
     
     public String whIns(Warehouse wh);
     
@@ -27,5 +28,8 @@ public interface DaoWH {
     public Warehouse whGet(Integer idWh);
     
     public String whUpd(Warehouse wh);
-   
+    
+    public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center);
+    
+    public List<Warehouse> whSearch(Integer idWh, Integer idTypeCondition);
 }
