@@ -318,7 +318,7 @@ public class DaoUserImpl implements DaoUsers {
                 while (rs.next()) {
                     pwd = rs.getString(3);
                      if (checkpw(clave, pwd)){
-                       cap = rs.getInt(4);
+                       cap = 1;
                      }
                 }
                 
