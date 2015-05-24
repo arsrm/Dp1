@@ -20,6 +20,8 @@ public interface DaoDistributionCenter {
     
     public Distribution_Center distribution_centerGet(Integer idDistribution_Center);
     
+    public Distribution_Center distribution_centerGet(String name);
+    
     public String distribution_centerUpd(Distribution_Center idDistribution_Center);
     
     public List<Object[]> distribution_centerCbo();
