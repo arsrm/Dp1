@@ -15,6 +15,10 @@ import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_User_Search;
 import Mantenimientos.Frm_Warehouse_Search;
 import Model.Users;
+//gzavala-inicio 24/05
+import dao.DaoUsers;
+import dao.impl.DaoUserImpl;
+//gzavala-fin 24/05
 import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
@@ -43,6 +47,44 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
      */
     Frm_Login login = new Frm_Login();
 
+    //gzavala-inicio 24/05
+    public void access_windows_user(Integer idprofile)
+    {  
+            DaoUsers daoUsers = new DaoUserImpl();
+            this.op_Centro_distribucion.setEnabled(daoUsers.accesswindow(idprofile,"op_Centro_distribucion"));
+            this.op_Personal.setEnabled(daoUsers.accesswindow(idprofile,"op_Personal"));
+            this.op_Cliente.setEnabled(daoUsers.accesswindow(idprofile,"op_Cliente"));
+            this.op_Producto.setEnabled(daoUsers.accesswindow(idprofile,"op_Producto"));
+            this.op_Almacenes.setEnabled(daoUsers.accesswindow(idprofile,"op_Almacenes"));
+            this.op_Racks.setEnabled(daoUsers.accesswindow(idprofile,"op_Racks"));
+            this.op_Pallet.setEnabled(daoUsers.accesswindow(idprofile,"op_Pallet"));
+            this.op_loadIntermentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_loadIntermentOrder"));
+            this.op_searchInternmentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_searchInternmentOrder"));
+            this.op_Movimiento_Interno.setEnabled(daoUsers.accesswindow(idprofile,"op_Movimiento_Interno"));
+            this.op_loadRequestOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_loadRequestOrders"));
+            this.op_RequestOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_RequestOrderSearch"));
+            this.op_PickingOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_PickingOrderSearch"));
+            this.op_GenerateDispatchOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_GenerateDispatchOrders"));
+            this.op_DispatchOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_DispatchOrderSearch"));
+            this.op_RegisterReturn.setEnabled(daoUsers.accesswindow(idprofile,"op_RegisterReturn"));
+            this.op_ReturnSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_ReturnSearch"));
+            this.op_Carga_Datos.setEnabled(daoUsers.accesswindow(idprofile,"op_Carga_Datos"));
+            this.op_Perfiles.setEnabled(daoUsers.accesswindow(idprofile,"op_Perfiles"));
+            this.op_Cambio_Contraseña.setEnabled(daoUsers.accesswindow(idprofile,"op_Cambio_Contraseña"));
+            this.op_Reporte_Internamiento.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Internamiento"));
+            this.op_Guia_Transportista.setEnabled(daoUsers.accesswindow(idprofile,"op_Guia_Transportista"));
+            this.op_Reporte_Despacho.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Despacho"));
+            this.op_Reporte_diferencia_Inventario.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_diferencia_Inventario"));
+            this.op_Reporte_Kardex_segun_fecha.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Kardex_segun_fecha"));
+            this.op_Reporte_Stock_fecha.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Stock_fecha"));
+            this.op_Reporte_Libre_disponibilidad.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Libre_disponibilidad"));
+            this.op_Reporte_Libre_disponibilidad.setEnabled(daoUsers.accesswindow(idprofile,"op_generator_simulation"));            
+            
+        
+      }
+    //gzavala-fin 24/05
+     
+    
     public Frm_MenuPrincipal(Frm_Login log) {
         initComponents();
         login = log;
@@ -57,6 +99,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         login = log;
         lbl_name.setText(user.getname());
+        //gzavala-inicio 24/05
+        access_windows_user(user.getProfile_idProfile());
+        //gzavala-fin  24/05      
+        
     }
 
     /**
