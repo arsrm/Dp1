@@ -33,14 +33,15 @@ public class DaoPalletIniImpl implements DaoPalletIni{
     public List<PalletIni> PalletIniQry() {
         List<PalletIni> list = null;
         String sql = "SELECT "
-                + "idPallet_State, "
-                + "description, "
+                + "idPallet, "
                 + "status, "
+                + "description, "
                 + "created_at, "
                 + "updated_at, "
+                + "Pallet_State_idPallet_Type, "
                 + "user_created, "
                 + "user_updated "
-                + "FROM pallet_state";
+                + "FROM pallet";
         Connection cn = db.getConnection();
         
         if (cn != null) {
@@ -50,17 +51,16 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 //System.out.println("Ejecuto select a pallet_state");
                 list = new LinkedList<>();
                 while (rs.next()) {
-                    PalletIni palletstate = new PalletIni();
-                    /*
-                    palletstate.setIdPallet_State(rs.getInt(1));
-                    palletstate.setDescription(rs.getString(2));
-                    palletstate.setStatus(rs.getInt(3));
-                    palletstate.setCreated_at(rs.getTimestamp(4));
-                    palletstate.setUpdated_at(rs.getTimestamp(5));
-                    palletstate.setUser_created(rs.getInt(6));
-                    palletstate.setUser_updated(rs.getInt(7));
-                    */
-                    list.add(palletstate);
+                    PalletIni pallet = new PalletIni();
+                    pallet.setIdpallet(rs.getInt(1));
+                    pallet.setStatusactividad(rs.getInt(2));
+                    pallet.setDescription(rs.getString(3));
+                    pallet.setCreated_at(rs.getTimestamp(4));
+                    pallet.setUpdated_at(rs.getTimestamp(5));
+                    pallet.setStatuspallet(rs.getInt(6));
+                    pallet.setUser_created(rs.getInt(7));
+                    pallet.setUser_updated(rs.getInt(8));
+                    list.add(pallet);
                 }
 
             } catch (SQLException e) {

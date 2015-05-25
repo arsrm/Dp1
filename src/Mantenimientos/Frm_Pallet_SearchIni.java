@@ -6,16 +6,19 @@
 
 package Mantenimientos;
 import Mantenimientos.Frm_PalletIni;
+import Model.PalletIni;
 import Model.PalletState;
 import Seguridad.Frm_MenuPrincipal;
-import dao.DaoPalletState;
-import dao.impl.DaoPalletStateImpl;
 import dao.DaoPalletIni;
+import dao.DaoPalletState;
 import dao.impl.DaoPalletIniImpl;
+import dao.impl.DaoPalletStateImpl;
 import java.sql.Timestamp; 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -53,7 +56,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
       cbo_pallet_state.addItem(" ");
       cbo_pallet_state.setSelectedIndex(-1);
     }        
-    
      public void limpiatabla()
      {
         DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
@@ -66,12 +68,20 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
      
      public void filtratabla(String id_pallet,String description,String actividad,String estadopallet,
                             String datefecini,String datefecfin)
-     { 
-         DaoPalletIni objdao= new DaoPalletIniImpl();
+     {   DaoPalletIni objdao= new DaoPalletIniImpl();
          Integer cantreg= objdao.PalletIniQry().size();
-
-         //Integer cantreg=dao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
-
+         PalletIni[] list=new PalletIni[cantreg] ;     
+         DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
+         for (int i=0; i<cantreg; i++)
+         {  list[i]=objdao.PalletIniQry().get(i);
+            //list.add(objdao.PalletQry().get(i));
+             model.addRow(new Object[]{list[i].getIdpallet(), list[i].getDescription(),list[i].getStatuspallet(),
+             list[i].getCreated_at(), list[i].getUpdated_at(),list[i].getUser_created(),list[i].getUser_updated(),
+             list[i].getStatusactividad()} );           
+         
+         }   
+         
+          
      }        
      
     public Frm_Pallet_SearchIni(){
@@ -335,48 +345,47 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
        Integer mes2; 
        Integer dia1; 
        Integer dia2;
-       Integer fechainicial = null; 
-       Integer fechafinal = null; 
+       Integer fechainicial=0; 
+       Integer fechafinal=0 ; 
        String id_pallet="";
        String description="";
        String datefecini=""; 
        String datefecfin=""; 
        String actividad="";
        String estadopallet="";
-       try 
-       {    
+       //try 
+       //{    
         try 
         {  String formato = dch_date_from.getDateFormatString();
            //String formato = "YYYYMMDD";
            Date date1 = dch_date_from.getDate();
            //SimpleDateFormat sdf = new SimpleDateFormat(formato);
            anho1=dch_date_from.getCalendar().get(Calendar.YEAR);
-           mes1=dch_date_from.getCalendar().get(Calendar.MONTH);
+           mes1=dch_date_from.getCalendar().get(Calendar.MONTH)+1;
            dia1=dch_date_from.getCalendar().get(Calendar.DAY_OF_MONTH);
            //datefecini = sdf.format(date1).toUpperCase();
-           datefecini=anho1.toString() +mes1.toString()+dia1.toString();   
-           fechainicial=Integer.parseInt(datefecini);
+           fechainicial=anho1*10000+mes1*100+dia1;
+           datefecini=fechainicial.toString();
         } 
         catch (Exception e)   
-          { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Inicial Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
-           }
+        { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Inicial Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+        }
         try 
         {  String formato = dch_date_to.getDateFormatString();
            //String formato = "YYYYMMDD";
            //SimpleDateFormat sdf = new SimpleDateFormat(formato);
            anho2=dch_date_to.getCalendar().get(Calendar.YEAR);
-           mes2=dch_date_to.getCalendar().get(Calendar.MONTH);
+           mes2=dch_date_to.getCalendar().get(Calendar.MONTH)+1;
            dia2=dch_date_to.getCalendar().get(Calendar.DAY_OF_MONTH);
            //datefecini = sdf.format(date1).toUpperCase();
-           datefecfin=anho2.toString() +mes2.toString()+dia2.toString();            
-           fechafinal=Integer.parseInt(datefecfin);
+           fechafinal=anho2*10000+mes2*100+dia2;
+           datefecfin=fechafinal.toString();            
         } 
         catch (Exception e)   
-          { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Final Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
-           }
+        { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Final Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+        }
 
-        if (fechafinal<fechainicial
-                )
+        if (fechafinal<fechainicial )
          {  JOptionPane.showMessageDialog(null, "La Fecha Final debe ser mayor o igual a la Fecha Inicial", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); 
           }   
         
@@ -386,10 +395,12 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         estadopallet=cbo_pallet_state.getSelectedItem().toString().trim();
         limpiatabla();
         filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
+        System.out.println("Fecha Inicial" +datefecini);
+        System.out.println("Fecha Final" +datefecfin);
         
-       } catch(Exception e) 
-          { JOptionPane.showMessageDialog(null, "Error Ingreso de Datos", " Error..!!", JOptionPane.ERROR_MESSAGE);
-           }
+       //} catch(Exception e) 
+       //   { JOptionPane.showMessageDialog(null, "Error Ingreso de Datos", " Error..!!", JOptionPane.ERROR_MESSAGE);
+       //    }
        
        
     }//GEN-LAST:event_btn_searchActionPerformed

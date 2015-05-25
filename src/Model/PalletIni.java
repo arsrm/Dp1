@@ -27,7 +27,7 @@ public class PalletIni {
     public PalletIni() {
     }
 
-    public PalletIni(Integer idpallet, Integer statusactividad, Integer statuspallet, Timestamp created_at, Integer user_created, Timestamp updated_at, Integer user_updated) {
+    public PalletIni(Integer idpallet, Integer statusactividad, Integer statuspallet, Timestamp created_at, Integer user_created, Timestamp updated_at, Integer user_updated,String description) {
         this.idpallet = idpallet;
         this.statusactividad = statusactividad;
         this.statuspallet = statuspallet;
@@ -35,6 +35,7 @@ public class PalletIni {
         this.user_created = user_created;
         this.updated_at = updated_at;
         this.user_updated = user_updated;
+        this.description=description; 
     }
 
     public Integer getIdpallet() {
