@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
-    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
     <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
   </SyntheticProperties>
-  <Events>
-    <EventHandler event="windowClosing" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosing"/>
-    <EventHandler event="windowClosed" listener="java.awt.event.WindowListener" parameters="java.awt.event.WindowEvent" handler="formWindowClosed"/>
-  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -27,32 +23,35 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrl_pallet" alignment="1" max="32767" attributes="0"/>
-                  <Component id="pnl_pallet" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="lbl_fechaini" min="-2" pref="120" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="267" max="-2" attributes="0"/>
-                      <Component id="lbl_fechafin" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="pnl_pallet" max="32767" attributes="0"/>
+                      <Component id="scrl_pallet" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" attributes="0">
-                      <Component id="btn_new" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="btn_new" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="lbl_fechaini" min="-2" pref="173" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="383" max="-2" attributes="0"/>
+                              <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="lbl_fechafin" min="-2" pref="176" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
               </Group>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -60,21 +59,26 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="scrl_pallet" min="-2" pref="148" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lbl_fechaini" pref="24" max="32767" attributes="0"/>
-                  <Component id="lbl_fechafin" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="scrl_pallet" min="-2" pref="128" max="-2" attributes="0"/>
+                      <EmptySpace pref="36" max="32767" attributes="0"/>
+                      <Component id="lbl_fechaini" min="-2" pref="24" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="lbl_fechafin" min="-2" pref="25" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btn_new" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -89,54 +93,48 @@
         </Property>
         <Property name="toolTipText" type="java.lang.String" value=""/>
       </Properties>
-      <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="Criterios de b&#xfa;squeda"/>
-      </AccessibilityProperties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lbl_id_rack" min="-2" pref="66" max="-2" attributes="0"/>
-                      <Component id="lbl_id_pallet" min="-2" pref="71" max="-2" attributes="0"/>
-                      <Component id="lbl_date_from" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_status_act" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="dch_date_from" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txt_id_pallet" alignment="0" pref="150" max="32767" attributes="0"/>
-                      <Component id="txt_id_rack" alignment="0" max="32767" attributes="0"/>
-                      <Component id="cbo_pallet_act" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="btn_search" min="-2" pref="83" max="-2" attributes="0"/>
                       <Group type="102" attributes="0">
-                          <Component id="lbl_ean" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                          <Component id="txt_ean" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="btn_search" min="-2" pref="83" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lbl_status_pallet" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_id_cell" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_date_to" min="-2" pref="70" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="lbl_id_pallet" alignment="0" min="-2" pref="71" max="-2" attributes="0"/>
+                              <Component id="lbl_date_from" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_status_act" alignment="0" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="dch_date_from" alignment="0" pref="150" max="32767" attributes="0"/>
+                              <Component id="txt_id_pallet" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbo_pallet_act" alignment="1" max="32767" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="lbl_date_to" min="-2" pref="70" max="-2" attributes="0"/>
+                                      <Component id="lbl_status_pallet" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="dch_date_to" min="-2" pref="150" max="-2" attributes="0"/>
+                                      <Component id="cbo_pallet_state" min="-2" pref="150" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="dch_date_to" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txt_id_cell" alignment="0" pref="150" max="32767" attributes="0"/>
-                                  <Component id="cbo_pallet_state" max="32767" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <Component id="lbl_description" min="-2" pref="77" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="txt_description" min="-2" pref="149" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="57" max="32767" attributes="0"/>
+                  <EmptySpace min="100" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -144,38 +142,39 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txt_id_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_ean" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_ean" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_id_pallet" alignment="3" max="32767" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_id_rack" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_id_rack" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_id_cell" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_id_cell" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="txt_id_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_id_pallet" alignment="3" max="32767" attributes="0"/>
+                              <Component id="lbl_description" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="txt_description" alignment="3" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
                           <Component id="lbl_date_from" min="-2" max="-2" attributes="0"/>
-                          <Component id="dch_date_from" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="dch_date_to" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_date_to" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="dch_date_from" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="dch_date_to" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_date_to" alignment="1" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
                   </Group>
-                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_status_act" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_pallet_act" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_status_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_pallet_state" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="lbl_status_act" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbo_pallet_act" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" alignment="1" groupAlignment="3" attributes="0">
+                          <Component id="lbl_status_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="cbo_pallet_state" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btn_search" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -196,6 +195,7 @@
                 <StringItem index="0" value=" "/>
               </StringArray>
             </Property>
+            <Property name="selectedIndex" type="int" value="-1"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbo_pallet_actActionPerformed"/>
@@ -211,31 +211,10 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_id_palletActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_ean">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Codigo EAN"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txt_ean">
-        </Component>
         <Component class="javax.swing.JLabel" name="lbl_status_act">
           <Properties>
             <Property name="text" type="java.lang.String" value="Estado Actividad"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_id_rack">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Id.Rack"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txt_id_rack">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_id_cell">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Id.Celda"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txt_id_cell">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_date_from">
           <Properties>
@@ -263,6 +242,13 @@
             </Property>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="lbl_description">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Descripci&#xf3;n"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_description">
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="scrl_pallet">
@@ -275,31 +261,19 @@
         <Component class="javax.swing.JTable" name="tbl_pallet">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="10" rowCount="0">
+              <Table columnCount="8" rowCount="0">
                 <Column editable="true" title="IdPallet" type="java.lang.Object"/>
-                <Column editable="true" title="Codigo EAN" type="java.lang.Object"/>
                 <Column editable="true" title="Descripcion" type="java.lang.Object"/>
-                <Column editable="true" title="Rack" type="java.lang.Object"/>
-                <Column editable="true" title="Celda" type="java.lang.Object"/>
-                <Column editable="true" title="Ubicacion_Celda" type="java.lang.Object"/>
                 <Column editable="true" title="Estato Pallet" type="java.lang.Object"/>
                 <Column editable="true" title="Fecha Creacion" type="java.lang.Object"/>
                 <Column editable="true" title="Fecha Modificacion" type="java.lang.Object"/>
+                <Column editable="true" title="UsuarioCreacion" type="java.lang.Object"/>
+                <Column editable="true" title="Usuario Modificacion" type="java.lang.Object"/>
                 <Column editable="true" title="Estado Actividad" type="java.lang.Object"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
               <TableColumnModel selectionModel="0">
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>

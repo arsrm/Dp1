@@ -22,9 +22,8 @@ public class Frm_Pallet extends javax.swing.JFrame {
     Frm_Pallet_Search  ventprev = new Frm_Pallet_Search(); 
     
             
-    public Frm_Pallet(Frm_MenuPrincipal menuprin , Frm_Pallet_Search ventant) {
+    public Frm_Pallet( Frm_Pallet_Search ventant) {
         setTitle("Datos del Pallet");
-       
         ventprev = ventant;
         initComponents();
     }
