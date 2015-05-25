@@ -7,7 +7,13 @@
 package Operaciones;
 
 import Seguridad.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,6 +25,8 @@ import javax.swing.WindowConstants;
  */
 public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    JFileChooser chooser = new JFileChooser();
+    String dispatchFileName = new String();
     /**
      * Creates new form Frm_CambiarLog
      */
@@ -42,7 +50,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         loadLabel2 = new javax.swing.JLabel();
         txt_LoadFile = new javax.swing.JTextField();
         btn_Search = new javax.swing.JButton();
-        loadButton2 = new javax.swing.JButton();
+        btn_load = new javax.swing.JButton();
         lbl_orders = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_orders = new javax.swing.JTable();
@@ -61,6 +69,8 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
         loadLabel2.setText("Ruta:");
 
+        txt_LoadFile.setEditable(false);
+
         btn_Search.setText("Buscar");
         btn_Search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -68,7 +78,12 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             }
         });
 
-        loadButton2.setText("Cargar Órdenes de Pedido");
+        btn_load.setText("Cargar Órdenes de Pedido");
+        btn_load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_loadActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_loadLayout = new javax.swing.GroupLayout(pnl_load);
         pnl_load.setLayout(pnl_loadLayout);
@@ -77,7 +92,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             .addGroup(pnl_loadLayout.createSequentialGroup()
                 .addGap(190, 190, 190)
                 .addGroup(pnl_loadLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(loadButton2)
+                    .addComponent(btn_load)
                     .addGroup(pnl_loadLayout.createSequentialGroup()
                         .addComponent(loadLabel2)
                         .addGap(18, 18, 18)
@@ -95,7 +110,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                     .addComponent(txt_LoadFile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_Search))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(loadButton2)
+                .addComponent(btn_load)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -192,11 +207,10 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
     private void btn_SearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SearchActionPerformed
         // TODO add your handling code here:
-        JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle("SELECCIONAR ARCHIVO DE ÓRDENES DE PEDIDO");
         chooser.showDialog(this, null);
-        String directory = chooser.getSelectedFile().getAbsolutePath();
-        txt_LoadFile.setText(directory);
+        dispatchFileName= chooser.getSelectedFile().getAbsolutePath();
+        txt_LoadFile.setText(dispatchFileName);
     }//GEN-LAST:event_btn_SearchActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -213,18 +227,46 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            
-            
-        } 
-      
+        }       
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void table_ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ordersMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_table_ordersMouseClicked
- private void formWindowClosed(java.awt.event.WindowEvent evt) {
+
+    private void btn_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loadActionPerformed
+        // TODO add your handling code here:
+        //Al hacer click en cargar debe llevar todos los datos a objetos y cargarlos a la tabla no a la BD aun
+        Object[] options = {"OK"};
+        dispatchFileName = txt_LoadFile.getText();
+        String words[] = dispatchFileName.split("\\.");
+        if(dispatchFileName==null || dispatchFileName.length()==0){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un archivo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
+        else if(words[1].equals("txt")==false){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Formato de archivo incorrecto.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
+        else{
+            //se lee el archivo
+            BufferedReader dispatchFile;
+            try {
+                dispatchFile = new BufferedReader(new FileReader(dispatchFileName));
+                String line = dispatchFile.readLine();
+                words = line.split("/");
+                while (line != null) {
+                           
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Frm_Load_RequestOrder.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Frm_Load_RequestOrder.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Archivo cargado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
+    }//GEN-LAST:event_btn_loadActionPerformed
+ 
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {
         // TODO add your handling code here:
       
         menuaux.setEnabled(true);
@@ -244,10 +286,10 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Search;
     private javax.swing.JButton btn_exit;
+    private javax.swing.JButton btn_load;
     private javax.swing.JButton btn_save;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JPanel lbl_orders;
-    private javax.swing.JButton loadButton2;
     private javax.swing.JLabel loadLabel2;
     private javax.swing.JPanel pnl_load;
     private javax.swing.JTable table_orders;
