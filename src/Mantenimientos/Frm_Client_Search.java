@@ -1,15 +1,29 @@
 package Mantenimientos;
 
+import Model.Client;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoClient;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoUserImpl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class Frm_Client_Search extends javax.swing.JFrame {
 
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
-
+DefaultTableModel modelo;
+     DaoClient daoClient = new DaoClientImpl();
+     
     public Frm_Client_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Clientes");
         menuaux = menu;
         initComponents();
+        
+        modelo = (DefaultTableModel) tbl_client.getModel();
+        
+        initilizeTable();
+
     }
     
     public Frm_Client_Search() {
@@ -56,8 +70,13 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         );
 
         btn_search.setText("Buscar");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
-        lbl_id.setText("DNI");
+        lbl_id.setText("RUC");
 
         lbl_name.setText("Nombres");
 
@@ -109,6 +128,11 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         });
 
         btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -125,9 +149,22 @@ public class Frm_Client_Search extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "DNI", "Nombres", "Dirección", "Estado", "Seleccionar"
+                "RUC", "Nombres", "Dirección", "Estado", "Seleccionar"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tbl_client.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_clientMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tbl_client);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -169,6 +206,46 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+      public void initilizeTable() {
+        List<Client> list = new ArrayList<Client>();
+        list = daoClient.clientQry();
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                String state = null;
+                if (list.get(i).getStatus() == 1) {
+                    state = "Activo";
+                } else {
+                    state = "Inactivo";
+                }
+                Object[] fila = {list.get(i).getRuc(), list.get(i).getName(), list.get(i).getAddress(), state, false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+
+    }
+      
+      public void initilizeTable(List<Client> list) {
+
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < list.size(); i++) {
+                String state = null;
+                if (list.get(i).getStatus() == 1) {
+                    state = "Activo";
+                } else {
+                    state = "Inactivo";
+                }
+                Object[] fila = {list.get(i).getRuc(), list.get(i).getName(), list.get(i).getAddress(), state, false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
+      
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         menuaux.setVisible(true);
         this.dispose();
@@ -176,7 +253,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         // TODO add your handling code here:
-        Frm_Client frm_Client = new Frm_Client(this);
+        Frm_Client frm_Client = new Frm_Client(this,null);
         frm_Client.setVisible(true);
         frm_Client.setLocationRelativeTo(null);
          this.setVisible(false);  
@@ -187,6 +264,49 @@ public class Frm_Client_Search extends javax.swing.JFrame {
         menuaux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        
+        List<Client> list = new ArrayList<Client>();
+        list = daoClient.clientQry_search(txt_id.getText(), txt_name.getText());
+        initilizeTable(list);
+        
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        
+        modelo = (DefaultTableModel) tbl_client.getModel();
+        List<String> ids = new ArrayList<String>();
+        int col, nr = modelo.getRowCount();
+        col = 4;
+        for (int i = 0; i < nr; i++) {
+            Object prueba = modelo.getValueAt(i, 4);
+            if ((Boolean) prueba) {
+                String numm =  (String)modelo.getValueAt(i, 0);
+                ids.add(numm);
+            }
+        }
+        daoClient.clientDel(ids);
+        initilizeTable();
+        
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void tbl_clientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_clientMouseClicked
+        Client client = null;
+        String idUserSel;
+        if (evt.getSource() == tbl_client) {
+            int rowSel = tbl_client.getSelectedRow();
+            int colSel = tbl_client.getSelectedColumn();
+            idUserSel = (String)tbl_client.getValueAt(rowSel, 0);
+            client = daoClient.clientGet(idUserSel);
+            if (colSel != 4) {
+                Frm_Client frm_Client = new Frm_Client(this,client);
+                frm_Client.setVisible(true);
+                frm_Client.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_tbl_clientMouseClicked
 
     
 
