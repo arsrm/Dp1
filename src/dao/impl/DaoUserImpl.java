@@ -423,7 +423,7 @@ public class DaoUserImpl implements DaoUsers {
                      "and id_windows='"+idwindows+"';" ;
         */
         String sql = "select count(1) from profile_windows  \n" +
-                    "where id_profile="+idrol+"  \n" +
+                    "where idProfile="+idrol+"  \n" +
                     "and status=1  \n" +
                     "and id_windows='"+idwindows+"';" ;
         //gzavala-fin 24/05 16:36

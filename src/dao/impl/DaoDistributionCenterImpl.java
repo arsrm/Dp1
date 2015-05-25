@@ -109,8 +109,8 @@ public class DaoDistributionCenterImpl implements DaoDistributionCenter{
                
        return c ;  
     }
-
-   @Override
+    
+    @Override
     public Distribution_Center distribution_centerGet(String name) {
        Distribution_Center c = null;
        Integer id=0;
@@ -148,10 +148,36 @@ public class DaoDistributionCenterImpl implements DaoDistributionCenter{
                
        return c ;  
     }
-
+    
     @Override
-    public String distribution_centerUpd(Distribution_Center idDistribution_Center) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void distribution_centerUpd(Distribution_Center distribution_center) {
+        String sql = "UPDATE Distribution_Center SET "
+                + "name=?, "
+                + "address=?, "
+                + "pos_x=?, "
+                + "pos_y=? "
+                + "WHERE idDistribution_Center = ?; ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);                
+
+                ps.setString(1, distribution_center.getName());
+                ps.setString(2, distribution_center.getAddress());
+                ps.setInt(3, distribution_center.getPos_x());
+                ps.setInt(4, distribution_center.getPos_y());
+                ps.setInt(5, distribution_center.getIdDistribution_Center());
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                //
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
     }
 
     @Override

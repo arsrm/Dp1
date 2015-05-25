@@ -22,7 +22,7 @@ public interface DaoDistributionCenter {
     
     public Distribution_Center distribution_centerGet(String name);
     
-    public String distribution_centerUpd(Distribution_Center idDistribution_Center);
+    public void distribution_centerUpd(Distribution_Center distribution_center);
     
     public List<Object[]> distribution_centerCbo();
     
