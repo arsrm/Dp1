@@ -315,8 +315,11 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
         // TODO add your handling code here:   
         this.dispose();
         menuaux.setVisible(true);
-        inicia_estado_actividad();
-        inicia_estado_pallet();
+        //inicia_estado_actividad();
+        //inicia_estado_pallet();
+        // TODO add your handling code here:
+
+        
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed

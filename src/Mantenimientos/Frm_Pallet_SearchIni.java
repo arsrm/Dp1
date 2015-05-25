@@ -129,6 +129,11 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         lbl_fechafin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_pallet.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Busqueda"));
         pnl_pallet.setToolTipText("");
@@ -404,6 +409,13 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
        
        
     }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        menuaux.setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_formWindowClosed
 
      /* @param args the command line arguments
      */

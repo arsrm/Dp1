@@ -104,11 +104,14 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
             }
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
+            }
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
             }
         });
 
@@ -315,8 +318,10 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         // TODO add your handling code here:   
         this.dispose();
         menuaux.setVisible(true);
-        inicia_estado_actividad();
-        inicia_estado_pallet();
+        //inicia_estado_actividad();
+        //inicia_estado_pallet();
+                // TODO add your handling code here:
+
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
@@ -346,6 +351,11 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
        lbl_fechaini.setText(dch_date_from.getDate().toString());
        lbl_fechafin.setText(dch_date_to.getDate().toString());
     }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
