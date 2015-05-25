@@ -68,7 +68,7 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
         });
 
         btn_accept.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        btn_accept.setText("Aceptar");
+        btn_accept.setText("Guardar");
         btn_accept.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_acceptActionPerformed(evt);
@@ -122,7 +122,7 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(132, 132, 132)
                         .addComponent(lbl_modifypwd)))
-                .addGap(0, 20, Short.MAX_VALUE))
+                .addGap(0, 16, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,10 +160,14 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
 
     private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
         // TODO add your handling code here:
-       
+       if (txt_id.getText().length() == 0 || txt_newpwd.getPassword().length == 0 || txt_confirmpwd.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un Usuario y/o contraseña validas");
+            txt_newpwd.setText("");
+            txt_confirmpwd.setText("");
+        }else{
+        
         String pass = new String(txt_newpwd.getPassword());
         String  pass_new = new String(txt_confirmpwd.getPassword());
-        
         DaoUsers daoUsers = new DaoUserImpl();
         Integer id = aInteger(txt_id.getText());
         
@@ -181,21 +185,17 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
                         txt_confirmpwd.setText("");
                         frm_Login.setVisible(true);
                         this.dispose();
-                        
                     }
                 } 
             }
             else {
                 JOptionPane.showMessageDialog(this, "Las contraseñas deben ser iguales");
-
             }
         }
         else {
             JOptionPane.showMessageDialog(this, "El usuario no existe");
         }
-        
-        
-        
+      }
         
     }//GEN-LAST:event_btn_acceptActionPerformed
 

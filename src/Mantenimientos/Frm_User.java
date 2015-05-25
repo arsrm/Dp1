@@ -205,6 +205,11 @@ public class Frm_User extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
+        
+        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0 ) {
+            JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
+        
+       }else {
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -240,6 +245,7 @@ public class Frm_User extends javax.swing.JFrame {
                // }
             }
         }
+      }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed

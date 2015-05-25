@@ -9,10 +9,10 @@ import static tool.Convierte.aInteger;
 
 public class Frm_Change_Password_Admin extends javax.swing.JFrame {
 
-    Frm_MenuPrincipal menuaux= new Frm_MenuPrincipal();
-    
+    Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+
     public Frm_Change_Password_Admin(Frm_MenuPrincipal menu) {
-        menuaux = menu ;
+        menuaux = menu;
         initComponents();
     }
 
@@ -132,40 +132,44 @@ public class Frm_Change_Password_Admin extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-       
+
+        
+        if (txt_id_user.getText().length() == 0 || txt_new_password.getPassword().length == 0 || txt_confirm_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un Usuario y/o contraseña validas");
+            txt_id_user.setText("");
+            txt_new_password.setText("");
+            txt_confirm_password.setText("");
+        }else{
+        
         String pass = new String(txt_new_password.getPassword());
-       String  pass_new = new String(txt_confirm_password.getPassword());
-         
-         
+        String pass_new = new String(txt_confirm_password.getPassword());
         DaoUsers daoUsers = new DaoUserImpl();
         Integer id = aInteger(txt_id_user.getText());
-        
-        if((daoUsers.usersGet(id)!=null)){
-           if(pass.compareTo(pass_new)==0){
-                   Object[] options = {"OK"};
-                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha creado la clave con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                    if(ok_option==JOptionPane.OK_OPTION){
-                        Integer flag =0;
-                        String result= daoUsers.setpasword(id,pass,flag);
+
+        if ((daoUsers.usersGet(id) != null)) {
+            if (pass.compareTo(pass_new) == 0) {
+                Object[] options = {"OK"};
+                if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                        "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha creado la clave con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        Integer flag = 0;
+                        String result = daoUsers.setpasword(id, pass, flag);
                         txt_id_user.setText("");
                         txt_new_password.setText("");
                         txt_confirm_password.setText("");
                         this.setVisible(true);
-                        
-                        
+
                     }
-                } 
-            }
-            else {
+                }
+            } else {
                 JOptionPane.showMessageDialog(this, "Las contraseñas deben ser iguales");
 
             }
-        }
-        else {
+        } else {
             JOptionPane.showMessageDialog(this, "El usuario no existe");
         }
+      }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -176,7 +180,6 @@ public class Frm_Change_Password_Admin extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;

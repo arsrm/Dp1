@@ -204,7 +204,7 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addComponent(btn_save)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
-                .addGap(15, 15, 15))
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -227,7 +227,12 @@ public class Frm_Client extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
        
-       
+       if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0 
+               ||  txt_address.getText().length() == 0 ||  txt_posx.getText().length() == 0 
+               ||  txt_posy.getText().length() == 0 ) {
+            JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
+        
+       }else{
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -255,6 +260,7 @@ public class Frm_Client extends javax.swing.JFrame {
                // }
             }
         }
+      }
     }//GEN-LAST:event_btn_saveActionPerformed
 
    
