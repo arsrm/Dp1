@@ -190,12 +190,12 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
             String name = null;
-            
+
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 0) {
-                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
                     frm_ChangePassword.setVisible(true);
                     frm_ChangePassword.setLocationRelativeTo(null);
                     JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
@@ -207,7 +207,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -232,12 +232,12 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            
+
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 0) {
-                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
                     frm_ChangePassword.setVisible(true);
                     frm_ChangePassword.setLocationRelativeTo(null);
                     JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
@@ -249,8 +249,8 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                   
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
+
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -275,12 +275,12 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            
+
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 0) {
-                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
                     frm_ChangePassword.setVisible(true);
                     frm_ChangePassword.setLocationRelativeTo(null);
                     JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
@@ -291,7 +291,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -316,37 +316,44 @@ public class Frm_Login extends javax.swing.JFrame {
 
         String pass = new String(txt_password.getPassword());
         Integer id = aInteger(txt_user.getText());
-        Integer perfil = daoUsers.login((txt_user.getText()), pass);
-        Users user = daoUsers.usersGet(id);
-          
-        //validar la clave  sino la cambiamos
-        if (perfil != 0) {
-            Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
-            if (flagpwd == 0) {
-                Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
-                frm_ChangePassword.setVisible(true);
-                frm_ChangePassword.setLocationRelativeTo(null);
-                JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
-                txt_user.setText("");
-                txt_password.setText("");
-            }
-        }
-        if (perfil == 1) {
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y una contraseña");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
 
-            Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
-            if (flagpwd == 1) {
-                Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
-                mp.setVisible(true);
-                mp.setExtendedState(MAXIMIZED_BOTH);
-                this.setVisible(false);
-            }
-        }
-        if (perfil == 0) {
-            JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
-        }
+            Integer perfil = daoUsers.login((txt_user.getText()), pass);
+            Users user = daoUsers.usersGet(id);
 
-        txt_password.setText("");
-        txt_user.setText("");
+            //validar la clave  sino la cambiamos
+            if (perfil != 0) {
+                Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
+                if (flagpwd == 0) {
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
+                    frm_ChangePassword.setVisible(true);
+                    frm_ChangePassword.setLocationRelativeTo(null);
+                    JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
+                    txt_user.setText("");
+                    txt_password.setText("");
+                }
+            }
+            if (perfil == 1) {
+
+                Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
+                if (flagpwd == 1) {
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
+                    mp.setVisible(true);
+                    mp.setExtendedState(MAXIMIZED_BOTH);
+                    this.setVisible(false);
+                }
+            }
+            if (perfil == 0) {
+                JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
+            }
+
+            txt_password.setText("");
+            txt_user.setText("");
+        }
     }//GEN-LAST:event_btn_acceptActionPerformed
 
     private void txt_passwordKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_passwordKeyPressed
@@ -359,12 +366,12 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            
+
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 0) {
-                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
                     frm_ChangePassword.setVisible(true);
                     frm_ChangePassword.setLocationRelativeTo(null);
                     JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
@@ -375,7 +382,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
@@ -400,12 +407,12 @@ public class Frm_Login extends javax.swing.JFrame {
             Integer id = aInteger(txt_user.getText());
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            
+
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 0) {
-                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this,id);
+                    Frm_Change_Password_user frm_ChangePassword = new Frm_Change_Password_user(this, id);
                     frm_ChangePassword.setVisible(true);
                     frm_ChangePassword.setLocationRelativeTo(null);
                     JOptionPane.showMessageDialog(this, "Su contraseña ha expirado y debe cambiarla");
@@ -416,7 +423,7 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 1) {
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this,user);
+                    Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
                     this.setVisible(false);
