@@ -1,6 +1,6 @@
 /*
     -- *******************************************************************
-    -- Descripcion: Venta de Busqueda de PalletProduct
+    -- Descripcion: Venta de Busqueda de PalletProducto_Location
     --              
     -- Datos de Entrada: 
     --
@@ -9,12 +9,12 @@
     -- Author          : GZAVALA
     -- Proyecto        : 
     -- RDC             : 
-    -- Fecha Creacion  : 18/05/2015
+    -- Fecha Creacion  : 24/05/2015
     -- *************************************************************************
  */
 package Mantenimientos;
 
-import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_PalletLocation;
 import Model.PalletState;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoPallet;
@@ -26,7 +26,7 @@ import java.util.*;
  *
  * @author gzavala
  */
-public class Frm_Pallet_Search extends javax.swing.JFrame {
+public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
     /**
      * Creates new form Frm_Pallet_Search
@@ -56,10 +56,10 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     }        
     
     
-    public Frm_Pallet_Search()
+    public Frm_PalletLocation_Search()
     {
      }       
-    public Frm_Pallet_Search(Frm_MenuPrincipal menu) {
+    public Frm_PalletLocation_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet");
         menuaux = menu;
         initComponents();
@@ -320,7 +320,7 @@ public class Frm_Pallet_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        Frm_PalletLocation frm_pallet = new Frm_PalletLocation(this);
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
         this.setVisible(false);  

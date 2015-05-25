@@ -10,6 +10,7 @@ import Mantenimientos.Frm_Distribution_Center;
 //gzavala inicio 19/05 
 import Mantenimientos.Frm_Pallet;
 import Mantenimientos.Frm_Pallet_Search;
+//gzavala fin 19/05 
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_User_Search;
@@ -19,6 +20,13 @@ import Model.Users;
 import dao.DaoUsers;
 import dao.impl.DaoUserImpl;
 //gzavala-fin 24/05
+//gzavala-inicio 24/05 23:45
+import Mantenimientos.Frm_Pallet_SearchIni;
+import Mantenimientos.Frm_PalletIni;
+import Mantenimientos.Frm_PalletLocation_Search;
+import Mantenimientos.Frm_PalletLocation;
+//gzavala-inicio 24/05 23:45
+
 import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
@@ -33,7 +41,6 @@ import Reportes.Frm_InternmentReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
 import java.awt.event.ActionEvent;
-//gzavala fin 19/05 
 import javax.swing.JOptionPane;
 
 /**
@@ -128,7 +135,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Producto = new javax.swing.JMenuItem();
         op_Almacenes = new javax.swing.JMenuItem();
         op_Racks = new javax.swing.JMenuItem();
+        jMenu_Pallet = new javax.swing.JMenu();
         op_Pallet = new javax.swing.JMenuItem();
+        op_Pallet_Product = new javax.swing.JMenuItem();
+        op_PalletProduct_Location = new javax.swing.JMenuItem();
         menu_operaciones = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         op_loadIntermentOrder = new javax.swing.JMenuItem();
@@ -238,13 +248,33 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         });
         menu_mantenimientos.add(op_Racks);
 
+        jMenu_Pallet.setText("Pallet");
+
         op_Pallet.setText("Pallet");
         op_Pallet.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 op_PalletActionPerformed(evt);
             }
         });
-        menu_mantenimientos.add(op_Pallet);
+        jMenu_Pallet.add(op_Pallet);
+
+        op_Pallet_Product.setText("Pallet/Producto");
+        op_Pallet_Product.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Pallet_ProductActionPerformed(evt);
+            }
+        });
+        jMenu_Pallet.add(op_Pallet_Product);
+
+        op_PalletProduct_Location.setText("Ubicacion-Pallet/Producto");
+        op_PalletProduct_Location.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_PalletProduct_LocationActionPerformed(evt);
+            }
+        });
+        jMenu_Pallet.add(op_PalletProduct_Location);
+
+        menu_mantenimientos.add(jMenu_Pallet);
 
         menu_principal.add(menu_mantenimientos);
 
@@ -642,12 +672,16 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     //gzavala-inicio 19/05
     private void op_PalletActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PalletActionPerformed
-        Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+    //gzavala-inicio 24/05 23:45    
+        //Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+        Frm_Pallet_SearchIni frm_pallet = new Frm_Pallet_SearchIni(this);
+    //gzavala-fin 24/05 23:45    
         frm_pallet.setVisible(true);
         frm_pallet.setLocation(450, 150);
         frm_pallet.setLocationRelativeTo(null);
         // TODO add your handling code here:
     }//GEN-LAST:event_op_PalletActionPerformed
+    //gzavala-fin 19/05
 
     private void op_PerfilesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PerfilesActionPerformed
         // TODO add your handling code here:
@@ -703,8 +737,26 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_as.setLocationRelativeTo(null);
         
     }//GEN-LAST:event_op_generator_simulationActionPerformed
-    //gzavala-fin 19/05
 
+//gzavala-inicio 24/05 23:45    
+    private void op_Pallet_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Pallet_ProductActionPerformed
+        // TODO add your handling code here:
+        Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+        frm_pallet.setVisible(true);
+        frm_pallet.setLocation(450, 150);
+        frm_pallet.setLocationRelativeTo(null);
+        
+    }//GEN-LAST:event_op_Pallet_ProductActionPerformed
+
+    private void op_PalletProduct_LocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_PalletProduct_LocationActionPerformed
+        // TODO add your handling code here:
+        Frm_PalletLocation_Search frm_pallet = new Frm_PalletLocation_Search(this);
+        frm_pallet.setVisible(true);
+        frm_pallet.setLocation(450, 150);
+        frm_pallet.setLocationRelativeTo(null);
+
+    }//GEN-LAST:event_op_PalletProduct_LocationActionPerformed
+//gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments
      */
@@ -718,6 +770,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenu jMenu_Pallet;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JLabel lbl_name;
     private javax.swing.JLabel lbl_welcome;
@@ -738,6 +791,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Guia_Transportista;
     private javax.swing.JMenuItem op_Movimiento_Interno;
     private javax.swing.JMenuItem op_Pallet;
+    private javax.swing.JMenuItem op_PalletProduct_Location;
+    private javax.swing.JMenuItem op_Pallet_Product;
     private javax.swing.JMenuItem op_Perfiles;
     private javax.swing.JMenuItem op_Personal;
     private javax.swing.JMenuItem op_PickingOrderSearch;
