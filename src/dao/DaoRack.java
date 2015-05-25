@@ -19,9 +19,9 @@ public interface DaoRack {
     
     public void rackIns(Rack rack);
     
-    public void rackDel(Rack rack);
+    public int rackDel(Integer idRack);
     
-    public Rack rackGet(String identifier_rack);
+    public Rack rackGet(Integer idRack);
     
     public void rackUpd(Rack rack);
     

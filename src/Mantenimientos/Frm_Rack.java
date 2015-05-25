@@ -6,6 +6,16 @@
 
 package Mantenimientos;
 
+import Model.Distribution_Center;
+import Model.Rack;
+import Model.Warehouse;
+import dao.DaoDistributionCenter;
+import dao.DaoRack;
+import dao.DaoWH;
+import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoRackImpl;
+import dao.impl.DaoWHImpl;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -19,11 +29,37 @@ public class Frm_Rack extends javax.swing.JFrame {
      * Creates new form Frm_rack
      */
     Frm_Rack_Search menu_padre = new Frm_Rack_Search();
+    Rack rack = null;
+    int currentDC=1, currentWH=0;
+    DaoDistributionCenter daoDC = new DaoDistributionCenterImpl();
+    ArrayList<Distribution_Center> distributionCenterList = new ArrayList<>();
+    DaoWH daoWH = new DaoWHImpl();
+    ArrayList<Warehouse> warehouseList = new ArrayList<>();
+    DaoRack daoRack = new DaoRackImpl();
     
-    public Frm_Rack(Frm_Rack_Search menu) {
+    public Frm_Rack(Frm_Rack_Search menu, Rack rack) {
         setTitle("Mantenimiento de Racks"); 
         menu_padre = menu;
+        this.rack = rack;
         initComponents();
+        
+        distributionCenterList = daoDC.distribution_centerGetQry();
+        warehouseList = daoWH.whSearchByID(distributionCenterList.get(0));
+        
+        cbo_distribution_center.setEnabled(false);
+        distributionCenterList = daoDC.distribution_centerGetQry();
+        for (int i = 0; i < distributionCenterList.size(); i++) {
+            this.cbo_distribution_center.addItem(distributionCenterList.get(i).getName());
+        }
+        currentDC = 1;
+        warehouseList = daoWH.whSearchByID(distributionCenterList.get(0));
+        for (int i = 0; i < warehouseList.size(); i++)
+            this.cbo_warehouse.addItem(warehouseList.get(i).getDescription());
+        if (cbo_warehouse.getSelectedItem()!=null) currentWH = warehouseList.get(0).getIdWarehouse();
+        
+        if(rack!=null){
+            initializeForm();
+        }
     }
 
     /**
@@ -71,10 +107,6 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         lbl_warehouse.setText("Almacen");
 
-        cbo_distribution_center.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
-
-        cbo_warehouse.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
-
         lbl_distribution_center.setText("Centro de Distribucion");
 
         lbl_identifier.setText("ID");
@@ -92,13 +124,13 @@ public class Frm_Rack extends javax.swing.JFrame {
                     .addComponent(lbl_warehouse)
                     .addComponent(lbl_identifier)
                     .addComponent(lbl_description))
-                .addGap(37, 37, 37)
-                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(cbo_warehouse, 0, 400, Short.MAX_VALUE)
-                    .addComponent(cbo_distribution_center, 0, 400, Short.MAX_VALUE)
-                    .addComponent(txt_identifier, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_description))
-                .addContainerGap(203, Short.MAX_VALUE))
+                .addGap(45, 45, 45)
+                .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_identifier, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
         pnl_rackLayout.setVerticalGroup(
             pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,23 +170,17 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         jpn_dimension.setBorder(javax.swing.BorderFactory.createTitledBorder("Dimensiones"));
 
-        lbl_height_per_floor.setText("Altura por Piso");
+        lbl_height_per_floor.setText("Altura por Piso (m2)");
 
         lbl_floor_numbers.setText("Nro. Pisos");
 
         lbl_column_numbers.setText("Nro. Columnas");
 
-        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso");
+        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso (Kg)");
 
         lbl_length.setText("Largo (m2)");
 
         lbl_width.setText("Ancho (m2)");
-
-        txt_width.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_widthActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jpn_dimensionLayout = new javax.swing.GroupLayout(jpn_dimension);
         jpn_dimension.setLayout(jpn_dimensionLayout);
@@ -167,11 +193,11 @@ public class Frm_Rack extends javax.swing.JFrame {
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_length)
                             .addComponent(lbl_width))
-                        .addGap(88, 88, 88)
-                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(98, 98, 98)
+                        .addGap(119, 119, 119)
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(83, 83, 83)
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_floor_numbers)
                             .addComponent(lbl_column_numbers))
@@ -179,15 +205,14 @@ public class Frm_Rack extends javax.swing.JFrame {
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                    .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_height_per_floor)
-                            .addGap(73, 73, 73)
-                            .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jpn_dimensionLayout.createSequentialGroup()
-                            .addComponent(lbl_resistance_weigth_per_floor)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(lbl_resistance_weigth_per_floor))
+                        .addGap(30, 30, 30)
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(29, Short.MAX_VALUE))
         );
         jpn_dimensionLayout.setVerticalGroup(
@@ -251,10 +276,36 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void initializeForm() {
+        cbo_distribution_center.setEnabled(false);
+        for(int i=0; i<distributionCenterList.size();i++){
+            if(distributionCenterList.get(i).getIdDistribution_Center() == rack.getWarehouse_Distribution_Center_idDistribution_Center()){
+                if(cbo_distribution_center.getSelectedItem()!=null) cbo_distribution_center.removeAllItems();
+                cbo_distribution_center.addItem(distributionCenterList.get(i).getName());
+            }
+        }
+        cbo_warehouse.setEnabled(false);
+        for(int i=0; i<warehouseList.size();i++){
+            if(warehouseList.get(i).getIdWarehouse()== rack.getWarehouse_idWarehouse()){
+                if(cbo_warehouse.getSelectedItem()!=null) cbo_warehouse.removeAllItems();
+                cbo_warehouse.addItem(warehouseList.get(i).getDescription());
+            }
+        }
+        txt_identifier.setText(rack.getIdentifier());
+        txt_description.setText(rack.getDescription());
+        txt_length.setText(rack.getLength().toString());
+        txt_width.setText(rack.getWidth().toString());
+        txt_floor_numbers.setText(rack.getFloor_numbers().toString());
+        txt_column_numbers.setText(rack.getColumn_number().toString());
+        txt_height_per_floor.setText(rack.getHeight_per_floor().toString());
+        txt_resistance_weigth_per_floor.setText(rack.getResistance_weigth_per_floor().toString());
+    }
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menu_padre.setVisible(true);
+        menu_padre.initializeTable();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -263,22 +314,53 @@ public class Frm_Rack extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        // TODO add your handling code here:
-          Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al rack con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
+        
+        if (rack == null) {
+            rack = new Rack();
+
+            for (int i = 0; i < warehouseList.size(); i++) {
+                if (cbo_warehouse.getSelectedItem().equals(warehouseList.get(i).getDescription())) {
+                    this.currentWH = warehouseList.get(i).getIdWarehouse();
+                    break;
+                }
+            }
+            rack.setWarehouse_Distribution_Center_idDistribution_Center(currentDC);
+            rack.setWarehouse_idWarehouse(currentWH);
+            rack.setIdentifier(txt_identifier.getText());
+            rack.setDescription(txt_description.getText());
+            rack.setLength(Double.parseDouble(txt_length.getText()));
+            rack.setWidth(Double.parseDouble(txt_width.getText()));
+            rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
+            rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
+            rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
+            rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
+
+            daoRack.rackIns(rack);
+        } else {
+            rack.setIdentifier(txt_identifier.getText());
+            rack.setDescription(txt_description.getText());
+            rack.setLength(Double.parseDouble(txt_length.getText()));
+            rack.setWidth(Double.parseDouble(txt_width.getText()));
+            rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
+            rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
+            rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
+            rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
+
+            daoRack.rackUpd(rack);            
+        }
+
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al rack con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
                 menu_padre.setVisible(true);
                 menu_padre.setLocationRelativeTo(null);
+                menu_padre.initializeTable();
                 this.dispose();
             }
         }
     }//GEN-LAST:event_btn_saveActionPerformed
-
-    private void txt_widthActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_widthActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_widthActionPerformed
     
     /**
      * @param args the command line arguments

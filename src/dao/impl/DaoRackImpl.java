@@ -99,7 +99,6 @@ public class DaoRackImpl implements DaoRack{
     @Override
     public void rackIns(Rack rack) {
         String sql = "INSERT INTO Rack ("
-                + "idRack, "
                 + "identifier, "
                 + "description, "
                 + "length, "    
@@ -109,37 +108,27 @@ public class DaoRackImpl implements DaoRack{
                 + "resistance_weigth_per_floor, "
                 + "column_number, "
                 + "status, "
-                + "created_at, "
-                + "updated_at, "
                 + "Warehouse_idWarehouse, "
-                + "Warehouse_Distribution_Center_idDistribution_Center, "
-                + "user_created, "
-                + "user_updated) "
-                + "VALUES (?,?,?,?,?,?,?,?,?,?;?,'',?,?,?,'');";
+                + "Warehouse_Distribution_Center_idDistribution_Center) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?);";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
 
-                while (rs.next()) {
-                    ps.setInt(1, rack.getIdRack());
-                    ps.setString(2, rack.getIdentifier());
-                    ps.setString(3, rack.getDescription());
-                    ps.setDouble(4, rack.getLength());
-                    ps.setDouble(5, rack.getWidth());
-                    ps.setInt(6, rack.getFloor_numbers());
-                    ps.setInt(7, rack.getHeight_per_floor());
-                    ps.setInt(8, rack.getResistance_weigth_per_floor());
-                    ps.setInt(9, rack.getColumn_number());
-                    ps.setInt(10, 1);
-                    ps.setTimestamp(11, rack.getCreated_at());
-                    ps.setInt(12, rack.getWarehouse_idWarehouse());
-                    ps.setInt(13, rack.getWarehouse_Distribution_Center_idDistribution_Center());
-                    ps.setInt(14, rack.getUser_created());
-                    ps.executeUpdate();
-                }
-
+                ps.setString(1, rack.getIdentifier());
+                ps.setString(2, rack.getDescription());
+                ps.setDouble(3, rack.getLength());
+                ps.setDouble(4, rack.getWidth());
+                ps.setInt(5, rack.getFloor_numbers());
+                ps.setInt(6, rack.getHeight_per_floor());
+                ps.setInt(7, rack.getResistance_weigth_per_floor());
+                ps.setInt(8, rack.getColumn_number());
+                ps.setInt(9, 1);
+                ps.setInt(10, rack.getWarehouse_idWarehouse());
+                ps.setInt(11, rack.getWarehouse_Distribution_Center_idDistribution_Center());
+                ps.executeUpdate();
+                
             } catch (SQLException e) {
                 //
             } finally {
@@ -153,39 +142,81 @@ public class DaoRackImpl implements DaoRack{
     }
 
     @Override
-    public void rackDel(Rack rack) {
+    public int rackDel(Integer idRack) {
         String sql = "UPDATE Rack SET "                
-                + "status=?, "
-                + "updated_at=?, "
-                + "user_updated=?; ";
+                + "status=? "
+                + "WHERE idRack=?;";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
-                PreparedStatement ps = cn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-
-                while (rs.next()) {                    
-                    ps.setInt(1, 0);
-                    ps.setTimestamp(2, rack.getUpdated_at());
-                    ps.setInt(3, rack.getUser_updated());
-                    ps.executeUpdate();
-                }
-
+                
+                PreparedStatement ps = cn.prepareStatement(sql);                   
+                ps.setInt(1, 0);
+                ps.setInt(2, idRack);
+                ps.executeUpdate();
+                
             } catch (SQLException e) {
-                //
+                e.getMessage();
+                return 0;
             } finally {
                 try {
                     cn.close();
                 } catch (SQLException e) {
                 }
             }
-        }        
+        }
+        return 1;
     }
 
     @Override
-    public Rack rackGet(String identifier_rack) {
-        Rack rack = new Rack();
-        
+    public Rack rackGet(Integer idRack) {
+        Rack rack = null;
+        String sql = "SELECT "
+                + "idRack, "
+                + "identifier, "
+                + "description, "
+                + "length, "
+                + "width, "
+                + "floor_numbers, "
+                + "height_per_floor, "
+                + "resistance_weigth_per_floor, "
+                + "column_number, "
+                + "status, "
+                + "Warehouse_idWarehouse, "
+                + "Warehouse_Distribution_Center_idDistribution_Center "
+                + "FROM Rack WHERE idRack = ?;";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idRack);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    rack = new Rack();
+                    rack.setIdRack(rs.getInt(1));
+                    rack.setIdentifier(rs.getString(2));
+                    rack.setDescription(rs.getString(3));
+                    rack.setLength(rs.getDouble(4));
+                    rack.setWidth(rs.getDouble(5));
+                    rack.setFloor_numbers(rs.getInt(6));
+                    rack.setHeight_per_floor(rs.getInt(7));
+                    rack.setResistance_weigth_per_floor(rs.getInt(8));
+                    rack.setColumn_number(rs.getInt(9));
+                    rack.setStatus(rs.getInt(10));
+                    rack.setWarehouse_idWarehouse(rs.getInt(11));
+                    rack.setWarehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
+                }
+            } catch (SQLException e) {
+                rack = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
         return rack;
     }
 
@@ -199,31 +230,24 @@ public class DaoRackImpl implements DaoRack{
                 + "floor_numbers=?, "
                 + "height_per_floor=?, "
                 + "resistance_weigth_per_floor=?, "
-                + "column_number=?, "
-                + "status=?, "
-                + "updated_at=?, "
-                + "user_updated=?; ";
+                + "column_number=? "
+                + "WHERE idRack=?;";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
-                PreparedStatement ps = cn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
+                PreparedStatement ps = cn.prepareStatement(sql);                
 
-                while (rs.next()) {
-                    ps.setString(1, rack.getIdentifier());
-                    ps.setString(2, rack.getDescription());
-                    ps.setDouble(3, rack.getLength());
-                    ps.setDouble(4, rack.getWidth());
-                    ps.setInt(5, rack.getFloor_numbers());
-                    ps.setInt(6, rack.getHeight_per_floor());
-                    ps.setInt(7, rack.getResistance_weigth_per_floor());
-                    ps.setInt(8, rack.getColumn_number());
-                    ps.setInt(9, 1);
-                    ps.setTimestamp(10, rack.getUpdated_at());
-                    ps.setInt(11, rack.getUser_updated());
-                    ps.executeUpdate();
-                }
-
+                ps.setString(1, rack.getIdentifier());
+                ps.setString(2, rack.getDescription());
+                ps.setDouble(3, rack.getLength());
+                ps.setDouble(4, rack.getWidth());
+                ps.setInt(5, rack.getFloor_numbers());
+                ps.setInt(6, rack.getHeight_per_floor());
+                ps.setInt(7, rack.getResistance_weigth_per_floor());
+                ps.setInt(8, rack.getColumn_number());
+                ps.setInt(9, rack.getIdRack());
+                ps.executeUpdate();
+                
             } catch (SQLException e) {
                 //
             } finally {

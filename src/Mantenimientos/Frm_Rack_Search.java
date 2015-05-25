@@ -10,12 +10,13 @@ import Model.Distribution_Center;
 import Model.Rack;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoDistributionCenter;
+import dao.DaoWH;
 import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoRackImpl;
 import dao.impl.DaoWHImpl;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,27 +33,21 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
      */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();
     
-    int idDC_current, idWH_current;
-    //Distribution_Center distribution_center_current = new Distribution_Center();
-    DaoDistributionCenterImpl daoDC = new DaoDistributionCenterImpl();
-    ArrayList<Distribution_Center> distribution_centers = new ArrayList<>();
-    DaoWHImpl daoWH = new DaoWHImpl();
-    ArrayList<Warehouse> warehouses = new ArrayList<>();
+    int idDC_current=1, idWH_current=0;
+    DaoDistributionCenter daoDC = new DaoDistributionCenterImpl();
+    ArrayList<Distribution_Center> distributionCenterList = new ArrayList<>();
+    DaoWH daoWH = new DaoWHImpl();
+    ArrayList<Warehouse> warehouseList = new ArrayList<>();
     
     DaoRackImpl daoRack = new DaoRackImpl();
-    DefaultTableModel modelo;
-    
+    DefaultTableModel modelo;        
     
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Racks");
         menuaux = menu;
         initComponents();
         
-        distribution_centers = daoDC.distribution_centerGetQry();
-        for (int i = 0; i < distribution_centers.size(); i++) {
-            this.cbo_distribution_center.addItem(distribution_centers.get(i).getName());
-        }
-        
+        initializeForm();        
     }
     
     public Frm_Rack_Search() {
@@ -95,15 +90,11 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         lbl_warehouse.setText("Almacén");
 
-        cbo_distribution_center.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_distribution_centerActionPerformed(evt);
-            }
-        });
+        cbo_distribution_center.setEnabled(false);
 
-        cbo_warehouse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_warehouseActionPerformed(evt);
+        cbo_warehouse.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                cbo_warehouseMouseClicked(evt);
             }
         });
 
@@ -161,11 +152,36 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "Descripcion", "Nro. Pisos", "Nro.Columnas", "Estado"
+                "Numero", "ID", "Descripcion", "Nro. Pisos", "Nro.Columnas", "Estado", "Seleccionar"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_rack.getTableHeader().setReorderingAllowed(false);
+        tbl_rack.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_rackMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_rack);
+        if (tbl_rack.getColumnModel().getColumnCount() > 0) {
+            tbl_rack.getColumnModel().getColumn(0).setMinWidth(0);
+            tbl_rack.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbl_rack.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         btn_new.setText("Nuevo");
         btn_new.setMaximumSize(new java.awt.Dimension(75, 23));
@@ -183,7 +199,12 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -221,14 +242,26 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void initializeForm(){
+        distributionCenterList = daoDC.distribution_centerGetQry();
+        for (int i = 0; i < distributionCenterList.size(); i++) {
+            this.cbo_distribution_center.addItem(distributionCenterList.get(i).getName());
+        }
+        idDC_current = 1;
+        warehouseList = daoWH.whSearchByID(distributionCenterList.get(0));
+        for (int i = 0; i < warehouseList.size(); i++)
+            this.cbo_warehouse.addItem(warehouseList.get(i).getDescription());
+        if (cbo_warehouse.getSelectedItem()!=null) idWH_current = warehouseList.get(0).getIdWarehouse();
+    }
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menuaux.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
     
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_Rack frm_rack = new Frm_Rack(this);
+        Frm_Rack frm_rack = new Frm_Rack(this,null);
         frm_rack.setVisible(true);
         frm_rack.setLocationRelativeTo(null);
         this.setVisible(false);        
@@ -239,53 +272,72 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         menuaux.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void cbo_warehouseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbo_warehouseMouseClicked
+        for (int i = 0; i < warehouseList.size(); i++) {
+            if (cbo_warehouse.getSelectedItem().equals(warehouseList.get(i).getDescription())) {
+                this.idWH_current = warehouseList.get(i).getIdWarehouse();
+                break;
+            }
+        }
+    }//GEN-LAST:event_cbo_warehouseMouseClicked
+
+    private void tbl_rackMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_rackMouseClicked
+        Rack rack = null;
+        Integer idRackSel;
+        if (evt.getSource() == tbl_rack) {
+            int rowSel = tbl_rack.getSelectedRow();
+            int colSel = tbl_rack.getSelectedColumn();
+            if (colSel != 6) {
+                idRackSel = Integer.parseInt(tbl_rack.getValueAt(rowSel, 0).toString());
+                rack = daoRack.rackGet(idRackSel);
+
+                Frm_Rack frm_rack = new Frm_Rack(this, rack);
+                frm_rack.setVisible(true);
+                frm_rack.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_tbl_rackMouseClicked
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        int idRackDelete;
+        for (int i = 0; i < tbl_rack.getRowCount(); i++) {
+            if ((Boolean) tbl_rack.getValueAt(i, 6)) {
+                idRackDelete = Integer.parseInt(tbl_rack.getValueAt(i, 0).toString());
+                daoRack.rackDel(idRackDelete);
+            }
+        }
+        initializeTable();
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         modelo = (DefaultTableModel) tbl_rack.getModel();
-        RefreshGrid();
+        initializeTable();
     }//GEN-LAST:event_btn_searchActionPerformed
-
-    private void cbo_distribution_centerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_distribution_centerActionPerformed
-        
-        //if(cbo_warehouse.getSelectedItem()!=null) this.cbo_warehouse.removeAllItems();                
-        for (int i = 0; i < distribution_centers.size(); i++) {
-            if (cbo_distribution_center.getSelectedItem().equals(distribution_centers.get(i).getName())) {
-                this.idDC_current = distribution_centers.get(i).getIdDistribution_Center();
-                warehouses = daoWH.whSearchByID(distribution_centers.get(i));
-                for (int j = 0; j < warehouses.size(); j++){
-                    this.cbo_warehouse.addItem(warehouses.get(j).getDescription());
-                }
-                break;
-            }
-        }
-    }//GEN-LAST:event_cbo_distribution_centerActionPerformed
-
-    private void cbo_warehouseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_warehouseActionPerformed
-        // TODO add your handling code here:
-        for (int i = 0; i < warehouses.size(); i++) {
-            if (cbo_warehouse.getSelectedItem().equals(warehouses.get(i).getDescription())) {
-                this.idWH_current = warehouses.get(i).getIdWarehouse();
-                break;
-            }
-        }
-    }//GEN-LAST:event_cbo_warehouseActionPerformed
-    
-    public void RefreshGrid(){
+          
+    public void initializeTable(){
         List<Rack> listRack = daoRack.rackQry(idDC_current,idWH_current,txt_identifier.getText());
-        int sizeListRack = listRack.size();
+        String status= null;
         if(modelo!=null){
-            int a =modelo.getRowCount();
-            for(int i=0; i<a; i++) modelo.removeRow(0);
+            modelo.getDataVector().removeAllElements();
+            modelo.fireTableDataChanged();
         }
         try {
-            for (int ind_p = 0; ind_p < sizeListRack; ind_p++) {
+            for (int i = 0; i < listRack.size(); i++) {
+                
+                if (listRack.get(i).getStatus()==0) status = "Inactivo";
+                else status = "Activo";
 
-                Object nuevaRow[] = {
-                    listRack.get(ind_p).getIdentifier(),
-                    listRack.get(ind_p).getDescription(),
-                    listRack.get(ind_p).getFloor_numbers(),
-                    listRack.get(ind_p).getColumn_number(),
-                    listRack.get(ind_p).getStatus(),};
-                modelo.addRow(nuevaRow);
+                Object newRow[] = {
+                    listRack.get(i).getIdRack(),
+                    listRack.get(i).getIdentifier(),
+                    listRack.get(i).getDescription(),
+                    listRack.get(i).getFloor_numbers(),
+                    listRack.get(i).getColumn_number(),
+                    status,
+                    false
+                };
+                modelo.addRow(newRow);
             }
         } catch (Exception e) {
         }

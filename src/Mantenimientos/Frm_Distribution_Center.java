@@ -6,8 +6,11 @@
 
 package Mantenimientos;
 
+import Model.Distribution_Center;
 import Seguridad.Frm_MenuPrincipal;
-import java.awt.Color;
+import dao.DaoDistributionCenter;
+import dao.impl.DaoDistributionCenterImpl;
+import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -22,10 +25,15 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
      */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();
     
+    DaoDistributionCenter daoDC = new DaoDistributionCenterImpl();
+    ArrayList<Distribution_Center> distributionCenterList = new ArrayList<>();
+    int idDistributionCenter;
+    
     public Frm_Distribution_Center(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Centro de Distribución"); 
         menuaux = menu;
         initComponents();
+        initializeForm();
     }
 
     /**
@@ -176,7 +184,18 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
+    private void initializeForm(){
+        distributionCenterList = daoDC.distribution_centerGetQry();
+        
+        txt_name.setEnabled(false);
+        this.txt_name.setText(distributionCenterList.get(0).getName());
+        idDistributionCenter = distributionCenterList.get(0).getIdDistribution_Center();
+        this.txt_address.setText(distributionCenterList.get(0).getAddress());
+        this.txt_pos_x.setText(distributionCenterList.get(0).getPos_x().toString());
+        this.txt_pos_y.setText(distributionCenterList.get(0).getPos_y().toString());        
+    }
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menuaux.setVisible(true);
@@ -189,10 +208,20 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
+        Distribution_Center distributionCenter = new Distribution_Center();
+        
+        distributionCenter.setIdDistribution_Center(idDistributionCenter);
+        distributionCenter.setName(txt_name.getText());
+        distributionCenter.setAddress(txt_address.getText());
+        distributionCenter.setPos_x(Integer.parseInt(txt_pos_x.getText()));
+        distributionCenter.setPos_y(Integer.parseInt(txt_pos_y.getText()));
+        
+        daoDC.distribution_centerUpd(distributionCenter);
+        
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado al Centro de Distribución con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha actualizado al Centro de Distribución con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             if(ok_option==JOptionPane.OK_OPTION){
                 menuaux.setVisible(true);
                 menuaux.setLocationRelativeTo(null);

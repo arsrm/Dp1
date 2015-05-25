@@ -52,7 +52,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     {  
             DaoUsers daoUsers = new DaoUserImpl();
             this.op_Centro_distribucion.setEnabled(daoUsers.accesswindow(idprofile,"op_Centro_distribucion"));
-            this.op_Personal.setEnabled(daoUsers.accesswindow(idprofile,"op_Personal"));
+            this.op_Personal.setEnabled(daoUsers.accesswindow(idprofile,"op_Usuario"));
             this.op_Cliente.setEnabled(daoUsers.accesswindow(idprofile,"op_Cliente"));
             this.op_Producto.setEnabled(daoUsers.accesswindow(idprofile,"op_Producto"));
             this.op_Almacenes.setEnabled(daoUsers.accesswindow(idprofile,"op_Almacenes"));
