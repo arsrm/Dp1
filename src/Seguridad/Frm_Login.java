@@ -185,11 +185,16 @@ public class Frm_Login extends javax.swing.JFrame {
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_password.getPassword());
-            Integer id = aInteger(txt_user.getText());
+        String pass = new String(txt_password.getPassword());
+        Integer id = aInteger(txt_user.getText());
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
+
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
-            String name = null;
 
             //validar la clave  sino la cambiamos
             if (perfil != 0) {
@@ -203,8 +208,8 @@ public class Frm_Login extends javax.swing.JFrame {
                     txt_password.setText("");
                 }
             }
-
             if (perfil == 1) {
+
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
                     Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
@@ -216,9 +221,10 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_user.setText("");
-            txt_password.setText("");
 
+            txt_password.setText("");
+            txt_user.setText("");
+        }
         }
 
     }//GEN-LAST:event_formKeyPressed
@@ -228,8 +234,15 @@ public class Frm_Login extends javax.swing.JFrame {
         int key = evt.getKeyCode();
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
-            String pass = new String(txt_password.getPassword());
-            Integer id = aInteger(txt_user.getText());
+
+        String pass = new String(txt_password.getPassword());
+        Integer id = aInteger(txt_user.getText());
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
+
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
 
@@ -245,11 +258,10 @@ public class Frm_Login extends javax.swing.JFrame {
                     txt_password.setText("");
                 }
             }
-
             if (perfil == 1) {
+
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
-
                     Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
                     mp.setVisible(true);
                     mp.setExtendedState(MAXIMIZED_BOTH);
@@ -259,9 +271,10 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_user.setText("");
-            txt_password.setText("");
 
+            txt_password.setText("");
+            txt_user.setText("");
+        }
         }
     }//GEN-LAST:event_jpn_loginKeyPressed
 
@@ -271,8 +284,14 @@ public class Frm_Login extends javax.swing.JFrame {
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_password.getPassword());
-            Integer id = aInteger(txt_user.getText());
+        String pass = new String(txt_password.getPassword());
+        Integer id = aInteger(txt_user.getText());
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
+
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
 
@@ -289,6 +308,7 @@ public class Frm_Login extends javax.swing.JFrame {
                 }
             }
             if (perfil == 1) {
+
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
                     Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
@@ -300,9 +320,10 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_user.setText("");
-            txt_password.setText("");
 
+            txt_password.setText("");
+            txt_user.setText("");
+        }
         }
     }//GEN-LAST:event_btn_acceptKeyPressed
 
@@ -317,7 +338,7 @@ public class Frm_Login extends javax.swing.JFrame {
         String pass = new String(txt_password.getPassword());
         Integer id = aInteger(txt_user.getText());
         if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
-            JOptionPane.showMessageDialog(this, "Ingrese un usuario y una contraseña");
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
             txt_user.setText("");
             txt_password.setText("");
         } else {
@@ -362,8 +383,14 @@ public class Frm_Login extends javax.swing.JFrame {
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_password.getPassword());
-            Integer id = aInteger(txt_user.getText());
+        String pass = new String(txt_password.getPassword());
+        Integer id = aInteger(txt_user.getText());
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
+
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
 
@@ -380,6 +407,7 @@ public class Frm_Login extends javax.swing.JFrame {
                 }
             }
             if (perfil == 1) {
+
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
                     Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
@@ -391,9 +419,10 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_user.setText("");
-            txt_password.setText("");
 
+            txt_password.setText("");
+            txt_user.setText("");
+        }
         }
     }//GEN-LAST:event_txt_passwordKeyPressed
 
@@ -403,8 +432,14 @@ public class Frm_Login extends javax.swing.JFrame {
         if (key == KeyEvent.VK_ENTER) {
             DaoUsers daoUsers = new DaoUserImpl();
 
-            String pass = new String(txt_password.getPassword());
-            Integer id = aInteger(txt_user.getText());
+        String pass = new String(txt_password.getPassword());
+        Integer id = aInteger(txt_user.getText());
+        if (txt_user.getText().length() == 0 || txt_password.getPassword().length == 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un usuario y/o contraseña valida");
+            txt_user.setText("");
+            txt_password.setText("");
+        } else {
+
             Integer perfil = daoUsers.login((txt_user.getText()), pass);
             Users user = daoUsers.usersGet(id);
 
@@ -421,6 +456,7 @@ public class Frm_Login extends javax.swing.JFrame {
                 }
             }
             if (perfil == 1) {
+
                 Integer flagpwd = daoUsers.getflagpwd(aInteger(txt_user.getText()));
                 if (flagpwd == 1) {
                     Frm_MenuPrincipal mp = new Frm_MenuPrincipal(this, user);
@@ -432,9 +468,10 @@ public class Frm_Login extends javax.swing.JFrame {
             if (perfil == 0) {
                 JOptionPane.showMessageDialog(this, "Usuario/Contraseña incorrectas");
             }
-            txt_user.setText("");
-            txt_password.setText("");
 
+            txt_password.setText("");
+            txt_user.setText("");
+        }
         }
     }//GEN-LAST:event_txt_userKeyPressed
 
