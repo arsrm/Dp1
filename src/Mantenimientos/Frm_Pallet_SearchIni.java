@@ -8,11 +8,15 @@ package Mantenimientos;
 import Mantenimientos.Frm_PalletIni;
 import Model.PalletIni;
 import Model.PalletState;
+import Model.Product;
+import Model.PalletIni; 
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoPalletIni;
 import dao.DaoPalletState;
+import dao.DaoProducts;
 import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletStateImpl;
+import dao.impl.DaoProdImpl;
 import java.sql.Timestamp; 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,8 +85,21 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
          
          }   
          
-          
      }        
+
+      public void  active_camps()
+      { 
+        dch_date_from.setEnabled(false);
+        dch_date_to.setEnabled(false);
+        txt_id_pallet.setEnabled(false);
+      }       
+        
+      public void  disable_camps()
+      {        
+        dch_date_from.setEnabled(false);
+        dch_date_to.setEnabled(false);
+        txt_id_pallet.setEnabled(false);
+      }
      
     public Frm_Pallet_SearchIni(){
     }
@@ -243,6 +260,11 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                 "IdPallet", "Descripcion", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "UsuarioCreacion", "Usuario Modificacion", "Estado Actividad"
             }
         ));
+        tbl_pallet.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_palletMouseClicked(evt);
+            }
+        });
         scrl_pallet.setViewportView(tbl_pallet);
 
         btn_new.setText("Nuevo");
@@ -252,7 +274,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Deactivar");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -290,7 +312,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(200, 200, 200)
                                 .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -300,8 +322,8 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                        .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -326,7 +348,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_id_palletActionPerformed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_PalletIni frm_pallet = new Frm_PalletIni(this);
+        Frm_PalletIni frm_pallet = new Frm_PalletIni(this,null);
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -444,10 +466,31 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
+        this.dispose();        
         menuaux.setVisible(true);
-        this.dispose();
-
+        
+        
     }//GEN-LAST:event_formWindowClosed
+
+    private void tbl_palletMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_palletMouseClicked
+        PalletIni palletini = null;
+        Integer idPalletSel;
+        DaoPalletIni dao = new DaoPalletIniImpl();
+        if (evt.getSource() == tbl_pallet) {
+            int rowSel = tbl_pallet.getSelectedRow();
+            int colSel = tbl_pallet.getSelectedColumn();
+            if (colSel != 6) {
+                idPalletSel = Integer.parseInt(tbl_pallet.getValueAt(rowSel, 0).toString());
+                palletini = dao.PalletIniGet(idPalletSel);
+                Frm_PalletIni frm_palletini = new Frm_PalletIni(this, palletini);
+                frm_palletini.setVisible(true);
+                frm_palletini.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+        
+
+    }//GEN-LAST:event_tbl_palletMouseClicked
 
      /* @param args the command line arguments
      */

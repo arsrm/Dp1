@@ -8,6 +8,7 @@ package dao.impl;
 
 import Model.PalletIni;
 import Model.PalletState;
+import Model.Product;
 import dao.DaoPalletIni;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
@@ -97,7 +98,46 @@ public class DaoPalletIniImpl implements DaoPalletIni{
 
     @Override
     public PalletIni PalletIniGet(Integer idpallet) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        PalletIni pallet = null;
+        String sql = "SELECT "
+                + "idPallet, "
+                + "status, "
+                + "description, "
+                + "created_at, "
+                + "updated_at, "
+                + "Pallet_State_idPallet_Type, "
+                + "user_created, "
+                + "user_updated "
+                + "FROM pallet where idPallet=" + idpallet +" ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    pallet = new PalletIni();
+                    pallet.setIdpallet(rs.getInt(1));
+                    pallet.setStatusactividad(rs.getInt(2));
+                    pallet.setDescription(rs.getString(3));
+                    pallet.setCreated_at(rs.getTimestamp(4));
+                    pallet.setUpdated_at(rs.getTimestamp(5));
+                    pallet.setStatuspallet(rs.getInt(6));
+                    pallet.setUser_created(rs.getInt(7));
+                    pallet.setUser_updated(rs.getInt(8));
+                }
+
+            } catch (SQLException e) {
+                pallet = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return pallet;
     }
 
     
