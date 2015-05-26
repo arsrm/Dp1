@@ -48,7 +48,7 @@ import javax.swing.JOptionPane;
  * @author Alejo
  */
 public class Frm_MenuPrincipal extends javax.swing.JFrame {
-   
+    Users user = new Users();
     /**
      * Creates new form MenuPrincipal
      */
@@ -102,9 +102,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     }
     
-    public Frm_MenuPrincipal(Frm_Login log,Users user) {
+    public Frm_MenuPrincipal(Frm_Login log,Users userAux) {
         initComponents();
         login = log;
+        user = userAux;
         lbl_name.setText(user.getname());
         //gzavala-inicio 24/05
         access_windows_user(user.getProfile_idProfile());
@@ -626,7 +627,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
     private void op_loadRequestOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_loadRequestOrdersActionPerformed
         // TODO add your handling code here:
-        Frm_Load_RequestOrder frm_op = new Frm_Load_RequestOrder(this);
+        Frm_Load_RequestOrder frm_op = new Frm_Load_RequestOrder(this,user);
         frm_op.setVisible(true);
         frm_op.setLocation(450, 150);
         frm_op.setLocationRelativeTo(null);
