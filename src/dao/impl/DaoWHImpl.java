@@ -152,19 +152,14 @@ public class DaoWHImpl implements DaoWH{
     public String whUpd(Warehouse whs) {
        String result = null;
         String sql = "UPDATE  Warehouse SET "
-                + "description=?, "
-                + "status=?, "
-                + "Type_Condition_WareHouse_idType_Condition_WareHouse=?, "
-                + "Distribution_Center_idDistribution_Center=? "
+                + "description=? "
                 + "WHERE idWarehouse=?";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, whs.getDescription());
-                ps.setInt(2, whs.getStatus());
-                ps.setInt(5, whs.getType_Condition_WareHouse_idType_Condition_WareHouse()); 
-                ps.setInt(7, whs.getDistribution_Center_idDistribution_Center());
+                ps.setInt(2, whs.getIdWarehouse());
                 
                 ps.executeUpdate();
                 
