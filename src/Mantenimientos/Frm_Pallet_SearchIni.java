@@ -14,9 +14,11 @@ import Seguridad.Frm_MenuPrincipal;
 import dao.DaoPalletIni;
 import dao.DaoPalletState;
 import dao.DaoProducts;
+import dao.DaoUsers;
 import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletStateImpl;
 import dao.impl.DaoProdImpl;
+import dao.impl.DaoUserImpl;
 import java.sql.Timestamp; 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -37,7 +39,11 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
      * Creates new form Frm_Pallet_SearchIni
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
-
+    DefaultTableModel modelo;
+    Integer col=0; 
+    DaoPalletIni daopallet = new DaoPalletIniImpl();
+    
+    
     public void inicia_estado_actividad()
     { cbo_pallet_act.removeAllItems();
       cbo_pallet_act.addItem("Activo");
@@ -60,8 +66,8 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
       cbo_pallet_state.addItem(" ");
       cbo_pallet_state.setSelectedIndex(cantreg);
     }        
-     public void limpiatabla()
-     {
+    public void limpiatabla()
+    {
         DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
         Integer cantreg=0; 
         cantreg=model.getRowCount();
@@ -70,9 +76,9 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         }   
      }        
      
-     public void filtratabla(String id_pallet,String description,String actividad,String estadopallet,
+    public void filtratabla(String id_pallet,String description,String actividad,String estadopallet,
                             String datefecini,String datefecfin)
-     {   DaoPalletIni objdao= new DaoPalletIniImpl();
+    {   DaoPalletIni objdao= new DaoPalletIniImpl();
          Integer cantreg= objdao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin).size();
          PalletIni[] list=new PalletIni[cantreg] ;     
          DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
@@ -87,15 +93,15 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
          
      }        
 
-      public void  active_camps()
-      { 
+    public void active_camps()
+    { 
         dch_date_from.setEnabled(false);
         dch_date_to.setEnabled(false);
         txt_id_pallet.setEnabled(false);
       }       
         
-      public void  disable_camps()
-      {        
+     public void disable_camps()
+    {        
         dch_date_from.setEnabled(false);
         dch_date_to.setEnabled(false);
         txt_id_pallet.setEnabled(false);
@@ -109,6 +115,8 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         setTitle("Mantenimiento de Pallet");
         menuaux = menu;
         initComponents();
+        modelo = (DefaultTableModel) tbl_pallet.getModel();
+        col=8;
         inicia_estado_actividad();
         inicia_estado_pallet();
 
@@ -191,11 +199,13 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         pnl_pallet.setLayout(pnl_palletLayout);
         pnl_palletLayout.setHorizontalGroup(
             pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_palletLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnl_palletLayout.createSequentialGroup()
+                        .addGap(19, 19, 19)
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_id_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_date_from)
@@ -205,42 +215,37 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                             .addComponent(dch_date_from, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
                             .addComponent(txt_id_pallet, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbo_pallet_act, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(112, 112, 112)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_palletLayout.createSequentialGroup()
-                                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbl_status_pallet))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(dch_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(pnl_palletLayout.createSequentialGroup()
-                                .addComponent(lbl_description, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
+                                    .addComponent(lbl_status_pallet)
+                                    .addGap(8, 8, 8))
+                                .addComponent(lbl_date_to, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbl_description, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(73, 73, 73)
+                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(dch_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(70, 70, 70))
         );
         pnl_palletLayout.setVerticalGroup(
             pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txt_id_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_id_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_description))
+                .addGap(26, 26, 26)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_palletLayout.createSequentialGroup()
-                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_id_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_id_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lbl_description)
-                            .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
-                        .addComponent(lbl_date_from))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(dch_date_from, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dch_date_to, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_date_to, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(30, 30, 30)
+                    .addComponent(lbl_date_to)
+                    .addComponent(lbl_date_from)
+                    .addComponent(dch_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dch_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(28, 28, 28)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lbl_status_act)
@@ -257,15 +262,35 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdPallet", "Descripcion", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "UsuarioCreacion", "Usuario Modificacion", "Estado Actividad"
+                "IdPallet", "Descripcion", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "UsuarioCreacion", "Usuario Modificacion", "Estado Actividad", "Seleccionar"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_pallet.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_palletMouseClicked(evt);
             }
         });
         scrl_pallet.setViewportView(tbl_pallet);
+        if (tbl_pallet.getColumnModel().getColumnCount() > 0) {
+            tbl_pallet.getColumnModel().getColumn(0).setPreferredWidth(33);
+            tbl_pallet.getColumnModel().getColumn(2).setPreferredWidth(50);
+            tbl_pallet.getColumnModel().getColumn(3).setPreferredWidth(60);
+        }
 
         btn_new.setText("Nuevo");
         btn_new.addActionListener(new java.awt.event.ActionListener() {
@@ -293,47 +318,47 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(pnl_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(pnl_pallet, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(scrl_pallet))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(btn_new)
-                                .addGap(18, 18, 18)
-                                .addComponent(btn_delete))
-                            .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(383, 383, 383)
-                                .addComponent(btn_cancel))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(200, 200, 200)
-                                .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(28, Short.MAX_VALUE))
+                        .addGap(39, 39, 39)
+                        .addComponent(btn_new)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(btn_delete)
+                        .addGap(473, 473, 473)
+                        .addComponent(btn_cancel)
+                        .addGap(43, 43, 43))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
+                .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(17, 17, 17)
+                .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new)
                     .addComponent(btn_delete)
                     .addComponent(btn_cancel))
-                .addGap(24, 24, 24))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         pack();
@@ -356,7 +381,22 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
-
+        modelo = (DefaultTableModel) tbl_pallet.getModel();
+        List<Integer> ids=new  ArrayList<Integer>();
+        int nr =modelo.getRowCount(); 
+        for (int i=0; i<nr ;i++){
+            
+         Object prueba =  modelo.getValueAt(i, 8);
+             if ((Boolean)prueba){
+                //Integer numm= (Integer)modelo.getValueAt(i, 8);
+               Integer numm=(Integer)modelo.getValueAt(i, 0);
+               ids.add(numm);
+               } 
+            
+        }   
+        //dao.usersDel(ids);        
+     daopallet.PalletIniDelMasive(ids);
+     load_tablefilter();           
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
@@ -364,7 +404,8 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
-    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+    public void load_tablefilter()
+    { 
        Integer anho1; 
        Integer anho2; 
        Integer mes1; 
@@ -461,6 +502,11 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
        //   { JOptionPane.showMessageDialog(null, "Error Ingreso de Datos", " Error..!!", JOptionPane.ERROR_MESSAGE);
        //    }
        
+        
+    }       
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+       
+       load_tablefilter();
        
     }//GEN-LAST:event_btn_searchActionPerformed
 
@@ -479,7 +525,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         if (evt.getSource() == tbl_pallet) {
             int rowSel = tbl_pallet.getSelectedRow();
             int colSel = tbl_pallet.getSelectedColumn();
-            if (colSel != 6) {
+            if (colSel != 8) {
                 idPalletSel = Integer.parseInt(tbl_pallet.getValueAt(rowSel, 0).toString());
                 palletini = dao.PalletIniGet(idPalletSel);
                 Frm_PalletIni frm_palletini = new Frm_PalletIni(this, palletini);

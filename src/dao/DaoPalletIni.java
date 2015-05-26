@@ -25,6 +25,6 @@ public interface DaoPalletIni {
     
     public PalletIni PalletIniGet(Integer idpallet);
     
-    
+    public String PalletIniDelMasive(List<Integer> ids);
     
 }
