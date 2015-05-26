@@ -239,10 +239,9 @@ public class DaoUserImpl implements DaoUsers {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, users.getname());
-                 String hashed = BCrypt.hashpw(users.getPassword(), BCrypt.gensalt(12));
-                ps.setString(2, hashed);
-                 ps.setInt(3, users.getPassword_change());
-                 ps.setInt(4, users.getStatus());
+                ps.setString(2, users.getPassword());
+                ps.setInt(3, users.getPassword_change());
+                ps.setInt(4, users.getStatus());
                 ps.setInt(5, users.getProfile_idProfile());
                 ps.setInt(6, users.getDistribution_Center_idDistribution_Center());
                 ps.setInt(7, users.getIdUser());
