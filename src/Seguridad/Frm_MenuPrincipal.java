@@ -31,8 +31,8 @@ import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
 import Operaciones.Frm_PickingOrder_Search;
-import Operaciones.Frm_ProductInterment_Load;
-import Operaciones.Frm_ProductInternment_Search;
+import Operaciones.Frm_IntermentOrder_Load;
+import Operaciones.Frm_InternmentOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
@@ -108,7 +108,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         user = userAux;
         lbl_name.setText(user.getname());
         //gzavala-inicio 24/05
-        access_windows_user(user.getProfile_idProfile());
+//        access_windows_user(user.getProfile_idProfile());
         //gzavala-fin  24/05      
         
     }
@@ -713,14 +713,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         this.setEnabled(false);
     }//GEN-LAST:event_op_Guia_TransportistaActionPerformed
     private void op_loadIntermentOrderActionPerformed(java.awt.event.ActionEvent evt) {
-        Frm_ProductInterment_Load frm_prodIntLoad = new Frm_ProductInterment_Load(this);
+        Frm_IntermentOrder_Load frm_prodIntLoad = new Frm_IntermentOrder_Load(this);
         frm_prodIntLoad.setVisible(true);
         frm_prodIntLoad.setLocation(300,100);
         frm_prodIntLoad.setLocationRelativeTo(null);
     }
     
     private void op_searchInternmentOrderActionPerformed(java.awt.event.ActionEvent evt) {
-        Frm_ProductInternment_Search frm_prodIntSearch = new Frm_ProductInternment_Search(this);
+        Frm_InternmentOrder_Search frm_prodIntSearch = new Frm_InternmentOrder_Search(this);
         frm_prodIntSearch.setVisible(true);
         frm_prodIntSearch.setLocation(300,100);
         frm_prodIntSearch.setLocationRelativeTo(null);

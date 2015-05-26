@@ -184,31 +184,31 @@ public class DaoProdImpl implements DaoProducts {
         return p;
     }
 
-    @Override
-    public Integer ProductsGetMaxID() {
-        Integer maxIdProduct = 0;
-        String sql = "SELECT MAX(p.idProduct) "
-                + "FROM Product p";
-
-        Connection cn = db.getConnection();
-        if (cn != null) {
-            try {
-                PreparedStatement ps = cn.prepareStatement(sql);
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    maxIdProduct = rs.getInt(1);
-                }
-            } catch (SQLException e) {
-                maxIdProduct = 0;
-            } finally {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                }
-            }
-        }
-        return maxIdProduct;
-    }
+//    @Override
+//    public Integer ProductsGetMaxID() {
+//        Integer maxIdProduct = 0;
+//        String sql = "SELECT MAX(p.idProduct) "
+//                + "FROM Product p";
+//
+//        Connection cn = db.getConnection();
+//        if (cn != null) {
+//            try {
+//                PreparedStatement ps = cn.prepareStatement(sql);
+//                ResultSet rs = ps.executeQuery();
+//                if (rs.next()) {
+//                    maxIdProduct = rs.getInt(1);
+//                }
+//            } catch (SQLException e) {
+//                maxIdProduct = 0;
+//            } finally {
+//                try {
+//                    cn.close();
+//                } catch (SQLException e) {
+//                }
+//            }
+//        }
+//        return maxIdProduct;
+//    }
 
     @Override
     public String ProductsDel(List<Integer> ids) {
