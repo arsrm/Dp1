@@ -11,6 +11,7 @@ public class Profile {
     private Integer idprofile;
     private String name; 
     private String description;
+    private Integer status;
     
     
     public Integer getIdprofile() {
@@ -35,6 +36,14 @@ public class Profile {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public Integer getStatus(){
+        return status;
+    }
+    
+    public void setStatus(Integer status){
+        this.status = status;
     }
     
 }

@@ -7,8 +7,13 @@
 package Seguridad;
 
 import Mantenimientos.*;
+import Model.Profile;
 import Seguridad.Frm_MenuPrincipal;
-import java.awt.Color;
+import dao.DaoProfile;
+import dao.impl.DaoProfileImpl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -17,14 +22,21 @@ import java.awt.Color;
 public class Frm_Profile_Search extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_rack_search
+     * Creates new form Frm_profile_search
      */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();
     
+    DaoProfile daoProfile = new DaoProfileImpl();
+    List<Profile> profileList = new ArrayList<>();
+    DefaultTableModel modelo;
+    
     public Frm_Profile_Search(Frm_MenuPrincipal menu) {
-        setTitle("Mantenimiento de Racks"); 
+        setTitle("Mantenimiento de Perfiles"); 
         menuaux = menu;
         initComponents();
+        
+        modelo = (DefaultTableModel) tbl_profile.getModel();
+        initializeTable();
     }
     
     public Frm_Profile_Search() {
@@ -41,12 +53,11 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
     private void initComponents() {
 
         pnl_profile = new javax.swing.JPanel();
-        lbl_profile = new javax.swing.JLabel();
-        cbo_profile = new javax.swing.JComboBox();
-        btn_search = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_profile = new javax.swing.JTable();
         btn_cancel = new javax.swing.JButton();
+        btn_new = new javax.swing.JButton();
+        btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -55,58 +66,74 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             }
         });
 
-        pnl_profile.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
+        pnl_profile.setBorder(javax.swing.BorderFactory.createTitledBorder("Búsqueda"));
 
-        lbl_profile.setText("Perfil");
+        tbl_profile.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        cbo_profile.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "NOT SELECTED", "Item 2", "Item 3", "Item 4" }));
+            },
+            new String [] {
+                "ID", "Nombre", "Descripcion", "Estado", "Seleccionar"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
-        btn_search.setText("Buscar");
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tbl_profile.getTableHeader().setReorderingAllowed(false);
+        tbl_profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_profileMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tbl_profile);
 
         javax.swing.GroupLayout pnl_profileLayout = new javax.swing.GroupLayout(pnl_profile);
         pnl_profile.setLayout(pnl_profileLayout);
         pnl_profileLayout.setHorizontalGroup(
             pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_profileLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_search)
-                    .addGroup(pnl_profileLayout.createSequentialGroup()
-                        .addComponent(lbl_profile)
-                        .addGap(45, 45, 45)
-                        .addComponent(cbo_profile, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnl_profileLayout.setVerticalGroup(
             pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_profileLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_profile)
-                    .addComponent(cbo_profile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(35, 35, 35)
-                .addComponent(btn_search)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_profileLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
-
-        tbl_profile.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "ID", "Nombre"
-            }
-        ));
-        tbl_profile.getTableHeader().setReorderingAllowed(false);
-        jScrollPane1.setViewportView(tbl_profile);
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelActionPerformed(evt);
+            }
+        });
+
+        btn_new.setText("Nuevo");
+        btn_new.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_newActionPerformed(evt);
+            }
+        });
+
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
             }
         });
 
@@ -116,30 +143,59 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 780, Short.MAX_VALUE))
+                .addComponent(pnl_profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(40, 40, 40)
+                .addComponent(btn_new)
+                .addGap(18, 18, 18)
+                .addComponent(btn_delete)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
-                .addGap(35, 35, 35))
+                .addGap(40, 40, 40))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_profile, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_profile, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(btn_cancel)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_new)
+                    .addComponent(btn_cancel)
+                    .addComponent(btn_delete))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    public void initializeTable(){
+        profileList = daoProfile.profileCbo();
+        String status= null;
+        if(modelo!=null){
+            modelo.getDataVector().removeAllElements();
+            modelo.fireTableDataChanged();
+        }
+        try {
+            for (int i = 0; i < profileList.size(); i++) {
+                
+                if (profileList.get(i).getStatus()==0) status = "Inactivo";
+                else status = "Activo";
 
+                Object newRow[] = {
+                    profileList.get(i).getIdprofile(),
+                    profileList.get(i).getName(),
+                    profileList.get(i).getDescription(),
+                    status,
+                    false
+                };
+                modelo.addRow(newRow);
+            }
+        } catch (Exception e) {
+        }
+    }
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         menuaux.setVisible(true);
@@ -149,6 +205,43 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
         this.dispose();
         menuaux.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
+
+    private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
+        Frm_Profile frm_profile = new Frm_Profile(this);
+        frm_profile.setVisible(true);
+        frm_profile.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }//GEN-LAST:event_btn_newActionPerformed
+
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        int idProfileDelete;
+        for (int i = 0; i < tbl_profile.getRowCount(); i++) {
+            if ((Boolean) tbl_profile.getValueAt(i, 4)) {
+                idProfileDelete = Integer.parseInt(tbl_profile.getValueAt(i, 0).toString());
+                daoProfile.profileDel(idProfileDelete);
+            }
+        }
+        initializeTable();
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void tbl_profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_profileMouseClicked
+        Profile profile = null;
+        Integer idProfileSel;
+        if (evt.getSource() == tbl_profile) {
+            int rowSel = tbl_profile.getSelectedRow();
+            int colSel = tbl_profile.getSelectedColumn();
+            if (colSel != 4) {
+                idProfileSel = Integer.parseInt(tbl_profile.getValueAt(rowSel, 0).toString());
+                profile = daoProfile.profileGet(idProfileSel);
+
+                Frm_Profile_Assignment frm_profile_assignment = new Frm_Profile_Assignment(this, profile);
+                frm_profile_assignment.setVisible(true);
+                frm_profile_assignment.setLocationRelativeTo(null);
+                this.setVisible(false);
+            }
+        }
+        this.setVisible(false);
+    }//GEN-LAST:event_tbl_profileMouseClicked
 
     /**
      * @param args the command line arguments
@@ -187,10 +280,9 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
-    private javax.swing.JButton btn_search;
-    private javax.swing.JComboBox cbo_profile;
+    private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_new;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel lbl_profile;
     private javax.swing.JPanel pnl_profile;
     private javax.swing.JTable tbl_profile;
     // End of variables declaration//GEN-END:variables
