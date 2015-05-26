@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface DaoPalletIni {
     
-    public List<PalletIni>PalletIniQry();
+    public List<PalletIni>PalletIniQry(String id_pallet,String description,String actividad,String estadopallet,String datefecini,String datefecfin);
     
     public String PalletIniIns(PalletIni palletini);
     

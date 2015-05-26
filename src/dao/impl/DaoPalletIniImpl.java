@@ -30,7 +30,7 @@ public class DaoPalletIniImpl implements DaoPalletIni{
    }
 
     @Override
-    public List<PalletIni> PalletIniQry() {
+    public List<PalletIni> PalletIniQry(String id_pallet,String description,String actividad,String estadopallet,String datefecini,String datefecfin) {
         List<PalletIni> list = null;
         String sql = "SELECT "
                 + "idPallet, "
@@ -41,9 +41,11 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 + "Pallet_State_idPallet_Type, "
                 + "user_created, "
                 + "user_updated "
-                + "FROM pallet";
+                + "FROM pallet" + id_pallet +" "+description+" " + actividad +" "+
+                estadopallet+ " " + datefecini+" "+datefecfin+ " ";
         Connection cn = db.getConnection();
         
+        System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);

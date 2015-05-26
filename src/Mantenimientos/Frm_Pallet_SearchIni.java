@@ -39,7 +39,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
       cbo_pallet_act.addItem("Activo");
       cbo_pallet_act.addItem("Inactivo");
       cbo_pallet_act.addItem(" ");
-      cbo_pallet_act.setSelectedIndex(-1);
+      cbo_pallet_act.setSelectedIndex(2);
      }       
     public void inicia_estado_pallet()
     { cbo_pallet_state.removeAllItems();
@@ -54,7 +54,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
           }
        }   
       cbo_pallet_state.addItem(" ");
-      cbo_pallet_state.setSelectedIndex(-1);
+      cbo_pallet_state.setSelectedIndex(cantreg);
     }        
      public void limpiatabla()
      {
@@ -69,11 +69,11 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
      public void filtratabla(String id_pallet,String description,String actividad,String estadopallet,
                             String datefecini,String datefecfin)
      {   DaoPalletIni objdao= new DaoPalletIniImpl();
-         Integer cantreg= objdao.PalletIniQry().size();
+         Integer cantreg= objdao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin).size();
          PalletIni[] list=new PalletIni[cantreg] ;     
          DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
          for (int i=0; i<cantreg; i++)
-         {  list[i]=objdao.PalletIniQry().get(i);
+         {  list[i]=objdao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin).get(i);
             //list.add(objdao.PalletQry().get(i));
              model.addRow(new Object[]{list[i].getIdpallet(), list[i].getDescription(),list[i].getStatuspallet(),
              list[i].getCreated_at(), list[i].getUpdated_at(),list[i].getUser_created(),list[i].getUser_updated(),
@@ -145,8 +145,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
             }
         });
 
-        cbo_pallet_act.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
-        cbo_pallet_act.setSelectedIndex(-1);
+        cbo_pallet_act.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "" }));
         cbo_pallet_act.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbo_pallet_actActionPerformed(evt);
@@ -390,19 +389,52 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Final Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
         }
 
+        try
+        {
         if (fechafinal<fechainicial )
          {  JOptionPane.showMessageDialog(null, "La Fecha Final debe ser mayor o igual a la Fecha Inicial", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); 
           }   
-        
-        id_pallet= txt_id_pallet.getText().toString().trim();
+        Integer numpallet=0; 
+        //id_pallet
+        try 
+        { numpallet= Integer.parseInt(txt_id_pallet.getText().toString().trim()) ;
+          id_pallet=" where idPallet="+ numpallet+"  and " ; 
+        } 
+        catch(Exception e)
+        {  id_pallet=" where (1=1) and  " ; 
+         }    
         description=txt_description.getText().toString().trim();
-        actividad=cbo_pallet_act.getSelectedItem().toString().trim();
-        estadopallet=cbo_pallet_state.getSelectedItem().toString().trim();
-        limpiatabla();
-        filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
-        System.out.println("Fecha Inicial" +datefecini);
-        System.out.println("Fecha Final" +datefecfin);
+        if (description.equals(null) || description.length()==0)
+        { description=" (1=1) and ";  }
+        else 
+        { description=" description like '%"+description+ "'%  and ";}
         
+        actividad=cbo_pallet_act.getSelectedItem().toString().trim();
+        if (actividad.equals(null) || actividad.length()==0)
+        { actividad=" (1=1) and "; }   
+        else if (actividad.equals("Activo"))
+        { actividad=" status=1 and ";}       
+        else if (actividad.equals("Inactivo"))
+        { actividad=" status=0 and ";}       
+        
+        estadopallet=cbo_pallet_state.getSelectedItem().toString().trim();
+        if (estadopallet.equals(null) || estadopallet.length()==0)
+        { estadopallet=" (1=1) and ";}   
+        else 
+        { estadopallet= " Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='" +estadopallet+"') and ";
+//Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='No Disponible')                 
+        }    
+        
+        limpiatabla();
+        System.out.println("Fecha Inicial " +datefecini);
+        System.out.println("Fecha Final " +datefecfin);
+        datefecini=" (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) >= " +fechainicial +" " ; 
+        datefecfin=" and (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) <= " +fechafinal +" " ;         
+        filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
+        }
+        catch(Exception e)
+        { 
+        }    
        //} catch(Exception e) 
        //   { JOptionPane.showMessageDialog(null, "Error Ingreso de Datos", " Error..!!", JOptionPane.ERROR_MESSAGE);
        //    }
