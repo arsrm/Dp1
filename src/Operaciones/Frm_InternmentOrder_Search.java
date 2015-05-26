@@ -5,27 +5,42 @@
  */
 package Operaciones;
 
+import Model.InternmentOrder;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoInternmentOrder;
+import dao.impl.DaoInternmentOrderImpl;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Gustavo
  */
-public class Frm_ProductInternment_Search extends javax.swing.JFrame {
+public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_ProductInternment_Search
+     * Creates new form Frm_InternmentOrder_Search
      */
-    Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    Frm_MenuPrincipal menu_padre = new Frm_MenuPrincipal();
+    DefaultTableModel modelo = new DefaultTableModel();
+    DaoInternmentOrder daoIntOrder = new DaoInternmentOrderImpl();
+    List<InternmentOrder> intOrderList = new ArrayList<InternmentOrder>();
+    List<Integer> idIntOrderDeleteList = new ArrayList<>();
 
-    public Frm_ProductInternment_Search(Frm_MenuPrincipal menu) {
-        menuaux = menu;
+    public Frm_InternmentOrder_Search(Frm_MenuPrincipal menu) {
+        menu_padre = menu;
         setTitle("Buscar Orden de Internamiento");
         initComponents();
+        modelo = (DefaultTableModel) tbl_order.getModel();
+        initializeTable();
     }
 
-    public Frm_ProductInternment_Search() {
+    public Frm_InternmentOrder_Search() {
     }
 
     /**
@@ -64,6 +79,11 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
         lbl_orderDateIni.setText("Fecha Inicio");
 
         btn_search.setText("Buscar");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         lbl_orderInt.setText("N° Orden de Internamiento");
 
@@ -138,7 +158,12 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_order);
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -200,18 +225,22 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-        menuaux.setVisible(true);
+        menu_padre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void tbl_orderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_orderMouseClicked
+        InternmentOrder intOrder = null;
+        Integer idIntOrder;
         if (evt.getSource() == tbl_order) {
             int rowSel = tbl_order.getSelectedRow();
             int colSel = tbl_order.getSelectedColumn();
-            if (colSel == 0) {
-                Frm_ProductInterment_Detail frm_prodIntDetail = new Frm_ProductInterment_Detail(this);
-                frm_prodIntDetail.setVisible(true);;
-                frm_prodIntDetail.setLocation(300, 100);
+            if (colSel != 3) {
+                idIntOrder = Integer.parseInt(tbl_order.getValueAt(rowSel, 0).toString());
+                intOrder = daoIntOrder.IntOrderGet(idIntOrder);
+
+                Frm_IntermentOrder_Detail frm_prodIntDetail = new Frm_IntermentOrder_Detail(this, intOrder);
+                frm_prodIntDetail.setVisible(true);
                 frm_prodIntDetail.setLocationRelativeTo(null);
                 this.setVisible(false);
             }
@@ -219,11 +248,74 @@ public class Frm_ProductInternment_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_tbl_orderMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        menuaux.setVisible(true);
+        menu_padre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        for (int i = 0; i < tbl_order.getRowCount(); i++) {
+            if ((Boolean) tbl_order.getValueAt(i, 3)) {
+                idIntOrderDeleteList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
+            }
+        }
+        daoIntOrder.IntOrderDel(idIntOrderDeleteList);
 
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initializeTable();
+            }
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        Date dateIniSearch = null;
+        Date dateEndSearch = null;
+        Integer idIntOrdSearch;
+        if (txt_orderInternment.getText().length() != 0) {
+            idIntOrdSearch = Integer.parseInt(txt_orderInternment.getText().toString());
+        } else {
+            idIntOrdSearch = 0;
+        }
+        if (jDate_OrderDateIni.getDate() != null) {
+            dateIniSearch = jDate_OrderDateIni.getDate();
+        } else {
+            dateIniSearch = new Date();
+            dateIniSearch.setTime(0);
+        }
+        if (jDate_orderDateEnd.getDate() != null) {
+            dateEndSearch = jDate_orderDateEnd.getDate();
+        } else {
+            dateEndSearch = new Date();
+        }
+        List<InternmentOrder> intOrderList = daoIntOrder.IntOrderSearch(idIntOrdSearch, dateIniSearch, dateEndSearch);
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < intOrderList.size(); i++) {
+                Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
+                    intOrderList.get(i).getDate(), intOrderList.get(i).getStatus(), false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    public void initializeTable() {
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        intOrderList = daoIntOrder.IntOrderQry();
+        try {
+            for (int i = 0; i < intOrderList.size(); i++) {
+                Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
+                    intOrderList.get(i).getDate(), intOrderList.get(i).getStatus(), false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;

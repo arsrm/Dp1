@@ -7,7 +7,7 @@ package Mantenimientos;
 
 import Model.Product;
 import Model.Trademark;
-import Operaciones.Frm_ProductInterment_Detail;
+import Operaciones.Frm_IntermentOrder_Detail;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoProducts;
 import dao.DaoTrademark;
@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,7 +33,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     /**
      * Creates new form Frm_Products
      */
-    Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    Frm_MenuPrincipal menu_padre = new Frm_MenuPrincipal();
     DaoProducts daoProducts = new DaoProdImpl();
     DefaultTableModel modelo;
     List<Integer> idProductDeleteList = new ArrayList<Integer>();
@@ -44,7 +46,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
-        menuaux = menu;
+        menu_padre = menu;
         initComponents();
         modelo = (DefaultTableModel) tbl_product.getModel();
         trademarkList = daoTrademark.TrademarkQry();
@@ -249,8 +251,8 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         this.dispose();
-        menuaux.setVisible(true);
-        menuaux.setEnabled(true);
+        menu_padre.setVisible(true);
+        menu_padre.setEnabled(true);
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
@@ -262,7 +264,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
-        menuaux.setVisible(true);
+        menu_padre.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void tbl_productMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_productMouseClicked
@@ -290,13 +292,21 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             }
         }
         daoProducts.ProductsDel(idProductDeleteList);
-        initilizeTable();
+
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado los productos seleccionados con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initilizeTable();
+            }
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         String trademark = null;
         String status = null;
-        if (txt_idProduct.getText().length() !=0) {
+        if (txt_idProduct.getText().length() != 0) {
             idProdSearch = Integer.parseInt(txt_idProduct.getText().toString());
         } else {
             idProdSearch = 0;

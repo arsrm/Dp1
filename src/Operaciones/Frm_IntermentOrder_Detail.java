@@ -5,33 +5,54 @@
  */
 package Operaciones;
 
+import Model.InternmentOrder;
+import Model.InternmentOrderDetail;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoInternmentOrderDetail;
+import dao.impl.DaoInternmentOrderDetailImpl;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Gustavo
  */
-public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
+public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
 
     /**
-     * Creates new form Frm_ProductInterment_Detail
+     * Creates new form Frm_IntermentOrder_Detail
      */
-    Frm_ProductInternment_Search menupadre_Search = new Frm_ProductInternment_Search();
-    Frm_ProductInterment_Load menupadre_Load = new Frm_ProductInterment_Load();
-    int op_menu = 0;
-    public Frm_ProductInterment_Detail(Frm_ProductInternment_Search menu) {
-        menupadre_Search = menu;
-        op_menu = 1;
+    Frm_InternmentOrder_Search menupadre = new Frm_InternmentOrder_Search();
+    DaoInternmentOrderDetail daoIntOrdDetail = new DaoInternmentOrderDetailImpl();
+    DefaultTableModel modelo = new DefaultTableModel();
+    InternmentOrder intOrder;
+    List<Integer> idIntOrdDetailList = new ArrayList<>();
+
+    public Frm_IntermentOrder_Detail(Frm_InternmentOrder_Search menu, InternmentOrder intOrd) {
+        menupadre = menu;
         setTitle("Detalle de Orden de Internamiento");
+        intOrder = intOrd;
         initComponents();
+        modelo = (DefaultTableModel) tbl_orderDetail.getModel();
+        if (intOrd != null) {
+            initializeForm();
+        }
     }
 
-    public Frm_ProductInterment_Detail(Frm_ProductInterment_Load menu) {
-        menupadre_Load = menu;
-        op_menu = 2;
-        setTitle("Detalle de Orden de Internamiento");
-        initComponents();
+    public Frm_IntermentOrder_Detail() {
+    }
+
+    private void initializeForm() {
+        txt_idOrder.setText(intOrder.getIdInternmentOrder().toString());
+        txt_idOrder.setEnabled(false);
+        txt_dateOrder.setText(intOrder.getDate().toString());
+        txt_dateOrder.setEnabled(false);
+        txt_state.setText(intOrder.getStatus().toString());
+        initializeTable();
     }
 
     /**
@@ -52,7 +73,7 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
         txt_state = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_orderDetail = new javax.swing.JTable();
         btn_Cancel = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
 
@@ -116,26 +137,26 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle de Orden"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_orderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID Producto", "Nombre", "Cantidad Pallets", "Estado", "Seleccionar"
+                "N° Linea", "ID Producto", "Nombre", "Cantidad Pallets", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_orderDetail);
 
         btn_Cancel.setText("Cancelar");
         btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -144,7 +165,12 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Desactivar");
+        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -201,34 +227,62 @@ public class Frm_ProductInterment_Detail extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
-        if (op_menu == 1) {
-            menupadre_Search.setVisible(true);
-        } else {
-            menupadre_Load.setVisible(true);
-        }
+        menupadre.setVisible(true);
         this.dispose();
+        menupadre.initializeTable();
     }//GEN-LAST:event_btn_CancelActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
-        if (op_menu == 1) {
-            menupadre_Search.setVisible(true);
-        } else {
-            menupadre_Load.setVisible(true);
-        }
+        menupadre.setVisible(true);
         this.dispose();
+        menupadre.initializeTable();
     }//GEN-LAST:event_formWindowClosed
 
+    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        for (int i = 0; i < tbl_orderDetail.getRowCount(); i++) {
+            if ((Boolean) tbl_orderDetail.getValueAt(i, 5)) {
+                idIntOrdDetailList.add(Integer.parseInt(tbl_orderDetail.getValueAt(i, 0).toString()));
+            }
+        }
+        daoIntOrdDetail.IntOrderDetailsDel(intOrder.getIdInternmentOrder(), idIntOrdDetailList);
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado las linea de detalle seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initializeTable();
+            }
+        }
+    }//GEN-LAST:event_btn_deleteActionPerformed
+
+    public void initializeTable() {
+        List<InternmentOrderDetail> intOrderDetaillist = new ArrayList<InternmentOrderDetail>();
+        intOrderDetaillist = daoIntOrdDetail.IntOrderDetailQry(intOrder.getIdInternmentOrder());
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < intOrderDetaillist.size(); i++) {
+                Object[] fila = {intOrderDetaillist.get(i).getIdInternmentOrderDetail(),
+                    intOrderDetaillist.get(i).getProduct().getIdProduct(),
+                    intOrderDetaillist.get(i).getProduct().getName(),
+                    intOrderDetaillist.get(i).getQuantityPallets(),
+                    intOrderDetaillist.get(i).getStatus(), false};
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;
     private javax.swing.JButton btn_delete;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_date;
     private javax.swing.JLabel lbl_idOrder;
     private javax.swing.JLabel lbl_state;
     private javax.swing.JPanel pnl_generalData;
+    private javax.swing.JTable tbl_orderDetail;
     private javax.swing.JTextField txt_dateOrder;
     private javax.swing.JTextField txt_idOrder;
     private javax.swing.JTextField txt_state;
