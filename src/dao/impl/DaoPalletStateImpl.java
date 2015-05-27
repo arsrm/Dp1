@@ -89,13 +89,80 @@ public class DaoPalletStateImpl implements DaoPalletState {
     }
 
     @Override
-    public PalletState PalletStateGet(Integer idpallet) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public PalletState PalletStateGet(Integer idpalletstate) {
+        PalletState objpalletstate=null; 
+        String sql = "SELECT "
+                + "idPallet_State, "
+                + "description, "
+                + "status, "
+                + "created_at, "
+                + "updated_at, "
+                + "user_created, "
+                + "user_updated "
+                + "FROM pallet_state  where idPallet_State="+idpalletstate+" ";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                while (rs.next()) {
+                    objpalletstate = new PalletState();
+                    objpalletstate.setIdPallet_State(rs.getInt(1));
+                    objpalletstate.setDescription(rs.getString(2));
+                    objpalletstate.setStatus(rs.getInt(3));
+                    objpalletstate.setCreated_at(rs.getTimestamp(4));
+                    objpalletstate.setUpdated_at(rs.getTimestamp(5));
+                    objpalletstate.setUser_created(rs.getInt(6));
+                    objpalletstate.setUser_updated(rs.getInt(7));
+                }
+
+            } catch (SQLException e) {
+                objpalletstate = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objpalletstate;
+        
     }
 
     @Override
     public List<Object[]> PalletStateCbo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Integer PalletStateIdGet(String description) {
+        Integer idpalletstate=0; 
+        String sql = "SELECT "
+                + "distinct(idPallet_State) "
+                + "FROM pallet_state  where description='"+description+"'";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                while (rs.next()) {
+                    idpalletstate=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                idpalletstate = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return idpalletstate;
     }
     
     

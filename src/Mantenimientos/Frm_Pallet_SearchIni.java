@@ -373,7 +373,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_id_palletActionPerformed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_PalletIni frm_pallet = new Frm_PalletIni(this,null);
+        Frm_PalletIni frm_pallet = new Frm_PalletIni(this,null,"INS");
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
         this.setVisible(false);
@@ -495,7 +495,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         { actividad=" status=1 and ";}       
         else if (actividad.equals("Inactivo"))
         { actividad=" status=0 and ";}       
-        
+
         estadopallet=cbo_pallet_state.getSelectedItem().toString().trim();
         if (estadopallet.equals(null) || estadopallet.length()==0)
         { estadopallet=" (1=1) and ";}   
@@ -544,7 +544,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
             if (colSel != 8) {
                 idPalletSel = Integer.parseInt(tbl_pallet.getValueAt(rowSel, 0).toString());
                 palletini = dao.PalletIniGet(idPalletSel);
-                Frm_PalletIni frm_palletini = new Frm_PalletIni(this, palletini);
+                Frm_PalletIni frm_palletini = new Frm_PalletIni(this, palletini, "UPD");
                 frm_palletini.setVisible(true);
                 frm_palletini.setLocationRelativeTo(null);
                 this.setVisible(false);

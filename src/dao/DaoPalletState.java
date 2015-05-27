@@ -23,7 +23,9 @@ public interface DaoPalletState {
     
     public String PalletStateUpd(PalletState pallet);
     
-    public PalletState PalletStateGet(Integer idpallet);
+    public PalletState PalletStateGet(Integer idpalletstate);
+    
+    public Integer PalletStateIdGet(String description); 
     
     public List<Object[]> PalletStateCbo();
     

@@ -78,11 +78,36 @@ public class DaoPalletIniImpl implements DaoPalletIni{
         return list;
     }
     
-
    
     @Override
     public String PalletIniIns(PalletIni palletini) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "insert into pallet(description,Pallet_State_idPallet_Type)  values(?,?) ;  ";
+        Integer ctos; 
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, palletini.getDescription());
+                ps.setInt(2, palletini.getStatuspallet());
+                ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+                System.out.println("La cadena de excepcion es: " + result  );
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -92,8 +117,37 @@ public class DaoPalletIniImpl implements DaoPalletIni{
 
     @Override
     public String PalletIniUpd(PalletIni palletini) {
+        String result = null;
+        String sql = "UPDATE  pallet SET "
+                + "description=? ,"
+                + "Pallet_State_idPallet_Type=? "
+                + "WHERE idPallet=?";
 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, palletini.getDescription() );
+                ps.setInt(2, palletini.getStatuspallet());
+                ps.setInt(3, palletini.getIdpallet());
+
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -173,6 +227,33 @@ public class DaoPalletIniImpl implements DaoPalletIni{
             }
         }
         return result;
+    }
+
+    @Override
+    public Integer PalletIniMax() {
+        Integer maxid=0; 
+        String sql = " select (COALESCE(max(idPallet),0)  +1 ) from  pallet ";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                while (rs.next()) {
+                    maxid=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxid = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return maxid;
     }
 
     

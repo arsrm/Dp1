@@ -27,4 +27,6 @@ public interface DaoPalletIni {
     
     public String PalletIniDelMasive(List<Integer> ids);
     
+    public Integer PalletIniMax();
+    
 }

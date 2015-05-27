@@ -8,8 +8,11 @@ package Mantenimientos;
 import Mantenimientos.Frm_Pallet_SearchIni;
 import Model.PalletIni; 
 import Model.PalletState;
+import dao.DaoPalletIni;
 import dao.DaoPalletState;
+import dao.impl.DaoPalletIniImpl; 
 import dao.impl.DaoPalletStateImpl;
+import javax.swing.JOptionPane;
 /**
  *
  * @author gzavala
@@ -18,16 +21,20 @@ public class Frm_PalletIni extends javax.swing.JFrame {
 
     Frm_Pallet_SearchIni  menu_padre = new Frm_Pallet_SearchIni();     
     PalletIni pallet; 
+    DaoPalletIni daopalletini=new DaoPalletIniImpl();
+    DaoPalletState daopalletstate= new DaoPalletStateImpl(); 
+    String accion=""; 
+    //UPD o INS
     /**
      * Creates new form Frm_PalletIni
      */
-    
-    public Integer inicia_estado_pallet(Integer indstate)
+      //caso=1 en caso de update y caso=2 en caso de insert
+    public Integer inicia_estado_pallet(Integer indstate,Integer caso)
     { Integer ind=0; 
-            
       cbo_pallet_state.removeAllItems();
       DaoPalletState objdao=new DaoPalletStateImpl(); 
       Integer cantreg= objdao.PalletStateQry().size();
+          
       PalletState[] list=new PalletState[cantreg];
        for (int i=0; i<cantreg; i++)
        {  list[i]=objdao.PalletStateQry().get(i);
@@ -39,25 +46,38 @@ public class Frm_PalletIni extends javax.swing.JFrame {
             }   
           }
        }   
-      cbo_pallet_state.addItem(" ");
+          if (caso==2)
+          { ind=0;}   
       return ind; 
       }        
     
-    public void campos_iniciales()
+    public void campos_iniciales(String accion)
     { Integer stateind; 
-      txt_idpallet.setEnabled(false);
-      txt_idpallet.setText(pallet.getIdpallet().toString());
-      txt_description.setText(pallet.getDescription());
-      stateind=inicia_estado_pallet(pallet.getStatuspallet());
-      cbo_pallet_state.setSelectedIndex(stateind);
+      if (accion.equals("UPD"))
+      { txt_idpallet.setEnabled(false);
+        txt_idpallet.setText(pallet.getIdpallet().toString());
+        txt_description.setText(pallet.getDescription());
+        stateind=inicia_estado_pallet(pallet.getStatuspallet(),1);
+        cbo_pallet_state.setSelectedIndex(stateind);
+      }
+      if (accion.equals("INS"))
+      { txt_idpallet.setEnabled(false);
+        txt_idpallet.setText("");
+        txt_description.setText("");
+        stateind=inicia_estado_pallet(0,2);
+        cbo_pallet_state.setSelectedIndex(stateind);
+      }
+      
       
     }        
-    public Frm_PalletIni(Frm_Pallet_SearchIni ventant,PalletIni palletini ) {
+    public Frm_PalletIni(Frm_Pallet_SearchIni ventant,PalletIni palletini, String acc ) {
+        //accion es UPD --> Update y INS ---> Insert
         setTitle("Mantenimiento de Pallet");
         menu_padre = ventant;
         pallet=palletini; 
+        accion=acc;
         initComponents();
-        campos_iniciales();
+        campos_iniciales(acc);
     }
 
     /**
@@ -134,6 +154,11 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         );
 
         btn_save.setText("Guardar");
+        btn_save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_saveActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -171,8 +196,6 @@ public class Frm_PalletIni extends javax.swing.JFrame {
                 .addGap(21, 21, 21))
         );
 
-        pnl_pallet.getAccessibleContext().setAccessibleName("Datos Generales");
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -188,8 +211,48 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         this.dispose();
         menu_padre.setVisible(true);
         //menu_padre.initilizeTable();
-
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        // TODO add your handling code here:
+      Integer idpallet=0; 
+      Integer idstatuspallet=0; 
+      String palletstate=cbo_pallet_state.getSelectedItem().toString().trim();
+      String description=txt_description.getText().toString().trim();
+      idstatuspallet=daopalletstate.PalletStateIdGet(palletstate);
+      //idpallet=daopalletini.PalletIniMax();
+      PalletIni objpalletini=new PalletIni();
+      
+      //accion es UPD --> Update y INS ---> Insert
+      if (accion.equals("INS"))
+      {  objpalletini.setDescription(description);
+         objpalletini.setStatuspallet(idstatuspallet);
+         //objpalletini.setIdpallet(idpallet);
+         String message = "¿Está seguro que realizar el registro del Nuevo Pallet?";
+         String title = "Confirmar! ";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) 
+        { daopalletini.PalletIniIns(objpalletini);
+          this.dispose();
+          menu_padre.setVisible(true);
+        }
+       }
+      if (accion.equals("UPD"))
+      {  objpalletini.setIdpallet(pallet.getIdpallet());
+         objpalletini.setDescription(description);
+         objpalletini.setStatuspallet(idstatuspallet);
+        String message = "¿Está seguro realizar la actualización del pallet?";
+        String title = "Confirmar! ";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) 
+        { daopalletini.PalletIniUpd(objpalletini);;
+          this.dispose();
+          menu_padre.setVisible(true);
+        }
+      }    
+    }//GEN-LAST:event_btn_saveActionPerformed
 
     /**
      * @param args the command line arguments
