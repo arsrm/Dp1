@@ -386,17 +386,33 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         int nr =modelo.getRowCount(); 
         for (int i=0; i<nr ;i++){
             
+         try {   
          Object prueba =  modelo.getValueAt(i, 8);
              if ((Boolean)prueba){
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                Integer numm=(Integer)modelo.getValueAt(i, 0);
                ids.add(numm);
                } 
-            
+         }catch(Exception e)
+          { 
+           }  
+          
+             
         }   
         //dao.usersDel(ids);        
-     daopallet.PalletIniDelMasive(ids);
-     load_tablefilter();           
+
+        String message = "¿Está seguro que desea desactivar los registros seleccionados?";
+        String title = "Confirmación";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+             daopallet.PalletIniDelMasive(ids);
+        }
+        load_tablefilter();   
+        
+     
+     
+     
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
