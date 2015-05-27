@@ -7,7 +7,7 @@
 package Mantenimientos;
 
 import Seguridad.Frm_MenuPrincipal;
-import Mantenimientos.Frm_Pallet_Search;
+import Mantenimientos.Frm_PalletProduct_Search;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
@@ -21,10 +21,10 @@ public class Frm_Pallet extends javax.swing.JFrame {
     /**
      * Creates new form Frm_Pallet
      */
-    Frm_Pallet_Search  ventprev = new Frm_Pallet_Search(); 
+    Frm_PalletProduct_Search  ventprev = new Frm_PalletProduct_Search(); 
     
             
-    public Frm_Pallet( Frm_Pallet_Search ventant) {
+    public Frm_Pallet( Frm_PalletProduct_Search ventant) {
         setTitle("Datos del Pallet");
         ventprev = ventant;
         initComponents();

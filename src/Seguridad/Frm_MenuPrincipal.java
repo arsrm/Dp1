@@ -9,7 +9,10 @@ import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Distribution_Center;
 //gzavala inicio 19/05 
 import Mantenimientos.Frm_Pallet;
-import Mantenimientos.Frm_Pallet_Search;
+//import Mantenimientos.Frm_Pallet_Search;
+//gzavala inicio 27/05 13:20
+import Mantenimientos.Frm_PalletProduct_Search;
+//gzavala fin 27/05 13:20
 //gzavala fin 19/05 
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
@@ -742,7 +745,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 //gzavala-inicio 24/05 23:45    
     private void op_Pallet_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Pallet_ProductActionPerformed
         // TODO add your handling code here:
-        Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+        //gzavala-inicio 27/05 13:20 Se actualiza la llamada al formulario 
+        //Frm_Pallet_Search frm_pallet = new Frm_Pallet_Search(this);
+        Frm_PalletProduct_Search frm_pallet = new  Frm_PalletProduct_Search(this);
+        //gzavala-fin 27/05 13:20
         frm_pallet.setVisible(true);
         frm_pallet.setLocation(450, 150);
         frm_pallet.setLocationRelativeTo(null);
