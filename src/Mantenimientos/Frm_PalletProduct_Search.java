@@ -16,19 +16,22 @@ package Mantenimientos;
 
 import Mantenimientos.Frm_Pallet;
 import Model.PalletState;
+import Model.Product;
+import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoPallet;
+import dao.DaoPalletProduct;
 import dao.DaoPalletState;
-import dao.impl.DaoPalletImpl;
-import dao.impl.DaoPalletStateImpl;
-import Model.Trademark;
-import dao.DaoTrademark;
-import dao.impl.DaoTrademarkImpl;
-import Model.Product;
 import dao.DaoProducts;
+import dao.DaoTrademark;
+import dao.impl.DaoPalletImpl;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoPalletStateImpl;
 import dao.impl.DaoProdImpl;
+import dao.impl.DaoTrademarkImpl;
 
 import java.util.*;
+import javax.swing.JOptionPane;
 /**
  *
  * @author gzavala
@@ -39,7 +42,8 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
      * Creates new form Frm_Pallet_Search
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
-
+    Integer indpaso; 
+    DaoPalletProduct dao=new DaoPalletProductImpl();
     
     public Frm_PalletProduct_Search()
     {
@@ -76,6 +80,33 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
        cbo_product.setSelectedIndex(cantreg);
     }
   
+    public void load_product(String marca)
+    {   Trademark objmodel=new Trademark();
+        DaoPalletProduct daomark= new DaoPalletProductImpl();
+        objmodel=daomark.GetTrademarkname(marca); 
+
+        cbo_product.removeAllItems();
+        DaoPalletProduct objdao=new DaoPalletProductImpl();
+        Integer cantreg=objdao.GetProductList(objmodel.getId_Trademark()).size();
+        Product[] list=new Product[cantreg];
+       for (int i=0; i<cantreg; i++)
+       {  list[i]=objdao.GetProductList(objmodel.getId_Trademark()).get(i);
+          // Se agregan los status activos
+           if(list[i].getStatus()==1)
+           {cbo_product.addItem(list[i].getName());
+           }
+       }   
+       cbo_product.addItem(" ");
+       cbo_product.setSelectedIndex(cantreg);
+      
+    }        
+    public void  loadproduct_mark(String marca)    
+    { if (marca.isEmpty())
+      { load_product();}   
+      else 
+      { load_product(marca);  
+       }
+    }       
     public void load_state()
     {
       cbo_status.removeAllItems();
@@ -84,11 +115,55 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
       cbo_status.addItem(" ");
       cbo_status.setSelectedIndex(2);        
     }        
+    public void load_tablefilter()
+    { 
+       String description="";
+       String datefecini=""; 
+       String datefecfin=""; 
+       String actividad="";
+       String cadWhere="";
+
+        try
+        {
+        if( cbo_mark.getSelectedItem().toString().trim().equals(null)|| cbo_mark.getSelectedItem().toString().trim().isEmpty())
+        { cadWhere="where  (1=1) and " ;}    
+        else 
+        {DaoPalletProduct dao=new DaoPalletProductImpl();
+          cadWhere=" Product_Trademark_id_Trademark= "+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark()+"  and " ;
+        }    
+
+        if( cbo_product.getSelectedItem().toString().trim().equals(null)|| cbo_product.getSelectedItem().toString().trim().isEmpty())
+        { cadWhere=cadWhere+ " (1=1) and " ;}    
+        else 
+        {DaoPalletProduct dao=new DaoPalletProductImpl();
+          cadWhere=cadWhere+ " Product_idProduct="+ dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getIdProduct()+" and " ;
+          cadWhere= cadWhere+ " Product_Trademark_id_Trademark="+dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getTrademark() +" and "; 
+        }    
+        
+        if (cbo_status.getSelectedItem().toString().trim().equals(null) || cbo_status.getSelectedItem().toString().trim().isEmpty())
+        { cadWhere=cadWhere +" (1=1) and "; }   
+        else if (cbo_status.getSelectedItem().toString().trim().equals("Activo"))
+        { cadWhere=cadWhere +" status=1 and ";}       
+        else if (cbo_status.getSelectedItem().toString().trim().equals("Inactivo"))
+        { cadWhere=cadWhere+" status=0 and ";}       
+        
+        
+        //limpiatabla();
+        //filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
+        }
+        catch(Exception e)
+        { 
+        }    
+        
+    }       
+            
     public Frm_PalletProduct_Search(Frm_MenuPrincipal menu) {
-        setTitle("Mantenimiento de Pallet");
+        setTitle("Mantenimiento de Pallet-Producto");
         menuaux = menu;
+        indpaso=0; 
         initComponents();
         load_mark();
+        indpaso=1; 
         load_product();
         load_state();
     }
@@ -139,9 +214,9 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
         });
 
         cbo_mark.setModel(new javax.swing.DefaultComboBoxModel(new String[] { " " }));
-        cbo_mark.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_markActionPerformed(evt);
+        cbo_mark.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbo_markItemStateChanged(evt);
             }
         });
 
@@ -297,8 +372,6 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
         //inicia_estado_actividad();
         //inicia_estado_pallet();
         // TODO add your handling code here:
-
-        
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
@@ -320,17 +393,28 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_btn_deleteActionPerformed
-
-    private void cbo_markActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_markActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbo_markActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         // TODO add your handling code here:
+       load_tablefilter();        
     }//GEN-LAST:event_btn_searchActionPerformed
 
+    private void cbo_markItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_markItemStateChanged
+      String marca="";
+      if (indpaso==1)
+      { try {      
+         if (cbo_mark.getSelectedItem().toString().trim().equals(null) || cbo_mark.getSelectedItem().toString().trim().isEmpty())    
+         { marca="";}
+         else 
+         { marca=cbo_mark.getSelectedItem().toString().trim(); }    
+       } catch(Exception e)
+         {  } 
+       loadproduct_mark(marca);      
+      }
+// TODO add your handling code here:
+    }//GEN-LAST:event_cbo_markItemStateChanged
+    /*    */
     /**
      * @param args the command line arguments
      */

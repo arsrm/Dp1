@@ -501,7 +501,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         { estadopallet=" (1=1) and ";}   
         else 
         { estadopallet= " Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='" +estadopallet+"') and ";
-//Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='No Disponible')                 
+        //Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='No Disponible')                 
         }    
         
         limpiatabla();
