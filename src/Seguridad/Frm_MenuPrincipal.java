@@ -111,7 +111,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         user = userAux;
         lbl_name.setText(user.getname());
         //gzavala-inicio 24/05
-//        access_windows_user(user.getProfile_idProfile());
+        access_windows_user(user.getProfile_idProfile());
         //gzavala-fin  24/05      
         
     }
