@@ -252,6 +252,7 @@ public class DaoProdImpl implements DaoProducts {
     public String ProductsUpd(Product p) {
         String result = null;
         String sql = "UPDATE Product SET "
+                + "name = ?,"
                 + "quantity_per_box = ?,"
                 + "weight_per_box = ?,"
                 + "quantity_boxes_per_pallet = ?,"
@@ -262,11 +263,12 @@ public class DaoProdImpl implements DaoProducts {
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, p.getQuantityPerBox());
-                ps.setInt(2, p.getWeightPerBox());
-                ps.setInt(3, p.getQuantityBoxesPerPallet());
-                ps.setInt(4, p.getTypeConditionWH());
-                ps.setInt(5, p.getIdProduct());
+                ps.setString(1, p.getName());
+                ps.setInt(2, p.getQuantityPerBox());
+                ps.setInt(3, p.getWeightPerBox());
+                ps.setInt(4, p.getQuantityBoxesPerPallet());
+                ps.setInt(5, p.getTypeConditionWH());
+                ps.setInt(6, p.getIdProduct());
 
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -283,10 +285,9 @@ public class DaoProdImpl implements DaoProducts {
     }
 
     @Override
-    public List<Product> ProductsSearch(Integer idProduct, String name, Integer idTrademark) {
+    public List<Product> ProductsSearch(String EAN13, String name, Integer idTrademark) {
         String sql = null;
         List<Product> products = null;
-        if (idProduct != 0) {
             sql = "SELECT "
                     + "idProduct,"
                     + "name,"
@@ -302,25 +303,8 @@ public class DaoProdImpl implements DaoProducts {
                     + "FROM Product "
                     + "WHERE name LIKE ? AND "
                     + "Trademark_id_Trademark LIKE ? AND "
-                    + "idProduct LIKE ?";
-        } else {
-            sql = "SELECT "
-                    + "idProduct,"
-                    + "name,"
-                    + "quantity_per_box,"
-                    + "weight_per_box,"
-                    + "quantity_boxes_per_pallet,"
-                    + "physical_stock,"
-                    + "free_stock,"
-                    + "status,"
-                    + "cod_ean13,"
-                    + "Trademark_id_Trademark,"
-                    + "Type_Condition_idType_Condition "
-                    + "FROM Product "
-                    + "WHERE "
-                    + "name LIKE ? AND "
-                    + "Trademark_id_Trademark LIKE ?";
-        }
+                    + "cod_ean13 LIKE ?";
+
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -328,10 +312,7 @@ public class DaoProdImpl implements DaoProducts {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, "%" + name + "%");
                 ps.setString(2, "%" + idTrademark + "%");
-
-                if (idProduct != 0) {
-                    ps.setString(3, "%" + idProduct + "%");
-                }
+                ps.setString(3, "%" + EAN13 + "%");
 
                 ResultSet rs = ps.executeQuery();
 

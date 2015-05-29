@@ -20,10 +20,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
+import javax.swing.table.TableColumn;
+import sun.text.resources.FormatData;
+import tool.SelectAllHeader;
 /**
  *
  * @author Gustavo
@@ -43,17 +46,26 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     Integer idProdSearch;
     String nameSearch;
     Integer idTrademarkSearch;
+    
 
+//fd.left = new FormAttachment(table, 5, SWT.LEFT);
+//fd.top = new FormAttachment(table, 5, SWT.TOP);
+//checkbox.setLayoutData(fd);
+//checkbox.moveAbove(table);
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
         menu_padre = menu;
         initComponents();
+        TableColumn tc = tbl_product.getColumnModel().getColumn(7);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_product, 7));
         modelo = (DefaultTableModel) tbl_product.getModel();
         trademarkList = daoTrademark.TrademarkQry();
+        cbo_trademark.addItem("Todos");
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
         }
         initilizeTable();
+
     }
 
     public Frm_Product_Search() {
@@ -73,7 +85,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         lbl_id_Product = new javax.swing.JLabel();
         lbl_name = new javax.swing.JLabel();
         lbl_trademark = new javax.swing.JLabel();
-        txt_idProduct = new javax.swing.JTextField();
+        txt_EAN13 = new javax.swing.JTextField();
         txt_name = new javax.swing.JTextField();
         cbo_trademark = new javax.swing.JComboBox();
         btn_search = new javax.swing.JButton();
@@ -93,15 +105,15 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
         pnl_product.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de Búsqueda"));
 
-        lbl_id_Product.setText("ID");
+        lbl_id_Product.setText("Código EAN 13");
 
         lbl_name.setText("Nombre");
 
         lbl_trademark.setText("Marca");
 
-        txt_idProduct.addActionListener(new java.awt.event.ActionListener() {
+        txt_EAN13.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_idProductActionPerformed(evt);
+                txt_EAN13ActionPerformed(evt);
             }
         });
 
@@ -124,16 +136,12 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGap(55, 55, 55)
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_productLayout.createSequentialGroup()
-                                .addComponent(lbl_trademark)
-                                .addGap(8, 8, 8))
-                            .addComponent(lbl_name)
-                            .addGroup(pnl_productLayout.createSequentialGroup()
-                                .addComponent(lbl_id_Product)
-                                .addGap(26, 26, 26)))
+                            .addComponent(lbl_trademark, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_id_Product, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_name, javax.swing.GroupLayout.Alignment.LEADING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_idProduct, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_EAN13, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbo_trademark, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(192, 192, 192))
@@ -152,7 +160,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_id_Product)
-                    .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_EAN13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(btn_search)
                 .addGap(42, 42, 42))
@@ -160,21 +168,28 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
         tbl_product.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Marca", "Stock Físico", "Stock Libre", "Estado", "Seleccionar"
+                "ID", "EAN 13", "Nombre", "Marca", "Stock Físico", "Stock Libre", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tbl_product.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -183,6 +198,11 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_product);
+        if (tbl_product.getColumnModel().getColumnCount() > 0) {
+            tbl_product.getColumnModel().getColumn(0).setMinWidth(0);
+            tbl_product.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbl_product.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         btn_new.setText("Nuevo");
         btn_new.addActionListener(new java.awt.event.ActionListener() {
@@ -273,7 +293,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         if (evt.getSource() == tbl_product) {
             int rowSel = tbl_product.getSelectedRow();
             int colSel = tbl_product.getSelectedColumn();
-            if (colSel != 6) {
+            if (colSel != 7) {
                 idProductSel = Integer.parseInt(tbl_product.getValueAt(rowSel, 0).toString());
                 prod = daoProducts.ProductsGet(idProductSel);
 
@@ -287,7 +307,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         for (int i = 0; i < tbl_product.getRowCount(); i++) {
-            if ((Boolean) tbl_product.getValueAt(i, 6)) {
+            if ((Boolean) tbl_product.getValueAt(i, 7)) {
                 idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
             }
         }
@@ -306,24 +326,23 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         String trademark = null;
         String status = null;
-        if (txt_idProduct.getText().length() != 0) {
-            idProdSearch = Integer.parseInt(txt_idProduct.getText().toString());
-        } else {
-            idProdSearch = 0;
-        }
-
+        String EAN13 = txt_EAN13.getText();
         String name = txt_name.getText();
 
         List<Product> productList = new ArrayList<Product>();
         if (cbo_trademark.getSelectedItem() != null) {
-            for (int i = 0; i < trademarkList.size(); i++) {
-                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
-                    trademarkSelected = trademarkList.get(i);
+            if (cbo_trademark.getSelectedItem() == "Todos") {
+                for (int i = 0; i < trademarkList.size(); i++) {
+                    if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                        trademarkSelected = trademarkList.get(i);
+                    }
                 }
+            } else {
+                trademarkSelected = null;
             }
         }
         idTrademarkSearch = trademarkSelected.getId_Trademark();
-        productList = daoProducts.ProductsSearch(idProdSearch, name, idTrademarkSearch);
+        productList = daoProducts.ProductsSearch(EAN13, name, idTrademarkSearch);
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         try {
@@ -338,25 +357,33 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 } else {
                     status = "Activo";
                 }
-                Object[] fila = {productList.get(i).getIdProduct(), productList.get(i).getName(), trademark,
-                    productList.get(i).getPhysicalStock(), productList.get(i).getFreeStock(), status, false};
+                Object[] fila = {productList.get(i).getIdProduct(), productList.get(i).getCodeEAN13(),
+                    productList.get(i).getName(), trademark, productList.get(i).getPhysicalStock(),
+                    productList.get(i).getFreeStock(), status, false};
                 modelo.addRow(fila);
             }
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btn_searchActionPerformed
 
-    private void txt_idProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_idProductActionPerformed
+    private void txt_EAN13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_EAN13ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_idProductActionPerformed
+    }//GEN-LAST:event_txt_EAN13ActionPerformed
 
     public void initilizeTable() {
+//        TableColumn tc = tbl_product.getColumnModel().getColumn(0);
+//        tc.setCellEditor(tbl_product.getDefaultEditor(Boolean.class));
+//        tc.setCellRenderer(tbl_product.getDefaultRenderer(Boolean.class));
+//        ((JComponent) tbl_product.getDefaultRenderer(Boolean.class)).setOpaque(true);
+//        tc.setHeaderRenderer(new CheckBoxHeader());
+
         String trademark = null;
         String status = null;
         List<Product> list = new ArrayList<Product>();
         list = daoProducts.ProductsQry();
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
+
         try {
             for (int i = 0; i < list.size(); i++) {
                 for (int j = 0; j < trademarkList.size(); j++) {
@@ -369,7 +396,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 } else {
                     status = "Activo";
                 }
-                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getName(), trademark,
+                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getCodeEAN13(), list.get(i).getName(), trademark,
                     list.get(i).getPhysicalStock(), list.get(i).getFreeStock(), status, false};
                 modelo.addRow(fila);
             }
@@ -390,7 +417,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_trademark;
     private javax.swing.JPanel pnl_product;
     private javax.swing.JTable tbl_product;
-    private javax.swing.JTextField txt_idProduct;
+    private javax.swing.JTextField txt_EAN13;
     private javax.swing.JTextField txt_name;
     // End of variables declaration//GEN-END:variables
 }
