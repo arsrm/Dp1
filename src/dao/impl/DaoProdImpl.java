@@ -6,6 +6,7 @@
 package dao.impl;
 
 import Model.Product;
+import Model.Trademark;
 import Model.Users;
 import dao.DaoProducts;
 import enlaceBD.ConectaDb;
@@ -209,7 +210,6 @@ public class DaoProdImpl implements DaoProducts {
 //        }
 //        return maxIdProduct;
 //    }
-
     @Override
     public String ProductsDel(List<Integer> ids) {
         String result = null;
@@ -222,6 +222,7 @@ public class DaoProdImpl implements DaoProducts {
     }
 
     public String ProductDel(Integer idProduct) {
+        Integer status;
         String result = null;
         String sql = "UPDATE Product SET "
                 + "status = ? "
@@ -231,7 +232,13 @@ public class DaoProdImpl implements DaoProducts {
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, 0);//se cambia a cero el campo status
+                if (ProductsGet(idProduct).getStatus() == 0) {
+                    status = 1;
+                } else {
+                    status = 0;
+                }
+
+                ps.setInt(1, status);//se cambia el estado del producto
                 ps.setInt(2, idProduct);
 
                 ps.executeUpdate();
@@ -285,9 +292,10 @@ public class DaoProdImpl implements DaoProducts {
     }
 
     @Override
-    public List<Product> ProductsSearch(String EAN13, String name, Integer idTrademark) {
+    public List<Product> ProductsSearch(String EAN13, String name, Trademark trademark) {
         String sql = null;
         List<Product> products = null;
+        if (trademark == null) {
             sql = "SELECT "
                     + "idProduct,"
                     + "name,"
@@ -302,17 +310,35 @@ public class DaoProdImpl implements DaoProducts {
                     + "Type_Condition_idType_Condition "
                     + "FROM Product "
                     + "WHERE name LIKE ? AND "
-                    + "Trademark_id_Trademark LIKE ? AND "
                     + "cod_ean13 LIKE ?";
-
+        } else {
+            sql = "SELECT "
+                    + "idProduct,"
+                    + "name,"
+                    + "quantity_per_box,"
+                    + "weight_per_box,"
+                    + "quantity_boxes_per_pallet,"
+                    + "physical_stock,"
+                    + "free_stock,"
+                    + "status,"
+                    + "cod_ean13,"
+                    + "Trademark_id_Trademark,"
+                    + "Type_Condition_idType_Condition "
+                    + "FROM Product "
+                    + "WHERE name LIKE ? AND "
+                    + "cod_ean13 LIKE ? AND "
+                    + "Trademark_id_Trademark = ?";
+        }
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, "%" + name + "%");
-                ps.setString(2, "%" + idTrademark + "%");
-                ps.setString(3, "%" + EAN13 + "%");
+                ps.setString(2, "%" + EAN13 + "%");
+                if (trademark != null) {
+                    ps.setInt(3, trademark.getId_Trademark());
+                }
 
                 ResultSet rs = ps.executeQuery();
 

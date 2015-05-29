@@ -6,6 +6,7 @@
 package dao;
 
 import Model.Product;
+import Model.Trademark;
 import Model.Users;
 import java.util.List;
 
@@ -29,5 +30,5 @@ public interface DaoProducts {
 //    
 //    public Integer ProductsGetMaxID ();
 //    
-    public List<Product> ProductsSearch(String EAN13, String name, Integer idTrademark);
+    public List<Product> ProductsSearch(String EAN13, String name, Trademark trademark);
 }

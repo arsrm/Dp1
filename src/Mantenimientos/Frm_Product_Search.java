@@ -25,7 +25,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import sun.text.resources.FormatData;
 import tool.SelectAllHeader;
 /**
  *
@@ -46,12 +45,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     Integer idProdSearch;
     String nameSearch;
     Integer idTrademarkSearch;
-    
-
-//fd.left = new FormAttachment(table, 5, SWT.LEFT);
-//fd.top = new FormAttachment(table, 5, SWT.TOP);
-//checkbox.setLayoutData(fd);
-//checkbox.moveAbove(table);
+   
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
         menu_padre = menu;
@@ -92,7 +86,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_product = new javax.swing.JTable();
         btn_new = new javax.swing.JButton();
-        btn_delete = new javax.swing.JButton();
+        btn_changeState = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -199,9 +193,9 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_product);
         if (tbl_product.getColumnModel().getColumnCount() > 0) {
-            tbl_product.getColumnModel().getColumn(0).setMinWidth(0);
-            tbl_product.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbl_product.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbl_product.getColumnModel().getColumn(0).setMinWidth(50);
+            tbl_product.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tbl_product.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
         btn_new.setText("Nuevo");
@@ -211,10 +205,10 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
-        btn_delete.addActionListener(new java.awt.event.ActionListener() {
+        btn_changeState.setText("Cambiar Estado");
+        btn_changeState.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_deleteActionPerformed(evt);
+                btn_changeStateActionPerformed(evt);
             }
         });
 
@@ -233,7 +227,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(btn_new)
                 .addGap(18, 18, 18)
-                .addComponent(btn_delete)
+                .addComponent(btn_changeState)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
                 .addGap(37, 37, 37))
@@ -260,7 +254,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new)
-                    .addComponent(btn_delete)
+                    .addComponent(btn_changeState)
                     .addComponent(btn_cancel))
                 .addContainerGap())
         );
@@ -305,9 +299,11 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_tbl_productMouseClicked
 
-    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+    private void btn_changeStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_changeStateActionPerformed
         for (int i = 0; i < tbl_product.getRowCount(); i++) {
             if ((Boolean) tbl_product.getValueAt(i, 7)) {
+                
+                String aux = tbl_product.getValueAt(i,0).toString();
                 idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
             }
         }
@@ -321,7 +317,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
                 initilizeTable();
             }
         }
-    }//GEN-LAST:event_btn_deleteActionPerformed
+    }//GEN-LAST:event_btn_changeStateActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         String trademark = null;
@@ -331,7 +327,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
         List<Product> productList = new ArrayList<Product>();
         if (cbo_trademark.getSelectedItem() != null) {
-            if (cbo_trademark.getSelectedItem() == "Todos") {
+            if (cbo_trademark.getSelectedItem() != "Todos") {
                 for (int i = 0; i < trademarkList.size(); i++) {
                     if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
                         trademarkSelected = trademarkList.get(i);
@@ -340,9 +336,8 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             } else {
                 trademarkSelected = null;
             }
-        }
-        idTrademarkSearch = trademarkSelected.getId_Trademark();
-        productList = daoProducts.ProductsSearch(EAN13, name, idTrademarkSearch);
+        }        
+        productList = daoProducts.ProductsSearch(EAN13, name, trademarkSelected);
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         try {
@@ -371,11 +366,6 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_EAN13ActionPerformed
 
     public void initilizeTable() {
-//        TableColumn tc = tbl_product.getColumnModel().getColumn(0);
-//        tc.setCellEditor(tbl_product.getDefaultEditor(Boolean.class));
-//        tc.setCellRenderer(tbl_product.getDefaultRenderer(Boolean.class));
-//        ((JComponent) tbl_product.getDefaultRenderer(Boolean.class)).setOpaque(true);
-//        tc.setHeaderRenderer(new CheckBoxHeader());
 
         String trademark = null;
         String status = null;
@@ -406,7 +396,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
-    private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_changeState;
     private javax.swing.JButton btn_new;
     private javax.swing.JButton btn_search;
     private javax.swing.JComboBox cbo_trademark;
