@@ -13,7 +13,9 @@ public interface DaoClient {
     
     public String clientDel(List<String> ids);
     
-    public Client clientGet(String idclient);
+    public Client clientGet(String ruc);
+    
+    public Client clientGet(Integer id);
     
     public String clientUpd(Client client);
     

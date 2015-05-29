@@ -245,8 +245,8 @@ public class Frm_Client extends javax.swing.JFrame {
                     client.setAddress(txt_address.getText());
                     client.setAddress(txt_address.getText());
                     client.setPriority(aInteger(op_priority.getValue().toString()));
-                    client.setPos_x(aDouble(txt_posx.getText()));
-                    client.setPos_y(aDouble(txt_posy.getText()));
+                    client.setPos_x(aInteger(txt_posx.getText()));
+                    client.setPos_y(aInteger(txt_posy.getText()));
                     client.setStatus(1);
                     
                     if(daoClient.clientGet(client.getRuc())==null){

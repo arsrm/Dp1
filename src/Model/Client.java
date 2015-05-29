@@ -9,8 +9,8 @@ public class Client {
     private String name;
     private String address;
     private Integer priority;
-    private Double pos_x;
-    private Double pos_y;
+    private Integer pos_x;
+    private Integer pos_y;
     private Integer status;
    
     public Client() {
@@ -57,19 +57,19 @@ public class Client {
         this.priority = priority;
     }
 
-    public Double getPos_x() {
+    public Integer getPos_x() {
         return pos_x;
     }
 
-    public void setPos_x(Double pos_x) {
+    public void setPos_x(Integer pos_x) {
         this.pos_x = pos_x;
     }
 
-    public Double getPos_y() {
+    public Integer getPos_y() {
         return pos_y;
     }
 
-    public void setPos_y(Double pos_y) {
+    public void setPos_y(Integer pos_y) {
         this.pos_y = pos_y;
     }
 

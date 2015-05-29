@@ -43,8 +43,8 @@ public class DaoClientImpl implements DaoClient {
                     c.setName(rs.getString(3));
                     c.setAddress(rs.getString(4));
                     c.setPriority(rs.getInt(5));
-                    c.setPos_x(rs.getDouble(6));
-                    c.setPos_y(rs.getDouble(7));
+                    c.setPos_x(rs.getInt(6));
+                    c.setPos_y(rs.getInt(7));
                     c.setStatus(rs.getInt(8));
                     list.add(c);
                 }
@@ -60,6 +60,8 @@ public class DaoClientImpl implements DaoClient {
         }
         return list;
     }
+   
+     
    
     @Override
     public List<Client> clientQry_search(String dni , String name){
@@ -86,8 +88,8 @@ public class DaoClientImpl implements DaoClient {
                     c.setName(rs.getString(3));
                     c.setAddress(rs.getString(4));
                     c.setPriority(rs.getInt(5));
-                    c.setPos_x(rs.getDouble(6));
-                    c.setPos_y(rs.getDouble(7));
+                    c.setPos_x(rs.getInt(6));
+                    c.setPos_y(rs.getInt(7));
                     c.setStatus(rs.getInt(8));
                     list.add(c);
                 }
@@ -121,8 +123,8 @@ public class DaoClientImpl implements DaoClient {
                 ps.setString(2,client.getName() );
                 ps.setString(3, client.getAddress());
                 ps.setInt(4, client.getPriority());
-                ps.setDouble(5, client.getPos_x());
-                ps.setDouble(6, client.getPos_y());
+                ps.setInt(5, client.getPos_x());
+                ps.setInt(6, client.getPos_y());
                 ps.setInt(7, client.getStatus());
                 
                 int ctos = ps.executeUpdate();
@@ -203,8 +205,8 @@ public class DaoClientImpl implements DaoClient {
                     c.setName(rs.getString(3));
                     c.setAddress(rs.getString(4));
                     c.setPriority(rs.getInt(5));
-                    c.setPos_x(rs.getDouble(6));
-                    c.setPos_y(rs.getDouble(7));
+                    c.setPos_x(rs.getInt(6));
+                    c.setPos_y(rs.getInt(7));
                     c.setStatus(rs.getInt(8));
                     
                 }
@@ -221,6 +223,49 @@ public class DaoClientImpl implements DaoClient {
         return c;
     }
 
+     @Override 
+     public Client clientGet(Integer id){
+        Client c =null;
+        //Integer id=0;
+        String sql = "select  idClient,ruc,name,address,priority,pos_x,pos_y,status"
+                +" From  Client where ruc = ?";
+
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, id);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                     
+                    c = new Client();
+                    c.setIdClient(rs.getInt(1));
+                    c.setRuc(rs.getString(2));
+                    c.setName(rs.getString(3));
+                    c.setAddress(rs.getString(4));
+                    c.setPriority(rs.getInt(5));
+                    c.setPos_x(rs.getInt(6));
+                    c.setPos_y(rs.getInt(7));
+                    c.setStatus(rs.getInt(8));
+                    
+                }
+            } catch (SQLException e) {
+               c=null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return c;
+    
+         
+     }
+     
     @Override
     public String clientUpd(Client client) {
         String result = null;
@@ -238,8 +283,8 @@ public class DaoClientImpl implements DaoClient {
                 ps.setString(2,client.getName() );
                 ps.setString(3, client.getAddress());
                 ps.setInt(4, client.getPriority());
-                ps.setDouble(5, client.getPos_x());
-                ps.setDouble(6, client.getPos_y());
+                ps.setInt(5, client.getPos_x());
+                ps.setInt(6, client.getPos_y());
                 ps.setInt(7, client.getStatus());
                  ps.setString(8, client.getRuc());
 
