@@ -51,6 +51,8 @@ public class Frm_Client extends javax.swing.JFrame {
         pnl_client_priority = new javax.swing.JPanel();
         lbl_priority = new javax.swing.JLabel();
         op_priority = new javax.swing.JSpinner();
+        lbl_declaimerpriority = new javax.swing.JLabel();
+        lbl_declaimer = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -62,11 +64,11 @@ public class Frm_Client extends javax.swing.JFrame {
 
         pnl_client.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_id.setText("Ruc");
+        lbl_id.setText("Ruc (*)");
 
-        lbl_name.setText("Nombres");
+        lbl_name.setText("Nombres (*)");
 
-        jLabel1.setText("Dirección");
+        jLabel1.setText("Dirección (*)");
 
         javax.swing.GroupLayout pnl_clientLayout = new javax.swing.GroupLayout(pnl_client);
         pnl_client.setLayout(pnl_clientLayout);
@@ -76,6 +78,7 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(pnl_clientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_clientLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(725, 725, 725))
                     .addGroup(pnl_clientLayout.createSequentialGroup()
@@ -93,7 +96,7 @@ public class Frm_Client extends javax.swing.JFrame {
         pnl_clientLayout.setVerticalGroup(
             pnl_clientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_clientLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(16, 16, 16)
                 .addGroup(pnl_clientLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_id)
                     .addComponent(txt_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -124,9 +127,9 @@ public class Frm_Client extends javax.swing.JFrame {
 
         pnl_client_location.setBorder(javax.swing.BorderFactory.createTitledBorder("Ubicación del Cliente"));
 
-        lbl_posx.setText("Posición X");
+        lbl_posx.setText("Posición X (*)");
 
-        lbl_posy.setText("Posición Y");
+        lbl_posy.setText("Posición Y (*)");
 
         javax.swing.GroupLayout pnl_client_locationLayout = new javax.swing.GroupLayout(pnl_client_location);
         pnl_client_location.setLayout(pnl_client_locationLayout);
@@ -159,10 +162,13 @@ public class Frm_Client extends javax.swing.JFrame {
 
         pnl_client_priority.setBorder(javax.swing.BorderFactory.createTitledBorder("Prioridad del Cliente"));
 
-        lbl_priority.setText("Prioridad");
+        lbl_priority.setText("Prioridad (*)");
 
         op_priority.setModel(new javax.swing.SpinnerNumberModel(1, 1, 10, 1));
         op_priority.setToolTipText("");
+
+        lbl_declaimerpriority.setFont(new java.awt.Font("Lucida Grande", 3, 9)); // NOI18N
+        lbl_declaimerpriority.setText("La máxima prioridad es 10");
 
         javax.swing.GroupLayout pnl_client_priorityLayout = new javax.swing.GroupLayout(pnl_client_priority);
         pnl_client_priority.setLayout(pnl_client_priorityLayout);
@@ -170,9 +176,12 @@ public class Frm_Client extends javax.swing.JFrame {
             pnl_client_priorityLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_client_priorityLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(lbl_priority)
-                .addGap(34, 34, 34)
-                .addComponent(op_priority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnl_client_priorityLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_declaimerpriority)
+                    .addGroup(pnl_client_priorityLayout.createSequentialGroup()
+                        .addComponent(lbl_priority)
+                        .addGap(34, 34, 34)
+                        .addComponent(op_priority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         pnl_client_priorityLayout.setVerticalGroup(
@@ -182,19 +191,17 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addGroup(pnl_client_priorityLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_priority)
                     .addComponent(op_priority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(lbl_declaimerpriority))
         );
+
+        lbl_declaimer.setFont(new java.awt.Font("Lucida Grande", 3, 9)); // NOI18N
+        lbl_declaimer.setText("Todos los campos marcados con (*) son obligatorios");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(pnl_client_location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42)
-                .addComponent(pnl_client_priority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_client, javax.swing.GroupLayout.PREFERRED_SIZE, 602, Short.MAX_VALUE)
@@ -205,6 +212,15 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
                 .addGap(19, 19, 19))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_declaimer)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnl_client_location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(42, 42, 42)
+                        .addComponent(pnl_client_priority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -219,7 +235,9 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_save)
                     .addComponent(btn_cancel))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_declaimer)
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         pack();
@@ -285,6 +303,8 @@ public class Frm_Client extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_save;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lbl_declaimer;
+    private javax.swing.JLabel lbl_declaimerpriority;
     private javax.swing.JLabel lbl_id;
     private javax.swing.JLabel lbl_name;
     private javax.swing.JLabel lbl_posx;

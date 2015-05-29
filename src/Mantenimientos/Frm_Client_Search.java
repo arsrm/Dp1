@@ -127,7 +127,7 @@ DefaultTableModel modelo;
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -155,9 +155,16 @@ DefaultTableModel modelo;
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         tbl_client.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -300,10 +307,11 @@ DefaultTableModel modelo;
             idUserSel = (String)tbl_client.getValueAt(rowSel, 0);
             client = daoClient.clientGet(idUserSel);
             if (colSel != 4) {
+                this.setVisible(false);
                 Frm_Client frm_Client = new Frm_Client(this,client);
                 frm_Client.setVisible(true);
                 frm_Client.setLocationRelativeTo(null);
-                this.setVisible(false);
+                
             }
         }
     }//GEN-LAST:event_tbl_clientMouseClicked

@@ -28,13 +28,6 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
-              <Component id="pnl_client_location" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
-              <Component id="pnl_client_priority" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
-          </Group>
-          <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnl_client" pref="602" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -45,6 +38,18 @@
               <EmptySpace max="32767" attributes="0"/>
               <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="lbl_declaimer" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="pnl_client_location" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                      <Component id="pnl_client_priority" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -63,7 +68,9 @@
                   <Component id="btn_save" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="lbl_declaimer" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -85,6 +92,7 @@
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="725" max="-2" attributes="0"/>
                       </Group>
@@ -110,7 +118,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_id" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_id" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -133,21 +141,21 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_id">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ruc"/>
+            <Property name="text" type="java.lang.String" value="Ruc (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_id">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_name">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nombres"/>
+            <Property name="text" type="java.lang.String" value="Nombres (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_name">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Direcci&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Direcci&#xf3;n (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_address">
@@ -218,14 +226,14 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_posx">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Posici&#xf3;n X"/>
+            <Property name="text" type="java.lang.String" value="Posici&#xf3;n X (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_posx">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_posy">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Posici&#xf3;n Y"/>
+            <Property name="text" type="java.lang.String" value="Posici&#xf3;n Y (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_posy">
@@ -246,9 +254,14 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                  <Component id="lbl_priority" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
-                  <Component id="op_priority" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="lbl_declaimerpriority" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="lbl_priority" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                          <Component id="op_priority" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
                   <EmptySpace pref="26" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -261,7 +274,8 @@
                       <Component id="lbl_priority" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="op_priority" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                  <EmptySpace pref="8" max="32767" attributes="0"/>
+                  <Component id="lbl_declaimerpriority" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -269,7 +283,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_priority">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Prioridad"/>
+            <Property name="text" type="java.lang.String" value="Prioridad (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JSpinner" name="op_priority">
@@ -280,7 +294,23 @@
             <Property name="toolTipText" type="java.lang.String" value=""/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="lbl_declaimerpriority">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="9" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="La m&#xe1;xima prioridad es 10"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JLabel" name="lbl_declaimer">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Lucida Grande" size="9" style="3"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Todos los campos marcados con (*) son obligatorios"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

@@ -100,7 +100,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         access_windows_user(user.getProfile_idProfile());
         //gzavala-fin  24/05      
         logSI.setIduser(user.getIdUser());
-        daoLog.clientIns("Se ha logueado al sistema", logSI.getIduser());
+        daoLog.clientIns("Se ha logueado al sistema", Frm_MenuPrincipal.class.toString(),logSI.getIduser());
     }
 
     /**

@@ -179,7 +179,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -326,6 +326,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void tbl_userMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_userMouseClicked
+         
         Users users = null;
         Integer idUserSel;
         if (evt.getSource() == tbl_user) {
@@ -334,10 +335,11 @@ public class Frm_User_Search extends javax.swing.JFrame {
             idUserSel = (Integer)tbl_user.getValueAt(rowSel, 0);
             users = daoUsers.usersGet(idUserSel);
             if (colSel!=5){
+                this.setVisible(false);
                 Frm_User frm_User = new Frm_User(this, users);
                 frm_User.setVisible(true);
                 frm_User.setLocationRelativeTo(null);
-                this.setVisible(false);
+                
             }
         }
     }//GEN-LAST:event_tbl_userMouseClicked

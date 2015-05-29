@@ -240,7 +240,7 @@ public class Frm_User extends javax.swing.JFrame {
                     
                     DaoLog daoLog =new DaoLogImpl();
                      Log logSI = null; 
-                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() , logSI.getIduser());
+                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
                    
                     
              
