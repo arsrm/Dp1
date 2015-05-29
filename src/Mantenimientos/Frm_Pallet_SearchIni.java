@@ -396,8 +396,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
          }catch(Exception e)
           { 
            }  
-          
-             
         }   
         //dao.usersDel(ids);        
 
@@ -410,9 +408,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         }
         load_tablefilter();   
         
-     
-     
-     
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed

@@ -10,6 +10,7 @@ import Model.PalletIni;
 import Model.PalletProduct;
 import Model.Product;
 import Model.Trademark;
+import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
@@ -250,5 +251,57 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
             }
         }
         return list;
+    }
+
+    @Override
+    public String PalletProductDelMasive(List<Integer> listidpallet, List<Integer> listidmark, List<Integer> listidproduct,List<Integer> lististatus) {
+
+        int sizelist= listidpallet.size();
+        String result = null;
+        String sql = "UPDATE  pallet_by_product SET "
+                + "status=? "
+                + "WHERE Pallet_idPallet=? "
+                + " and Product_Trademark_id_Trademark=? "
+                + " and Product_idProduct=? " ;
+        Connection cn = db.getConnection();
+        PalletIni objmodelpalletini=new PalletIni();
+        DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
+        int idpallet; 
+        int idmarca; 
+        int idproduct; 
+        int idstatus; 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                for (int x = 0 ; x<sizelist ;x ++) {
+                    idpallet= listidpallet.get(x);
+                    idmarca=listidmark.get(x);
+                    idproduct=listidproduct.get(x);
+                    idstatus=lististatus.get(x);
+                    ps.setInt(1,1-idstatus);
+                    ps.setInt(2,idpallet);
+                    ps.setInt(3,idmarca);
+                    ps.setInt(4,idproduct);
+                    objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
+                    objmodelpalletini.setStatuspallet(idstatus+1);
+                    objdaopalletini.PalletIniUpd(objmodelpalletini);
+                    int ctos = ps.executeUpdate();
+                    if (ctos == 0) {
+                        throw new SQLException("ID: no existe");
+                    }
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    
     }
 }

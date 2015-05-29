@@ -46,7 +46,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     Integer indpaso; 
-    DaoPalletProduct dao=new DaoPalletProductImpl();
+    DaoPalletProduct daoPalletProduct=new DaoPalletProductImpl();
     
     public Frm_PalletProduct_Search()
     {
@@ -82,7 +82,6 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        cbo_product.addItem(" ");
        cbo_product.setSelectedIndex(cantreg);
     }
-  
     public void load_product(String marca)
     {   Trademark objmodel=new Trademark();
         DaoPalletProduct daomark= new DaoPalletProductImpl();
@@ -103,7 +102,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        cbo_product.setSelectedIndex(cantreg);
       
     }        
-    public void  loadproduct_mark(String marca)    
+    public void loadproduct_mark(String marca)    
     { if (marca.isEmpty())
       { load_product();}   
       else 
@@ -155,7 +154,6 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        
        return cadWhere; 
     }       
-            
     public void llenatabla(String CadenaWhere)
     { DaoPalletProduct objdao=new DaoPalletProductImpl();
       Integer cantreg=objdao.GetPalletProductList(CadenaWhere).size();
@@ -179,20 +177,24 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         status,list[i].getUser_created(),list[i].getUser_updated(),list[i].getCreated_at(),list[i].getUpdated_at()});
         }   
     }       
-            
+
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_palletproduct.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+     }        
+     
     public void load_tablefilter()
     { String Cadenawhere="";
-       
+       limpiatabla();
        Cadenawhere= armacadena_where();
        llenatabla(Cadenawhere);
     }
         
-    
-        //limpiatabla();
-        //filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
-    
-         
-            
    public Frm_PalletProduct_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet-Producto");
         menuaux = menu;
@@ -370,9 +372,9 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
                         .addComponent(btn_new)
-                        .addGap(18, 18, 18)
+                        .addGap(44, 44, 44)
                         .addComponent(btn_delete)
-                        .addGap(430, 430, 430)
+                        .addGap(404, 404, 404)
                         .addComponent(btn_cancel))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(19, 19, 19)
@@ -428,7 +430,54 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        // TODO add your handling code here:
+
+       DefaultTableModel modelo = (DefaultTableModel) tbl_palletproduct.getModel();
+        List<Integer> listidpallet=new  ArrayList<Integer>();
+        List<Integer> listidmarca= new ArrayList<Integer>();
+        List<Integer> listidproduct= new ArrayList<Integer>();
+        List<Integer>  listidstatus=new ArrayList<Integer>(); 
+        Integer idpallet;
+        Integer idmarca;
+        Integer idproduct;
+        Integer idstatus; 
+        
+        int nr =modelo.getRowCount(); 
+        for (int i=0; i<nr ;i++){
+            
+         try {   
+         Object prueba =  modelo.getValueAt(i, 8);
+             if ((Boolean)prueba){
+                //Integer numm= (Integer)modelo.getValueAt(i, 8);
+               idpallet=(Integer)modelo.getValueAt(i, 0);
+               idmarca= (Integer)daoPalletProduct.GetTrademarkname((String)modelo.getValueAt(i,1)).getId_Trademark();
+               idproduct=(Integer)daoPalletProduct.GetProduct((String)modelo.getValueAt(i, 2)).getIdProduct();
+               idstatus=0; 
+               if (((String)modelo.getValueAt(i, 3)).equals("Inactivo"))
+               { idstatus=0; 
+               }   
+               if (((String)modelo.getValueAt(i, 3)).equals("Activo"))
+               { idstatus=1; 
+               }   
+               listidpallet.add(idpallet);
+               listidmarca.add(idmarca);
+               listidproduct.add(idproduct);
+               listidstatus.add(idstatus);
+               } 
+         }catch(Exception e)
+          { 
+         }  
+         
+        }   
+        //dao.usersDel(ids);        
+        String message = "¿Está seguro que desea cambiar de estado a los registros seleccionados?";
+        String title = "Confirmación";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+            daoPalletProduct.PalletProductDelMasive(listidpallet, listidmarca, listidproduct, listidstatus);
+        }
+        load_tablefilter();    
+
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed

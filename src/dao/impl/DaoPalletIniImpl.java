@@ -195,7 +195,8 @@ public class DaoPalletIniImpl implements DaoPalletIni{
     }
 
     @Override
-    public String PalletIniDelMasive(List<Integer> ids) {
+    public String PalletIniDelMasive(List<Integer> ids)
+    {
         int sizelist= ids.size();
         String result = null;
         String sql = "UPDATE  pallet SET "
@@ -209,7 +210,6 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 for (int x = 0 ; x<sizelist ;x ++) {
                     int idpallet= ids.get(x);
                     ps.setInt(1,idpallet);
-
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
                         throw new SQLException("ID: " + x + " no existe");
