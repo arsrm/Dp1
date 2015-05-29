@@ -228,7 +228,7 @@ public class DaoClientImpl implements DaoClient {
         Client c =null;
         //Integer id=0;
         String sql = "select  idClient,ruc,name,address,priority,pos_x,pos_y,status"
-                +" From  Client where ruc = ?";
+                +" From  Client where idClient = ?";
 
 
         Connection cn = db.getConnection();
