@@ -85,7 +85,6 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
     {   Trademark objmodel=new Trademark();
         DaoPalletProduct daomark= new DaoPalletProductImpl();
         objmodel=daomark.GetTrademarkname(marca); 
-
         cbo_product.removeAllItems();
         DaoPalletProduct objdao=new DaoPalletProductImpl();
         Integer cantreg=objdao.GetProductList(objmodel.getId_Trademark()).size();
@@ -200,8 +199,8 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         indpaso=0; 
         initComponents();
         load_mark();
-        indpaso=1; 
         load_product();
+        indpaso=1; 
         load_state();
     }
 
