@@ -8,6 +8,7 @@ package dao;
 import Model.PalletIni;
 import Model.Product;
 import Model.Trademark;
+import Model.PalletProduct;
 import java.util.List;
 
 /**
@@ -24,6 +25,6 @@ public interface DaoPalletProduct {
     
     public List<Product> GetProductList(Integer idmark);
     
-    
+    public List<PalletProduct> GetPalletProductList(String CadenaWhere); 
     
 }

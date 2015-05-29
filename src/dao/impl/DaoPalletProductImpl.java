@@ -7,6 +7,7 @@
 package dao.impl;
 
 import Model.PalletIni;
+import Model.PalletProduct;
 import Model.Product;
 import Model.Trademark;
 import dao.DaoPalletProduct;
@@ -203,5 +204,51 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
             }
         }
         return objmodel;
+    }
+
+    @Override
+    public List<PalletProduct> GetPalletProductList(String CadenaWhere) {
+        List<PalletProduct> list = null;
+        String sql = "SELECT "
+                + "Pallet_idPallet, "
+                + "Product_Trademark_id_Trademark, "
+                + "Product_idProduct, "
+                + "status, "
+                + "created_at, "
+                + "updated_at, "
+                + "user_created, "
+                + "user_updated "
+                + "FROM pallet_by_product  " +CadenaWhere+" ";
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    PalletProduct objmodel = new PalletProduct();
+                    objmodel.setIdpallet(rs.getInt(1));
+                    objmodel.setIdtrademark(rs.getInt(2));
+                    objmodel.setIdproduct(rs.getInt(3));
+                    objmodel.setStatus(rs.getInt(4));
+                    objmodel.setCreated_at(rs.getTimestamp(5));
+                    objmodel.setUpdated_at(rs.getTimestamp(6));
+                    objmodel.setUser_created(rs.getInt(7));
+                    objmodel.setUser_updated(rs.getInt(8));
+                    list.add(objmodel);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
 }

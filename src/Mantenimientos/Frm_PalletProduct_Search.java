@@ -15,6 +15,7 @@
 package Mantenimientos;
 
 import Mantenimientos.Frm_Pallet;
+import Model.PalletProduct;
 import Model.PalletState;
 import Model.Product;
 import Model.Trademark;
@@ -32,11 +33,13 @@ import dao.impl.DaoTrademarkImpl;
 
 import java.util.*;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author gzavala
  */
-public class Frm_PalletProduct_Search extends javax.swing.JFrame {
+public class Frm_PalletProduct_Search extends javax.swing.JFrame 
+{
 
     /**
      * Creates new form Frm_Pallet_Search
@@ -115,23 +118,20 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
       cbo_status.addItem(" ");
       cbo_status.setSelectedIndex(2);        
     }        
-    public void load_tablefilter()
-    { 
-       String description="";
-       String datefecini=""; 
-       String datefecfin=""; 
+    
+    public String armacadena_where()
+    {
        String actividad="";
        String cadWhere="";
-
-        try
-        {
+       Integer idpallet=0; 
+       String Cadenawhere=""; 
+        
         if( cbo_mark.getSelectedItem().toString().trim().equals(null)|| cbo_mark.getSelectedItem().toString().trim().isEmpty())
         { cadWhere="where  (1=1) and " ;}    
         else 
         {DaoPalletProduct dao=new DaoPalletProductImpl();
           cadWhere=" Product_Trademark_id_Trademark= "+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark()+"  and " ;
         }    
-
         if( cbo_product.getSelectedItem().toString().trim().equals(null)|| cbo_product.getSelectedItem().toString().trim().isEmpty())
         { cadWhere=cadWhere+ " (1=1) and " ;}    
         else 
@@ -139,25 +139,61 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame {
           cadWhere=cadWhere+ " Product_idProduct="+ dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getIdProduct()+" and " ;
           cadWhere= cadWhere+ " Product_Trademark_id_Trademark="+dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getTrademark() +" and "; 
         }    
-        
         if (cbo_status.getSelectedItem().toString().trim().equals(null) || cbo_status.getSelectedItem().toString().trim().isEmpty())
         { cadWhere=cadWhere +" (1=1) and "; }   
         else if (cbo_status.getSelectedItem().toString().trim().equals("Activo"))
         { cadWhere=cadWhere +" status=1 and ";}       
         else if (cbo_status.getSelectedItem().toString().trim().equals("Inactivo"))
         { cadWhere=cadWhere+" status=0 and ";}       
-        
-        
-        //limpiatabla();
-        //filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
-        }
-        catch(Exception e)
-        { 
-        }    
-        
+   
+       try{
+          idpallet=Integer.parseInt(txt_pallet.getText().toString().trim());
+          cadWhere=cadWhere+" Pallet_idPallet="+idpallet+"  ";
+       }catch(Exception e)
+       {  cadWhere=cadWhere+" (1=1)";
+       }    
+       
+       return cadWhere; 
     }       
             
-    public Frm_PalletProduct_Search(Frm_MenuPrincipal menu) {
+    public void llenatabla(String CadenaWhere)
+    { DaoPalletProduct objdao=new DaoPalletProductImpl();
+      Integer cantreg=objdao.GetPalletProductList(CadenaWhere).size();
+      PalletProduct[] list=new PalletProduct[cantreg];
+      DefaultTableModel model= (DefaultTableModel)tbl_palletproduct.getModel(); 
+      DaoPalletProduct objmarca=new DaoPalletProductImpl();
+      DaoProducts objproduc= new DaoProdImpl();
+      String status="";
+      for (int i=0; i<cantreg; i++)
+      { list[i]=objdao.GetPalletProductList(CadenaWhere).get(i);
+     
+      if(list[i].getStatus()==1)
+      { status="Activo";
+      }
+      else 
+      { status="Inactivo";
+        }    
+        model.addRow(new Object[]{list[i].getIdpallet(),
+        objmarca.GetTradamarkid(list[i].getIdtrademark()).getName(),
+        objproduc.ProductsGet(list[i].getIdproduct()).getName(),
+        status,list[i].getUser_created(),list[i].getUser_updated(),list[i].getCreated_at(),list[i].getUpdated_at()});
+        }   
+    }       
+            
+    public void load_tablefilter()
+    { String Cadenawhere="";
+       
+       Cadenawhere= armacadena_where();
+       llenatabla(Cadenawhere);
+    }
+        
+    
+        //limpiatabla();
+        //filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
+    
+         
+            
+   public Frm_PalletProduct_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet-Producto");
         menuaux = menu;
         indpaso=0; 
