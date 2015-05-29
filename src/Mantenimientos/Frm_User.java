@@ -1,12 +1,15 @@
 package Mantenimientos;
 
 import Model.Distribution_Center;
+import Model.Log;
 import Model.Profile;
 import Model.Users;
 import dao.DaoDistributionCenter;
+import dao.DaoLog;
 import dao.DaoProfile;
 import dao.DaoUsers;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProfileImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
@@ -215,15 +218,7 @@ public class Frm_User extends javax.swing.JFrame {
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (ok_option == JOptionPane.OK_OPTION) {
-
-               // if ((esNumero(txt_id.getText()) == false) && (esString(txt_name.getText()) == true)) {
-                //    JOptionPane.showMessageDialog(this, "El campo 'DNI' debe ser numérico");
-                //    txt_id.setText("");
-                //} else if ((esNumero(txt_id.getText()) == true) && (esString(txt_name.getText()) == false)) {
-                //    JOptionPane.showMessageDialog(this, "El campo 'Nombres' no es una cadena valida");
-                //    txt_name.setText("");
-               // } else if ((esNumero(txt_id.getText()) == true) && (esString(txt_name.getText()) == true)) {
-                    Users users = new Users();
+                     Users users = new Users();
                     users.setIdUser(aInteger(txt_id.getText()));
                     users.setname(txt_name.getText());
                     
@@ -242,7 +237,13 @@ public class Frm_User extends javax.swing.JFrame {
                     frm_user_search.setLocationRelativeTo(null);
                     this.dispose();
                     frm_user_search.initilizeTable();
-               // }
+                    
+                    DaoLog daoLog =new DaoLogImpl();
+                     Log logSI = null; 
+                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() , logSI.getIduser());
+                   
+                    
+             
             }
         }
       }

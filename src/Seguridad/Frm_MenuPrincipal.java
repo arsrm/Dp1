@@ -1,44 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Seguridad;
 
 import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Distribution_Center;
-//gzavala inicio 19/05 
-//gzavala inicio 29/05 03:55 Se actualiza nombre de Formulario
-//import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_PalletIni;
+import Mantenimientos.Frm_PalletLocation;
+import Mantenimientos.Frm_PalletLocation_Search;
 import Mantenimientos.Frm_PalletProduct;
-//gzavala inicio 29/05 03:55
-//import Mantenimientos.Frm_Pallet_Search;
-//gzavala inicio 27/05 13:20
 import Mantenimientos.Frm_PalletProduct_Search;
-//gzavala fin 27/05 13:20
-//gzavala fin 19/05 
+import Mantenimientos.Frm_Pallet_SearchIni;
 import Mantenimientos.Frm_Product_Search;
 import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_User_Search;
 import Mantenimientos.Frm_Warehouse_Search;
+import Model.Log;
 import Model.Users;
-//gzavala-inicio 24/05
-import dao.DaoUsers;
-import dao.impl.DaoUserImpl;
-//gzavala-fin 24/05
-//gzavala-inicio 24/05 23:45
-import Mantenimientos.Frm_Pallet_SearchIni;
-import Mantenimientos.Frm_PalletIni;
-import Mantenimientos.Frm_PalletLocation_Search;
-import Mantenimientos.Frm_PalletLocation;
-//gzavala-inicio 24/05 23:45
-
 import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
-import Operaciones.Frm_Load_RequestOrder;
-import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_IntermentOrder_Load;
 import Operaciones.Frm_InternmentOrder_Search;
+import Operaciones.Frm_Load_RequestOrder;
+import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
@@ -46,20 +27,21 @@ import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
+import dao.DaoLog;
+import dao.DaoUsers;
+import dao.impl.DaoLogImpl;
+import dao.impl.DaoUserImpl;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Alejo
- */
 public class Frm_MenuPrincipal extends javax.swing.JFrame {
     Users user = new Users();
-    /**
-     * Creates new form MenuPrincipal
-     */
+   
     Frm_Login login = new Frm_Login();
-
+    
+    Log logSI = new Log();
+    DaoLog daoLog =new DaoLogImpl();
+    
     //gzavala-inicio 24/05
     public void access_windows_user(Integer idprofile)
     {  
@@ -101,6 +83,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     public Frm_MenuPrincipal(Frm_Login log) {
         initComponents();
         login = log;
+        
 
     }
 
@@ -116,7 +99,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         //gzavala-inicio 24/05
         access_windows_user(user.getProfile_idProfile());
         //gzavala-fin  24/05      
-        
+        logSI.setIduser(user.getIdUser());
+        daoLog.clientIns("Se ha logueado al sistema", logSI.getIduser());
     }
 
     /**
