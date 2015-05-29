@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
  *
  * @author gzavala
  */
-public class Frm_Pallet extends javax.swing.JFrame {
+public class Frm_PalletProduct extends javax.swing.JFrame {
 
     /**
      * Creates new form Frm_Pallet
@@ -24,7 +24,7 @@ public class Frm_Pallet extends javax.swing.JFrame {
     Frm_PalletProduct_Search  ventprev = new Frm_PalletProduct_Search(); 
     
             
-    public Frm_Pallet( Frm_PalletProduct_Search ventant) {
+    public Frm_PalletProduct( Frm_PalletProduct_Search ventant) {
         setTitle("Datos del Pallet");
         ventprev = ventant;
         initComponents();

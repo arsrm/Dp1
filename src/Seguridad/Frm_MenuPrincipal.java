@@ -8,7 +8,10 @@ package Seguridad;
 import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Distribution_Center;
 //gzavala inicio 19/05 
-import Mantenimientos.Frm_Pallet;
+//gzavala inicio 29/05 03:55 Se actualiza nombre de Formulario
+//import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_PalletProduct;
+//gzavala inicio 29/05 03:55
 //import Mantenimientos.Frm_Pallet_Search;
 //gzavala inicio 27/05 13:20
 import Mantenimientos.Frm_PalletProduct_Search;

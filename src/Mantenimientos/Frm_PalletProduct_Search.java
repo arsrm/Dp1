@@ -14,7 +14,7 @@
  */
 package Mantenimientos;
 
-import Mantenimientos.Frm_Pallet;
+import Mantenimientos.Frm_PalletProduct;
 import Model.PalletProduct;
 import Model.PalletState;
 import Model.Product;
@@ -30,7 +30,6 @@ import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPalletStateImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
-
 import java.util.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -413,7 +412,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
-        Frm_Pallet frm_pallet = new Frm_Pallet(this);
+        Frm_PalletProduct frm_pallet = new Frm_PalletProduct(this);
         frm_pallet.setVisible(true);
         frm_pallet.setLocationRelativeTo(null);
         this.setVisible(false);  
