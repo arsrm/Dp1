@@ -28,5 +28,6 @@ public interface DaoPalletProduct {
     public List<PalletProduct> GetPalletProductList(String CadenaWhere); 
     
     public String PalletProductDelMasive(List<Integer> idpallet, List<Integer> idmark, List<Integer> idproduct,List<Integer> idstatus );    
-    
+   
+    public String PalletProductInsMasive(List<Integer>listidpallet, Integer idmarca, Integer idproduct)  ;
 }

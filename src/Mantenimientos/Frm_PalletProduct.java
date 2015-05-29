@@ -6,23 +6,30 @@
 
 package Mantenimientos;
 
-import Seguridad.Frm_MenuPrincipal;
 import Mantenimientos.Frm_PalletProduct_Search;
+import Model.Pallet;
 import Model.PalletIni;
+import Model.PalletProduct;
 import Model.Product;
 import Model.Trademark;
+import Seguridad.Frm_MenuPrincipal;
+import dao.DaoPallet;
 import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
 import dao.DaoProducts;
 import dao.DaoTrademark;
+import dao.impl.DaoPalletImpl;
 import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 /** 
  *
  * @author gzavala
@@ -266,7 +273,32 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
         ventprev.setVisible(true);        
     }//GEN-LAST:event_formWindowClosed
    
-       
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+    
+    }       
+     
+    public void llenatabla()
+    { DaoPalletIni objdao=new DaoPalletIniImpl();
+      Integer cantreg=objdao.PalletIniQry().size();
+      PalletIni[] list=new PalletIni[cantreg];
+      DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
+      for (int i=0; i<cantreg; i++)
+      { list[i]=objdao.PalletIniQry().get(i);
+          
+        //Solo se mostrarán los pallet activos disponibles id estado pallet=2
+        if (list[i].getStatuspallet()==2 && list[i].getStatusactividad()==1)
+        { model.addRow(new Object[]{list[i].getIdpallet(),list[i].getDescription(),list[i].getCreated_at(),
+                list[i].getUpdated_at(),list[i].getUser_created(),list[i].getUser_updated() });
+        }
+      }   
+    }       
     private void cbo_markItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_markItemStateChanged
         String marca="";
         if (indpaso==1)
@@ -283,7 +315,10 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_markItemStateChanged
 
     public void load_tablefilter()
-    { 
+    { String Cadenawhere="";
+       limpiatabla();
+       Cadenawhere= " Where (1=1)";
+       llenatabla();
     }        
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         // TODO add your handling code here:
@@ -296,15 +331,42 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
 
-         String message = "¿Está seguro que realizar el registro del Nuevo Pallet?";
-         String title = "Confirmar! ";
+       DefaultTableModel modelo = (DefaultTableModel) tbl_pallet.getModel();
+        List<Integer> listidpallet=new  ArrayList<Integer>();
+        List<Integer>  listidstatus=new ArrayList<Integer>(); 
+        Integer idpallet;
+        Integer idmarca;
+        Integer idproduct;
+        Integer idstatus; 
+        
+        int nr =modelo.getRowCount(); 
+
+        DaoPalletProduct daoPalletProduct =new DaoPalletProductImpl(); 
+        idmarca= (Integer)daoPalletProduct.GetTrademarkname(cbo_mark.getSelectedItem().toString()).getId_Trademark();
+        idproduct=(Integer)daoPalletProduct.GetProduct(cbo_product.getSelectedItem().toString()).getIdProduct();
+        
+        for (int i=0; i<nr ;i++){
+            
+         try {   
+         Object prueba =  modelo.getValueAt(i, 6);
+             if ((Boolean)prueba){
+                //Integer numm= (Integer)modelo.getValueAt(i, 8);
+               idpallet=(Integer)modelo.getValueAt(i, 0);
+               listidpallet.add(idpallet);
+               } 
+         }catch(Exception e)
+          { 
+         }  
+        }   
+        //dao.usersDel(ids);        
+        String message = "¿Está seguro que desea cambiar de estado a los registros seleccionados?";
+        String title = "Confirmación";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
-        if (reply == JOptionPane.YES_OPTION) 
-        { //daopalletini.PalletIniIns(objpalletini);
-          this.dispose();
-          ventprev.setVisible(true);
+        if (reply == JOptionPane.YES_OPTION) {
+            daoPalletProduct.PalletProductInsMasive(listidpallet, idmarca, idproduct);
         }
+        load_tablefilter();    
 
     }//GEN-LAST:event_btn_saveActionPerformed
 

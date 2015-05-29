@@ -304,4 +304,45 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         return result;
     
     }
+
+    @Override
+    public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct) {
+        int sizelist= listidpallet.size();
+        String result = null;
+        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,status) "
+                + " values(?,?,?,1) ";
+        Connection cn = db.getConnection();
+        PalletIni objmodelpalletini=new PalletIni();
+        DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
+        int idpallet; 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                for (int x = 0 ; x<sizelist ;x ++) {
+                    idpallet= listidpallet.get(x);
+                    ps.setInt(1,idpallet);
+                    ps.setInt(2,idmarca);
+                    ps.setInt(3,idproduct);
+                    //Se actualiza el pallet como no disponible
+                    objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
+                    objmodelpalletini.setStatuspallet(1);
+                    objdaopalletini.PalletIniUpd(objmodelpalletini);
+                    int ctos = ps.executeUpdate();
+                    if (ctos == 0) {
+                        throw new SQLException("ID: no existe");
+                    }
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
 }
