@@ -176,7 +176,7 @@ public class DaoProfileImpl implements DaoProfile {
     public void profileIns(Profile profile) {
         String sql = "INSERT INTO Profile ("
                 + "name, "
-                + "description, "
+                + "description, \n"
                 + "status) "
                 + "VALUES (?,?,?);";
         Connection cn = db.getConnection();
@@ -186,7 +186,8 @@ public class DaoProfileImpl implements DaoProfile {
 
                 ps.setString(1, profile.getName());
                 ps.setString(2, profile.getDescription());
-                ps.setInt(3, 1);
+                ps.setInt(3, 0);
+                // status en 0 para que luego al asignarsele los permisos recien pase a 1
                 ps.executeUpdate();
                 
             } catch (SQLException e) {
@@ -204,7 +205,7 @@ public class DaoProfileImpl implements DaoProfile {
     public int profileDel(Integer idProfile) {
         String sql = "UPDATE Profile SET "                
                 + "status=? "
-                + "WHERE idProfile=?;";
+                + "WHERE idProfile=?; ";                
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -389,6 +390,113 @@ public class DaoProfileImpl implements DaoProfile {
         }
     }
 
+    @Override
+    public boolean existsProfileName(String profileName) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM Profile WHERE name = ?;";
 
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, profileName);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void profileWindowsDel(Integer idProfile) {
+        String sql = "UPDATE Profile_Windows SET "                
+                + "status=? "
+                + "WHERE idProfile=?; ";                
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                
+                PreparedStatement ps = cn.prepareStatement(sql);                   
+                ps.setInt(1, 0);
+                ps.setInt(2, idProfile);
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+    @Override
+    public boolean existsUserWithProfile(Integer idProfile) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM User WHERE Profile_idProfile = ? "
+                + "AND status = 1; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idProfile);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void profileUpd(Profile profile) {
+        String sql = "UPDATE Profile SET "
+                + "description=?, "
+                + "status=? "
+                + "WHERE idProfile=?;";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ps.setString(1, profile.getDescription());                
+                ps.setInt(2, profile.getStatus());
+                ps.setInt(3, profile.getIdprofile());                
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                //
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
 }
 

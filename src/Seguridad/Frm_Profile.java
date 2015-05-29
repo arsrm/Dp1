@@ -153,23 +153,40 @@ public class Frm_Profile extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         profile = new Profile();
-        profile.setName(txt_name.getText());
-        profile.setDescription(txt_description.getText());
-        daoProfile.profileIns(profile);
+        profile.setName(txt_name.getText().trim());
+        profile.setDescription(txt_description.getText().trim());        
         
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el perfil con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                menu_padre.initializeTable();
-                this.dispose();
+            if (profileValidatedToSave(profile.getName())) {
+                daoProfile.profileIns(profile);
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el perfil con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
+                    menu_padre.setVisible(true);
+                    menu_padre.setLocationRelativeTo(null);
+                    menu_padre.initializeTable();
+                    this.dispose();
+                }
             }
         }
     }//GEN-LAST:event_btn_saveActionPerformed
-
+    
+    private boolean profileValidatedToSave(String name){
+        String empty = "";
+        if(empty.equals(name)) {
+            JOptionPane.showMessageDialog(null,"El nombre de perfil no puede ser vacio", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;    
+        }
+        if (daoProfile.existsProfileName(name)){
+            JOptionPane.showMessageDialog(null,"El nombre de perfil ya existe", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }        
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */

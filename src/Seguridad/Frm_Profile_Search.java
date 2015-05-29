@@ -14,6 +14,8 @@ import dao.impl.DaoProfileImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -98,6 +100,17 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_profile);
+        if (tbl_profile.getColumnModel().getColumnCount() > 0) {
+            tbl_profile.getColumnModel().getColumn(0).setMinWidth(0);
+            tbl_profile.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbl_profile.getColumnModel().getColumn(0).setMaxWidth(0);
+            tbl_profile.getColumnModel().getColumn(1).setMinWidth(100);
+            tbl_profile.getColumnModel().getColumn(1).setPreferredWidth(100);
+            tbl_profile.getColumnModel().getColumn(1).setMaxWidth(100);
+            tbl_profile.getColumnModel().getColumn(2).setMinWidth(200);
+            tbl_profile.getColumnModel().getColumn(2).setPreferredWidth(200);
+            tbl_profile.getColumnModel().getColumn(2).setMaxWidth(200);
+        }
 
         javax.swing.GroupLayout pnl_profileLayout = new javax.swing.GroupLayout(pnl_profile);
         pnl_profile.setLayout(pnl_profileLayout);
@@ -215,10 +228,22 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         int idProfileDelete;
-        for (int i = 0; i < tbl_profile.getRowCount(); i++) {
-            if ((Boolean) tbl_profile.getValueAt(i, 4)) {
-                idProfileDelete = Integer.parseInt(tbl_profile.getValueAt(i, 0).toString());
-                daoProfile.profileDel(idProfileDelete);
+                
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < tbl_profile.getRowCount(); i++) {
+                if ((Boolean) tbl_profile.getValueAt(i, 4)) {
+                    idProfileDelete = Integer.parseInt(tbl_profile.getValueAt(i, 0).toString());
+                    if (profileValidatedToDelete(idProfileDelete)) {
+                        daoProfile.profileWindowsDel(idProfileDelete);
+                        daoProfile.profileDel(idProfileDelete);
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Acciones realizadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {
+                            initializeTable();
+                        }
+                    }
+                }
             }
         }
         initializeTable();
@@ -231,18 +256,26 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             int rowSel = tbl_profile.getSelectedRow();
             int colSel = tbl_profile.getSelectedColumn();
             if (colSel != 4) {
+                this.setVisible(false);
                 idProfileSel = Integer.parseInt(tbl_profile.getValueAt(rowSel, 0).toString());
                 profile = daoProfile.profileGet(idProfileSel);
 
                 Frm_Profile_Assignment frm_profile_assignment = new Frm_Profile_Assignment(this, profile);
                 frm_profile_assignment.setVisible(true);
                 frm_profile_assignment.setLocationRelativeTo(null);
-                this.setVisible(false);
             }
         }
-        this.setVisible(false);
     }//GEN-LAST:event_tbl_profileMouseClicked
-
+    
+    private boolean profileValidatedToDelete(Integer idProfile){
+        if (daoProfile.existsUserWithProfile(idProfile)){
+            JOptionPane.showMessageDialog(null,"No se puede elminar. Hay usuarios con este perfil", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
+        return true;
+    }
+    
     /**
      * @param args the command line arguments
      */

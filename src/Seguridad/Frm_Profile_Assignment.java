@@ -135,6 +135,17 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_window);
+        if (tbl_window.getColumnModel().getColumnCount() > 0) {
+            tbl_window.getColumnModel().getColumn(0).setMinWidth(50);
+            tbl_window.getColumnModel().getColumn(0).setPreferredWidth(50);
+            tbl_window.getColumnModel().getColumn(0).setMaxWidth(50);
+            tbl_window.getColumnModel().getColumn(1).setMinWidth(0);
+            tbl_window.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tbl_window.getColumnModel().getColumn(1).setMaxWidth(0);
+            tbl_window.getColumnModel().getColumn(2).setMinWidth(350);
+            tbl_window.getColumnModel().getColumn(2).setPreferredWidth(350);
+            tbl_window.getColumnModel().getColumn(2).setMaxWidth(350);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -222,30 +233,29 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         int idProfileUpdate;
         String idWindowsUpdate;
-        int statusUpdate;
-        for (int i = 0; i < tbl_window.getRowCount(); i++) {
-            idProfileUpdate = profile.getIdprofile();
-            idWindowsUpdate = tbl_window.getValueAt(i, 1).toString();
-            if ((Boolean) tbl_window.getValueAt(i, 4)){
-                statusUpdate=1;
-            }else{
-                statusUpdate=0;
-            }
-            daoProfile.profileWindowUpd(idProfileUpdate, idWindowsUpdate, statusUpdate);
-        }
-        initializeTable();
+        int statusUpdate;        
         
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < tbl_window.getRowCount(); i++) {
+                idProfileUpdate = profile.getIdprofile();
+                idWindowsUpdate = tbl_window.getValueAt(i, 1).toString();
+                if ((Boolean) tbl_window.getValueAt(i, 4)) {
+                    statusUpdate = 1;
+                } else {
+                    statusUpdate = 0;
+                }
+                daoProfile.profileWindowUpd(idProfileUpdate, idWindowsUpdate, statusUpdate);
+            }
+            profile.setStatus(1);
+            daoProfile.profileUpd(profile);
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se han asignado los permisos con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (ok_option == JOptionPane.OK_OPTION) {
-//                menu_padre.setVisible(true);
-//                menu_padre.setLocationRelativeTo(null);
-//                menu_padre.initializeTable();
-                //this.dispose();
+                initializeTable();
             }
         }
+        initializeTable();
     }//GEN-LAST:event_btn_saveActionPerformed
 
     /**
