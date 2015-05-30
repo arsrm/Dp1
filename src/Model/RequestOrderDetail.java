@@ -18,28 +18,23 @@ import java.util.Date;
 public class RequestOrderDetail implements Serializable {
     
     private Integer idRequest_Order_Detail;
-    private Integer idProduct;
+    private Product product;
     private Integer quantity;
     private Integer status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
     private Integer delivered;
     private Integer remaining;
     private Integer userCreated;
     private Integer userUpdated;
-    private Product productidProduct;
     private RequestOrder requestOrder;
 
     public RequestOrderDetail() {
     }
 
    
-    public Integer getIdProduct() {
-        return idProduct;
-    }
-
-    public void setIdProduct(Integer idProduct) {
-        this.idProduct = idProduct;
+    public Product getProduct() {
+        return product;
     }
 
     public Integer getQuantity() {
@@ -58,19 +53,19 @@ public class RequestOrderDetail implements Serializable {
         this.status = status;
     }
 
-    public Timestamp getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Timestamp createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public Timestamp getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(Timestamp updatedAt) {
+    public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -106,12 +101,8 @@ public class RequestOrderDetail implements Serializable {
         this.userUpdated = userUpdated;
     }
 
-    public Product getProductidProduct() {
-        return productidProduct;
-    }
-
-    public void setProductidProduct(Product productidProduct) {
-        this.productidProduct = productidProduct;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public RequestOrder getRequestOrder() {
@@ -120,6 +111,20 @@ public class RequestOrderDetail implements Serializable {
 
     public void setRequestOrder(RequestOrder requestOrder) {
         this.requestOrder = requestOrder;
+    }
+
+    /**
+     * @return the idRequest_Order_Detail
+     */
+    public Integer getIdRequest_Order_Detail() {
+        return idRequest_Order_Detail;
+    }
+
+    /**
+     * @param idRequest_Order_Detail the idRequest_Order_Detail to set
+     */
+    public void setIdRequest_Order_Detail(Integer idRequest_Order_Detail) {
+        this.idRequest_Order_Detail = idRequest_Order_Detail;
     }
 
 }

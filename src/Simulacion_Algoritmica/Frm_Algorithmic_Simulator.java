@@ -8,6 +8,10 @@ package Simulacion_Algoritmica;
 
 import Operaciones.Frm_DispatchOrder_Detail;
 import Seguridad.Frm_MenuPrincipal;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 
 /**
  *
@@ -293,11 +297,18 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             int rowSel = table_results.getSelectedRow();
             int colSel = table_results.getSelectedColumn();
             if (colSel==0){
-              Frm_Show_Route_Solution frm_srs = new Frm_Show_Route_Solution(this);
-              frm_srs.setLocation(450,150);
-              frm_srs.setVisible(true);
-              frm_srs.setLocationRelativeTo(null);
+              Frm_Show_Route_Solution frm_srs;
+                try {
+                    frm_srs = new Frm_Show_Route_Solution(this);
+                    //frm_srs.setLocation(450,150);
+                    frm_srs.setExtendedState(JFrame.MAXIMIZED_BOTH);
+                    frm_srs.setVisible(true);                      
+                    //frm_srs.setLocationRelativeTo(null);
               this.setVisible(false);  
+                } catch (IOException ex) {
+                    Logger.getLogger(Frm_Algorithmic_Simulator.class.getName()).log(Level.SEVERE, null, ex);
+                }
+              
             }
         }
     }//GEN-LAST:event_table_resultsMouseClicked

@@ -7,6 +7,7 @@
 package dao;
 
 import Model.RequestOrderDetail;
+import Model.RequestOrderDetail;
 import java.util.List;
 
 /**
@@ -15,11 +16,13 @@ import java.util.List;
  */
 public interface DaoRequestOrderDetail {
     
-     public String requestOrderIns(RequestOrderDetail requestOrderDetail);
+    public List<RequestOrderDetail> requestOrderDetailQry(Integer idOrder);
+
+    public String requestOrderIns(RequestOrderDetail requestOrderDetail);
     
-    public String requestOrderDetailDel(List<String> ids);
+    public String requestOrderDetailDel(Integer idRequestOrderDetail, Integer idRequestOrder, Integer status);
     
-    public RequestOrderDetail requestOrderDetailGet(String idRequestOrderDetail);
+    public RequestOrderDetail requestOrderDetailGet(Integer idRequestOrderDetail, Integer idRequestOrder);
     
     public String requestOrderDetailUpd(RequestOrderDetail requestOrder);
 }

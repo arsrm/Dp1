@@ -9,6 +9,10 @@ package dao.impl;
 import Model.StateRequestOrder;
 import dao.DaoStateRequestOrder;
 import enlaceBD.ConectaDb;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -45,7 +49,38 @@ public class DaoStateRequestOrderImpl implements DaoStateRequestOrder{
 
     @Override
     public StateRequestOrder stateRequestOrderGet(int idState) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        StateRequestOrder state = null;
+         
+          String sql =  "SELECT idStateRequest_Order,"
+                + "description,"
+                + "status "
+                + "FROM state_request_order WHERE idStateRequest_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idState);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    state = new StateRequestOrder();
+                    state.setIdStateRequestOrder(idState);
+                    state.setDescription(rs.getString(2));
+                    state.setStatus(rs.getInt(3));
+                }
+
+            } catch (SQLException e) {
+                state = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return state;
     }
 
     @Override

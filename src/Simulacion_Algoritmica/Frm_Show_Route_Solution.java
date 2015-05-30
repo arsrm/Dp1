@@ -6,19 +6,90 @@
 
 package Simulacion_Algoritmica;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 /**
  *
  * @author Luis Miguel
  */
 public class Frm_Show_Route_Solution extends javax.swing.JFrame {
+    public class Imagen extends javax.swing.JPanel {
+            ImageIcon simbolo = null;
+            public Imagen(/*JPanel p*/) {
+                Path path = Paths.get("C:\\Users\\Luis Miguel\\Desktop\\CHECKOUT\\trunk\\Imagenes\\test.png");
+                
+                byte[] data;
+                try {
+                    data = Files.readAllBytes(path);
+                    imageMap = ImageIO.read(new ByteArrayInputStream(data));
+                    simbolo = new ImageIcon(imageMap.getScaledInstance(imageMap.getWidth(),imageMap.getHeight(), java.awt.Image.SCALE_SMOOTH)); 
+                } catch (IOException ex) {
+                    Logger.getLogger(Frm_Show_Route_Solution.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                this.setSize(imageMap.getWidth(), imageMap.getHeight()); //se selecciona el tamaño del panel
+            }
+
+    //Se crea un método cuyo parámetro debe ser un objeto Graphics
+
+            public void paint(Graphics grafico) {
+            Dimension height = getSize();
+            
+            //Se selecciona la imagen que tenemos en el paquete de la //ruta del programa
+
+            //se dibuja la imagen que tenemos en el paquete Images //dentro de un panel
+
+            grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
+            setOpaque(false);
+            super.paintComponent(grafico);
+        }
+    }
     Frm_Algorithmic_Simulator frm_asAux = new Frm_Algorithmic_Simulator();
+    BufferedImage imageMap;
     /**
      * Creates new form Frm_Show_Route_Solution
      */
-    public Frm_Show_Route_Solution(Frm_Algorithmic_Simulator frm_as) {
+    public Frm_Show_Route_Solution(Frm_Algorithmic_Simulator frm_as) throws IOException {
         frm_asAux=frm_as;
         setTitle("VISUALIZACIÓN DE LA RUTA");
         initComponents();
+        Imagen img = new Imagen(/*pnl_img*/);
+        int width = img.simbolo.getIconWidth();
+        int height = img.simbolo.getIconHeight();
+        Dimension d = new Dimension();
+        d.height = height;
+        d.width = width;
+        pnl_img.setPreferredSize(d);
+        JScrollPane scroll = new JScrollPane(pnl_img);        
+        scroll.setBounds(10,50,1200,600);        
+        scroll.setAutoscrolls(true);
+        pnl_img.add(img);
+        pnl_img.repaint();
+        scroll.setViewportView(pnl_img);
+        scroll.getViewport().setView(pnl_img); 
+        
+        this.add(scroll);
+       
+        
     }
 
     /**
@@ -30,11 +101,10 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        cbo_vehicles = new javax.swing.JComboBox();
-        lbl_select_vehicle = new javax.swing.JLabel();
-        panel1 = new java.awt.Panel();
         brn_exit = new javax.swing.JButton();
+        lbl_select_vehicle = new javax.swing.JLabel();
+        cbo_vehicles = new javax.swing.JComboBox();
+        pnl_img = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -43,48 +113,6 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             }
         });
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Mapa"));
-
-        cbo_vehicles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lbl_select_vehicle.setText("Seleccionar Vehículo");
-
-        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panel1);
-        panel1.setLayout(panel1Layout);
-        panel1Layout.setHorizontalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        panel1Layout.setVerticalGroup(
-            panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 437, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(lbl_select_vehicle)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(447, Short.MAX_VALUE))))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_select_vehicle))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         brn_exit.setText("Atrás");
         brn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,27 +120,49 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             }
         });
 
+        lbl_select_vehicle.setText("Seleccionar Vehículo");
+
+        cbo_vehicles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        javax.swing.GroupLayout pnl_imgLayout = new javax.swing.GroupLayout(pnl_img);
+        pnl_img.setLayout(pnl_imgLayout);
+        pnl_imgLayout.setHorizontalGroup(
+            pnl_imgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 697, Short.MAX_VALUE)
+        );
+        pnl_imgLayout.setVerticalGroup(
+            pnl_imgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 364, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(lbl_select_vehicle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
+                .addComponent(brn_exit)
+                .addContainerGap(273, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(brn_exit)))
-                .addContainerGap())
+                .addComponent(pnl_img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_select_vehicle)
+                    .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(brn_exit))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(brn_exit)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnl_img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         pack();
@@ -135,8 +185,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton brn_exit;
     private javax.swing.JComboBox cbo_vehicles;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl_select_vehicle;
-    private java.awt.Panel panel1;
+    private javax.swing.JPanel pnl_img;
     // End of variables declaration//GEN-END:variables
 }

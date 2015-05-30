@@ -48,6 +48,7 @@ public class Frm_Client extends javax.swing.JFrame {
         txt_posx = new javax.swing.JTextField();
         lbl_posy = new javax.swing.JLabel();
         txt_posy = new javax.swing.JTextField();
+        btn_Location = new javax.swing.JButton();
         pnl_client_priority = new javax.swing.JPanel();
         lbl_priority = new javax.swing.JLabel();
         op_priority = new javax.swing.JSpinner();
@@ -131,6 +132,13 @@ public class Frm_Client extends javax.swing.JFrame {
 
         lbl_posy.setText("Posición Y (*)");
 
+        btn_Location.setText("Agregar Ubicación");
+        btn_Location.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_LocationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_client_locationLayout = new javax.swing.GroupLayout(pnl_client_location);
         pnl_client_location.setLayout(pnl_client_locationLayout);
         pnl_client_locationLayout.setHorizontalGroup(
@@ -145,6 +153,10 @@ public class Frm_Client extends javax.swing.JFrame {
                     .addComponent(txt_posx, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                     .addComponent(txt_posy))
                 .addGap(27, 27, 27))
+            .addGroup(pnl_client_locationLayout.createSequentialGroup()
+                .addGap(45, 45, 45)
+                .addComponent(btn_Location)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_client_locationLayout.setVerticalGroup(
             pnl_client_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -157,7 +169,9 @@ public class Frm_Client extends javax.swing.JFrame {
                 .addGroup(pnl_client_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_posy)
                     .addComponent(txt_posy, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_Location)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pnl_client_priority.setBorder(javax.swing.BorderFactory.createTitledBorder("Prioridad del Cliente"));
@@ -294,12 +308,27 @@ public class Frm_Client extends javax.swing.JFrame {
         frm_Client_Search.setVisible(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void btn_LocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_LocationActionPerformed
+        // TODO add your handling code here:
+        Frm_Client_Location frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText());
+        //frm_srs.setLocation(450,150);
+        frm_clientLocation.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frm_clientLocation.setVisible(true);
+        this.setVisible(false);
+        //frm_srs.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btn_LocationActionPerformed
+
+    public void fillPositions(Integer x, Integer y){
+        txt_posx.setText(x.toString());
+        txt_posy.setText(y.toString());
+    }
     /**
      * @param args the command line arguments
      */
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Location;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_save;
     private javax.swing.JLabel jLabel1;

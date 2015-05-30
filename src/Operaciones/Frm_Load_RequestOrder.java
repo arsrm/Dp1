@@ -47,15 +47,16 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    
+    DaoProducts daoProducts = new DaoProdImpl();
+    //DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    Users userAux = new Users();
+    DefaultTableModel model = new DefaultTableModel();
     JFileChooser chooser = new JFileChooser();
     String dispatchFileName = new String();
     List<RequestOrder> requestOrderList = new ArrayList<>();
     DaoClient daoClients = new DaoClientImpl();
-    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
-    DaoProducts daoProducts = new DaoProdImpl();
-    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
-    Users userAux = new Users();
-    DefaultTableModel model;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     
     /**
      * Creates new form Frm_CambiarLog
@@ -66,8 +67,6 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
        setTitle("CARGAR ÓRDENES DE PEDIDO");
        userAux = user;
        initComponents();
-       model = (DefaultTableModel) table_orders.getModel();
-       
     }
 
     /**
@@ -151,13 +150,10 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
         table_orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Número de Orden", "Cliente", "Fecha Enviada", "Estado"
+                "Número de Orden", "Cliente", "FechaRegistro", "Fecha Límite de Entrega", "Estado"
             }
         ));
         table_orders.setColumnSelectionAllowed(true);
@@ -167,6 +163,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(table_orders);
+        table_orders.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
         btn_exit.setText("Salir");
         btn_exit.addActionListener(new java.awt.event.ActionListener() {
@@ -261,10 +258,15 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             int sizeArray = requestOrderList.size();
-            for(int i=0;i<sizeArray;i++){
-                daoRequestOrder.requestOrderIns(requestOrderList.get(i));
+            if(sizeArray!=0){
+                DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+                for(int i=0;i<sizeArray;i++){
+                    daoRequestOrder.requestOrderIns(requestOrderList.get(i));
+                }
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }else{
+                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No hay registros por guardar.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             }
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }       
     }//GEN-LAST:event_btn_saveActionPerformed
 
@@ -276,12 +278,13 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         //Al hacer click en cargar debe llevar todos los datos a objetos y cargarlos a la tabla no a la BD aun
         Object[] options = {"OK"};
+        DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
         dispatchFileName = txt_LoadFile.getText();
         String words[] = dispatchFileName.split("\\.");
         if(dispatchFileName==null || dispatchFileName.length()==0){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un archivo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
-        else if(words[1].equals("txt")==false){
+        else if(words[1].equals("csv")==false){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Formato de archivo incorrecto.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
         else{
@@ -293,57 +296,65 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                 String[] words_line = null;
                 /*Lectura de todos los datos principales de la orden de pedido*/
                 //VARIABLE PARA LA ORDEN 
-                Timestamp dateArrive,dateline;
+                Date dateArrive,dateline;
                 String idClient;
                 int idStateRequest;
                 //VARIABLE PARA LOS DETALLES DE LA ORDEN
                 int codProd;
                 int cantidad;
-                
+                int numOrder;
                 RequestOrder ro = new RequestOrder();
                 while (line != null) {                     
                     //lectura por pedido
                     ro = new RequestOrder();
-                    words_line = line.split("-");
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                    Date parsedDate = dateFormat.parse(words_line[0]);
-                    dateArrive = new java.sql.Timestamp(parsedDate.getTime());
-                    parsedDate = dateFormat.parse(words_line[1]);
-                    dateline =  new java.sql.Timestamp(parsedDate.getTime());
-                    idClient = words_line[2];
-                    idStateRequest = Integer.parseInt(words_line[3]);
+                    words_line = line.split(",");
+                    numOrder = Integer.parseInt(words_line[1]);
+                    ro.setIdRequestOrder(numOrder);
+                    line = dispatchFile.readLine();
+                    words_line = line.split(",");
+                    dateArrive = dateFormat.parse(words_line[1]);
+                    ro.setDateArrive(dateArrive);
+                    line = dispatchFile.readLine();
+                    words_line = line.split(",");
+                    dateline = dateFormat.parse(words_line[1]);
+                    ro.setDateline(dateline);
+                    line = dispatchFile.readLine();
+                    words_line = line.split(",");
+                    idClient = words_line[1];
                     Client client = daoClients.clientGet(idClient);
+                    line = dispatchFile.readLine();
+                    words_line = line.split(",");
+                    idStateRequest = Integer.parseInt(words_line[1]);
                     StateRequestOrder stateRequest = daoStateRequestOrder.stateRequestOrderGet(idStateRequest);
                     if(client!=null && stateRequest != null){
-                        ro.setClientidClient(client);
+                        ro.setClient(client);
                         ro.setDateArrive(dateArrive);
-                        ro.setDateline(dateline);
-                        ro.setPickingOrder(null);
-                        ro.setIdClient(client.getIdClient());
+                        ro.setDateline(dateline);                    
                         ro.setRequestOrderDetailList(new ArrayList<RequestOrderDetail>());
                         ro.setUserCreated(userAux.getIdUser());
                         ro.setUserUpdated(null);   
-                        ro.setStateRequestOrderidStateRequestOrder(stateRequest);
+                        ro.setStateRequestOrder(stateRequest);
                         ro.setStatus(1);
                         ro.setRequestOrdercol(null);
                     }else{
                         int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Archivo contiene datos no válidos. Intente de nuevo","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                         txt_LoadFile.setText("");
                     }
+                    dispatchFile.readLine();
+                    dispatchFile.readLine();
                     line = dispatchFile.readLine();
-                    if(line==null)
-                        break;
-                    
-                    while(line.equals("FIN PEDIDO")==false){
+                    words_line = line.split(",");
+                    int index = 1;
+                    while(words_line[0].equals("FIN DETALLE")!=true){
                         //SE LEE LOS DATOS QUE CONTIENEN LA ORDEN
-                        words_line = line.split("-");
-                        codProd = Integer.parseInt(words[0]);
-                        cantidad = Integer.parseInt(words[1]);
+                        
+                        codProd = Integer.parseInt(words_line[1]);
+                        cantidad = Integer.parseInt(words_line[2]);
                         Product prod = daoProducts.ProductsGet(codProd);
                         if(prod!=null){
                             RequestOrderDetail requestOrderDetail = new RequestOrderDetail();
-                            requestOrderDetail.setIdProduct(codProd);
-                            requestOrderDetail.setProductidProduct(prod);
+                            requestOrderDetail.setIdRequest_Order_Detail(index);
+                            requestOrderDetail.setProduct(prod);
                             requestOrderDetail.setDelivered(0);
                             requestOrderDetail.setQuantity(cantidad);
                             requestOrderDetail.setRemaining(cantidad);
@@ -352,12 +363,13 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                             requestOrderDetail.setUserCreated(userAux.getIdUser());
                             requestOrderDetail.setUserUpdated(null);
                             ro.getRequestOrderDetailList().add(requestOrderDetail);
+                            index++;
                         }
                         line = dispatchFile.readLine();
+                        words_line = line.split(",");
                     }
                     line = dispatchFile.readLine();
-                    if(line==null)
-                        break;
+                    requestOrderList.add(ro);
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Frm_Load_RequestOrder.class.getName()).log(Level.SEVERE, null, ex);
@@ -366,7 +378,11 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             } catch (ParseException ex) {
                 Logger.getLogger(Frm_Load_RequestOrder.class.getName()).log(Level.SEVERE, null, ex);
             }
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Archivo cargado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            //se llena la lista en la tabla
+            
+            model = (DefaultTableModel) table_orders.getModel();
+            fillTable();
+                 
         }
     }//GEN-LAST:event_btn_loadActionPerformed
  
@@ -379,11 +395,14 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     }
     
     private void fillTable(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
         int sizeOrder = requestOrderList.size();
         for(int i=0;i<sizeOrder;i++){
             RequestOrder ro = requestOrderList.get(i);
-            String nameState = ro.getStateRequestOrderidStateRequestOrder().getDescription();
-            Object[] fila = {i,ro.getClientidClient().getName(),ro.getDateArrive().toString(),nameState};
+            String nameState = ro.getStateRequestOrder().getDescription();
+            String dateArrive = sdf.format(ro.getDateArrive());
+            String dateLine = sdf.format(ro.getDateline());
+            Object[] fila = {i,ro.getClient().getName(),dateArrive,dateLine, nameState};
             model.addRow(fila);
         }
     }

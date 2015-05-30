@@ -18,44 +18,35 @@ import java.util.List;
 public class RequestOrder {
    
     private Integer idRequestOrder;
-    private Timestamp dateArrive;
-    private Timestamp dateline;
-    private Integer idClient;
+    private Date dateArrive;
+    private Date dateline;
     private Integer status;
     private String requestOrdercol;
     private Integer userCreated;
     private Integer userUpdated;
-    private Client clientidClient;
-    private PickingOrder pickingOrder;
-    private StateRequestOrder stateRequestOrderidStateRequestOrder;
+    private Client client;
+    private StateRequestOrder stateRequestOrder;
     private List<RequestOrderDetail> requestOrderDetailList;
 
     public RequestOrder() {
     }
 
-    public Timestamp getDateArrive() {
+    public Date getDateArrive() {
         return dateArrive;
     }
 
-    public void setDateArrive(Timestamp dateArrive) {
+    public void setDateArrive(Date dateArrive) {
         this.dateArrive = dateArrive;
     }
 
-    public Timestamp getDateline() {
+    public Date getDateline() {
         return dateline;
     }
 
-    public void setDateline(Timestamp dateline) {
+    public void setDateline(Date dateline) {
         this.dateline = dateline;
     }
 
-    public Integer getIdClient() {
-        return idClient;
-    }
-
-    public void setIdClient(Integer idClient) {
-        this.idClient = idClient;
-    }
 
     public Integer getStatus() {
         return status;
@@ -89,28 +80,21 @@ public class RequestOrder {
         this.userUpdated = userUpdated;
     }
 
-    public Client getClientidClient() {
-        return clientidClient;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientidClient(Client clientidClient) {
-        this.clientidClient = clientidClient;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
-    public PickingOrder getPickingOrder() {
-        return pickingOrder;
+
+    public StateRequestOrder getStateRequestOrder() {
+        return stateRequestOrder;
     }
 
-    public void setPickingOrder(PickingOrder pickingOrder) {
-        this.pickingOrder = pickingOrder;
-    }
-
-    public StateRequestOrder getStateRequestOrderidStateRequestOrder() {
-        return stateRequestOrderidStateRequestOrder;
-    }
-
-    public void setStateRequestOrderidStateRequestOrder(StateRequestOrder stateRequestOrderidStateRequestOrder) {
-        this.stateRequestOrderidStateRequestOrder = stateRequestOrderidStateRequestOrder;
+    public void setStateRequestOrder(StateRequestOrder stateRequestOrder) {
+        this.stateRequestOrder = stateRequestOrder;
     }
 
     public List<RequestOrderDetail> getRequestOrderDetailList() {

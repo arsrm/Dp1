@@ -6,6 +6,11 @@ import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletLocation;
 import Mantenimientos.Frm_PalletLocation_Search;
 import Mantenimientos.Frm_PalletProduct;
+import Mantenimientos.Frm_PalletIni;
+import Mantenimientos.Frm_PalletLocation;
+//gzavala-inicio 24/05 23:45
+
+import Mantenimientos.Frm_PalletLocation_Search;
 import Mantenimientos.Frm_PalletProduct_Search;
 import Mantenimientos.Frm_Pallet_SearchIni;
 import Mantenimientos.Frm_Product_Search;
@@ -32,6 +37,7 @@ import dao.DaoUsers;
 import dao.impl.DaoLogImpl;
 import dao.impl.DaoUserImpl;
 import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 public class Frm_MenuPrincipal extends javax.swing.JFrame {

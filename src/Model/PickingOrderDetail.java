@@ -22,11 +22,10 @@ public class PickingOrderDetail{
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private int locationCellDetailPalletidPallet;
     private Integer userCreated;
     private Integer userUpdated;
     private List<ProductReturn> productReturnList;
-    private LocationCellDetail locationCellDetailidLocationCellDetail;
+    private LocationCellDetail locationCellDetail;
     private PickingOrder pickingOrder;
     private Product product;
 
@@ -66,12 +65,12 @@ public class PickingOrderDetail{
         this.updatedAt = updatedAt;
     }
 
-    public int getLocationCellDetailPalletidPallet() {
-        return locationCellDetailPalletidPallet;
+    public LocationCellDetail getLocationCellDetail() {
+        return locationCellDetail;
     }
 
-    public void setLocationCellDetailPalletidPallet(int locationCellDetailPalletidPallet) {
-        this.locationCellDetailPalletidPallet = locationCellDetailPalletidPallet;
+    public void setLocationCellDetail(LocationCellDetail locationCellDetail) {
+        this.locationCellDetail = locationCellDetail;
     }
 
     public Integer getUserCreated() {
@@ -96,14 +95,6 @@ public class PickingOrderDetail{
 
     public void setProductReturnList(List<ProductReturn> productReturnList) {
         this.productReturnList = productReturnList;
-    }
-
-    public LocationCellDetail getLocationCellDetailidLocationCellDetail() {
-        return locationCellDetailidLocationCellDetail;
-    }
-
-    public void setLocationCellDetailidLocationCellDetail(LocationCellDetail locationCellDetailidLocationCellDetail) {
-        this.locationCellDetailidLocationCellDetail = locationCellDetailidLocationCellDetail;
     }
 
     public PickingOrder getPickingOrder() {

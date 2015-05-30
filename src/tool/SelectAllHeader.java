@@ -51,6 +51,7 @@ public class SelectAllHeader extends JToggleButton implements TableCellRenderer 
             throw new IllegalArgumentException("Boolean column required.");
         }
         this.targetColumn = targetColumn;
+        viewColumn = targetColumn;
         this.header = table.getTableHeader();
         this.tcm = table.getColumnModel();
         this.applyUI();
@@ -95,7 +96,7 @@ public class SelectAllHeader extends JToggleButton implements TableCellRenderer 
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            viewColumn = header.columnAtPoint(e.getPoint());
+            //viewColumn = header.columnAtPoint(e.getPoint());
             int modelColumn = tcm.getColumn(viewColumn).getModelIndex();
             if (modelColumn == targetColumn) {
                 doClick();

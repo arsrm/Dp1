@@ -6,9 +6,16 @@
 
 package Operaciones;
 
+import Model.RequestOrder;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoRequestOrder;
+import dao.impl.DaoRequestOrderImpl;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -20,9 +27,11 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
      * Creates new form Frm_VerOrdenesDespacho1
      */
     public Frm_DispatchOrder_Search(Frm_MenuPrincipal menu) {
+        
         setTitle("ÓRDENES DE DESPACHO");
         menuaux=menu;
         initComponents();
+        
     }
 
     public Frm_DispatchOrder_Search(){
@@ -64,10 +73,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
         jTable_Orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
                 "Número de Orden", "Cliente", "Fecha Estimada Entrega", "Fecha Entrega", "Estado", "Seleccionar"
@@ -261,6 +267,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_DeleteActionPerformed
 
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;

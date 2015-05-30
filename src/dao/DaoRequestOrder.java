@@ -7,6 +7,7 @@
 package dao;
 
 import Model.RequestOrder;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,14 +17,16 @@ import java.util.List;
 public interface DaoRequestOrder {
      public List<RequestOrder> requestOrderQry();
     
-    public List<RequestOrder> requestOrderQry_search(String ruc , String dateFrom, String dateTo);
+    public List<RequestOrder> requestOrderQry_search(Integer id , Date dateFrom, Date dateTo, Integer index_status);
     
     public String requestOrderIns(RequestOrder requestOrder);
     
-    public String requestOrderDel(List<String> ids);
+    public String requestOrderDel(Integer idRequestOrder);
     
-    public RequestOrder requestOrderGet(String idRequestOrder);
+    public RequestOrder requestOrderGet(Integer idRequestOrder);
     
     public String requestOrderUpd(RequestOrder requestOrder);
+    
+    public String requestsDel(List<Integer> requestListToDelete);
     
 }

@@ -6,19 +6,38 @@
 
 package Operaciones;
 
+import Model.Client;
+import Model.RequestOrder;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoClient;
+import dao.DaoRequestOrder;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoRequestOrderImpl;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
  * @author Luis Miguel
  */
 public class Frm_RequestOrder_Search extends javax.swing.JFrame {
+    DaoRequestOrder daoRequest =new DaoRequestOrderImpl();
+    List<RequestOrder> requestOrderList = new ArrayList<>();
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    DefaultTableModel model = new DefaultTableModel();
+    DaoClient daoClient = new DaoClientImpl();
+    Client client;
+    List<Integer> listRequestToDelete = new ArrayList<>();
     /**
      * Creates new form Frm_VerOrdenesPedidos1
      */
@@ -26,10 +45,19 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         setTitle("ÓRDENES DE PEDIDO");
         menuaux = menu;
         initComponents();
+        TableColumn tc = table_orders.getColumnModel().getColumn(3);
+        tc.setHeaderRenderer(new SelectAllHeader(table_orders, 3));
+        model = (DefaultTableModel) table_orders.getModel();
+        refreshGrid();
     }
 
     public Frm_RequestOrder_Search(){
         
+    }
+    
+    public void refreshGrid(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -44,12 +72,14 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btn_search = new javax.swing.JButton();
         jdate_request_date_to = new com.toedter.calendar.JDateChooser();
-        jLabel2 = new javax.swing.JLabel();
+        lbl_status = new javax.swing.JLabel();
         jdate_request_date_from = new com.toedter.calendar.JDateChooser();
         lbl_client = new javax.swing.JLabel();
         txt_id_client = new javax.swing.JTextField();
         txt_client_name = new javax.swing.JTextField();
         btn_client_search = new javax.swing.JButton();
+        cbo_status = new javax.swing.JComboBox();
+        jLabel3 = new javax.swing.JLabel();
         pnl_orders = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_orders = new javax.swing.JTable();
@@ -69,70 +99,93 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         jLabel1.setText("Fecha Pedido Hasta:");
 
         btn_search.setText("Buscar Pedidos");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
-        jLabel2.setText("Fecha Pedido Desde:");
+        lbl_status.setText("Estado:");
 
         lbl_client.setText("Cliente:");
 
         txt_client_name.setEditable(false);
 
         btn_client_search.setText("Buscar");
+        btn_client_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_client_searchActionPerformed(evt);
+            }
+        });
+
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "TODOS", "INACTIVO", "ACTIVO" }));
+
+        jLabel3.setText("Fecha Pedido Desde:");
 
         javax.swing.GroupLayout pnl_search_criteriaLayout = new javax.swing.GroupLayout(pnl_search_criteria);
         pnl_search_criteria.setLayout(pnl_search_criteriaLayout);
         pnl_search_criteriaLayout.setHorizontalGroup(
             pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                .addGap(135, 135, 135)
                 .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_client, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
-                        .addComponent(jdate_request_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1)
+                        .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(lbl_status))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                                .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_search))
+                            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                                .addComponent(jdate_request_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                        .addComponent(lbl_client)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
-                        .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
+                        .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_client_search)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_client_name)))
-                .addGap(186, 186, 186))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btn_search))
+                        .addComponent(txt_client_name, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                        .addGap(188, 188, 188))))
         );
         pnl_search_criteriaLayout.setVerticalGroup(
             pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_client)
                     .addComponent(btn_client_search)
-                    .addComponent(lbl_client))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jdate_request_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2)
-                    .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_search))
+                    .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jdate_request_date_from, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jdate_request_date_to, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
+                    .addComponent(jLabel1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_search)
+                    .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_status)))
+                .addGap(33, 33, 33))
         );
 
         pnl_orders.setBorder(javax.swing.BorderFactory.createTitledBorder("Órdenes de Pedido"));
 
         table_orders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Número de Orden", "Cliente", "Estado", "Seleccionar"
@@ -141,9 +194,16 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         table_orders.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -153,7 +213,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table_orders);
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -184,7 +244,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
                         .addComponent(btn_delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 472, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 434, Short.MAX_VALUE)
                         .addComponent(btn_generate)
                         .addGap(18, 18, 18)
                         .addComponent(btn_cancel)
@@ -210,8 +270,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_search_criteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnl_search_criteria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -233,7 +293,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             int rowSel = table_orders.getSelectedRow();
             int colSel = table_orders.getSelectedColumn();
             if (colSel==0){
-              Frm_RequestOrder_Detail frm_vdop = new Frm_RequestOrder_Detail(this);
+              RequestOrder ro = requestOrderList.get(rowSel);
+              Frm_RequestOrder_Detail frm_vdop = new Frm_RequestOrder_Detail(this,ro.getIdRequestOrder());
               frm_vdop.setLocation(450,150);
               frm_vdop.setVisible(true);
               frm_vdop.setLocationRelativeTo(null);
@@ -256,11 +317,19 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
+         for (int i = 0; i < table_orders.getRowCount(); i++) {
+            if ((Boolean) table_orders.getValueAt(i, 3)) {
+                listRequestToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
+            }
+        }
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han eliminado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            daoRequest.requestsDel(listRequestToDelete);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han cambiado los estados de los pedidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            refreshGrid();
+            searchFilter();
+            fillTable();
             
         } 
     }//GEN-LAST:event_btn_deleteActionPerformed
@@ -276,7 +345,74 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_generateActionPerformed
 
+    private void btn_client_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_client_searchActionPerformed
+        // TODO add your handling code here:
+         Object[] options = {"OK"};
+         int ok_option;
+        if(txt_id_client.getText().equals("")==true){
+            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un ruc de cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+             txt_client_name.setText("");
+        }else{
+            String ruc = txt_id_client.getText();
+            
+            client = daoClient.clientGet(ruc);
+            if(client!=null)
+                txt_client_name.setText(client.getName());
+            else{
+               ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontró cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                txt_client_name.setText("");
+            }    
+        }
+            
+    }//GEN-LAST:event_btn_client_searchActionPerformed
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        // TODO add your handling code here:
+        searchFilter();
+        fillTable();
+    }//GEN-LAST:event_btn_searchActionPerformed
+
+    private void searchFilter(){
+        String ruc = txt_id_client.getText();
+        Client client = daoClient.clientGet(ruc);
+        int id;
+        if(client!=null)
+            id=client.getIdClient();
+        else
+            id=-1;
+        
+        Date dateFrom = jdate_request_date_from.getDate();
+        Date dateTo = jdate_request_date_to.getDate();
+        Integer index_status = cbo_status.getSelectedIndex();
+        requestOrderList = daoRequest.requestOrderQry_search(id, dateFrom, dateTo, index_status);
+        
+    }
     
+    private void fillTable(){
+        refreshGrid();
+        Object[] options = {"OK"};
+        DaoRequestOrder daoRO = new DaoRequestOrderImpl();
+       
+        if(requestOrderList==null){
+             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se han encontrado registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
+        else{
+            int size = requestOrderList.size();
+            if(size==0){
+                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se han encontrado registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }else{
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+                for(int i=0;i<size;i++){
+                    RequestOrder ro = requestOrderList.get(i);
+                    String nameState = ro.getStateRequestOrder().getDescription();
+                    String dateArrive = sdf.format(ro.getDateArrive());
+                    String dateLine = sdf.format(ro.getDateline());
+                    Object[] fila = {ro.getIdRequestOrder(),ro.getClient().getName(), nameState,false};
+                    model.addRow(fila);
+                }
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
@@ -284,12 +420,14 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_generate;
     private javax.swing.JButton btn_search;
+    private javax.swing.JComboBox cbo_status;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     private com.toedter.calendar.JDateChooser jdate_request_date_from;
     private com.toedter.calendar.JDateChooser jdate_request_date_to;
     private javax.swing.JLabel lbl_client;
+    private javax.swing.JLabel lbl_status;
     private javax.swing.JPanel pnl_orders;
     private javax.swing.JPanel pnl_search_criteria;
     private javax.swing.JTable table_orders;

@@ -57,6 +57,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
         lbl_pos_y = new javax.swing.JLabel();
         txt_pos_x = new javax.swing.JTextField();
         txt_pos_y = new javax.swing.JTextField();
+        btn_location = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -120,19 +121,31 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
         lbl_pos_y.setText("Posición Y");
 
+        btn_location.setText("Ver Ubicación");
+        btn_location.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_locationActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_distribution_center_locationLayout = new javax.swing.GroupLayout(pnl_distribution_center_location);
         pnl_distribution_center_location.setLayout(pnl_distribution_center_locationLayout);
         pnl_distribution_center_locationLayout.setHorizontalGroup(
             pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_pos_y)
-                    .addComponent(lbl_pos_x))
-                .addGap(50, 50, 50)
-                .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_pos_y, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                    .addComponent(txt_pos_x))
+                .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_pos_y)
+                            .addComponent(lbl_pos_x))
+                        .addGap(50, 50, 50)
+                        .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txt_pos_y, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+                            .addComponent(txt_pos_x)))
+                    .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
+                        .addGap(39, 39, 39)
+                        .addComponent(btn_location)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         pnl_distribution_center_locationLayout.setVerticalGroup(
@@ -146,7 +159,9 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
                 .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_pos_y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_pos_y))
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_location)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,6 +245,20 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_saveActionPerformed
 
+    public void fillPositions(Integer x,Integer y){
+        txt_pos_x.setText(x.toString());
+        txt_pos_y.setText(y.toString());
+    }
+    private void btn_locationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_locationActionPerformed
+        // TODO add your handling code here:
+        Frm_Client_Location frm_clientLocation = new Frm_Client_Location(this,txt_pos_x.getText(),txt_pos_y.getText());
+        //frm_srs.setLocation(450,150);
+        frm_clientLocation.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frm_clientLocation.setVisible(true);
+        this.setVisible(false);
+        //frm_srs.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btn_locationActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -237,6 +266,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_location;
     private javax.swing.JButton btn_save;
     private javax.swing.JLabel lbl_address;
     private javax.swing.JLabel lbl_name;

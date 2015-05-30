@@ -454,6 +454,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             reader.readLine();
             reader.readLine();
             internmentOrder.setIdInternmentOrder(idIntOrderTxt);
+            
             internmentOrder.setDate(formatDate.parse(dateTxt));
             intOrderDetListMassive = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
@@ -461,7 +462,6 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 String[] lineArray = line.split(",");
                 Product prodline = new Product();
                 prodline = daoProducts.ProductsGet(Integer.parseInt(lineArray[1]));
-
                 intOrdDetail.setIdInternmentOrderDetail(Integer.parseInt(lineArray[0]));
                 intOrdDetail.setProduct(prodline);
                 intOrdDetail.setQuantityPallets(Integer.parseInt(lineArray[2]));
