@@ -58,6 +58,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
         txt_pos_x = new javax.swing.JTextField();
         txt_pos_y = new javax.swing.JTextField();
         btn_location = new javax.swing.JButton();
+        lbl_obligatory_fields = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -70,7 +71,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
         lbl_name.setText("Nombre");
 
-        lbl_address.setText("Dirección");
+        lbl_address.setText("Dirección (*)");
 
         javax.swing.GroupLayout pnl_distribution_centerLayout = new javax.swing.GroupLayout(pnl_distribution_center);
         pnl_distribution_center.setLayout(pnl_distribution_centerLayout);
@@ -81,11 +82,11 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
                 .addGroup(pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_name)
                     .addComponent(lbl_address))
-                .addGap(54, 54, 54)
-                .addGroup(pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txt_address, javax.swing.GroupLayout.DEFAULT_SIZE, 400, Short.MAX_VALUE)
-                    .addComponent(txt_name))
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_address, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(42, 42, 42))
         );
         pnl_distribution_centerLayout.setVerticalGroup(
             pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,7 +95,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
                 .addGroup(pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_name)
                     .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(pnl_distribution_centerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_address)
                     .addComponent(txt_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -117,9 +118,9 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
 
         pnl_distribution_center_location.setBorder(javax.swing.BorderFactory.createTitledBorder("Posición"));
 
-        lbl_pos_x.setText("Posición X");
+        lbl_pos_x.setText("Posición X (*)");
 
-        lbl_pos_y.setText("Posición Y");
+        lbl_pos_y.setText("Posición Y (*)");
 
         btn_location.setText("Ver Ubicación");
         btn_location.addActionListener(new java.awt.event.ActionListener() {
@@ -128,25 +129,29 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
             }
         });
 
+        lbl_obligatory_fields.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        lbl_obligatory_fields.setText("(*) Campos Obligatorios");
+
         javax.swing.GroupLayout pnl_distribution_center_locationLayout = new javax.swing.GroupLayout(pnl_distribution_center_location);
         pnl_distribution_center_location.setLayout(pnl_distribution_center_locationLayout);
         pnl_distribution_center_locationLayout.setHorizontalGroup(
             pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lbl_pos_y)
                             .addComponent(lbl_pos_x))
-                        .addGap(50, 50, 50)
-                        .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txt_pos_y, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-                            .addComponent(txt_pos_x)))
-                    .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(btn_location)))
-                .addContainerGap(30, Short.MAX_VALUE))
+                        .addGap(42, 42, 42)
+                        .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_pos_x, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_distribution_center_locationLayout.createSequentialGroup()
+                                .addComponent(txt_pos_y, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(55, 55, 55)
+                                .addComponent(btn_location))))
+                    .addComponent(lbl_obligatory_fields))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_distribution_center_locationLayout.setVerticalGroup(
             pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -155,12 +160,13 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
                 .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_pos_x)
                     .addComponent(txt_pos_x, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(13, 13, 13)
                 .addGroup(pnl_distribution_center_locationLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_pos_y)
                     .addComponent(txt_pos_y, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_pos_y))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_location)
+                    .addComponent(btn_location))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(lbl_obligatory_fields)
                 .addContainerGap())
         );
 
@@ -169,32 +175,30 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(31, 31, 31)
                 .addComponent(btn_save)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
-                .addGap(35, 35, 35))
+                .addGap(37, 37, 37))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnl_distribution_center, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnl_distribution_center_location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                    .addComponent(pnl_distribution_center_location, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnl_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnl_distribution_center_location, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_save)
                     .addComponent(btn_cancel))
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -204,9 +208,9 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
         distributionCenterList = daoDC.distribution_centerGetQry();
         
         txt_name.setEnabled(false);
-        this.txt_name.setText(distributionCenterList.get(0).getName());
+        this.txt_name.setText(distributionCenterList.get(0).getName().trim());
         idDistributionCenter = distributionCenterList.get(0).getIdDistribution_Center();
-        this.txt_address.setText(distributionCenterList.get(0).getAddress());
+        this.txt_address.setText(distributionCenterList.get(0).getAddress().trim());
         this.txt_pos_x.setText(distributionCenterList.get(0).getPos_x().toString());
         this.txt_pos_y.setText(distributionCenterList.get(0).getPos_y().toString());        
     }
@@ -222,29 +226,43 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        // TODO add your handling code here:
         Distribution_Center distributionCenter = new Distribution_Center();
         
         distributionCenter.setIdDistribution_Center(idDistributionCenter);
-        distributionCenter.setName(txt_name.getText());
-        distributionCenter.setAddress(txt_address.getText());
-        distributionCenter.setPos_x(Integer.parseInt(txt_pos_x.getText()));
-        distributionCenter.setPos_y(Integer.parseInt(txt_pos_y.getText()));
-        
-        daoDC.distribution_centerUpd(distributionCenter);
-        
-        Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha actualizado al Centro de Distribución con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
-                menuaux.setVisible(true);
-                menuaux.setLocationRelativeTo(null);
-                this.dispose();
+        distributionCenter.setName(txt_name.getText().trim());
+        distributionCenter.setAddress(txt_address.getText().trim());
+        try {
+            distributionCenter.setPos_x(Integer.parseInt(txt_pos_x.getText()));
+            distributionCenter.setPos_y(Integer.parseInt(txt_pos_y.getText()));
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (distributionCenterValidatedToSave(distributionCenter)) {
+                    daoDC.distribution_centerUpd(distributionCenter);
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha actualizado el Centro de Distribución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        this.dispose();
+                        menuaux.setVisible(true);
+                    }
+                }
             }
-        } 
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Las posiciones deben números enteros",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btn_saveActionPerformed
-
+    
+    private boolean distributionCenterValidatedToSave(Distribution_Center distributionCenter){
+        String empty = "";
+        if(empty.equals(distributionCenter.getAddress())) {
+            JOptionPane.showMessageDialog(null,"La direccion no puede ser vacia", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }        
+        return true;
+    }
+    
     public void fillPositions(Integer x,Integer y){
         txt_pos_x.setText(x.toString());
         txt_pos_y.setText(y.toString());
@@ -270,6 +288,7 @@ public class Frm_Distribution_Center extends javax.swing.JFrame {
     private javax.swing.JButton btn_save;
     private javax.swing.JLabel lbl_address;
     private javax.swing.JLabel lbl_name;
+    private javax.swing.JLabel lbl_obligatory_fields;
     private javax.swing.JLabel lbl_pos_x;
     private javax.swing.JLabel lbl_pos_y;
     private javax.swing.JPanel pnl_distribution_center;
