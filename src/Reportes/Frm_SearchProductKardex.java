@@ -70,13 +70,13 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
 
         tbl_SearchProductKardex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Id", "Nombre"
+                "IdProducto", "EAN 13", "Nombre"
             }
         ));
         tbl_SearchProductKardex.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -85,6 +85,11 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
             }
         });
         jScrollPane1.setViewportView(tbl_SearchProductKardex);
+        if (tbl_SearchProductKardex.getColumnModel().getColumnCount() > 0) {
+            tbl_SearchProductKardex.getColumnModel().getColumn(0).setMinWidth(0);
+            tbl_SearchProductKardex.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbl_SearchProductKardex.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,13 +117,18 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
 
     private void tbl_SearchProductKardexMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_SearchProductKardexMouseClicked
         Integer idProductSel;
+        String ean=null;
         if (evt.getSource() == tbl_SearchProductKardex) {
             rowSel = tbl_SearchProductKardex.getSelectedRow();
             colSel = tbl_SearchProductKardex.getSelectedColumn();
         }
-        idProductSel = Integer.parseInt(tbl_SearchProductKardex.getValueAt(rowSel, 0).toString());
-        menuPadre.setIdProduct(idProductSel);
-        menuPadre.setTextIdProduct();
+        
+        //idProductSel = Integer.parseInt(tbl_SearchProductKardex.getValueAt(rowSel, 0).toString());
+        idProductSel=Integer.parseInt(tbl_SearchProductKardex.getValueAt(rowSel, 0).toString());
+        menuPadre.setProduct(daoProducts.ProductsGet(idProductSel));
+        menuPadre.setTextIdEan();
+        //menuPadre.setIdProduct(idProductSel);
+        //menuPadre.setTextIdProduct();
         menuPadre.setVisible(true);
 
         this.dispose();
@@ -143,7 +153,7 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
             for (int i = 0; i < list.size(); i++) {
 
 
-                Object[] fila = {list.get(i).getIdProduct(), list.get(i).getName()
+                Object[] fila = {list.get(i).getIdProduct(),list.get(i).getCodeEAN13(), list.get(i).getName()
                 };
                 modelo.addRow(fila);
             }

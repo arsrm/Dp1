@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="cfc16d1b-bd2a-4710-a6a8-2849e3391696">
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT
+     warehouse.`idWarehouse` AS warehouse_idWarehouse,
+     warehouse.`description` AS warehouse_description,
+     warehouse.`status` AS warehouse_status,
+     warehouse.`Type_Condition_idType_Condition` AS warehouse_Type_Condition_idType_Condition,
+     warehouse.`Distribution_Center_idDistribution_Center` AS warehouse_Distribution_Center_idDistribution_Center,
+     distribution_center.`name` AS distribution_center_name
+FROM
+     `distribution_center` distribution_center INNER JOIN `warehouse` warehouse ON distribution_center.`idDistribution_Center` = warehouse.`Distribution_Center_idDistribution_Center`]]>
+	</queryString>
+	<field name="warehouse_idWarehouse" class="java.lang.Integer"/>
+	<field name="warehouse_description" class="java.lang.String"/>
+	<field name="warehouse_status" class="java.lang.Integer"/>
+	<field name="warehouse_Type_Condition_idType_Condition" class="java.lang.Integer"/>
+	<field name="warehouse_Distribution_Center_idDistribution_Center" class="java.lang.Integer"/>
+	<field name="distribution_center_name" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="70" splitType="Stretch">
+			<image>
+				<reportElement x="275" y="0" width="300" height="64" uuid="f5a2e364-16e8-44bc-a13b-3dd35ed67485"/>
+				<imageExpression><![CDATA["leaf_banner_red.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="0" y="13" width="263" height="33" uuid="58254e1d-6c49-4c8a-8119-38a5a9c79d65"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Leaf Red Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="SubTitle" x="117" y="46" width="157" height="22" uuid="986e63dc-4f98-43e2-a206-3d386cca69d1"/>
+				<text><![CDATA[Leaf Red SubTitle]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="36" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="35" width="555" height="1" uuid="529c4860-a224-455c-b103-2ec46798d464"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement style="Column header" x="0" y="19" width="92" height="15" uuid="dcf3c5f9-ce88-4c31-87b4-61595703f773"/>
+				<text><![CDATA[warehouse_idWarehouse]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="92" y="19" width="92" height="15" uuid="b3500579-f6ad-4f11-b6a1-793ceb056109"/>
+				<text><![CDATA[warehouse_description]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="184" y="19" width="92" height="15" uuid="de4db237-50c0-4a40-a909-622929c9d836"/>
+				<text><![CDATA[warehouse_status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="276" y="19" width="92" height="15" uuid="997b2444-1ca5-4521-b34b-6585177be489"/>
+				<text><![CDATA[warehouse_Type_Condition_idType_Condition]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="368" y="19" width="92" height="15" uuid="417712c3-4778-4448-8c84-2bb85232104e"/>
+				<text><![CDATA[warehouse_Distribution_Center_idDistribution_Center]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" x="460" y="19" width="92" height="15" uuid="3258ed3c-0d5a-4b3c-ab42-83f3044e89af"/>
+				<text><![CDATA[distribution_center_name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1" uuid="131e2427-ee3b-4ca3-b993-70ad373a49c3"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement style="Detail" x="0" y="0" width="92" height="15" uuid="08209313-9986-4793-ae96-a1b65053569e"/>
+				<textFieldExpression><![CDATA[$F{warehouse_idWarehouse}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="92" y="0" width="92" height="15" uuid="d48e4f27-7d56-4c1f-832c-f6e62b38396a"/>
+				<textFieldExpression><![CDATA[$F{warehouse_description}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="184" y="0" width="92" height="15" uuid="7ac8b324-3e4c-45d3-a646-19024774d256"/>
+				<textFieldExpression><![CDATA[$F{warehouse_status}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="276" y="0" width="92" height="15" uuid="214aebae-370b-4e69-82ca-412717e4e501"/>
+				<textFieldExpression><![CDATA[$F{warehouse_Type_Condition_idType_Condition}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="368" y="0" width="92" height="15" uuid="3c0bb49b-9eed-4ad0-96cb-88f642f41d59"/>
+				<textFieldExpression><![CDATA[$F{warehouse_Distribution_Center_idDistribution_Center}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Detail" x="460" y="0" width="92" height="15" uuid="273f6560-7aa2-446a-b27e-4d8df00de3af"/>
+				<textFieldExpression><![CDATA[$F{distribution_center_name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1" uuid="2de5c912-82fd-4386-a5ed-25ff15987b9e"/>
+				<graphicElement>
+					<pen lineWidth="0.5" lineColor="#999999"/>
+				</graphicElement>
+			</line>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement style="Column header" x="433" y="0" width="80" height="20" uuid="e70a5f2f-2eb4-47a9-b1f9-2ecfe50b58d0"/>
+				<textElement textAlignment="Right">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Column header" x="513" y="0" width="40" height="20" uuid="9e7b5a1a-0490-40bf-b7f4-7b8e19209f85"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement style="Column header" x="0" y="0" width="197" height="20" uuid="23279478-2cfd-44b2-878c-cddda8871bc7"/>
+				<textElement>
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

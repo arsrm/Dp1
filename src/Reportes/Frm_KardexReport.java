@@ -3,16 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Reportes;
 
+import Model.Product;
 import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoTrademark;
 import dao.impl.DaoTrademarkImpl;
+import java.util.Date;
 import java.util.List;
-
-
+import javax.swing.JOptionPane;
+import tool.Validate;
 
 /**
  *
@@ -20,13 +21,15 @@ import java.util.List;
  */
 public class Frm_KardexReport extends javax.swing.JFrame {
 
-    Integer idAlmacen=0;
-    Integer idtrademark=0;
-    Integer idProduct=0;
+    Integer idAlmacen = 0;
+    String idEan = null;
+    Product producto= new Product();
+    Integer idtrademark = 0;
+    Integer idProduct = 0;
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     List<Trademark> trademarkList = null;
     DaoTrademark daoTrademark = new DaoTrademarkImpl();
-    
+
     /**
      * Creates new form Frm_KardexReport
      */
@@ -35,15 +38,14 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }
 
     public Frm_KardexReport(Frm_MenuPrincipal menu) {
-        
+
         menuaux = menu;
         initComponents();
         trademarkList = daoTrademark.TrademarkQry();
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
         }
-        
-        
+
     }
 
     /**
@@ -114,6 +116,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         jLabel2.setText("Id:");
 
+        txt_Name.setEnabled(false);
         txt_Name.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_NameActionPerformed(evt);
@@ -139,7 +142,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(tbl_WhLayout.createSequentialGroup()
                         .addComponent(jLabel2)
-                        .addGap(52, 52, 52)
+                        .addGap(71, 71, 71)
                         .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_Wh)))
@@ -150,15 +153,17 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             .addGroup(tbl_WhLayout.createSequentialGroup()
                 .addGroup(tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Wh)
-                    .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                    .addComponent(jLabel2)
+                    .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
 
-        jLabel3.setText("Id:");
+        jLabel3.setText("EAN 13:");
+
+        txt_idProduct.setEnabled(false);
 
         btn_Product.setText("Buscar");
         btn_Product.addActionListener(new java.awt.event.ActionListener() {
@@ -184,11 +189,11 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(51, 51, 51)
                 .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
                 .addComponent(jLabel6)
-                .addGap(18, 18, 18)
+                .addGap(77, 77, 77)
                 .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
+                .addGap(82, 82, 82)
                 .addComponent(btn_Product)
                 .addContainerGap())
         );
@@ -221,19 +226,23 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
-                .addGap(40, 40, 40)
+                .addGap(18, 18, 18)
                 .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(14, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(6, 6, 6))))
         );
 
         btn_Kardex.setText("Generar Kardex");
@@ -254,13 +263,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         tbl_Kardex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Id Producto", "Descripcion", "Entrada", "Salida", "Existencia"
+                "Fecha", "Motivo de Moviemiento", "Entrada", "Salida", "Existencia"
             }
         ));
         jScrollPane4.setViewportView(tbl_Kardex);
@@ -300,7 +309,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Cancel)
                     .addComponent(btn_Export)
@@ -316,11 +325,30 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_NameActionPerformed
 
     private void btn_KardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_KardexActionPerformed
+        Date dateIniSearch = null;
+        Date dateEndSearch = null;
+        if (date_Ini.getDate() != null) {
+            dateIniSearch = date_Ini.getDate();
+        } else {
+            dateIniSearch = new Date();
+            dateIniSearch.setTime(0);
+        }
+        if (date_End.getDate() != null) {
+            dateEndSearch = date_End.getDate();
+        } else {
+            dateEndSearch = new Date();
+        }
+        
+        if(dateEndSearch.before(dateIniSearch))
+        {
+             JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+        }
+        
         
     }//GEN-LAST:event_btn_KardexActionPerformed
 
     private void btn_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductActionPerformed
-        
+
         Frm_SearchProductKardex frm_SearchProductKardex = new Frm_SearchProductKardex(this, idtrademark);
         frm_SearchProductKardex.setVisible(true);
         frm_SearchProductKardex.setLocationRelativeTo(null);
@@ -328,7 +356,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ProductActionPerformed
 
     private void btn_WhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_WhActionPerformed
-      
+
         Frm_SearchWhKardex frm_SearchWhKardex = new Frm_SearchWhKardex(this);
         frm_SearchWhKardex.setVisible(true);
         frm_SearchWhKardex.setLocationRelativeTo(null);
@@ -336,13 +364,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_WhActionPerformed
 
     private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
-       
-       menuaux.setVisible(true);
-       this.dispose();
+
+        menuaux.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btn_CancelActionPerformed
 
     private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
-       if (cbo_trademark.getSelectedItem() != null) {
+        if (cbo_trademark.getSelectedItem() != null) {
             for (int i = 0; i < trademarkList.size(); i++) {
                 if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
                     idtrademark = trademarkList.get(i).getId_Trademark();
@@ -351,32 +379,39 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
-    public void setIdWh(Integer id){
-        
-        idAlmacen=id;
+    public void setIdWh(Integer id) {
+
+        idAlmacen = id;
     }
-    
-    
-    public void setTextIdWh(){
-        
+
+    public void setTextIdWh() {
+
         txt_Name.setText(idAlmacen.toString());
     }
-    
-    public void setIdProduct(Integer id){
-        
-        idProduct=id;
+
+    public void setProduct(Product p) {
+
+        producto = p;
     }
-    
-    
-    public void setTextIdProduct(){
-        
+
+    public void setTextIdEan() {
+
+        txt_idProduct.setText(producto.getCodeEAN13());
+    }
+
+    public void setIdProduct(Integer id) {
+
+        idProduct = id;
+    }
+
+    public void setTextIdProduct() {
+
         txt_idProduct.setText(idProduct.toString());
     }
-    
+
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;
@@ -406,5 +441,4 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private javax.swing.JTextField txt_idProduct;
     // End of variables declaration//GEN-END:variables
 
- 
 }

@@ -6,6 +6,7 @@
 
 package Reportes;
 
+import JasperReports.Prueba;
 import Seguridad.Frm_MenuPrincipal;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
@@ -252,16 +253,13 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
-        
+        Prueba pru = new Prueba();
+        pru.mostrarReporte();
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        int res = fileChooser.showOpenDialog(this);
-        try {
-            fileExport = fileChooser.getSelectedFile().getAbsolutePath();
-
-        } catch (Exception e) {}
+        Prueba pru = new Prueba();
+        pru.exportarReporte();
     }//GEN-LAST:event_btn_ExportActionPerformed
 
     private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
