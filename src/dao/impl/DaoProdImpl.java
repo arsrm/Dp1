@@ -373,4 +373,61 @@ public class DaoProdImpl implements DaoProducts {
         return products;
     }
 
+    @Override
+    public List<Product> ProductsQryByTrademark(Integer idTrademark) {
+        List<Product> products = null;
+        String sql = "SELECT "
+                + "idProduct,"
+                + "name,"
+                + "quantity_per_box,"
+                + "weight_per_box,"
+                + "quantity_boxes_per_pallet,"
+                + "physical_stock,"
+                + "free_stock,"
+                + "status,"
+                + "cod_ean13,"
+                + "Trademark_id_Trademark,"
+                + "Type_Condition_idType_Condition "
+                + "FROM Product "
+                + "WHERE Trademark_id_Trademark=?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idTrademark);
+                ResultSet rs = ps.executeQuery();
+
+                products = new LinkedList<>();
+                while (rs.next()) {
+                    Product p = new Product();
+
+                    p.setIdProduct(rs.getInt(1));
+                    p.setName(rs.getString(2));
+                    p.setQuantityPerBox(rs.getInt(3));
+                    p.setWeightPerBox(rs.getInt(4));
+                    p.setQuantityBoxesPerPallet(rs.getInt(5));
+                    p.setPhysicalStock(rs.getInt(6));
+                    p.setFreeStock(rs.getInt(7));
+                    p.setStatus(rs.getInt(8));
+                    p.setCodeEAN13(rs.getString(9));
+                    p.setTrademark(rs.getInt(10));
+                    p.setTypeConditionWH(rs.getInt(11));
+
+                    products.add(p);
+                }
+
+            } catch (SQLException e) {
+                products = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return products;
+    }
+
 }

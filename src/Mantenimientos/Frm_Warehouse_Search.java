@@ -43,7 +43,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         initComponents();
                typeConditionList = daoTypeWh.tcwhQry();
         int cantTC = typeConditionList.size();
-//        cbo_type_condition.addItem("Seleccionar");
+        cbo_type_condition.addItem("Todos");
         for (int i = 0; i < cantTC; i++) {
             cbo_type_condition.addItem(typeConditionList.get(i).getDescription());
         }
@@ -90,7 +90,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -147,9 +147,9 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
             }
         });
 
-        lbl_type_condition.setText("Tipo de Condición");
+        lbl_type_condition.setText("Condición de almacén:");
 
-        jLabel1.setText("ID");
+        jLabel1.setText("ID:");
 
         javax.swing.GroupLayout pnl_warehouseLayout = new javax.swing.GroupLayout(pnl_warehouse);
         pnl_warehouse.setLayout(pnl_warehouseLayout);
@@ -165,7 +165,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
                         .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_type_condition)
                             .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                         .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txt_IdWh, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -287,11 +287,16 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         if(txt_IdWh.getText().length()!=0)
             idWhSearch=Integer.parseInt(txt_IdWh.getText().toString());
         else idWhSearch=0;
-        if(cbo_type_condition.getSelectedItem()!=null)
+        if(cbo_type_condition.getSelectedItem()!=null){
+            if(cbo_type_condition.getSelectedItem()!=null){
             for(int i=0; i<typeConditionList.size(); i++)
                 if(cbo_type_condition.getSelectedItem().equals(typeConditionList.get(i).getDescription()))
                        idTypeConditionSearch=typeConditionList.get(i).getIdType_Condition_WareHouse();
-        
+            }
+            else{
+                idTypeConditionSearch=null;
+            }
+        }
         whList=daoWH.whSearch(idWhSearch, idTypeConditionSearch);
         
         modelo.getDataVector().removeAllElements();

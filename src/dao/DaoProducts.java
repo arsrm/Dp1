@@ -31,4 +31,6 @@ public interface DaoProducts {
 //    public Integer ProductsGetMaxID ();
 //    
     public List<Product> ProductsSearch(String EAN13, String name, Trademark trademark);
+    
+    public List<Product> ProductsQryByTrademark(Integer idTrademark);
 }

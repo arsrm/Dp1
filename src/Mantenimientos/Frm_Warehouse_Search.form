@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+<Form version="1.5" maxVersion="1.8" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
   </Properties>
@@ -76,7 +76,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btn_delete">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Desactivar"/>
+        <Property name="text" type="java.lang.String" value="Cambiar Estado"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>
@@ -165,7 +165,7 @@
                               <Component id="lbl_type_condition" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="61" max="32767" attributes="0"/>
+                          <EmptySpace pref="38" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="cbo_type_condition" min="-2" pref="400" max="-2" attributes="0"/>
                               <Component id="txt_IdWh" min="-2" pref="213" max="-2" attributes="0"/>
@@ -207,7 +207,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_type_condition">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Tipo de Condici&#xf3;n"/>
+            <Property name="text" type="java.lang.String" value="Condici&#xf3;n de almac&#xe9;n:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbo_type_condition">
@@ -219,7 +219,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ID"/>
+            <Property name="text" type="java.lang.String" value="ID:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_IdWh">

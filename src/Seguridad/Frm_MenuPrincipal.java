@@ -30,6 +30,7 @@ import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
+import Reportes.Frm_KardexReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
 import dao.DaoLog;
@@ -442,6 +443,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_reportes.add(op_Reporte_diferencia_Inventario);
 
         op_Reporte_Kardex_segun_fecha.setText("Reporte de Kardex segun fecha");
+        op_Reporte_Kardex_segun_fecha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Reporte_Kardex_segun_fechaActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Reporte_Kardex_segun_fecha);
 
         op_Reporte_Stock_fecha.setText("Reporte de Stock a la fecha");
@@ -756,6 +762,12 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_pallet.setLocationRelativeTo(null);
 
     }//GEN-LAST:event_op_PalletProduct_LocationActionPerformed
+
+    private void op_Reporte_Kardex_segun_fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_Kardex_segun_fechaActionPerformed
+        Frm_KardexReport frm_kardex = new Frm_KardexReport(this);
+        frm_kardex.setVisible(true);
+        frm_kardex.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_Reporte_Kardex_segun_fechaActionPerformed
 //gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments

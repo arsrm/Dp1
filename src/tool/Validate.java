@@ -18,6 +18,9 @@ public class Validate
     // Patrones
     // http://www.codeproject.com/Articles/13255/Validation-with-Regular-Expressions-Made-Simple
     
+    public void Validate()
+    {}
+    
     public static boolean validarEmail(String cadena)
     {
         if (cadena.equals(""))
@@ -103,6 +106,7 @@ public class Validate
     {
         Pattern pattern = Pattern.compile(patron);
         Matcher matcher = pattern.matcher(cadena);
+        boolean ret=matcher.matches();
         return matcher.matches(); 
     }
     

@@ -16,6 +16,7 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import tool.Validate;
 
 /**
  *
@@ -33,6 +34,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     DaoTypeConditionWH daoTC = new DaoTypeConditionWHImpl();
     List<Type_Condition_WareHouse> typeConditionList = null;
     Type_Condition_WareHouse tcWhSelected;
+    Validate validar=new Validate();
    
 
     public Frm_Warehouse(Frm_Warehouse_Search menu, Warehouse wh) {
@@ -44,6 +46,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
         typeConditionList = daoTC.tcwhQry();
         int cantTC = typeConditionList.size();
 //        cbo_type_condition.addItem("Seleccionar");
+        cbo_type_condition.addItem("Seleccione");
         for (int i = 0; i < cantTC; i++) {
             cbo_type_condition.addItem(typeConditionList.get(i).getDescription());
         }
@@ -89,7 +92,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
 
         pnl_warehouse.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_type_condition.setText("Tipo de Condición");
+        lbl_type_condition.setText("Condicion de almacen:");
 
         cbo_type_condition.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,7 +100,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
             }
         });
 
-        lbl_description.setText("Descripción");
+        lbl_description.setText("Nombre:");
 
         javax.swing.GroupLayout pnl_warehouseLayout = new javax.swing.GroupLayout(pnl_warehouse);
         pnl_warehouse.setLayout(pnl_warehouseLayout);
@@ -112,7 +115,7 @@ public class Frm_Warehouse extends javax.swing.JFrame {
                 .addGroup(pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbo_type_condition, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_warehouseLayout.setVerticalGroup(
             pnl_warehouseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,6 +186,24 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+      
+        String nombre=null;
+        
+        if(cbo_type_condition.getSelectedItem().equals("Seleccione")){
+
+            JOptionPane.showMessageDialog(this, "Por favor complete el campo condición de almacén");
+        }
+        
+        if( txt_description.getText().length() == 0){
+            JOptionPane.showMessageDialog(this, "Por favor complete el campo nombre");
+        }
+        
+        if(txt_description.getText().length() != 0){
+            nombre=txt_description.getText();
+            if(!Validate.validarNombre(nombre)){
+                JOptionPane.showMessageDialog(this,"solo se aceptan caracteres", "Advertencia", JOptionPane.OK_OPTION);
+            }
+            else{
         if (warehouse == null) { //Guardar nuevo producto
 
             warehouse = new Warehouse();
@@ -193,11 +214,15 @@ public class Frm_Warehouse extends javax.swing.JFrame {
             daoWH.whIns(warehouse);
 
         } else {
+            
+            
             warehouse.setDescription(txt_description.getText());
             daoWH.whUpd(warehouse);
+            
         }
-
+        
         Object[] options = {"OK"};
+        
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al Almacén con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -207,7 +232,11 @@ public class Frm_Warehouse extends javax.swing.JFrame {
                 this.dispose();
             }
         }
-        menu_padre.initilizeTable();
+        
+        
+        }
+            menu_padre.initilizeTable();
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void cbo_type_conditionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_type_conditionActionPerformed
