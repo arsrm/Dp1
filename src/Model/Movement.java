@@ -16,11 +16,21 @@ public class Movement {
     private int idMovement;
     private Date date;
     private int type_Movement_id;
+    private int type_Movement_idSubtype;
     private int stock_inicial;
     private int stock_final;
     private int idProduct;
     private int idWh;
 
+    public int getType_Movement_idSubtype() {
+        return type_Movement_idSubtype;
+    }
+
+    public void setType_Movement_idSubtype(int type_Movement_idSubtype) {
+        this.type_Movement_idSubtype = type_Movement_idSubtype;
+    }
+
+    
     public int getIdMovement() {
         return idMovement;
     }

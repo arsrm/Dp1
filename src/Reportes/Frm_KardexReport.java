@@ -5,14 +5,19 @@
  */
 package Reportes;
 
+import Model.Movement;
 import Model.Product;
 import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoKardex;
 import dao.DaoTrademark;
+import dao.impl.DaoKardexImpl;
 import dao.impl.DaoTrademarkImpl;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import tool.Validate;
 
 /**
@@ -23,12 +28,14 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
     Integer idAlmacen = 0;
     String idEan = null;
-    Product producto= new Product();
+    Product producto = new Product();
     Integer idtrademark = 0;
-    Integer idProduct = 0;
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     List<Trademark> trademarkList = null;
     DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    DaoKardex daoKardex = new DaoKardexImpl();
+    List<Movement> movementList = new ArrayList<>();
+    DefaultTableModel modelo;
 
     /**
      * Creates new form Frm_KardexReport
@@ -41,6 +48,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         menuaux = menu;
         initComponents();
+        modelo = (DefaultTableModel) tbl_Kardex.getModel();
         trademarkList = daoTrademark.TrademarkQry();
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
@@ -263,13 +271,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         tbl_Kardex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Motivo de Moviemiento", "Entrada", "Salida", "Existencia"
+                "Fecha", "Motivo de Moviemiento", "Entrada", "Salida", "StockInicial", "StockFinal"
             }
         ));
         jScrollPane4.setViewportView(tbl_Kardex);
@@ -338,13 +346,12 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         } else {
             dateEndSearch = new Date();
         }
-        
-        if(dateEndSearch.before(dateIniSearch))
-        {
-             JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+
+        if (dateEndSearch.before(dateIniSearch)) {
+            JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
         }
-        
-        
+        movementList = daoKardex.MovementSearch(producto.getIdProduct(), idAlmacen, dateIniSearch, dateEndSearch);
+        initializeTable();
     }//GEN-LAST:event_btn_KardexActionPerformed
 
     private void btn_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductActionPerformed
@@ -399,16 +406,6 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         txt_idProduct.setText(producto.getCodeEAN13());
     }
 
-    public void setIdProduct(Integer id) {
-
-        idProduct = id;
-    }
-
-    public void setTextIdProduct() {
-
-        txt_idProduct.setText(idProduct.toString());
-    }
-
     /**
      * @param args the command line arguments
      */
@@ -440,5 +437,30 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private javax.swing.JTextField txt_Name;
     private javax.swing.JTextField txt_idProduct;
     // End of variables declaration//GEN-END:variables
+
+    private void initializeTable() {
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        try {
+            for (int i = 0; i < movementList.size(); i++) {
+                Integer entrada = 0;
+                Integer salida = 0;
+                String entradaStr = "";
+                String salidaStr = "";
+                if (movementList.get(i).getType_Movement_id() == 1) {
+                    entrada = (movementList.get(i).getStock_final() - movementList.get(i).getStock_inicial());
+                    entradaStr =entrada.toString();
+                } else {
+                    salida = (movementList.get(i).getStock_inicial() - movementList.get(i).getStock_final());
+                    salidaStr = salida.toString();
+                }
+                Object[] fila = {movementList.get(i).getDate(), movementList.get(i).getType_Movement_idSubtype(),
+                    entradaStr, salidaStr, movementList.get(i).getStock_inicial(), movementList.get(i).getStock_final()};
+
+                modelo.addRow(fila);
+            }
+        } catch (Exception e) {
+        }
+    }
 
 }
