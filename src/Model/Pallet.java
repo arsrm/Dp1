@@ -25,13 +25,12 @@ public class Pallet {
     Integer Location_Cell_Detail_Location_Cell_Rack_idRack; 
     Integer Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse; 
     Integer idDistribution_Center; 
-    String cod_ean128; 
     Integer user_created;
     Integer user_updated;
     Integer Product_idProduct; 
     Integer Product_Trademark_id_Trademark; 
 
-    public Pallet(Integer idPallet, Integer status, Timestamp created_at, Timestamp updated_at, Integer Pallet_State_idPallet_Type, Integer Location_Cell_Detail_Pallet_idPallet, Integer Location_Cell_Detail_Location_Cell_idLocation_Cell, Integer Location_Cell_Detail_Location_Cell_Rack_idRack, Integer Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse, Integer idDistribution_Center, String cod_ean128, Integer user_created, Integer user_updated, Integer Product_idProduct, Integer Product_Trademark_id_Trademark) {
+    public Pallet(Integer idPallet, Integer status, Timestamp created_at, Timestamp updated_at, Integer Pallet_State_idPallet_Type, Integer Location_Cell_Detail_Pallet_idPallet, Integer Location_Cell_Detail_Location_Cell_idLocation_Cell, Integer Location_Cell_Detail_Location_Cell_Rack_idRack, Integer Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse, Integer idDistribution_Center, Integer user_created, Integer user_updated, Integer Product_idProduct, Integer Product_Trademark_id_Trademark) {
         this.idPallet = idPallet;
         this.status = status;
         this.created_at = created_at;
@@ -42,7 +41,6 @@ public class Pallet {
         this.Location_Cell_Detail_Location_Cell_Rack_idRack = Location_Cell_Detail_Location_Cell_Rack_idRack;
         this.Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse = Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse;
         this.idDistribution_Center = idDistribution_Center;
-        this.cod_ean128 = cod_ean128;
         this.user_created = user_created;
         this.user_updated = user_updated;
         this.Product_idProduct = Product_idProduct;
@@ -142,13 +140,6 @@ public class Pallet {
         this.idDistribution_Center = idDistribution_Center;
     }
 
-    public String getCod_ean128() {
-        return cod_ean128;
-    }
-
-    public void setCod_ean128(String cod_ean128) {
-        this.cod_ean128 = cod_ean128;
-    }
 
     public Integer getUser_created() {
         return user_created;

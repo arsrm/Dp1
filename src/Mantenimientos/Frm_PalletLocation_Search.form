@@ -28,14 +28,6 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="scrl_pallet" alignment="1" max="32767" attributes="0"/>
-                  <Component id="pnl_pallet" max="32767" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -43,17 +35,25 @@
                       <Component id="lbl_fechaini" min="-2" pref="120" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="267" max="-2" attributes="0"/>
                       <Component id="lbl_fechafin" min="-2" pref="104" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="263" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="btn_new" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="btn_new" min="-2" pref="79" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
               </Group>
+          </Group>
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="pnl_pallet" max="32767" attributes="0"/>
+                  <Component id="scrl_pallet" alignment="1" max="32767" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -64,18 +64,18 @@
               <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="scrl_pallet" min="-2" pref="148" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+              <Component id="lbl_fechafin" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="lbl_fechaini" pref="24" max="32767" attributes="0"/>
-                  <Component id="lbl_fechafin" max="32767" attributes="0"/>
+                  <Component id="lbl_fechaini" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                      <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_new" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btn_new" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -99,45 +99,41 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lbl_id_rack" min="-2" pref="66" max="-2" attributes="0"/>
-                      <Component id="lbl_id_pallet" min="-2" pref="71" max="-2" attributes="0"/>
-                      <Component id="lbl_date_from" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_status_act" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="lbl_CenterDistribution" pref="114" max="32767" attributes="0"/>
+                      <Component id="lbl_rack" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lbl_date_to" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lbl_marca" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                      <Component id="dch_date_from" alignment="0" max="32767" attributes="0"/>
-                      <Component id="txt_id_pallet" alignment="0" pref="150" max="32767" attributes="0"/>
-                      <Component id="txt_id_rack" alignment="0" max="32767" attributes="0"/>
-                      <Component id="cbo_pallet_act" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="cbo_rack" alignment="0" max="32767" attributes="0"/>
+                      <Component id="cbo_locationcell_detail" max="32767" attributes="0"/>
+                      <Component id="cbo_marca" max="32767" attributes="0"/>
+                      <Component id="cbo_center_distribution" pref="189" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="135" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Component id="lbl_ean" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                          <Component id="txt_ean" min="-2" pref="150" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="103" alignment="0" groupAlignment="1" attributes="0">
-                          <Component id="btn_search" min="-2" pref="83" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="lbl_status_pallet" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_id_cell" alignment="0" min="-2" max="-2" attributes="0"/>
-                                  <Component id="lbl_date_to" min="-2" pref="70" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="37" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Component id="btn_search" min="-2" pref="83" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="lbl_warehouse" min="-2" pref="121" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="dch_date_to" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="txt_id_cell" alignment="0" pref="150" max="32767" attributes="0"/>
-                                  <Component id="cbo_pallet_state" max="32767" attributes="0"/>
+                                  <Component id="lbl_cell" max="32767" attributes="0"/>
+                                  <Component id="lbl_status" max="32767" attributes="0"/>
+                                  <Component id="lbl_product" alignment="0" pref="121" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="cbo_location_cell" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbo_warehouse" alignment="0" max="32767" attributes="0"/>
+                              <Component id="cbo_state" max="32767" attributes="0"/>
+                              <Component id="cbo_product" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace min="0" pref="57" max="32767" attributes="0"/>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -146,37 +142,35 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txt_id_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_ean" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_ean" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_id_pallet" alignment="3" max="32767" attributes="0"/>
+                      <Component id="lbl_warehouse" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_CenterDistribution" alignment="3" max="32767" attributes="0"/>
+                      <Component id="cbo_warehouse" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_center_distribution" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_id_rack" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_id_rack" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_id_cell" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_id_cell" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="lbl_date_from" min="-2" max="-2" attributes="0"/>
-                          <Component id="dch_date_from" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Component id="dch_date_to" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_date_to" alignment="1" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lbl_status_act" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_pallet_act" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_status_pallet" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_pallet_state" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_rack" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_rack" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_cell" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_location_cell" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="cbo_locationcell_detail" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_date_to" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_status" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_state" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lbl_marca" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_marca" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_product" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_product" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Component id="btn_search" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -190,79 +184,110 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_searchActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbo_pallet_act">
+        <Component class="javax.swing.JLabel" name="lbl_CenterDistribution">
           <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="1">
-                <StringItem index="0" value=" "/>
-              </StringArray>
-            </Property>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbo_pallet_actActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_id_pallet">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Id.Pallet"/>
+            <Property name="text" type="java.lang.String" value="Centro de Distribuci&#xf3;n"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_id_pallet">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_id_palletActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_ean">
+        <Component class="javax.swing.JLabel" name="lbl_warehouse">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Codigo EAN"/>
+            <Property name="text" type="java.lang.String" value="Almacen"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_ean">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_status_act">
+        <Component class="javax.swing.JLabel" name="lbl_rack">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Estado Actividad"/>
+            <Property name="text" type="java.lang.String" value="Rack"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_id_rack">
+        <Component class="javax.swing.JLabel" name="lbl_cell">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Id.Rack"/>
+            <Property name="text" type="java.lang.String" value="Celda"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txt_id_rack">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_id_cell">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Id.Celda"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txt_id_cell">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_date_from">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Fecha Inicial"/>
-          </Properties>
-        </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="dch_date_from">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_date_to">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Fecha Final"/>
+            <Property name="text" type="java.lang.String" value="Detalle Celda"/>
           </Properties>
         </Component>
-        <Component class="com.toedter.calendar.JDateChooser" name="dch_date_to">
-        </Component>
-        <Component class="javax.swing.JLabel" name="lbl_status_pallet">
+        <Component class="javax.swing.JLabel" name="lbl_status">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Estado Pallet"/>
+            <Property name="text" type="java.lang.String" value="Estado Ubicacion"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbo_pallet_state">
+        <Component class="javax.swing.JComboBox" name="cbo_state">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_warehouse">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbo_warehouseItemStateChanged"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_rack">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_location_cell">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_locationcell_detail">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbo_locationcell_detailActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_marca">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Marca"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_marca">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_product">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Producto"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_product">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cbo_center_distribution">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbo_center_distributionItemStateChanged"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
@@ -273,7 +298,7 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
       <SubComponents>
-        <Component class="javax.swing.JTable" name="tbl_pallet">
+        <Component class="javax.swing.JTable" name="tbl_pallet_detail">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="10" rowCount="0">
@@ -360,7 +385,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btn_delete">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Eliminar"/>
+        <Property name="text" type="java.lang.String" value="Desactivar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>

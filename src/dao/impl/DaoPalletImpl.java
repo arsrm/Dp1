@@ -6,6 +6,10 @@
 
 package dao.impl;
 import Model.Pallet;
+import Model.Distribution_Center;
+import Model.PalletIni;
+import Model.Rack;
+import Model.Warehouse;
 import dao.DaoPallet;
 import java.util.*;
 import java.sql.*;
@@ -52,6 +56,181 @@ public class DaoPalletImpl implements DaoPallet{
     @Override
     public List<Object[]> PalletCbo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public List<Distribution_Center> CDQry() {
+        List<Distribution_Center> list = null;
+        Distribution_Center modelCd= new Distribution_Center();
+        String sql = "select idDistribution_Center,name , address,pos_x, \n" +
+                      "pos_y,status,created_at,updated_at,user_created,user_updated \n" +
+                      "from  distribution_center\n" +
+                      "where idDistribution_Center in \n" +
+                      "(select distinct(idDistribution_Center) from location_cell_detail)" ;
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    modelCd.setIdDistribution_Center(rs.getInt(1));
+                    modelCd.setName(rs.getString(2));
+                    modelCd.setAddress(rs.getString(3));
+                    modelCd.setPos_x(rs.getInt(4));
+                    modelCd.setPos_y(rs.getInt(5));
+                    modelCd.setStatus(rs.getInt(6));
+                    modelCd.setCreated_at(rs.getTimestamp(7));
+                    modelCd.setUpdated_at(rs.getTimestamp(8));
+                    modelCd.setUser_created(rs.getInt(9));
+                    modelCd.setUser_updated(rs.getInt(10));
+                    list.add(modelCd);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<Warehouse> WarehoseQry(String CentroCD) {
+        List<Warehouse> list = null;
+        Warehouse model= new Warehouse();
+        String sql = "select idWarehouse,description, status,created_at,updated_at,\n" +
+                    "Type_Condition_idType_Condition,Distribution_Center_idDistribution_Center,\n" +
+                    "user_created,user_updated\n" +
+                    " from warehouse \n" +
+                    "where idWarehouse in (\n" +
+                    "select distinct(Location_Cell_Rack_Warehouse_idWarehouse) from location_cell_detail \n" +
+                    "where  " +CentroCD+ " )" ;
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    model.setIdWH(rs.getInt(1));
+                    model.setDescription(rs.getString(2));
+                    model.setStatus(rs.getInt(3));
+                    model.setCreated_at(rs.getTimestamp(4));
+                    model.setUpdate_at(rs.getTimestamp(5));
+                    model.setType_Condition_WareHouse_idType_Condition_WareHouse(rs.getInt(6));
+                    model.setDistribution_Center_idDistribution_Center(rs.getInt(7));
+                    list.add(model);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Warehouse Warehousename(String nameWR) {
+        Warehouse objmodel = null;
+        String sql = "SELECT "
+                + "idWarehouse, "
+                + "description, "
+                + "status, "
+                + "created_at, "
+                + "updated_at, "
+                + "Type_Condition_idType_Condition, "
+                + "Distribution_Center_idDistribution_Center "
+                + "FROM warehouse where description='" + nameWR +"' ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel = new Warehouse();
+                    objmodel.setIdWH(rs.getInt(1));
+                    objmodel.setDescription(rs.getString(2));
+                    objmodel.setStatus(rs.getInt(3));
+                    objmodel.setCreated_at(rs.getTimestamp(4));
+                    objmodel.setUpdate_at(rs.getTimestamp(5));
+                    objmodel.setType_Condition_WareHouse_idType_Condition_WareHouse(rs.getInt(6));
+                    objmodel.setDistribution_Center_idDistribution_Center(rs.getInt(7));
+                }
+
+            } catch (SQLException e) {
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return objmodel;
+    }
+
+    @Override
+    public List<Rack> RackQry(String cadena) {
+        List<Rack> list = null;
+        Rack model= new Rack();
+        String sql = "select idRack,identifier,description,length,width,floor_numbers,height_per_floor,\n" +
+                      "resistance_weigth_per_floor,column_number,status,created_at,updated_at,Warehouse_idWarehouse,\n" +
+                      "Warehouse_Distribution_Center_idDistribution_Center,user_created,user_updated from rack \n" +
+                      "where idRack in \n" +
+                      "(select distinct(Location_Cell_Rack_idRack) from location_cell_detail where " + cadena +")" ;
+        Connection cn = db.getConnection();
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    model.setIdRack(rs.getInt(1));
+                    model.setIdentifier(rs.getString(2));
+                    model.setDescription(rs.getString(3));
+                    model.setLength(rs.getDouble(4));
+                    model.setWidth(rs.getDouble(5));
+                    model.setFloor_numbers(rs.getInt(6));
+                    model.setHeight_per_floor(rs.getInt(7));
+                    model.setResistance_weigth_per_floor(rs.getInt(8));
+                    model.setColumn_number(rs.getInt(9));
+                    model.setStatus(rs.getInt(10));
+                    model.setCreated_at(rs.getTimestamp(11));
+                    model.setUpdated_at(rs.getTimestamp(12));
+                    model.setWarehouse_idWarehouse(rs.getInt(13));
+                    model.setWarehouse_Distribution_Center_idDistribution_Center(rs.getInt(14));
+                    model.setUser_created(rs.getInt(15));
+                    model.setUser_updated(rs.getInt(16));
+                    list.add(model);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
     
 }

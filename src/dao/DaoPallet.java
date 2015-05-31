@@ -6,6 +6,9 @@
 
 package dao;
 import Model.Pallet;
+import Model.Warehouse;
+import Model.Distribution_Center;
+import Model.Rack;
 import java.util.*;
 
 /**
@@ -15,6 +18,14 @@ import java.util.*;
 public interface DaoPallet {
 
     public List<Pallet>PalletQry();
+    
+    public List<Distribution_Center>CDQry();
+    
+    public List<Warehouse>WarehoseQry(String CentroCD);
+    
+    public List<Rack> RackQry(String cadena); 
+    
+    public Warehouse Warehousename(String nameWR); 
     
     public String PalletIns(Pallet pallet);
    
