@@ -289,7 +289,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdPallet", "Codigo EAN", "Descripcion", "Rack", "Celda", "Ubicacion_Celda", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "Estado Actividad"
+                "IdPallet", "Codigo EAN", "Descripcion", "Rack", "Celda", "Ubicacion_Celda", "Estato Pallet", "Estado Actividad"
             }
         ));
         scrl_pallet.setViewportView(tbl_pallet_detail);
@@ -301,7 +301,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);

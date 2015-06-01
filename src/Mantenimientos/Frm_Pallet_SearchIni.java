@@ -42,6 +42,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
     DefaultTableModel modelo;
     Integer col=0; 
     DaoPalletIni daopallet = new DaoPalletIniImpl();
+    DaoPalletState daopalletstate= new DaoPalletStateImpl();
     
     
     public void inicia_estado_actividad()
@@ -82,13 +83,17 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
          Integer cantreg= objdao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin).size();
          PalletIni[] list=new PalletIni[cantreg] ;     
          DefaultTableModel model= (DefaultTableModel)tbl_pallet.getModel(); 
+         String statusactividad="";
          for (int i=0; i<cantreg; i++)
          {  list[i]=objdao.PalletIniQry(id_pallet,description,actividad,estadopallet,datefecini,datefecfin).get(i);
             //list.add(objdao.PalletQry().get(i));
-             model.addRow(new Object[]{list[i].getIdpallet(), list[i].getDescription(),list[i].getStatuspallet(),
-             list[i].getCreated_at(), list[i].getUpdated_at(),list[i].getUser_created(),list[i].getUser_updated(),
-             list[i].getStatusactividad()} );           
-         
+             if (list[i].getStatusactividad()==1)
+             {   statusactividad="Activo"; }
+             else            
+             {   statusactividad="Inactivo" ;}
+             
+             model.addRow(new Object[]{list[i].getIdpallet(), list[i].getDescription(), daopalletstate.PalletStateGet(list[i].getStatuspallet()).getDescription(),
+             statusactividad} );           
          }   
          
      }        
@@ -150,8 +155,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         btn_new = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
-        lbl_fechaini = new javax.swing.JLabel();
-        lbl_fechafin = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -262,14 +265,14 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdPallet", "Descripcion", "Estato Pallet", "Fecha Creacion", "Fecha Modificacion", "UsuarioCreacion", "Usuario Modificacion", "Estado Actividad", "Seleccionar"
+                "IdPallet", "Descripcion", "Estato Pallet", "Estado Actividad", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -289,7 +292,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         if (tbl_pallet.getColumnModel().getColumnCount() > 0) {
             tbl_pallet.getColumnModel().getColumn(0).setPreferredWidth(33);
             tbl_pallet.getColumnModel().getColumn(2).setPreferredWidth(50);
-            tbl_pallet.getColumnModel().getColumn(3).setPreferredWidth(60);
         }
 
         btn_new.setText("Nuevo");
@@ -299,7 +301,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Deactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -327,33 +329,22 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                         .addComponent(scrl_pallet))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(39, 39, 39)
-                        .addComponent(btn_new)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 90, Short.MAX_VALUE)
+                        .addComponent(btn_new, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_delete)
                         .addGap(473, 473, 473)
                         .addComponent(btn_cancel)
-                        .addGap(43, 43, 43))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
-                        .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                        .addGap(43, 43, 43)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lbl_fechafin, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(64, 64, 64))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(scrl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_fechaini, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(36, 36, 36)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_new)
                     .addComponent(btn_delete)
@@ -446,7 +437,8 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
            datefecini=fechainicial.toString();
         } 
         catch (Exception e)   
-        { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Inicial Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+        { if   (datefecini.length()>0 )
+          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Inicial Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
         }
         try 
         {  String formato = dch_date_to.getDateFormatString();
@@ -460,14 +452,10 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
            datefecfin=fechafinal.toString();            
         } 
         catch (Exception e)   
-        { JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Final Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+        {  if (datefecfin.length()>0)
+            {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Final Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
         }
 
-        try
-        {
-        if (fechafinal<fechainicial )
-         {  JOptionPane.showMessageDialog(null, "La Fecha Final debe ser mayor o igual a la Fecha Inicial", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); 
-          }   
         Integer numpallet=0; 
         //id_pallet
         try 
@@ -498,22 +486,33 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         { estadopallet= " Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='" +estadopallet+"') and ";
         //Pallet_State_idPallet_Type= (select idPallet_State from pallet_state where description='No Disponible')                 
         }    
-        
         limpiatabla();
         System.out.println("Fecha Inicial " +datefecini);
         System.out.println("Fecha Final " +datefecfin);
-        datefecini=" (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) >= " +fechainicial +" " ; 
-        datefecfin=" and (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) <= " +fechafinal +" " ;         
-        filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
+        if (fechainicial>0)
+        {datefecini=" (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) >= " +fechainicial +" and " ; 
+        }
+        else
+        {datefecini=" (1=1) and ";
+        }    
+        if (fechafinal>0)        
+        {datefecfin="  (year(created_at)*10000 +month(created_at)*100  +day(created_at) ) <= " +fechafinal +" " ; }
+        else
+        {datefecfin=" (1=1) ";
+        }   
+
+        try
+        {
+        if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
+          {JOptionPane.showMessageDialog(null, "La Fecha Final debe ser mayor o igual a la Fecha Inicial", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); }   
+         filtratabla(id_pallet,description,actividad,estadopallet,datefecini,datefecfin);
         }
         catch(Exception e)
-        { 
-        }    
-       //} catch(Exception e) 
+        { }    
+ 
+        //} catch(Exception e) 
        //   { JOptionPane.showMessageDialog(null, "Error Ingreso de Datos", " Error..!!", JOptionPane.ERROR_MESSAGE);
        //    }
-       
-        
     }       
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
        
@@ -564,8 +563,6 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_date_from;
     private javax.swing.JLabel lbl_date_to;
     private javax.swing.JLabel lbl_description;
-    private javax.swing.JLabel lbl_fechafin;
-    private javax.swing.JLabel lbl_fechaini;
     private javax.swing.JLabel lbl_id_pallet;
     private javax.swing.JLabel lbl_status_act;
     private javax.swing.JLabel lbl_status_pallet;

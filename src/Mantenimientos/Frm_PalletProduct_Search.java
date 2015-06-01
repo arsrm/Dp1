@@ -319,7 +319,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
             }
         });
 
-        btn_delete.setText("Deactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -338,14 +338,14 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
 
             },
             new String [] {
-                "Id. Pallet", "Marca", "Producto", "Estado", "UsuarioCreacion", "UsuarioModifacion", "FechaCreacion", "FechaModificacion", "Seleccionar"
+                "Id. Pallet", "Marca", "Producto", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, true
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -369,8 +369,8 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
-                        .addComponent(btn_new)
-                        .addGap(44, 44, 44)
+                        .addComponent(btn_new, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(30, 30, 30)
                         .addComponent(btn_delete)
                         .addGap(404, 404, 404)
                         .addComponent(btn_cancel))

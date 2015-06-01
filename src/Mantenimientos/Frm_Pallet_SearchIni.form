@@ -38,39 +38,26 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
-                      <Component id="btn_new" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="90" max="32767" attributes="0"/>
+                      <Component id="btn_new" min="-2" pref="81" max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="473" max="-2" attributes="0"/>
                       <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
-                      <Component id="lbl_fechaini" min="-2" pref="173" max="-2" attributes="0"/>
-                  </Group>
               </Group>
-              <EmptySpace pref="6" max="32767" attributes="0"/>
-              <Component id="lbl_fechafin" min="-2" pref="11" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="32" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
-              <Component id="lbl_fechafin" min="-2" pref="25" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
-          </Group>
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="scrl_pallet" min="-2" pref="148" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Component id="lbl_fechaini" min="-2" pref="24" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btn_new" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -252,14 +239,10 @@
         <Component class="javax.swing.JTable" name="tbl_pallet">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="9" rowCount="0">
+              <Table columnCount="5" rowCount="0">
                 <Column editable="false" title="IdPallet" type="java.lang.Object"/>
                 <Column editable="false" title="Descripcion" type="java.lang.Object"/>
                 <Column editable="false" title="Estato Pallet" type="java.lang.Object"/>
-                <Column editable="false" title="Fecha Creacion" type="java.lang.Object"/>
-                <Column editable="false" title="Fecha Modificacion" type="java.lang.Object"/>
-                <Column editable="false" title="UsuarioCreacion" type="java.lang.Object"/>
-                <Column editable="false" title="Usuario Modificacion" type="java.lang.Object"/>
                 <Column editable="false" title="Estado Actividad" type="java.lang.Object"/>
                 <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
               </Table>
@@ -277,26 +260,6 @@
                   <Renderer/>
                 </Column>
                 <Column maxWidth="-1" minWidth="-1" prefWidth="50" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="60" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                  <Title/>
-                  <Editor/>
-                  <Renderer/>
-                </Column>
-                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                   <Title/>
                   <Editor/>
                   <Renderer/>
@@ -333,7 +296,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="btn_delete">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Deactivar"/>
+        <Property name="text" type="java.lang.String" value="Cambiar Estado"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>
@@ -346,10 +309,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cancelActionPerformed"/>
       </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbl_fechaini">
-    </Component>
-    <Component class="javax.swing.JLabel" name="lbl_fechafin">
     </Component>
   </SubComponents>
 </Form>
