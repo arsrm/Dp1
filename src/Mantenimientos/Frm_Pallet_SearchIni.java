@@ -374,16 +374,27 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         // TODO add your handling code here:
         modelo = (DefaultTableModel) tbl_pallet.getModel();
         List<Integer> ids=new  ArrayList<Integer>();
+        List<Integer> statuspallet = new ArrayList<Integer>(); 
+        List<Integer> stadoactividad= new ArrayList<Integer>();
         int nr =modelo.getRowCount(); 
         for (int i=0; i<nr ;i++){
             
          try {   
-         Object prueba =  modelo.getValueAt(i, 8);
+         Object prueba =  modelo.getValueAt(i, 4);
              if ((Boolean)prueba){
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                Integer numm=(Integer)modelo.getValueAt(i, 0);
                ids.add(numm);
-               } 
+               numm=daopalletstate.PalletStateIdGet((String)modelo.getValueAt(i, 2));
+               statuspallet.add(numm);
+               String cadena=(String)modelo.getValueAt(i, 3);
+               if (cadena.equals("Activo"))
+                {  stadoactividad.add(1);
+                }
+               if (cadena.equals("Inactivo"))
+                {  stadoactividad.add(0);
+                }
+             }  
          }catch(Exception e)
           { 
            }  
@@ -395,7 +406,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
         if (reply == JOptionPane.YES_OPTION) {
-             daopallet.PalletIniDelMasive(ids);
+             daopallet.PalletIniDelMasive(ids,statuspallet,stadoactividad);
         }
         load_tablefilter();   
         
@@ -535,7 +546,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         if (evt.getSource() == tbl_pallet) {
             int rowSel = tbl_pallet.getSelectedRow();
             int colSel = tbl_pallet.getSelectedColumn();
-            if (colSel != 8) {
+            if (colSel != 4) {
                 idPalletSel = Integer.parseInt(tbl_pallet.getValueAt(rowSel, 0).toString());
                 palletini = dao.PalletIniGet(idPalletSel);
                 Frm_PalletIni frm_palletini = new Frm_PalletIni(this, palletini, "UPD");

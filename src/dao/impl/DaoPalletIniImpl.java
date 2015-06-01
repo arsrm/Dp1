@@ -194,12 +194,13 @@ public class DaoPalletIniImpl implements DaoPalletIni{
     }
 
     @Override
-    public String PalletIniDelMasive(List<Integer> ids)
+    public String PalletIniDelMasive(List<Integer> ids, List<Integer> statuspallet, List<Integer>statusactividad)
     {
         int sizelist= ids.size();
+        int cant=0; 
         String result = null;
         String sql = "UPDATE  pallet SET "
-                + "status= '0' "
+                + "status= ? "
                 + "WHERE idPallet=?";
 /*"DELETE FROM User WHERE idUser=?";*/
         Connection cn = db.getConnection();
@@ -208,11 +209,30 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 PreparedStatement ps = cn.prepareStatement(sql);
                 for (int x = 0 ; x<sizelist ;x ++) {
                     int idpallet= ids.get(x);
-                    ps.setInt(1,idpallet);
+                    int statepallet=statuspallet.get(x);
+                    int stateactividad=statusactividad.get(x);
+                    ps.setInt(1, 1-stateactividad);
+                    ps.setInt(2,idpallet);
+                    if (statepallet==1) //status no disponible
+                    { cant=cuentaregistros(idpallet); //cuenta la cantidad de registros del id
+                                                      //del pallet en la tabla de pallet por producto  
+                      if (cant==0)
+                      { 
+                        int ctos = ps.executeUpdate();
+                        if (ctos == 0) {
+                        throw new SQLException("ID: " + x + " no existe");
+                        }
+
+                      }   
+                    }
+                    else
+                    {    
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
                         throw new SQLException("ID: " + x + " no existe");
                     }
+                    }
+
                 }
 
             } catch (SQLException e) {
@@ -242,7 +262,6 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 while (rs.next()) {
                     maxid=rs.getInt(1);
                 }
-
             } catch (SQLException e) {
                 maxid = 0;
             } finally {
@@ -300,6 +319,34 @@ public class DaoPalletIniImpl implements DaoPalletIni{
             }
         }
         return list;
+    }
+
+    @Override
+    public Integer cuentaregistros(Integer idpallet) {
+        Integer cantreg=0; 
+        String sql = " select (count(1) from  pallet_by_product where Pallet_idPallet=? ";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idpallet);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                while (rs.next()) {
+                    cantreg=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                cantreg = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return cantreg;
     }
 
     

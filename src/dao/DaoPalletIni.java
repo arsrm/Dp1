@@ -27,8 +27,10 @@ public interface DaoPalletIni {
     
     public PalletIni PalletIniGet(Integer idpallet);
     
-    public String PalletIniDelMasive(List<Integer> ids);
+    public String PalletIniDelMasive(List<Integer> ids, List<Integer> statuspallet, List<Integer> statusactividad);
     
     public Integer PalletIniMax();
+    
+    public Integer cuentaregistros(Integer idpallet); 
     
 }

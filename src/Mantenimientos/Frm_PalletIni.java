@@ -236,6 +236,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         { daopalletini.PalletIniIns(objpalletini);
           this.dispose();
           menu_padre.setVisible(true);
+          menu_padre.load_tablefilter();
         }
        }
       if (accion.equals("UPD"))
@@ -250,6 +251,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         { daopalletini.PalletIniUpd(objpalletini);;
           this.dispose();
           menu_padre.setVisible(true);
+          menu_padre.load_tablefilter();
         }
       }    
     }//GEN-LAST:event_btn_saveActionPerformed
