@@ -290,7 +290,6 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                         throw new SQLException("ID: no existe");
                     }
                 }
-
             } catch (SQLException e) {
                 result = e.getMessage();
             } finally {

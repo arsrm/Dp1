@@ -45,6 +45,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     Integer indpaso; 
+    Integer flagpaso=0; 
     DaoPalletProduct daoPalletProduct=new DaoPalletProductImpl();
     
     public Frm_PalletProduct_Search()
@@ -127,7 +128,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         { cadWhere="where  (1=1) and " ;}    
         else 
         {DaoPalletProduct dao=new DaoPalletProductImpl();
-          cadWhere=" Product_Trademark_id_Trademark= "+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark()+"  and " ;
+          cadWhere=" where Product_Trademark_id_Trademark= "+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark()+"  and " ;
         }    
         if( cbo_product.getSelectedItem().toString().trim().equals(null)|| cbo_product.getSelectedItem().toString().trim().isEmpty())
         { cadWhere=cadWhere+ " (1=1) and " ;}    
@@ -171,8 +172,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         }    
         model.addRow(new Object[]{list[i].getIdpallet(),
         objmarca.GetTradamarkid(list[i].getIdtrademark()).getName(),
-        objproduc.ProductsGet(list[i].getIdproduct()).getName(),
-        status,list[i].getUser_created(),list[i].getUser_updated(),list[i].getCreated_at(),list[i].getUpdated_at()});
+        objproduc.ProductsGet(list[i].getIdproduct()).getName(),status});
         }   
     }       
 
@@ -443,7 +443,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         for (int i=0; i<nr ;i++){
             
          try {   
-         Object prueba =  modelo.getValueAt(i, 8);
+         Object prueba =  modelo.getValueAt(i, 4);
              if ((Boolean)prueba){
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                idpallet=(Integer)modelo.getValueAt(i, 0);
@@ -493,6 +493,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
          { marca=cbo_mark.getSelectedItem().toString().trim(); }    
        } catch(Exception e)
          {  } 
+       cbo_product.removeAllItems();
        loadproduct_mark(marca);      
       }
 // TODO add your handling code here:

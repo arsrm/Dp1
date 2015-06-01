@@ -195,14 +195,14 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdPallet", "Descripcion", "Fecha Creacion", "Fecha Modificacion", "UsuarioCreacion", "Usuario Modificacion", "Seleccionar"
+                "IdPallet", "Descripcion", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, true
+                false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -294,8 +294,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
           
         //Solo se mostrarán los pallet activos disponibles id estado pallet=2
         if (list[i].getStatuspallet()==2 && list[i].getStatusactividad()==1)
-        { model.addRow(new Object[]{list[i].getIdpallet(),list[i].getDescription(),list[i].getCreated_at(),
-                list[i].getUpdated_at(),list[i].getUser_created(),list[i].getUser_updated() });
+        { model.addRow(new Object[]{list[i].getIdpallet(),list[i].getDescription() });
         }
       }   
     }       
@@ -309,6 +308,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
                 { marca=cbo_mark.getSelectedItem().toString().trim(); }
             }catch(Exception e)
                {  }
+       cbo_product.removeAllItems();
         loadproduct_mark(marca);
         }
         // TODO add your handling code here:
@@ -348,7 +348,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
         for (int i=0; i<nr ;i++){
             
          try {   
-         Object prueba =  modelo.getValueAt(i, 6);
+         Object prueba =  modelo.getValueAt(i, 2);
              if ((Boolean)prueba){
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                idpallet=(Integer)modelo.getValueAt(i, 0);
@@ -359,7 +359,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
          }  
         }   
         //dao.usersDel(ids);        
-        String message = "¿Está seguro que desea cambiar de estado a los registros seleccionados?";
+        String message = "¿Está seguro que desea asignar los pallets seleccionados al producto?";
         String title = "Confirmación";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
