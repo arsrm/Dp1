@@ -128,7 +128,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
         Integer status=palletini.getStatuspallet();
         Integer cantreg=cuentaregistros(idpallet);
         if (cantreg>0)
-        { status=0; 
+        { status=1; 
          }
         Connection cn = db.getConnection();
         if (cn != null) {

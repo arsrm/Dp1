@@ -309,8 +309,8 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
     public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct, Date expirationDate,Integer idIntOrd) {
         int sizelist= listidpallet.size();
         String result = null;
-        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,status,expiration_date,Internment_Order_idInternment_Order) "
-                + " values(?,?,?,1,?,?) ";
+        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,expiration_date,Internment_Order_idInternment_Order,status) "
+                + " values(?,?,?,?,?,1) ";
         Connection cn = db.getConnection();
         PalletIni objmodelpalletini=new PalletIni();
         DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
@@ -323,6 +323,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                     ps.setInt(1,idpallet);
                     ps.setInt(2,idmarca);
                     ps.setInt(3,idproduct);
+                    //ps.setDate(4, new java.sql.Date(expirationDate.getTime()));
                     ps.setDate(4, new java.sql.Date(expirationDate.getTime()));
                     ps.setInt(5, idIntOrd);
                     //Se actualiza el pallet como no disponible
@@ -334,9 +335,9 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                         throw new SQLException("ID: no existe");
                     }
                 }
-
             } catch (SQLException e) {
                 result = e.getMessage();
+                System.out.println(result);
             } finally {
                 try {
                     cn.close();
