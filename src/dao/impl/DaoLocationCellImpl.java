@@ -85,12 +85,15 @@ public class DaoLocationCellImpl implements DaoLocationCell {
     }
 
     @Override
-    public String LocationCellAvailabilityUpd(Integer idLocCell,Integer idLocCellDetail,Integer status) {
+    public String LocationCellAvailabilityUpd(Integer idDistCenter,Integer idWh, Integer idRack,Integer idLocCell,Integer idLocCellDetail,Integer status) {
         String result = null;
         String sql = "UPDATE Location_Cell_Detail SET "
                 + "availability = ? "
                 + "WHERE idLocation_Cell_Detail = ? "
-                +"AND Location_Cell_idLocation_Cell = ?";
+                + "AND Location_Cell_Rack_Warehouse_idWarehouse = ? "
+                + "AND Location_Cell_Rack_idRack = ? "
+                +"AND Location_Cell_idLocation_Cell = ? "
+                +"AND idDistribution_Center = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -98,7 +101,10 @@ public class DaoLocationCellImpl implements DaoLocationCell {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, status);
                 ps.setInt(2, idLocCellDetail);
-                ps.setInt(3, idLocCell);
+                ps.setInt(3, idWh);
+                ps.setInt(4, idRack);
+                ps.setInt(5, idLocCell);
+                ps.setInt(6, idDistCenter);
 
                 ps.executeUpdate();
             } catch (SQLException e) {

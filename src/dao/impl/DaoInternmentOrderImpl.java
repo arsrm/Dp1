@@ -302,7 +302,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                         && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
                     PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
                     freeLocCellList.get(j).setAvailability(0);
-                    daoLocCell.LocationCellAvailabilityUpd(locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
+                    daoLocCell.LocationCellAvailabilityUpd(1,freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
+                            freeLocCellList.get(j).getLocation_Cell_Rack_idRack(),locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
                     Movement mov = new Movement();
                     mov.setDate(IntOrderGet(idIntOrder).getDate());
                     mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
