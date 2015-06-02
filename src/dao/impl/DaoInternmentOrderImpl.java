@@ -295,7 +295,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             lastFreeLocCell = 0;
             for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
-                LocationCell locCell = daoLocCell.LocationCellGet(freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
+                LocationCell locCell = daoLocCell.LocationCellGet(1,freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
+                            freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
                 if (freeLocCellList.get(j).getAvailability() == 1
                         && intOrdDetail.getProduct().getTypeConditionWH()
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
