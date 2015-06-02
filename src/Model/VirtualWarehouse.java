@@ -6,6 +6,8 @@
 
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author Gustavo
@@ -15,7 +17,7 @@ public class VirtualWarehouse {
     private Integer idInternmentOrderDetail;
     private Integer idProduct;
     private Integer quantity;
-    private Integer date;
+    private Date date;
 
     public Integer getIdIntermentOrder() {
         return idIntermentOrder;
@@ -49,11 +51,11 @@ public class VirtualWarehouse {
         this.quantity = quantity;
     }
 
-    public Integer getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(Date date) {
         this.date = date;
     }
     

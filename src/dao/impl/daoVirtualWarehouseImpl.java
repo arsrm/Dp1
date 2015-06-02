@@ -43,7 +43,7 @@ public class daoVirtualWarehouseImpl implements daoVirtualWarehouse {
                 ps.setInt(2, virtualWh.getIdInternmentOrderDetail());
                 ps.setInt(3, virtualWh.getIdProduct());
                 ps.setInt(4, virtualWh.getQuantity());
-                ps.setInt(5, virtualWh.getDate());
+                ps.setDate(5, new java.sql.Date(virtualWh.getDate().getTime()));
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {

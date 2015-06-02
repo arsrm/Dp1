@@ -84,4 +84,34 @@ public class DaoLocationCellImpl implements DaoLocationCell {
 
     }
 
+    @Override
+    public String LocationCellAvailabilityUpd(Integer idLocCell,Integer idLocCellDetail,Integer status) {
+        String result = null;
+        String sql = "UPDATE Location_Cell_Detail SET "
+                + "availability = ? "
+                + "WHERE idLocation_Cell_Detail = ? "
+                +"AND Location_Cell_idLocation_Cell = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, status);
+                ps.setInt(2, idLocCellDetail);
+                ps.setInt(3, idLocCell);
+
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+
 }

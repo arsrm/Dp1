@@ -9,14 +9,18 @@ import Model.InternmentOrder;
 import Model.InternmentOrderDetail;
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.Movement;
+import Model.VirtualWarehouse;
 import Model.Warehouse;
 import dao.DaoInternmentOrder;
 import dao.DaoInternmentOrderDetail;
+import dao.DaoKardex;
 import dao.DaoLocationCell;
 import dao.DaoPalletProduct;
 import dao.DaoProducts;
 import dao.DaoRack;
 import dao.DaoWH;
+import dao.daoVirtualWarehouse;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -37,6 +41,10 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
     DaoWH daoWh = new DaoWHImpl();
     DaoRack daoRack = new DaoRackImpl();
     DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
+    DaoKardex daoKardex = new DaoKardexImpl();
+    DaoInternmentOrder daoIntOrd = new DaoInternmentOrderImpl();
+    daoVirtualWarehouse daoVirtualWh = new daoVirtualWarehouseImpl();
     private final ConectaDb db;
 
     public DaoInternmentOrderImpl() {
@@ -294,12 +302,34 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
                         && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
                     PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
+                    freeLocCellList.get(j).setAvailability(0);
+                    daoLocCell.LocationCellAvailabilityUpd(locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
+                    Movement mov = new Movement();
+                    mov.setDate(daoIntOrd.IntOrderGet(idIntOrder).getDate());
+                    mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
+                    mov.setIdWh(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
+                    mov.setStock_inicial(intOrdDetail.getProduct().getPhysicalStock());
+                    mov.setStock_final(intOrdDetail.getProduct().getPhysicalStock() + intOrdDetail.getProduct().getQuantityBoxesPerPallet()*intOrdDetail.getQuantityPallets());
+                    mov.setType_Movement_id(1);
+                    mov.setType_Movement_idSubtype(1);                    
+                    daoKardex.MovementIns(mov);
                     cantPalletsIngresados++;
                     lastFreeLocCell = j;
                     break;
                 }
             }
         }
+        daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos
+        if(cantPalletsIngresados < intOrdDetail.getQuantityPallets()){
+            VirtualWarehouse virtualWh = new VirtualWarehouse();
+            virtualWh.setIdIntermentOrder(idIntOrder);
+            virtualWh.setIdInternmentOrderDetail(intOrdDetail.getIdInternmentOrderDetail());
+            virtualWh.setIdProduct(intOrdDetail.getProduct().getIdProduct());
+            virtualWh.setDate(daoIntOrd.IntOrderGet(idIntOrder).getDate());
+            virtualWh.setQuantity(intOrdDetail.getQuantityPallets() - cantPalletsIngresados);
+            daoVirtualWh.VirtualWarehouseIns(virtualWh);
+        }
+        
         return result;
 
     }

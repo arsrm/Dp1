@@ -28,6 +28,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -378,7 +379,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
 
     private void txt_idProductFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_idProductFocusLost
         Product product = new Product();
-        if (txt_idProduct.getText().length()!=0) {
+        if (txt_idProduct.getText().length() != 0) {
             int idProduct = Integer.parseInt(txt_idProduct.getText());
             product = daoProducts.ProductsGet(idProduct);
 
@@ -514,10 +515,15 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             daoProdInt.IntOrderIns(internmentOrder);
+
             for (int i = 0; i < internmentOrder.getInternmentOrderDetail().size(); i++) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(internmentOrder.getDate());
+                cal.add(Calendar.DATE, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTimeExpiration());
                 freePalletList = daoPalletProduct.GetPalletByStatus(1, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
                 daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
-                        internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct());
+                        internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct(),
+                        cal.getTime(), internmentOrder.getIdInternmentOrder());                
                 for (int j = 0; j < freePalletList.size(); j++) {
                     daoPalletIni.PalletsIniUpdStatus(freePalletList, 2);//2 Estado no disponible
                 }

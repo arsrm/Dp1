@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao.impl;
 
 import Model.Movement;
@@ -21,31 +20,32 @@ import java.util.List;
  *
  * @author Kari
  */
-public class DaoKardexImpl implements DaoKardex{
+public class DaoKardexImpl implements DaoKardex {
 
     private final ConectaDb db;
+
     public DaoKardexImpl() {
-         db = new ConectaDb();
+        db = new ConectaDb();
     }
+
     @Override
     public List<Movement> MovementSearch(Integer idProduct, Integer idwh, Date dateIni, Date dateEnd) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String sql = null;
         List<Movement> movimientos = null;
-      
-            sql = "SELECT "
-                    + "idMovement,"
-                    + "date,"
-                    + "Type_Movement_idType_Movement, "
-                    +"Type_Movement_idSubtype, "
-                    +"stock_initial, "
-                    +"stock_final "
-                    + "FROM Movement "
-                    + "WHERE date >= ? "
-                    + "AND date <= ? "
-                    + "AND Warehouse_idWarehouse=? "
-                    + "AND Product_idProduct = ?";
-        
+
+        sql = "SELECT "
+                + "idMovement,"
+                + "date,"
+                + "Type_Movement_idType_Movement, "
+                + "Type_Movement_idSubtype, "
+                + "stock_initial, "
+                + "stock_final "
+                + "FROM Movement "
+                + "WHERE date >= ? "
+                + "AND date <= ? "
+                + "AND Warehouse_idWarehouse=? "
+                + "AND Product_idProduct = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -86,6 +86,50 @@ public class DaoKardexImpl implements DaoKardex{
         return movimientos;
     }
 
-    
-    
+    @Override
+    public String MovementIns(Movement mov) {
+        String result = null;
+        String sql = "INSERT INTO Movement("
+                + "date,"
+                + "Type_Movement_idType_Movement,"
+                + "Type_Movement_idSubtype,"
+                + "stock_initial,"
+                + "stock_final,"
+                + "Product_idProduct,"
+                + "Warehouse_idWarehouse,"
+                + "Warehouse_Distribution_Center_idDistribution_Center"
+                + ") VALUES(?,?,?,?,?,?,?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setDate(1, new java.sql.Date(mov.getDate().getTime()));
+                ps.setInt(2, mov.getType_Movement_id());
+                ps.setInt(3, mov.getType_Movement_idSubtype());
+                ps.setInt(4, mov.getStock_inicial());
+                ps.setInt(5, mov.getStock_final());
+                ps.setInt(6, mov.getIdProduct());
+                ps.setInt(7, mov.getIdWh());
+                ps.setInt(8, 1);
+
+                int ctos = ps.executeUpdate();
+
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+
 }

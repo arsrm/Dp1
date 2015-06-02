@@ -15,4 +15,5 @@ import Model.LocationCell;
 public interface DaoLocationCell {
     
     public LocationCell LocationCellGet(Integer idLocCell);
+    public String LocationCellAvailabilityUpd(Integer idLocCell,Integer idLocCellDetail,Integer status);
 }

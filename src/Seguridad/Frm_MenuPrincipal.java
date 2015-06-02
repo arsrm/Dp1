@@ -62,7 +62,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             this.op_Pallet.setEnabled(daoUsers.accesswindow(idprofile,"op_Pallet"));
             this.op_loadIntermentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_loadIntermentOrder"));
             this.op_searchInternmentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_searchInternmentOrder"));
-            this.op_Movimiento_Interno.setEnabled(daoUsers.accesswindow(idprofile,"op_Movimiento_Interno"));
             this.op_loadRequestOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_loadRequestOrders"));
             this.op_RequestOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_RequestOrderSearch"));
             this.op_PickingOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_PickingOrderSearch"));
@@ -141,7 +140,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         op_loadIntermentOrder = new javax.swing.JMenuItem();
         op_searchInternmentOrder = new javax.swing.JMenuItem();
-        op_Movimiento_Interno = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         op_loadRequestOrders = new javax.swing.JMenuItem();
         op_RequestOrderSearch = new javax.swing.JMenuItem();
@@ -297,14 +295,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenu5.add(op_searchInternmentOrder);
 
         menu_operaciones.add(jMenu5);
-
-        op_Movimiento_Interno.setText("Movimiento Interno");
-        op_Movimiento_Interno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                op_Movimiento_InternoActionPerformed(evt);
-            }
-        });
-        menu_operaciones.add(op_Movimiento_Interno);
 
         jMenu1.setText("Órdenes de Pedido");
 
@@ -728,10 +718,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_prodIntSearch.setLocationRelativeTo(null);
     }
     
-    private void op_Movimiento_InternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Movimiento_InternoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_op_Movimiento_InternoActionPerformed
-
     private void op_generator_simulationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_generator_simulationActionPerformed
         // TODO add your handling code here:
         Frm_Algorithmic_Simulator frm_as = new Frm_Algorithmic_Simulator(this);
@@ -801,7 +787,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_DispatchOrderSearch;
     private javax.swing.JMenuItem op_GenerateDispatchOrders;
     private javax.swing.JMenuItem op_Guia_Transportista;
-    private javax.swing.JMenuItem op_Movimiento_Interno;
     private javax.swing.JMenuItem op_Pallet;
     private javax.swing.JMenuItem op_PalletProduct_Location;
     private javax.swing.JMenuItem op_Pallet_Product;

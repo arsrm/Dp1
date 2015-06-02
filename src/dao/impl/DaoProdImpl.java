@@ -265,7 +265,8 @@ public class DaoProdImpl implements DaoProducts {
                 + "quantity_per_box = ?,"
                 + "weight_per_box = ?,"
                 + "quantity_boxes_per_pallet = ?,"
-                + "Type_Condition_idType_Condition = ? "
+                + "Type_Condition_idType_Condition = ?, "
+                +"time_expiration = ? "
                 + "WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
@@ -277,7 +278,8 @@ public class DaoProdImpl implements DaoProducts {
                 ps.setInt(3, p.getWeightPerBox());
                 ps.setInt(4, p.getQuantityBoxesPerPallet());
                 ps.setInt(5, p.getTypeConditionWH());
-                ps.setInt(6, p.getIdProduct());
+                ps.setInt(6, p.getTimeExpiration());
+                ps.setInt(7, p.getIdProduct());
 
                 ps.executeUpdate();
             } catch (SQLException e) {
