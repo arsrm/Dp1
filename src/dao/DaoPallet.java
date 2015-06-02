@@ -5,11 +5,12 @@
  */
 
 package dao;
-import Model.Pallet;
-import Model.Warehouse;
 import Model.Distribution_Center;
+import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.Pallet;
 import Model.Rack;
+import Model.Warehouse;
 import java.util.*;
 
 /**
@@ -28,6 +29,8 @@ public interface DaoPallet {
     
     public List<String> CeldaQry(String cadrack);
     
+    public List<String> DetalleCeldaQry(String Cadenacelda);
+    
     public Warehouse Warehousename(String nameWR); 
     
     public String PalletIns(Pallet pallet);
@@ -41,6 +44,8 @@ public interface DaoPallet {
     public List<Object[]> PalletCbo();
     
     public Rack Rackid(String identifier ); 
+    
+    public LocationCell LocationCellid(String description); 
     
     public Pallet GetPallet(LocationCellDetail obj); 
     

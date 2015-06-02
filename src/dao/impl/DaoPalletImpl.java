@@ -7,6 +7,7 @@
 package dao.impl;
 import Model.Pallet;
 import Model.Distribution_Center;
+import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.PalletIni;
 import Model.Product;
@@ -238,7 +239,6 @@ public class DaoPalletImpl implements DaoPallet{
 
     @Override
     public Rack Rackid(String identifier) {
-
         Rack objmodel = null;
         String sql = "SELECT "
                 + "idRack, "
@@ -371,5 +371,88 @@ public class DaoPalletImpl implements DaoPallet{
             }
         }
         return objmodel;
+    }
+
+    @Override
+    public LocationCell LocationCellid(String description) {
+        LocationCell objmodel = null;
+        String sql = "SELECT "
+                + "idLocation_Cell, "
+                + "description, "
+                + "width, "
+                + "length, "
+                + "height, "
+                + "row_cell, "
+                + "column_cell, "
+                + "status, "                
+                + "Location_State_idLocation_State, "                                                                
+                + "Rack_idRack, "                                                                                
+                + "Rack_Warehouse_idWarehouse, "                                                                                                
+                + "Rack_Warehouse_Distribution_Center_idDistribution_Center "                                                                                                
+                + "FROM location_cell where description='" + description +"' ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel = new LocationCell();
+                    objmodel.setIdLocation_Cell(rs.getInt(1));
+                    objmodel.setDescription(rs.getString(2));
+                    objmodel.setWidth(rs.getDouble(3));
+                    objmodel.setLength(rs.getDouble(4));
+                    objmodel.setHeight(rs.getInt(5));
+                    objmodel.setRow_Cell(rs.getInt(6));
+                    objmodel.setColumn_Cell(rs.getInt(7));
+                    objmodel.setStatus(rs.getInt(8));
+                    objmodel.setLocation_State_idLocation_State(rs.getInt(9));
+                    objmodel.setRack_idRack(rs.getInt(10));
+                    objmodel.setRack_Warehouse_idWarehouse(rs.getInt(11));
+                    objmodel.setRack_Warehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
+                }
+
+            } catch (SQLException e) {
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public List<String> DetalleCeldaQry(String Cadenacelda) {
+        List<String> list = null;
+        String model= "";
+        String sql = "select description" +
+                    " from location_cell_detail \n" +
+                    "where " +Cadenacelda+ " )" ;
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query para Detalle Celda : " + sql);   
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    model=rs.getString(1);
+                    list.add(model);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
 }

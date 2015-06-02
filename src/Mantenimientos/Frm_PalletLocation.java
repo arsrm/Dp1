@@ -351,14 +351,58 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
 
     private void cbo_rackItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_rackItemStateChanged
 
+      if (indrack==1)
+      { try {      
+
+          if (cbo_rack.getSelectedItem().toString().trim().equals(null) || cbo_rack.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenarack= Cadenawarehouse+" and (1=1) ";}
+         else 
+         { Cadenarack= Cadenawarehouse+ " and Location_Cell_Rack_idRack="+ daoPallet.Rackid(cbo_rack.getSelectedItem().toString().trim()).getIdRack() +"  ";
+          }    
+       
+      } catch(Exception e)
+       {  } 
+       indcelda=1; 
+       cbo_location_cell.removeAllItems();
+       loadcelda(Cadenarack);      
+      
+      }
+
     }//GEN-LAST:event_cbo_rackItemStateChanged
 
     private void cbo_warehouseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_warehouseItemStateChanged
 
+      if (indalmacen==1)
+      { try {      
+          if (cbo_warehouse.getSelectedItem().toString().trim().equals(null) || cbo_warehouse.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenawarehouse=CadenaCD+ " and (1=1) ";}
+         else 
+         { Cadenawarehouse= CadenaCD+ " and idDistribution_Center="+ daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getDistribution_Center_idDistribution_Center()+"  ";
+           Cadenawarehouse= Cadenawarehouse+ "  and Location_Cell_Rack_Warehouse_idWarehouse="+daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getIdWarehouse() +"";
+          }    
+      } catch(Exception e)
+       {  } 
+       indrack=1; 
+       cbo_rack.removeAllItems();
+       loadrack_CD(Cadenawarehouse);      
+      }
+        
     }//GEN-LAST:event_cbo_warehouseItemStateChanged
 
     private void cbo_center_distributionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_center_distributionItemStateChanged
 
+      if (indcentrodistribucion==1)
+      { try {      
+         if (cbo_center_distribution.getSelectedItem().toString().trim().equals(null) || cbo_center_distribution.getSelectedItem().toString().trim().isEmpty())    
+         { CadenaCD=" (1=1) "; }
+         else 
+         { CadenaCD=" idDistribution_Center="+ daoDC.distribution_centerGet(cbo_center_distribution.getSelectedItem().toString().trim()).getIdDistribution_Center()  +""; }    
+       } catch(Exception e)
+         {  } 
+       indalmacen=1; 
+       cbo_warehouse.removeAllItems();
+       loadalmacen_CD(CadenaCD);      
+      }
     }//GEN-LAST:event_cbo_center_distributionItemStateChanged
 
     private void cbo_locationcell_detailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_locationcell_detailActionPerformed
