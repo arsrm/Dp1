@@ -65,8 +65,8 @@ public class DaoPalletImpl implements DaoPallet{
         List<Distribution_Center> list = null;
         Distribution_Center modelCd= new Distribution_Center();
         String sql = "select idDistribution_Center,name , address,pos_x, \n" +
-                      "pos_y,status,created_at,updated_at,user_created,user_updated \n" +
-                      "from  distribution_center\n" +
+                      " pos_y,status,created_at,updated_at,user_created,user_updated \n" +
+                      "from  distribution_center \n" +
                       "where idDistribution_Center in \n" +
                       "(select distinct(idDistribution_Center) from location_cell_detail)" ;
         Connection cn = db.getConnection();
@@ -94,6 +94,7 @@ public class DaoPalletImpl implements DaoPallet{
 
             } catch (SQLException e) {
                 list = null;
+                System.out.println("Error" + e.getMessage());
             } finally {
                 try {
                     cn.close();

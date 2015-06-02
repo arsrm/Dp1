@@ -61,11 +61,10 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     { 
     }        
     
-    public void limpiacombos()
+    public void limpiacombos()//
     { cbo_center_distribution.removeAllItems();
       cbo_warehouse.removeAllItems();  
       cbo_rack.removeAllItems();  
-      cbo_location_cell.removeAllItems();  
       cbo_location_cell.removeAllItems();  
       cbo_locationcell_detail.removeAllItems();  
       cbo_state.removeAllItems();  
@@ -73,7 +72,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_marca.removeAllItems();  
       cbo_product.removeAllItems();  
      }       
-    public void cargacentrodistribucion()
+    public void cargacentrodistribucion() //
     {
         DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.CDQry().size();
@@ -87,7 +86,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       
     }        
 
-    public void loadalmacen_CD(String CenterD)
+    public void loadalmacen_CD(String CenterD) //
     { 
         DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.WarehoseQry(CenterD).size();
@@ -100,7 +99,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_warehouse.setSelectedIndex(cantreg);
     }       
     
-    public void  loadrack_CD(String cadena)
+    public void  loadrack_CD(String cadena) //
     {
         DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.RackQry(cadena).size();
@@ -113,7 +112,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_rack.setSelectedIndex(cantreg);
     } 
     
-    public void  loadcelda(String cadrack)      
+    public void  loadcelda(String cadrack) //     
     {
         DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.CeldaQry(cadrack).size();
@@ -127,7 +126,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
         
     }       
-    public void load_parameter()
+    public void load_parameter() //
     { limpiacombos();
       cargacentrodistribucion();
       indcentrodistribucion=1; 
