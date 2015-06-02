@@ -232,5 +232,99 @@ public class DaoPalletImpl implements DaoPallet{
         }
         return list;
     }
+
+    @Override
+    public Rack Rackid(String identifier) {
+
+        Rack objmodel = null;
+        String sql = "SELECT "
+                + "idRack, "
+                + "identifier, "
+                + "description, "
+                + "length, "
+                + "width, "
+                + "floor_numbers, "
+                + "height_per_floor, "
+                + "resistance_weigth_per_floor, "                
+                + "column_number, "                                
+                + "status, "                                
+                + "created_at, "                                                
+                + "updated_at, "                                                                
+                + "Warehouse_idWarehouse, "                                                                
+                + "Warehouse_Distribution_Center_idDistribution_Center, "                                                                                
+                + "user_created, "                                                                                                
+                + "user_updated "                                                                                                
+                + "FROM rack where identifier='" + identifier +"' ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel = new Rack();
+                    objmodel.setIdRack(rs.getInt(1));
+                    objmodel.setIdentifier(rs.getString(2));
+                    objmodel.setDescription(rs.getString(3));
+                    objmodel.setLength(rs.getDouble(4));
+                    objmodel.setWidth(rs.getDouble(5));
+                    objmodel.setFloor_numbers(rs.getInt(6));
+                    objmodel.setHeight_per_floor(rs.getInt(7));
+                    objmodel.setResistance_weigth_per_floor(rs.getInt(8));
+                    objmodel.setColumn_number(rs.getInt(9));
+                    objmodel.setStatus(rs.getInt(10));
+                    objmodel.setCreated_at(rs.getTimestamp(11));
+                    objmodel.setUpdated_at(rs.getTimestamp(12));
+                    objmodel.setWarehouse_idWarehouse(rs.getInt(13));
+                    objmodel.setWarehouse_Distribution_Center_idDistribution_Center(rs.getInt(14));
+                    objmodel.setUser_created(rs.getInt(15));
+                    objmodel.setUser_updated(rs.getInt(16));
+                }
+
+            } catch (SQLException e) {
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return objmodel;
+    }
+
+    @Override
+    public List<String> CeldaQry(String cadrack) {
+        List<String> list = null;
+        String model= "";
+        String sql = "select description" +
+                    " from location_cell \n" +
+                    "where idLocation_Cell in (\n" +
+                    "select distinct(Location_Cell_idLocation_Cell) from location_cell_detail \n" +
+                    "where  " +cadrack+ " )" ;
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    model=rs.getString(1);
+                    list.add(model);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
     
 }

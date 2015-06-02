@@ -16,6 +16,7 @@ package Mantenimientos;
 
 import Mantenimientos.Frm_PalletLocation;
 import Model.Distribution_Center;
+import Model.LocationCell;
 import Model.PalletState;
 import Model.Rack;
 import Model.Trademark;
@@ -44,10 +45,15 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     Integer indalmacen=0; 
     Integer indrack=0; 
     Integer indcelda=0; 
+    Integer inddetallecelda=0; 
     Integer indmarca=0; 
     DaoDistributionCenter daoDC=new  DaoDistributionCenterImpl(); 
     DaoPallet daoPallet = new DaoPalletImpl();
-    
+    String CadenaCD="";    
+    String Cadenawarehouse="";
+    String Cadenarack="";
+    String Cadenacelda="";
+    String Cadenadetallecelda="";
     public void inicia_estado_actividad()
     { 
      }       
@@ -105,9 +111,22 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         } 
       cbo_rack.addItem(" ");
       cbo_rack.setSelectedIndex(cantreg);
+    } 
+    
+    public void  loadcelda(String cadrack)      
+    {
+        DaoPallet objdao=new DaoPalletImpl();
+        Integer cantreg=objdao.CeldaQry(cadrack).size();
+        String[] list=new String[cantreg];
+       for (int i=0; i<cantreg; i++)
+        {  list[i]=objdao.CeldaQry(cadrack).get(i);
+           cbo_location_cell.addItem(list[i].toString());
+        } 
+      cbo_location_cell.addItem(" ");
+      cbo_location_cell.setSelectedIndex(cantreg);
 
         
-    }        
+    }       
     public void load_parameter()
     { limpiacombos();
       cargacentrodistribucion();
@@ -198,6 +217,12 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         cbo_warehouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 cbo_warehouseItemStateChanged(evt);
+            }
+        });
+
+        cbo_rack.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbo_rackItemStateChanged(evt);
             }
         });
 
@@ -408,43 +433,66 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_locationcell_detailActionPerformed
 
     private void cbo_center_distributionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_center_distributionItemStateChanged
-      String CenterD="";
+
       if (indcentrodistribucion==1)
       { try {      
          if (cbo_center_distribution.getSelectedItem().toString().trim().equals(null) || cbo_center_distribution.getSelectedItem().toString().trim().isEmpty())    
-         { CenterD=" (1=1) "; }
+         { CadenaCD=" (1=1) "; }
          else 
-         { CenterD=" idDistribution_Center="+ daoDC.distribution_centerGet(cbo_center_distribution.getSelectedItem().toString().trim()).getIdDistribution_Center()  +""; }    
+         { CadenaCD=" idDistribution_Center="+ daoDC.distribution_centerGet(cbo_center_distribution.getSelectedItem().toString().trim()).getIdDistribution_Center()  +""; }    
        } catch(Exception e)
          {  } 
        indalmacen=1; 
-       loadalmacen_CD(CenterD);      
+       cbo_warehouse.removeAllItems();
+       loadalmacen_CD(CadenaCD);      
       }
 
     }//GEN-LAST:event_cbo_center_distributionItemStateChanged
 
     private void cbo_warehouseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_warehouseItemStateChanged
-
-      String almacen="";
+                
       if (indalmacen==1)
       { try {      
 
           if (cbo_warehouse.getSelectedItem().toString().trim().equals(null) || cbo_warehouse.getSelectedItem().toString().trim().isEmpty())    
-         { almacen=" (1=1) ";}
+         { Cadenawarehouse=CadenaCD+ " and (1=1) ";}
          else 
-         { almacen= " idDistribution_Center="+ daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getDistribution_Center_idDistribution_Center()+"  ";
-           almacen= almacen+ "  and Location_Cell_Rack_Warehouse_idWarehouse="+daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getIdWarehouse() +"";
+         { Cadenawarehouse= CadenaCD+ " and idDistribution_Center="+ daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getDistribution_Center_idDistribution_Center()+"  ";
+           Cadenawarehouse= Cadenawarehouse+ "  and Location_Cell_Rack_Warehouse_idWarehouse="+daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getIdWarehouse() +"";
           }    
        
       } catch(Exception e)
        {  } 
        indrack=1; 
-       loadrack_CD(almacen);      
+       cbo_rack.removeAllItems();
+       loadrack_CD(Cadenawarehouse);      
       
       }
 
     }//GEN-LAST:event_cbo_warehouseItemStateChanged
 
+    private void cbo_rackItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_rackItemStateChanged
+
+      if (indrack==1)
+      { try {      
+
+          if (cbo_rack.getSelectedItem().toString().trim().equals(null) || cbo_rack.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenarack= Cadenawarehouse+" and (1=1) ";}
+         else 
+         { Cadenarack= Cadenawarehouse+ " and Location_Cell_Rack_idRack="+ daoPallet.Rackid(cbo_rack.getSelectedItem().toString().trim()).getIdRack() +"  ";
+          }    
+       
+      } catch(Exception e)
+       {  } 
+       indcelda=1; 
+       cbo_location_cell.removeAllItems();
+       loadcelda(Cadenarack);      
+      
+      }
+
+
+    }//GEN-LAST:event_cbo_rackItemStateChanged
+    
     /**
      * @param args the command line arguments
      */

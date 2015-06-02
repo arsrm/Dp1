@@ -25,6 +25,8 @@ public interface DaoPallet {
     
     public List<Rack> RackQry(String cadena); 
     
+    public List<String> CeldaQry(String cadrack);
+    
     public Warehouse Warehousename(String nameWR); 
     
     public String PalletIns(Pallet pallet);
@@ -36,4 +38,6 @@ public interface DaoPallet {
     public Pallet PalletGet(Integer idpallet);
     
     public List<Object[]> PalletCbo();
+    
+    public Rack Rackid(String identifier ); 
 }
