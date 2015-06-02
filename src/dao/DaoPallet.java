@@ -35,8 +35,8 @@ public interface DaoPallet {
     
     public String PalletIns(Pallet pallet);
    
-    public String PalletLocationIns(Integer idpallet,Integer idmarca,Integer  idproduct,Integer  numorden,String idCD,
-            String idware,String idrack, String idcelda,String idceldadet);     
+    public String PalletLocationIns(Integer idpallet,Integer idmarca,Integer  idproduct,Integer  numorden,Integer idCD,
+            Integer idware,Integer idrack, Integer idcelda,Integer idceldadet);     
     
             
     public String PalletDel(Pallet pallet ); 

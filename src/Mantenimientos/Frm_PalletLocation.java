@@ -16,18 +16,21 @@ import Model.Rack;
 import Model.Trademark;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoClient;
 import dao.DaoDistributionCenter;
 import dao.DaoPallet;
 import dao.DaoPalletProduct;
 import dao.DaoPalletState;
 import dao.DaoProducts;
 import dao.DaoTrademark;
+import dao.DaoWH;
 import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoPalletImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPalletStateImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
+import dao.impl.DaoWHImpl;
 import java.util.*;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -50,6 +53,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     Integer inddetallecelda=0; 
     Integer indmarca=0; 
     DaoDistributionCenter daoDC=new  DaoDistributionCenterImpl(); 
+    DaoWH daoWh = new DaoWHImpl();
+    
     DaoPallet daoPallet = new DaoPalletImpl();
     String CadenaCD="";    
     String Cadenawarehouse="";
@@ -426,12 +431,18 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
          Integer numorden; 
          int cantreg=0;    
          int nr =modelo.getRowCount(); 
-         String idCD=""; 
-         String idware=""; 
-         String idrack=""; 
-         String idcelda=""; 
-         String idceldadet=""; 
-         
+         Integer idCD=0; 
+         Integer idware=0; 
+         Integer idrack=0; 
+         Integer idcelda=0; 
+         Integer idceldadet=0; 
+         /*
+                 for (int i = 0; i < trademarkList.size(); i++) {
+            if (trademarkList.get(i).getId_Trademark() == product.getTrademark()) {
+                cbo_trademark.setSelectedItem(trademarkList.get(i).getName());
+            }
+        } 
+         */      
         for (int i=0; i<nr ;i++){
          try {   
          Object prueba =  modelo.getValueAt(i, 4);
@@ -464,13 +475,22 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
              idmarca=listidmarca.get(0);
              idproduct=listidproduct.get(0);
              numorden=listidorden.get(0);
-             idCD=cbo_center_distribution.getSelectedItem().toString().trim(); 
+             DaoDistributionCenter daoCD=new DaoDistributionCenterImpl(); 
+             
+             idCD=daoCD.distribution_centerGet(cbo_center_distribution.getSelectedItem().toString().trim()).getIdDistribution_Center();
+             /*
              idware=cbo_warehouse.getSelectedItem().toString().trim(); 
              idrack=cbo_rack.getSelectedItem().toString().trim();
              idcelda=cbo_location_cell.getSelectedItem().toString().trim(); 
              idceldadet=cbo_locationcell_detail.getSelectedItem().toString().trim(); 
+             */
+             idware=1; 
+             idrack=1;
+             idcelda=1; 
+             idceldadet=1; 
              daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idCD, idware, idrack, idcelda, idceldadet);
-         }     
+
+        }     
         
     }//GEN-LAST:event_btn_saveActionPerformed
 

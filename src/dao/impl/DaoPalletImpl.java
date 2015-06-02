@@ -457,7 +457,46 @@ public class DaoPalletImpl implements DaoPallet{
     }
 
     @Override
-    public String PalletLocationIns(Integer idpallet, Integer idmarca, Integer idproduct, Integer numorden, String idCD, String idware, String idrack, String idcelda, String idceldadet) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String PalletLocationIns(Integer idpallet, Integer idmarca, Integer idproduct, Integer numorden, Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet) {
+        String result = null;
+        String sql = "insert into pallet_by_product_by_location_cell_detail(Pallet_By_Product_Pallet_idPallet,Pallet_By_Product_Product_Trademark_id_Trademark,Pallet_By_Product_Product_idProduct,"
+                + "Location_Cell_Detail_idLocation_Cell_Detail,Location_Cell_Detail_Location_Cell_idLocation_Cell,Location_Cell_Detail_Location_Cell_Rack_idRack,Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,"
+                + "Location_Cell_Detail_idDistribution_Center,status,user_created,user_updated )  values(?,?,?,?,?,?,?,?,?,?,?)   ";
+        Integer ctos;
+        String descripcion="";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idpallet);
+                ps.setInt(2, idmarca);
+                ps.setInt(3, idproduct);
+                ps.setInt(4, idceldadet);                
+                ps.setInt(5, idcelda);                
+                ps.setInt(6, idrack);                                
+                ps.setInt(7, idware);                                                
+                ps.setInt(8, idCD);                                                                
+                ps.setInt(9, 1);                                                                                
+                ps.setInt(10,0);                                                                                                
+                ps.setInt(11,0);                                                                                                                
+                
+                ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+                System.out.println("La cadena de excepcion es: " + result);
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+        
     }
 }
