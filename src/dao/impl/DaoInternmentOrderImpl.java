@@ -43,7 +43,6 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
     DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
     DaoProducts daoProduct = new DaoProdImpl();
     DaoKardex daoKardex = new DaoKardexImpl();
-    DaoInternmentOrder daoIntOrd = new DaoInternmentOrderImpl();
     daoVirtualWarehouse daoVirtualWh = new daoVirtualWarehouseImpl();
     private final ConectaDb db;
 
@@ -305,7 +304,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     freeLocCellList.get(j).setAvailability(0);
                     daoLocCell.LocationCellAvailabilityUpd(locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
                     Movement mov = new Movement();
-                    mov.setDate(daoIntOrd.IntOrderGet(idIntOrder).getDate());
+                    mov.setDate(IntOrderGet(idIntOrder).getDate());
                     mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
                     mov.setIdWh(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                     mov.setStock_inicial(intOrdDetail.getProduct().getPhysicalStock());
@@ -325,7 +324,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             virtualWh.setIdIntermentOrder(idIntOrder);
             virtualWh.setIdInternmentOrderDetail(intOrdDetail.getIdInternmentOrderDetail());
             virtualWh.setIdProduct(intOrdDetail.getProduct().getIdProduct());
-            virtualWh.setDate(daoIntOrd.IntOrderGet(idIntOrder).getDate());
+            virtualWh.setDate(IntOrderGet(idIntOrder).getDate());
             virtualWh.setQuantity(intOrdDetail.getQuantityPallets() - cantPalletsIngresados);
             daoVirtualWh.VirtualWarehouseIns(virtualWh);
         }
