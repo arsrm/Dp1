@@ -393,5 +393,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
         return result;
     }
 
+
+
     
 }

@@ -20,8 +20,6 @@ public interface DaoPalletIni {
     public List<PalletIni>PalletIniQry();
     
     public String PalletIniIns(PalletIni palletini,Integer i );
-
-    public String PalletIniInsMas(PalletIni objpalletini,Integer cantpallet);  
             
     public String PalletIniDel(PalletIni palletini);
     

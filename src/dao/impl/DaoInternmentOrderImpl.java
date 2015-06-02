@@ -293,7 +293,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                         && intOrdDetail.getProduct().getTypeConditionWH()
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
                         && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
-                    
+                    PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
                     cantPalletsIngresados++;
                     lastFreeLocCell = j;
                     break;
@@ -346,28 +346,35 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         return locCellDetList;
     }
     
-    public String PalletProductLocaCellIns(Integer idIntOrd,Integer idPalletProduct,InternmentOrderDetail intOrderDetail) {
+    public String PalletProductLocaCellIns(LocationCellDetail locCellDet,Integer idIntOrd,Integer idPalletProduct,InternmentOrderDetail intOrderDetail) {
         String result = null;
-        String sql = "INSERT INTO Internment_Order("
-                + "idInternment_Order,"
-                + "date,"
-                + "status"
-                + ") VALUES(?,?,?)";
+        String sql = "INSERT INTO Pallet_By_Product_By_Location_Cell_Detail("
+                + "Pallet_By_Product_Pallet_idPallet,"
+                + "Pallet_By_Product_Product_Trademark_id_Trademark,"
+                + "Pallet_By_Product_Product_idProduct,"
+                +"Location_Cell_Detail_idLocation_Cell_Detail,"
+                +"Location_Cell_Detail_Location_Cell_idLocation_Cell,"
+                +"Location_Cell_Detail_Location_Cell_Rack_idRack,"
+                +"Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,"
+                +"Location_Cell_Detail_idDistribution_Center,"
+                +"status"
+                + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, intOrder.getIdInternmentOrder());
-//                java.sql.Date date = new java.sql.Date(intOrder.getDate().getTime());
-                ps.setDate(2, new java.sql.Date(intOrder.getDate().getTime()));
-                ps.setInt(3, intOrder.getStatus());
-
+                ps.setInt(1, idPalletProduct);
+                ps.setInt(2, intOrderDetail.getProduct().getTrademark());
+                ps.setInt(3, intOrderDetail.getProduct().getIdProduct());
+                ps.setInt(4, locCellDet.getIdLocation_Cell_Detail());
+                ps.setInt(5, locCellDet.getLocation_Cell_idLocation_Cell());
+                ps.setInt(6, locCellDet.getLocation_Cell_Rack_idRack());
+                ps.setInt(7, locCellDet.getLocation_Cell_Rack_Warehouse_idWarehouse());
+                ps.setInt(8, 1);
+                ps.setInt(9, 1);
+                
                 int ctos = ps.executeUpdate();
-
-                for (int i = 0; i < intOrder.getInternmentOrderDetail().size(); i++) {
-                    daoProdIntDet.IntOrderDetailIns(intOrder.getIdInternmentOrder(), intOrder.getInternmentOrderDetail().get(i));
-                }
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
