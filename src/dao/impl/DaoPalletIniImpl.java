@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao.impl;
 
 import Model.PalletIni;
@@ -22,16 +21,16 @@ import java.util.List;
  *
  * @author gzavala
  */
-public class DaoPalletIniImpl implements DaoPalletIni{
+public class DaoPalletIniImpl implements DaoPalletIni {
 
-   private final ConectaDb db;
-   
-   public DaoPalletIniImpl() {
+    private final ConectaDb db;
+
+    public DaoPalletIniImpl() {
         db = new ConectaDb();
-   }
+    }
 
     @Override
-    public List<PalletIni> PalletIniQry(String id_pallet,String description,String actividad,String estadopallet,String datefecini,String datefecfin) {
+    public List<PalletIni> PalletIniQry(String id_pallet, String description, String actividad, String estadopallet, String datefecini, String datefecfin) {
         List<PalletIni> list = null;
         String sql = "SELECT "
                 + "idPallet, "
@@ -42,11 +41,11 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 + "Pallet_State_idPallet_Type, "
                 + "user_created, "
                 + "user_updated "
-                + "FROM pallet" + id_pallet +" "+description+" " + actividad +" "+
-                estadopallet+ " " + datefecini+" "+datefecfin+ " ";
+                + "FROM pallet" + id_pallet + " " + description + " " + actividad + " "
+                + estadopallet + " " + datefecini + " " + datefecfin + " ";
         Connection cn = db.getConnection();
-        
-        System.out.println("Query ejecutado " + sql); 
+
+        System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -77,12 +76,12 @@ public class DaoPalletIniImpl implements DaoPalletIni{
         }
         return list;
     }
-    
+
     @Override
     public String PalletIniIns(PalletIni palletini, Integer i) {
         String result = null;
         String sql = "insert into pallet(description,Pallet_State_idPallet_Type)  values(?,?) ;  ";
-        Integer ctos; 
+        Integer ctos;
         String descripcion="";
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -98,7 +97,7 @@ public class DaoPalletIniImpl implements DaoPalletIni{
 
             } catch (SQLException e) {
                 result = e.getMessage();
-                System.out.println("La cadena de excepcion es: " + result  );
+                System.out.println("La cadena de excepcion es: " + result);
             } finally {
                 try {
                     cn.close();
@@ -128,7 +127,7 @@ public class DaoPalletIniImpl implements DaoPalletIni{
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, palletini.getDescription() );
+                ps.setString(1, palletini.getDescription());
                 ps.setInt(2, palletini.getStatuspallet());
                 ps.setInt(3, palletini.getIdpallet());
 
@@ -163,7 +162,7 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 + "Pallet_State_idPallet_Type, "
                 + "user_created, "
                 + "user_updated "
-                + "FROM pallet where idPallet=" + idpallet +" ";
+                + "FROM pallet where idPallet=" + idpallet + " ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -204,7 +203,7 @@ public class DaoPalletIniImpl implements DaoPalletIni{
         String sql = "UPDATE  pallet SET "
                 + "status= ? "
                 + "WHERE idPallet=?";
-/*"DELETE FROM User WHERE idUser=?";*/
+        /*"DELETE FROM User WHERE idUser=?";*/
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -252,17 +251,17 @@ public class DaoPalletIniImpl implements DaoPalletIni{
 
     @Override
     public Integer PalletIniMax() {
-        Integer maxid=0; 
+        Integer maxid = 0;
         String sql = " select (COALESCE(max(idPallet),0)  +1 ) from  pallet ";
         Connection cn = db.getConnection();
-        
+
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 //System.out.println("Ejecuto select a pallet_state");
                 while (rs.next()) {
-                    maxid=rs.getInt(1);
+                    maxid = rs.getInt(1);
                 }
             } catch (SQLException e) {
                 maxid = 0;
@@ -288,10 +287,10 @@ public class DaoPalletIniImpl implements DaoPalletIni{
                 + "Pallet_State_idPallet_Type, "
                 + "user_created, "
                 + "user_updated "
-                + "FROM pallet" ;
+                + "FROM pallet";
         Connection cn = db.getConnection();
-        
-        System.out.println("Query ejecutado " + sql); 
+
+        System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -352,32 +351,45 @@ public class DaoPalletIniImpl implements DaoPalletIni{
     }
 
     @Override
-    public String PalletIniInsMas(PalletIni palletini, Integer i) {
-        String result = null;
-        String sql = "insert into pallet(description,Pallet_State_idPallet_Type)  values(?,?)  ";
-        Integer ctos; 
-        String descripcion=" ";
+    public String PalletsIniUpdStatus(List<Integer> freePalletList, Integer status) {
+                String result = null;
+
+        for (Integer id : freePalletList) {
+            result = palletIniUpdStatus(id,status);
+        }
+
+        return result;
+    }
+    
+    public String palletIniUpdStatus(Integer idPallet, Integer status){
+    String result = null;
+        String sql = "UPDATE  pallet SET "
+                + "Pallet_State_idPallet_Type=? "
+                + "WHERE idPallet=?";
+
         Connection cn = db.getConnection();
-        if (cn != null)
-          {
+        if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                descripcion=palletini.getDescription()+" "+i +" ";
-                ps.setString(1,descripcion);
-                ps.setInt(2, palletini.getStatuspallet());
-                ctos = ps.executeUpdate();
+                ps.setInt(1, status);
+                ps.setInt(2, idPallet);
+
+                int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
+
             } catch (SQLException e) {
                 result = e.getMessage();
-                System.out.println("La cadena de excepcion es: " + result  );
-            } finally 
-                { try {cn.close();} catch (SQLException e) 
-                    {result = e.getMessage();}
-                 }
-           }
-        
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
         return result;
     }
 

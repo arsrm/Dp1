@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import tool.Validate;
 
 /**
  *
@@ -48,11 +49,13 @@ public class Frm_Product extends javax.swing.JFrame {
         product = p;
         initComponents();
         tcWhList = daoTcWH.tcwhQry();
+        cbo_conditionWH.addItem("Seleccione");
         for (int i = 0; i < tcWhList.size(); i++) {
             cbo_conditionWH.addItem(tcWhList.get(i).getDescription());
         }
 
         trademarkList = daoTrademark.TrademarkQry();
+        cbo_trademark.addItem("Seleccione");
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
         }
@@ -95,6 +98,9 @@ public class Frm_Product extends javax.swing.JFrame {
         lbl_unitBoxesPerPallet = new javax.swing.JLabel();
         lbl_unitPhysicalStock = new javax.swing.JLabel();
         lbl_unitFreeStock = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        txt_timeExpiration = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -115,16 +121,16 @@ public class Frm_Product extends javax.swing.JFrame {
         pnl_product.setPreferredSize(new java.awt.Dimension(800, 600));
 
         lbl_boxesPerPallet.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_boxesPerPallet.setText(" Empaques por Pallet");
+        lbl_boxesPerPallet.setText(" Empaques por Pallet (*)");
 
         lbl_name.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_name.setText("Nombre");
+        lbl_name.setText("Nombre (*)");
 
         lbl_physicalStock.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         lbl_physicalStock.setText("Stock Físico");
 
         lbl_trademark.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_trademark.setText("Marca");
+        lbl_trademark.setText("Marca (*)");
 
         txt_physicalStock.setText("0");
         txt_physicalStock.setEnabled(false);
@@ -148,10 +154,10 @@ public class Frm_Product extends javax.swing.JFrame {
         txt_freeStock.setEnabled(false);
 
         lbl_quantityPerBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_quantityPerBox.setText("Unidades por Empaque");
+        lbl_quantityPerBox.setText("Unidades por Empaque (*)");
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel1.setText("Condición de Almacén");
+        jLabel1.setText("Condición de Almacén (*)");
 
         cbo_conditionWH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,10 +166,10 @@ public class Frm_Product extends javax.swing.JFrame {
         });
 
         lbl_weightPerBox.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_weightPerBox.setText("Peso Neto por Empaque");
+        lbl_weightPerBox.setText("Peso Neto por Empaque (*)");
 
         lbl_ean13.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lbl_ean13.setText("Código EAN13");
+        lbl_ean13.setText("Código EAN13 (*)");
 
         lbl_unitUnitsPerBox.setText("Unidades");
 
@@ -175,6 +181,16 @@ public class Frm_Product extends javax.swing.JFrame {
 
         lbl_unitFreeStock.setText("Empaques");
 
+        jLabel2.setText("Tiempo de Expiración");
+
+        txt_timeExpiration.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_timeExpirationActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("días");
+
         javax.swing.GroupLayout pnl_productLayout = new javax.swing.GroupLayout(pnl_product);
         pnl_product.setLayout(pnl_productLayout);
         pnl_productLayout.setHorizontalGroup(
@@ -182,6 +198,19 @@ public class Frm_Product extends javax.swing.JFrame {
             .addGroup(pnl_productLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_productLayout.createSequentialGroup()
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_quantityPerBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_weightPerBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(45, 45, 45)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_unitWieghtPerBox)
+                            .addComponent(lbl_unitUnitsPerBox)
+                            .addComponent(lbl_unitBoxesPerPallet)))
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_trademark)
@@ -198,36 +227,30 @@ public class Frm_Product extends javax.swing.JFrame {
                         .addComponent(cbo_conditionWH, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(pnl_productLayout.createSequentialGroup()
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_productLayout.createSequentialGroup()
-                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productLayout.createSequentialGroup()
-                                        .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addComponent(lbl_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lbl_FreeStock, javax.swing.GroupLayout.Alignment.LEADING))
-                                        .addGap(105, 105, 105))
-                                    .addGroup(pnl_productLayout.createSequentialGroup()
-                                        .addComponent(lbl_boxesPerPallet)
-                                        .addGap(24, 24, 24)))
-                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txt_freeStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(pnl_productLayout.createSequentialGroup()
-                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_quantityPerBox)
-                                    .addComponent(lbl_weightPerBox))
-                                .addGap(45, 45, 45)
-                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_quatityPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_weightPerBox, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productLayout.createSequentialGroup()
+                                    .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lbl_physicalStock, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lbl_FreeStock, javax.swing.GroupLayout.Alignment.LEADING))
+                                    .addGap(105, 105, 105))
+                                .addGroup(pnl_productLayout.createSequentialGroup()
+                                    .addComponent(lbl_boxesPerPallet)
+                                    .addGap(24, 24, 24)))
+                            .addComponent(jLabel2))
+                        .addGap(17, 17, 17)
                         .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_unitWieghtPerBox)
-                            .addComponent(lbl_unitUnitsPerBox)
-                            .addComponent(lbl_unitBoxesPerPallet)
-                            .addComponent(lbl_unitPhysicalStock)
-                            .addComponent(lbl_unitFreeStock))))
-                .addContainerGap(98, Short.MAX_VALUE))
+                            .addComponent(txt_boxesPerPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_productLayout.createSequentialGroup()
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txt_timeExpiration, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_physicalStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+                                    .addComponent(txt_freeStock, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_unitPhysicalStock)
+                                    .addComponent(lbl_unitFreeStock)
+                                    .addComponent(jLabel3))))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_productLayout.setVerticalGroup(
             pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,11 +296,18 @@ public class Frm_Product extends javax.swing.JFrame {
                             .addComponent(txt_physicalStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lbl_unitPhysicalStock))))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_FreeStock)
-                    .addComponent(txt_freeStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_unitFreeStock))
-                .addContainerGap(11, Short.MAX_VALUE))
+                    .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_freeStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_unitFreeStock)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_timeExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3))
+                    .addComponent(jLabel2))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         btn_cancel.setText("Cancelar");
@@ -298,7 +328,7 @@ public class Frm_Product extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(btn_save)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 409, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 462, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
                 .addGap(25, 25, 25))
         );
@@ -319,18 +349,18 @@ public class Frm_Product extends javax.swing.JFrame {
 
     private void initializeForm() {
         cbo_trademark.setEnabled(false);
-        for(int i=0; i<trademarkList.size();i++){
-            if(trademarkList.get(i).getId_Trademark() == product.getTrademark()){
+        for (int i = 0; i < trademarkList.size(); i++) {
+            if (trademarkList.get(i).getId_Trademark() == product.getTrademark()) {
                 cbo_trademark.setSelectedItem(trademarkList.get(i).getName());
             }
         }
-        
+
         cbo_conditionWH.setEnabled(false);
-        for(int i=0; i<tcWhList.size();i++){
-            if(tcWhList.get(i).getIdType_Condition_WareHouse()== product.getTypeConditionWH()){
+        for (int i = 0; i < tcWhList.size(); i++) {
+            if (tcWhList.get(i).getIdType_Condition_WareHouse() == product.getTypeConditionWH()) {
                 cbo_conditionWH.setSelectedItem(tcWhList.get(i).getDescription());
             }
-        }        
+        }
         txt_codEan13.setEnabled(false);
         txt_codEan13.setText(product.getCodeEAN13());
         txt_name.setText(product.getName());
@@ -339,6 +369,7 @@ public class Frm_Product extends javax.swing.JFrame {
         txt_boxesPerPallet.setText(product.getQuantityBoxesPerPallet().toString());
         txt_physicalStock.setText(product.getPhysicalStock().toString());
         txt_freeStock.setText(product.getFreeStock().toString());
+        txt_timeExpiration.setText(product.getTimeExpiration().toString());
     }
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
@@ -349,37 +380,50 @@ public class Frm_Product extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
 
-        if (product == null) { //Guardar nuevo producto
-            product = new Product();
-            product.setName(txt_name.getText());
-            product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
-            product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
-            product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
-            product.setPhysicalStock(Integer.parseInt(txt_physicalStock.getText()));
-            product.setFreeStock(Integer.parseInt(txt_freeStock.getText()));
-            product.setStatus(1);
-            product.setTrademark(trademarkSelected.getId_Trademark());
-            product.setTypeConditionWH(tcWhSelected.getIdType_Condition_WareHouse());
-            product.setCodeEAN13(txt_codEan13.getText());
-            daoProducts.ProductsIns(product);
+        if (txt_codEan13.getText().length() != 13 || !Validate.validarEntero(txt_codEan13.getText())
+                || txt_name.getText().length() == 0 || cbo_conditionWH.getSelectedItem() == "Seleccione"
+                || cbo_trademark.getSelectedItem() == "Seleccione"
+                || !Validate.validarEntero(txt_quatityPerBox.getText())
+                || !Validate.validarEntero(txt_weightPerBox.getText())
+                || !Validate.validarEntero(txt_boxesPerPallet.getText())
+                || !Validate.validarEntero(txt_timeExpiration.getText())) {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos correctamente.");
         } else {
-            product.setName(txt_name.getText());
-            product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
-            product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
-            product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
-            product.setTypeConditionWH(1);
 
-            daoProducts.ProductsUpd(product);
-        }
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                menu_padre.initilizeTable();
-                this.dispose();
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (product == null) { //Guardar nuevo producto
+                    product = new Product();
+                    product.setName(txt_name.getText());
+                    product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
+                    product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
+                    product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
+                    product.setPhysicalStock(Integer.parseInt(txt_physicalStock.getText()));
+                    product.setFreeStock(Integer.parseInt(txt_freeStock.getText()));
+                    product.setStatus(1);
+                    product.setTrademark(trademarkSelected.getId_Trademark());
+                    product.setTypeConditionWH(tcWhSelected.getIdType_Condition_WareHouse());
+                    product.setCodeEAN13(txt_codEan13.getText());
+                    product.setTimeExpiration(Integer.parseInt(txt_timeExpiration.getText()));
+                    daoProducts.ProductsIns(product);
+                } else {
+                    product.setName(txt_name.getText());
+                    product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
+                    product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
+                    product.setQuantityBoxesPerPallet(Integer.parseInt(txt_boxesPerPallet.getText()));
+                    product.setTypeConditionWH(tcWhSelected.getIdType_Condition_WareHouse());
+                    product.setTimeExpiration(Integer.parseInt(txt_timeExpiration.getText()));
+
+                    daoProducts.ProductsUpd(product);
+                }
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
+                    menu_padre.setVisible(true);
+                    menu_padre.setLocationRelativeTo(null);
+                    menu_padre.initilizeTable();
+                    this.dispose();
+                }
             }
         }
     }//GEN-LAST:event_btn_saveActionPerformed
@@ -392,7 +436,7 @@ public class Frm_Product extends javax.swing.JFrame {
         // TODO add your handling code here:
         menu_padre.setVisible(true);
         menu_padre.initilizeTable();
-        this.dispose();        
+        this.dispose();
     }//GEN-LAST:event_formWindowClosed
 
     private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
@@ -415,12 +459,18 @@ public class Frm_Product extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbo_conditionWHActionPerformed
 
+    private void txt_timeExpirationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_timeExpirationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_timeExpirationActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_save;
     private javax.swing.JComboBox cbo_conditionWH;
     private javax.swing.JComboBox cbo_trademark;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbl_FreeStock;
     private javax.swing.JLabel lbl_boxesPerPallet;
     private javax.swing.JLabel lbl_ean13;
@@ -441,6 +491,7 @@ public class Frm_Product extends javax.swing.JFrame {
     private javax.swing.JTextField txt_name;
     private javax.swing.JTextField txt_physicalStock;
     private javax.swing.JTextField txt_quatityPerBox;
+    private javax.swing.JTextField txt_timeExpiration;
     private javax.swing.JTextField txt_weightPerBox;
     // End of variables declaration//GEN-END:variables
 }

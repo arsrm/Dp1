@@ -27,6 +27,15 @@ public class Product {
     private Integer typeConditionWH;
     private String codeEAN13;  
     private Integer status;
+    private Integer timeExpiration;
+
+    public Integer getTimeExpiration() {
+        return timeExpiration;
+    }
+
+    public void setTimeExpiration(Integer timeExpiration) {
+        this.timeExpiration = timeExpiration;
+    }
 
     /**
      * @return the idProduct

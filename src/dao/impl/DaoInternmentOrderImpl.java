@@ -7,9 +7,16 @@ package dao.impl;
 
 import Model.InternmentOrder;
 import Model.InternmentOrderDetail;
+import Model.LocationCell;
+import Model.LocationCellDetail;
+import Model.Warehouse;
 import dao.DaoInternmentOrder;
 import dao.DaoInternmentOrderDetail;
+import dao.DaoLocationCell;
+import dao.DaoPalletProduct;
 import dao.DaoProducts;
+import dao.DaoRack;
+import dao.DaoWH;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +33,10 @@ import java.util.List;
 public class DaoInternmentOrderImpl implements DaoInternmentOrder {
 
     DaoInternmentOrderDetail daoProdIntDet = new DaoInternmentOrderDetailImpl();
+    DaoLocationCell daoLocCell = new DaoLocationCellImpl();
+    DaoWH daoWh = new DaoWHImpl();
+    DaoRack daoRack = new DaoRackImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
     private final ConectaDb db;
 
     public DaoInternmentOrderImpl() {
@@ -153,8 +164,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
 
     @Override
     public InternmentOrder IntOrderGet(Integer idIntOrder) {
-         InternmentOrder intOrder = null;
-         List<InternmentOrderDetail> intOrderDetailList = null;
+        InternmentOrder intOrder = null;
+        List<InternmentOrderDetail> intOrderDetailList = null;
         String sql = "SELECT "
                 + "date,"
                 + "status "
@@ -171,7 +182,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     intOrder.setIdInternmentOrder(idIntOrder);
                     intOrder.setDate(rs.getDate(1));
                     intOrder.setStatus(rs.getInt(2));
-                    
+
                     intOrderDetailList = daoProdIntDet.IntOrderDetailQry(idIntOrder);
                     intOrder.setInternmentOrderDetail(intOrderDetailList);
                 }
@@ -190,7 +201,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
     }
 
     @Override
-    public List<InternmentOrder> IntOrderSearch(Integer idIntOrder, Date dateIni, Date dateEnd) {        
+    public List<InternmentOrder> IntOrderSearch(Integer idIntOrder, Date dateIni, Date dateEnd) {
         String sql = null;
         List<InternmentOrder> intOrders = null;
         if (idIntOrder != 0) {
@@ -221,7 +232,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 ps.setDate(2, new java.sql.Date(dateEnd.getTime()));
 
                 if (idIntOrder != 0) {
-                    ps.setInt(3,idIntOrder);
+                    ps.setInt(3, idIntOrder);
                 }
 
                 ResultSet rs = ps.executeQuery();
@@ -249,4 +260,128 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         return intOrders;
     }
 
+    @Override
+    public String IntOrdersIntern(List<Integer> ids) {
+        String result = null;
+        for (Integer id : ids) {
+            result = IntOrderIntern(id);
+        }
+        return result;
+    }
+
+    public String IntOrderIntern(Integer id) {
+        String result = null;
+        for (InternmentOrderDetail intOrdDet : IntOrderGet(id).getInternmentOrderDetail()) {
+            result = IntOrderDetailIntern(id,intOrdDet);
+        }
+        return result;
+    }
+
+    public String IntOrderDetailIntern(Integer idIntOrder,InternmentOrderDetail intOrdDetail) {
+        String result = null;
+        List<LocationCellDetail> freeLocCellList = GetFreeLocationCellsDetail(intOrdDetail.getProduct().getIdProduct());
+        List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder);
+        Integer cantPalletsIngresados = 0;
+        Integer cantFreeLocCells = freeLocCellList.size();        
+        int lastFreeLocCell;
+        for (int i = 0; i < palletProduList.size(); i++) {
+            lastFreeLocCell = 0;
+            for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
+                Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
+                LocationCell locCell = daoLocCell.LocationCellGet(freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
+                if (freeLocCellList.get(j).getAvailability() == 1
+                        && intOrdDetail.getProduct().getTypeConditionWH()
+                        == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
+                        && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
+                    
+                    cantPalletsIngresados++;
+                    lastFreeLocCell = j;
+                    break;
+                }
+            }
+        }
+        return result;
+
+    }
+
+    public List<LocationCellDetail> GetFreeLocationCellsDetail(Integer idProduct) {
+        List<LocationCellDetail> locCellDetList = null;
+        String sql = "SELECT "
+                + "idLocation_Cell_Detail,"
+                + "description,"
+                + "Location_Cell_idLocation_Cell,"
+                + "Location_Cell_Rack_idRack,"
+                + "Location_Cell_Rack_Warehouse_idWarehouse "
+                + "FROM Location_Cell_Detail "
+                + "WHERE availability=?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, 1);
+                ResultSet rs = ps.executeQuery();
+
+                locCellDetList = new LinkedList<>();
+                while (rs.next()) {
+                    LocationCellDetail locCellDetail = new LocationCellDetail();
+
+                    locCellDetail.setIdLocation_Cell_Detail(rs.getInt(1));
+                    locCellDetail.setDescription(rs.getString(2));
+                    locCellDetail.setLocation_Cell_idLocation_Cell(rs.getInt(3));
+                    locCellDetail.setLocation_Cell_Rack_idRack(rs.getInt(4));
+                    locCellDetail.setLocation_Cell_Rack_Warehouse_idWarehouse(rs.getInt(5));
+                    locCellDetList.add(locCellDetail);
+                }
+
+            } catch (SQLException e) {
+                locCellDetList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return locCellDetList;
+    }
+    
+    public String PalletProductLocaCellIns(Integer idIntOrd,Integer idPalletProduct,InternmentOrderDetail intOrderDetail) {
+        String result = null;
+        String sql = "INSERT INTO Internment_Order("
+                + "idInternment_Order,"
+                + "date,"
+                + "status"
+                + ") VALUES(?,?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, intOrder.getIdInternmentOrder());
+//                java.sql.Date date = new java.sql.Date(intOrder.getDate().getTime());
+                ps.setDate(2, new java.sql.Date(intOrder.getDate().getTime()));
+                ps.setInt(3, intOrder.getStatus());
+
+                int ctos = ps.executeUpdate();
+
+                for (int i = 0; i < intOrder.getInternmentOrderDetail().size(); i++) {
+                    daoProdIntDet.IntOrderDetailIns(intOrder.getIdInternmentOrder(), intOrder.getInternmentOrderDetail().get(i));
+                }
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
 }

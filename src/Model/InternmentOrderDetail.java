@@ -6,6 +6,8 @@
 
 package Model;
 
+import java.util.Date;
+
 /**
  *
  * @author Gustavo
@@ -15,12 +17,21 @@ public class InternmentOrderDetail {
     private Integer quantityPallets;
     private Integer status;
     private Product product;
+    private Date expirationDate;
 
     /**
      * @return the idInternmentOrderDetail
      */
     public Integer getIdInternmentOrderDetail() {
         return idInternmentOrderDetail;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     /**

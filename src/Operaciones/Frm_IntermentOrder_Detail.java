@@ -262,12 +262,14 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
         modelo.fireTableDataChanged();
         try {
             for (int i = 0; i < intOrderDetaillist.size(); i++) {
-                Object[] fila = {intOrderDetaillist.get(i).getIdInternmentOrderDetail(),
-                    intOrderDetaillist.get(i).getProduct().getIdProduct(),
-                    intOrderDetaillist.get(i).getProduct().getName(),
-                    intOrderDetaillist.get(i).getQuantityPallets(),
-                    intOrderDetaillist.get(i).getStatus(), false};
-                modelo.addRow(fila);
+                if (intOrderDetaillist.get(i).getStatus() == 1) {
+                    Object[] fila = {intOrderDetaillist.get(i).getIdInternmentOrderDetail(),
+                        intOrderDetaillist.get(i).getProduct().getIdProduct(),
+                        intOrderDetaillist.get(i).getProduct().getName(),
+                        intOrderDetaillist.get(i).getQuantityPallets(),
+                        intOrderDetaillist.get(i).getStatus(), false};
+                    modelo.addRow(fila);
+                }
             }
         } catch (Exception e) {
         }

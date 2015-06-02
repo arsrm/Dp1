@@ -34,5 +34,7 @@ public interface DaoPalletIni {
     public Integer PalletIniMax();
     
     public Integer cuentaregistros(Integer idpallet); 
+
+    public String PalletsIniUpdStatus(List<Integer> freePalletList, Integer i);
     
 }

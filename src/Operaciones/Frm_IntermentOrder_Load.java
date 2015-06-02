@@ -10,8 +10,12 @@ import Model.InternmentOrderDetail;
 import Model.Product;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoInternmentOrder;
+import dao.DaoPalletIni;
+import dao.DaoPalletProduct;
 import dao.DaoProducts;
 import dao.impl.DaoInternmentOrderImpl;
+import dao.impl.DaoPalletIniImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoProdImpl;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -47,6 +51,8 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     Frm_MenuPrincipal menu_padre = new Frm_MenuPrincipal();
     DaoProducts daoProducts = new DaoProdImpl();
     DaoInternmentOrder daoProdInt = new DaoInternmentOrderImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    DaoPalletIni daoPalletIni = new DaoPalletIniImpl();
     InternmentOrder internmentOrder = null;
     DefaultTableModel modelo = new DefaultTableModel();
     SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -60,6 +66,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         initComponents();
         btn_manual_load.setEnabled(false);
         btn_massive_load.setEnabled(false);
+        btn_saveOrder.setEnabled(false);
         modelo = (DefaultTableModel) tbl_orderDetail.getModel();
     }
 
@@ -264,13 +271,13 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
 
         tbl_orderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "N° Linea", "Id Producto", "Producto", "Cantidad Pallets"
+                "N° Linea", "Id Producto", "Producto", "Fecha Vencimiento", "Cantidad Pallets"
             }
         ));
         tbl_orderDetail.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -371,18 +378,20 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
 
     private void txt_idProductFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_idProductFocusLost
         Product product = new Product();
-        int idProduct = Integer.parseInt(txt_idProduct.getText());
-        product = daoProducts.ProductsGet(idProduct);
+        if (txt_idProduct.getText().length()!=0) {
+            int idProduct = Integer.parseInt(txt_idProduct.getText());
+            product = daoProducts.ProductsGet(idProduct);
 
-        if (product != null) {
-            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.green));
-            txt_nameProduct.setText(product.getName());
-            btn_addProduct.setEnabled(true);
-        } else {
-            btn_addProduct.setEnabled(false);
-            txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.red));
-            txt_nameProduct.setForeground(Color.red);
-            txt_nameProduct.setText("El producto no existe");
+            if (product != null) {
+                txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.green));
+                txt_nameProduct.setText(product.getName());
+                btn_addProduct.setEnabled(true);
+            } else {
+                btn_addProduct.setEnabled(false);
+                txt_nameProduct.setBorder(BorderFactory.createLineBorder(Color.red));
+                txt_nameProduct.setForeground(Color.red);
+                txt_nameProduct.setText("El producto no existe");
+            }
         }
     }//GEN-LAST:event_txt_idProductFocusLost
 
@@ -437,6 +446,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
 
     private void btn_manual_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_manual_loadActionPerformed
         internmentOrder.setInternmentOrderDetail(intOrderDetListManual);
+        btn_saveOrder.setEnabled(true);
     }//GEN-LAST:event_btn_manual_loadActionPerformed
 
     private void btn_massive_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_massive_loadActionPerformed
@@ -454,7 +464,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             reader.readLine();
             reader.readLine();
             internmentOrder.setIdInternmentOrder(idIntOrderTxt);
-            
+
             internmentOrder.setDate(formatDate.parse(dateTxt));
             intOrderDetListMassive = new ArrayList<>();
             while ((line = reader.readLine()) != null) {
@@ -471,6 +481,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             internmentOrder.setInternmentOrderDetail(intOrderDetListMassive);
             internmentOrder.setStatus(1);
             initilizeTable();
+            btn_saveOrder.setEnabled(true);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -489,6 +500,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_massive_loadActionPerformed
 
     private void btn_saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveOrderActionPerformed
+        List<Integer> freePalletList;
         txt_idOrderInt.setEnabled(true);
         txt_idProduct.setEnabled(true);
         txt_quantityPallet.setEnabled(true);
@@ -496,20 +508,29 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         txt_route.setEnabled(true);
         btn_addProduct.setEnabled(true);
         btn_searchFile.setEnabled(true);
-        daoProdInt.IntOrderIns(internmentOrder);
-        modelo.getDataVector().removeAllElements();
-        modelo.fireTableDataChanged();
-        intOrderDetListMassive = null;
-        intOrderDetListManual = null;
-        internmentOrder = null;
+        btn_saveOrder.setEnabled(false);
 
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            daoProdInt.IntOrderIns(internmentOrder);
+            for (int i = 0; i < internmentOrder.getInternmentOrderDetail().size(); i++) {
+                freePalletList = daoPalletProduct.GetPalletByStatus(1, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
+                daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
+                        internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct());
+                for (int j = 0; j < freePalletList.size(); j++) {
+                    daoPalletIni.PalletsIniUpdStatus(freePalletList, 2);//2 Estado no disponible
+                }
+            }
+            modelo.getDataVector().removeAllElements();
+            modelo.fireTableDataChanged();
+            intOrderDetListMassive = null;
+            intOrderDetListManual = null;
+            internmentOrder = null;
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (ok_option == JOptionPane.OK_OPTION) {
                 menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);                
+                menu_padre.setLocationRelativeTo(null);
                 this.dispose();
             }
         }

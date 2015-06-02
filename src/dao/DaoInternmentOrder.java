@@ -33,4 +33,6 @@ public interface DaoInternmentOrder {
 //    public Integer ProductsGetMaxID ();
 //    
     public List<InternmentOrder> IntOrderSearch(Integer idIntOrder, Date dateIni, Date dateEnd);
+    
+    public String IntOrdersIntern(List<Integer> ids);
 }

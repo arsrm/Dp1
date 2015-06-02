@@ -90,7 +90,6 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setSize(new java.awt.Dimension(800, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -193,9 +192,9 @@ public class Frm_Product_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_product);
         if (tbl_product.getColumnModel().getColumnCount() > 0) {
-            tbl_product.getColumnModel().getColumn(0).setMinWidth(50);
-            tbl_product.getColumnModel().getColumn(0).setPreferredWidth(50);
-            tbl_product.getColumnModel().getColumn(0).setMaxWidth(50);
+            tbl_product.getColumnModel().getColumn(0).setMinWidth(0);
+            tbl_product.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tbl_product.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
         btn_new.setText("Nuevo");

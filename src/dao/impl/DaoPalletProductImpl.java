@@ -344,4 +344,75 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         }
         return result;
     }
+
+    @Override
+    public List<Integer> GetPalletByStatus(Integer status, Integer cantPallets) {
+        Integer cantPal = 0;
+        List<Integer> palletList = null;
+        String sql = "SELECT "
+                + "idPallet "
+                + "FROM Pallet "
+                + "WHERE Pallet_State_idPallet_Type = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, status);
+                ResultSet rs = ps.executeQuery();
+
+                palletList = new LinkedList<>();
+                while (rs.next()) {
+                    palletList.add(rs.getInt(1));
+                    cantPal +=1;
+                    if(cantPal == cantPallets) break;
+                }
+
+            } catch (SQLException e) {
+                palletList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return palletList;
+    }
+
+    @Override
+    public List<Integer> GetPalletsByIntOrder(Integer idIntOrder) {
+        List<Integer> palletList = null;
+        String sql = "SELECT "
+                + "Pallet_idPallet "
+                + "FROM Pallet_By_Product "
+                + "WHERE Internment_Order_idInternment_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idIntOrder);
+                ResultSet rs = ps.executeQuery();
+
+                palletList = new LinkedList<>();
+                while (rs.next()) {
+                    palletList.add(rs.getInt(1));
+                }
+
+            } catch (SQLException e) {
+                palletList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return palletList;
+    }
+    
+    
 }

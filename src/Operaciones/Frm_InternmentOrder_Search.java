@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -31,11 +33,14 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     DaoInternmentOrder daoIntOrder = new DaoInternmentOrderImpl();
     List<InternmentOrder> intOrderList = new ArrayList<InternmentOrder>();
     List<Integer> idIntOrderDeleteList = new ArrayList<>();
+    List<Integer> idIntOrderInternList = new ArrayList<>();
 
     public Frm_InternmentOrder_Search(Frm_MenuPrincipal menu) {
         menu_padre = menu;
         setTitle("Buscar Orden de Internamiento");
         initComponents();
+        TableColumn tc = tbl_order.getColumnModel().getColumn(3);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_order, 3));
         modelo = (DefaultTableModel) tbl_order.getModel();
         initializeTable();
     }
@@ -65,6 +70,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         tbl_order = new javax.swing.JTable();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
+        btn_Intern = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -158,7 +164,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tbl_order);
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Desactivar Orden");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -169,6 +175,13 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelActionPerformed(evt);
+            }
+        });
+
+        btn_Intern.setText("Internar Productos");
+        btn_Intern.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_InternActionPerformed(evt);
             }
         });
 
@@ -183,6 +196,8 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(39, 39, 39))
                     .addGroup(pnl_resultsLayout.createSequentialGroup()
+                        .addComponent(btn_Intern)
+                        .addGap(18, 18, 18)
                         .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
@@ -196,7 +211,8 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
-                    .addComponent(btn_cancel))
+                    .addComponent(btn_cancel)
+                    .addComponent(btn_Intern))
                 .addContainerGap(41, Short.MAX_VALUE))
         );
 
@@ -303,6 +319,15 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_searchActionPerformed
 
+    private void btn_InternActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InternActionPerformed
+        for (int i = 0; i < tbl_order.getRowCount(); i++) {
+            if ((Boolean) tbl_order.getValueAt(i, 3)) {
+                idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
+            }
+        }
+        
+    }//GEN-LAST:event_btn_InternActionPerformed
+
     public void initializeTable() {
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -318,6 +343,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Intern;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_search;

@@ -161,6 +161,8 @@
                           <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="btn_Intern" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
@@ -179,6 +181,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_Intern" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="41" max="32767" attributes="0"/>
               </Group>
@@ -239,7 +242,7 @@
         </Container>
         <Component class="javax.swing.JButton" name="btn_delete">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Desactivar"/>
+            <Property name="text" type="java.lang.String" value="Desactivar Orden"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>
@@ -251,6 +254,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_cancelActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_Intern">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Internar Productos"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_InternActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
