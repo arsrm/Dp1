@@ -15,13 +15,13 @@ import java.util.List;
  * @author Luis Miguel
  */
 public class LocationCellDetail {
-    public Integer idLocation_Cell_Detail;
-    public String description;
-    public Integer availability;
-    public Integer Location_Cell_idLocation_Cell;
-    public Integer Location_Cell_Rack_idRack;
-    public Integer Location_Cell_Rack_Warehouse_idWarehouse;
-    public Integer idDistribution_Center;            
+    private Integer idLocation_Cell_Detail;
+    private String description;
+    private Integer availability;
+    private Integer Location_Cell_idLocation_Cell;
+    private Integer Location_Cell_Rack_idRack;
+    private Integer Location_Cell_Rack_Warehouse_idWarehouse;
+    private Integer idDistribution_Center;            
 
     /**
      * @return the idLocation_Cell_Detail

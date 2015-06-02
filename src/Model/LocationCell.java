@@ -17,18 +17,18 @@ import java.util.List;
  */
 
 public class LocationCell{
-    public Integer idLocation_Cell;
-    public String description;
-    public Double width;
-    public Double length;
-    public Integer height;
-    public Integer row_cell;
-    public Integer column_cell;
-    public Integer status;
-    public Integer Location_State_idLocation_State;
-    public Integer Rack_idRack;
-    public Integer Rack_Warehouse_idWarehouse;
-    public Integer Rack_Warehouse_Distribution_Center_idDistribution_Center;
+    private Integer idLocation_Cell;
+    private String description;
+    private Double width;
+    private Double length;
+    private Integer height;
+    private Integer row_cell;
+    private Integer column_cell;
+    private Integer status;
+    private Integer Location_State_idLocation_State;
+    private Integer Rack_idRack;
+    private Integer Rack_Warehouse_idWarehouse;
+    private Integer Rack_Warehouse_Distribution_Center_idDistribution_Center;
 
     /**
      * @return the idLocation_Cell
