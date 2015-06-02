@@ -99,7 +99,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
 
         lbl_status.setText("Estado Ubicacion");
 
-        btn_search.setText("jButton1");
+        btn_search.setLabel("Buscar");
 
         javax.swing.GroupLayout pnl_palletLayout = new javax.swing.GroupLayout(pnl_pallet);
         pnl_pallet.setLayout(pnl_palletLayout);

@@ -28,19 +28,15 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                      <Component id="btn_save" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
+              <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="21" max="32767" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+              <Component id="btn_save" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -49,12 +45,12 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnl_pallet" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="btn_save" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
+                  <Component id="btn_save" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -75,16 +71,20 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="lbl_palletstate" max="32767" attributes="0"/>
-                      <Component id="ldl_description" max="32767" attributes="0"/>
-                      <Component id="lbl_idpallet" pref="82" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="lbl_palletstate" max="32767" attributes="0"/>
+                          <Component id="ldl_description" max="32767" attributes="0"/>
+                          <Component id="lbl_idpallet" pref="82" max="32767" attributes="0"/>
+                      </Group>
+                      <Component id="lbl_cant" alignment="0" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="txt_idpallet" max="32767" attributes="0"/>
                       <Component id="txt_description" max="32767" attributes="0"/>
                       <Component id="cbo_pallet_state" pref="188" max="32767" attributes="0"/>
+                      <Component id="txt_cant" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="118" max="32767" attributes="0"/>
               </Group>
@@ -93,7 +93,7 @@
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_idpallet" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_idpallet" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -108,7 +108,11 @@
                       <Component id="lbl_palletstate" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbo_pallet_state" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="28" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lbl_cant" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_cant" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -148,6 +152,13 @@
               <StringArray count="0"/>
             </Property>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_cant">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Cantidad"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_cant">
         </Component>
       </SubComponents>
     </Container>

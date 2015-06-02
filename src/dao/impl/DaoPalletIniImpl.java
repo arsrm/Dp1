@@ -79,15 +79,17 @@ public class DaoPalletIniImpl implements DaoPalletIni{
     }
     
     @Override
-    public String PalletIniIns(PalletIni palletini) {
+    public String PalletIniIns(PalletIni palletini, Integer i) {
         String result = null;
         String sql = "insert into pallet(description,Pallet_State_idPallet_Type)  values(?,?) ;  ";
         Integer ctos; 
+        String descripcion="";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, palletini.getDescription());
+                descripcion=palletini.getDescription()+" "+i+" ";
+                ps.setString(1, descripcion);
                 ps.setInt(2, palletini.getStatuspallet());
                 ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -347,6 +349,36 @@ public class DaoPalletIniImpl implements DaoPalletIni{
             }
         }
         return cantreg;
+    }
+
+    @Override
+    public String PalletIniInsMas(PalletIni palletini, Integer i) {
+        String result = null;
+        String sql = "insert into pallet(description,Pallet_State_idPallet_Type)  values(?,?)  ";
+        Integer ctos; 
+        String descripcion=" ";
+        Connection cn = db.getConnection();
+        if (cn != null)
+          {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                descripcion=palletini.getDescription()+" "+i +" ";
+                ps.setString(1,descripcion);
+                ps.setInt(2, palletini.getStatuspallet());
+                ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+            } catch (SQLException e) {
+                result = e.getMessage();
+                System.out.println("La cadena de excepcion es: " + result  );
+            } finally 
+                { try {cn.close();} catch (SQLException e) 
+                    {result = e.getMessage();}
+                 }
+           }
+        
+        return result;
     }
 
     

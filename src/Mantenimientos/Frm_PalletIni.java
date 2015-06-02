@@ -47,7 +47,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
           }
        }   
           if (caso==2)
-          { ind=0;}   
+          { ind=1;}   
       return ind; 
       }        
     
@@ -66,6 +66,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         txt_description.setText("");
         stateind=inicia_estado_pallet(0,2);
         cbo_pallet_state.setSelectedIndex(stateind);
+        cbo_pallet_state.setEnabled(false);
       }
       
       
@@ -96,6 +97,8 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         txt_description = new javax.swing.JTextField();
         lbl_palletstate = new javax.swing.JLabel();
         cbo_pallet_state = new javax.swing.JComboBox();
+        lbl_cant = new javax.swing.JLabel();
+        txt_cant = new javax.swing.JTextField();
         btn_save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
@@ -118,27 +121,32 @@ public class Frm_PalletIni extends javax.swing.JFrame {
 
         lbl_palletstate.setText("Estado Pallet");
 
+        lbl_cant.setText("Cantidad");
+
         javax.swing.GroupLayout pnl_palletLayout = new javax.swing.GroupLayout(pnl_pallet);
         pnl_pallet.setLayout(pnl_palletLayout);
         pnl_palletLayout.setHorizontalGroup(
             pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_palletLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lbl_palletstate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(ldl_description, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbl_idpallet, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lbl_palletstate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(ldl_description, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbl_idpallet, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE))
+                    .addComponent(lbl_cant, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txt_idpallet)
                     .addComponent(txt_description)
-                    .addComponent(cbo_pallet_state, 0, 188, Short.MAX_VALUE))
+                    .addComponent(cbo_pallet_state, 0, 188, Short.MAX_VALUE)
+                    .addComponent(txt_cant))
                 .addContainerGap(118, Short.MAX_VALUE))
         );
         pnl_palletLayout.setVerticalGroup(
             pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_palletLayout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_idpallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_idpallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -150,7 +158,10 @@ public class Frm_PalletIni extends javax.swing.JFrame {
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_palletstate)
                     .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_cant)
+                    .addComponent(txt_cant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         btn_save.setText("Guardar");
@@ -173,27 +184,25 @@ public class Frm_PalletIni extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(21, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(btn_save)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_cancel)
-                        .addGap(78, 78, 78))))
+                .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(btn_save)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_cancel)
+                .addGap(78, 78, 78))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_pallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_save)
-                    .addComponent(btn_cancel))
-                .addGap(21, 21, 21))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_cancel)
+                    .addComponent(btn_save))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,6 +229,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
       String palletstate=cbo_pallet_state.getSelectedItem().toString().trim();
       String description=txt_description.getText().toString().trim();
       idstatuspallet=daopalletstate.PalletStateIdGet(palletstate);
+      Integer cantpallet=0; 
       //idpallet=daopalletini.PalletIniMax();
       PalletIni objpalletini=new PalletIni();
       
@@ -228,17 +238,30 @@ public class Frm_PalletIni extends javax.swing.JFrame {
       {  objpalletini.setDescription(description);
          objpalletini.setStatuspallet(idstatuspallet);
          //objpalletini.setIdpallet(idpallet);
-         String message = "¿Está seguro que realizar el registro del Nuevo Pallet?";
-         String title = "Confirmar! ";
+        try {  
+        cantpallet=Integer.parseInt(txt_cant.getText().toString());
+        String message = "¿Está seguro de realizar el registro los nuevos "+cantpallet + " Pallet ?";
+        String title = "Confirmar! ";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
         if (reply == JOptionPane.YES_OPTION) 
-        { daopalletini.PalletIniIns(objpalletini);
+        { 
+          for (int i=0; i<cantpallet; i++)
+          {daopalletini.PalletIniIns(objpalletini,(i+1)); //Inserción masiva de los pallet
+           }
           this.dispose();
           menu_padre.setVisible(true);
           menu_padre.load_tablefilter();
         }
-       }
+       }catch(Exception e)
+       { 
+        String message = "La cantidad de pallet a generar debe ser entera ";
+        String title = "Validar!! ";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.CANCEL_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        }  
+       
+      }
       if (accion.equals("UPD"))
       {  objpalletini.setIdpallet(pallet.getIdpallet());
          objpalletini.setDescription(description);
@@ -264,10 +287,12 @@ public class Frm_PalletIni extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_save;
     private javax.swing.JComboBox cbo_pallet_state;
+    private javax.swing.JLabel lbl_cant;
     private javax.swing.JLabel lbl_idpallet;
     private javax.swing.JLabel lbl_palletstate;
     private javax.swing.JLabel ldl_description;
     private javax.swing.JPanel pnl_pallet;
+    private javax.swing.JTextField txt_cant;
     private javax.swing.JTextField txt_description;
     private javax.swing.JTextField txt_idpallet;
     // End of variables declaration//GEN-END:variables
