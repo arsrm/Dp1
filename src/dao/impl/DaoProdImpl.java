@@ -266,7 +266,7 @@ public class DaoProdImpl implements DaoProducts {
                 + "weight_per_box = ?,"
                 + "quantity_boxes_per_pallet = ?,"
                 + "Type_Condition_idType_Condition = ?, "
-                +"time_expiration = ? "
+                + "time_expiration = ? "
                 + "WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
@@ -464,6 +464,70 @@ public class DaoProdImpl implements DaoProducts {
             }
         }
         return result;
+    }
+
+    @Override
+    public Boolean existsProductOtherTable(Integer idProduct) {
+        Integer cantId = 0;
+        String sql = "(SELECT "
+                + "Product_idProduct "
+                + "FROM Internment_Order_Detail "
+                + "WHERE Product_idProduct = ?) "
+                + "UNION "
+                + "(SELECT "
+                + "Product_idProduct "
+                + "FROM Request_Order_Detail "
+                + "WHERE Product_idProduct = ?) "
+                + "UNION "
+                + "(SELECT "
+                + "Product_idProduct "
+                + "FROM Movement "
+                + "WHERE Product_idProduct = ?) "
+                + "UNION "
+                + "(SELECT "
+                + "Internment_Order_Detail_Product_idProduct "
+                + "FROM Virtual_Warehouse "
+                + "WHERE Internment_Order_Detail_Product_idProduct = ?) "
+                + "UNION "
+                + "(SELECT "
+                + "Product_idProduct "
+                + "FROM Pallet_By_Product "
+                + "WHERE Product_idProduct = ?) "
+                + "UNION "
+                + "(SELECT "
+                + "idProduct_Return "
+                + "FROM Product_Return "
+                + "WHERE idProduct_Return = ?) ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idProduct);
+                ps.setInt(2, idProduct);
+                ps.setInt(3, idProduct);
+                ps.setInt(4, idProduct);
+                ps.setInt(5, idProduct);
+                ps.setInt(6, idProduct);
+                
+                
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    return true;
+                }
+
+            } catch (SQLException e) {
+                cantId = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return false;
     }
 
 }

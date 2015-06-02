@@ -16,6 +16,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -37,6 +39,8 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
         setTitle("Detalle de Orden de Internamiento");
         intOrder = intOrd;
         initComponents();
+        TableColumn tc = tbl_orderDetail.getColumnModel().getColumn(5);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_orderDetail, 5));
         modelo = (DefaultTableModel) tbl_orderDetail.getModel();
         if (intOrd != null) {
             initializeForm();
@@ -47,11 +51,17 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
     }
 
     private void initializeForm() {
+        String status = null;
         txt_idOrder.setText(intOrder.getIdInternmentOrder().toString());
         txt_idOrder.setEnabled(false);
         txt_dateOrder.setText(intOrder.getDate().toString());
         txt_dateOrder.setEnabled(false);
-        txt_state.setText(intOrder.getStatus().toString());
+        if (intOrder.getStatus() == 1) {
+            status = "Activo";
+        } else {
+            status = "Inactivo";
+        }
+        txt_state.setText(status);
         initializeTable();
     }
 
@@ -256,6 +266,7 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     public void initializeTable() {
+        String status = null;
         List<InternmentOrderDetail> intOrderDetaillist = new ArrayList<InternmentOrderDetail>();
         intOrderDetaillist = daoIntOrdDetail.IntOrderDetailQry(intOrder.getIdInternmentOrder());
         modelo.getDataVector().removeAllElements();
@@ -263,11 +274,16 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
         try {
             for (int i = 0; i < intOrderDetaillist.size(); i++) {
                 if (intOrderDetaillist.get(i).getStatus() == 1) {
+                    status = "Activo";
+                } else {
+                    status = "Inactivo";
+                }
+                if (intOrderDetaillist.get(i).getStatus() == 1) {
                     Object[] fila = {intOrderDetaillist.get(i).getIdInternmentOrderDetail(),
                         intOrderDetaillist.get(i).getProduct().getIdProduct(),
                         intOrderDetaillist.get(i).getProduct().getName(),
                         intOrderDetaillist.get(i).getQuantityPallets(),
-                        intOrderDetaillist.get(i).getStatus(), false};
+                        status, false};
                     modelo.addRow(fila);
                 }
             }

@@ -26,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
+
 /**
  *
  * @author Gustavo
@@ -38,14 +39,14 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     Frm_MenuPrincipal menu_padre = new Frm_MenuPrincipal();
     DaoProducts daoProducts = new DaoProdImpl();
     DefaultTableModel modelo;
-    List<Integer> idProductDeleteList = new ArrayList<Integer>();
+    List<Integer> idProductDeleteList = null;
     List<Trademark> trademarkList = null;
     DaoTrademark daoTrademark = new DaoTrademarkImpl();
     Trademark trademarkSelected;
     Integer idProdSearch;
     String nameSearch;
     Integer idTrademarkSearch;
-   
+
     public Frm_Product_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Productos");
         menu_padre = menu;
@@ -299,21 +300,31 @@ public class Frm_Product_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_tbl_productMouseClicked
 
     private void btn_changeStateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_changeStateActionPerformed
-        for (int i = 0; i < tbl_product.getRowCount(); i++) {
-            if ((Boolean) tbl_product.getValueAt(i, 7)) {
-                
-                String aux = tbl_product.getValueAt(i,0).toString();
-                idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
-            }
-        }
-        daoProducts.ProductsDel(idProductDeleteList);
-
+        Boolean opDelete = true;
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado los productos seleccionados con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                initilizeTable();
+            idProductDeleteList = new ArrayList<Integer>();
+            for (int i = 0; i < tbl_product.getRowCount(); i++) {
+                if ((Boolean) tbl_product.getValueAt(i, 7)) {
+                    String aux = tbl_product.getValueAt(i, 6).toString();
+                    if (tbl_product.getValueAt(i, 6).toString().equals("Activo")) {
+                        if (!productValidatedToDelete(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()))) {
+                            opDelete = false;
+                        } else {
+                            idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
+                        }
+                    } else {
+                        idProductDeleteList.add(Integer.parseInt(tbl_product.getValueAt(i, 0).toString()));
+                    }
+                }
+            }
+            if (opDelete) {
+                daoProducts.ProductsDel(idProductDeleteList);
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado los productos seleccionados con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
+                    initilizeTable();
+                }
             }
         }
     }//GEN-LAST:event_btn_changeStateActionPerformed
@@ -335,7 +346,7 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             } else {
                 trademarkSelected = null;
             }
-        }        
+        }
         productList = daoProducts.ProductsSearch(EAN13, name, trademarkSelected);
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -391,6 +402,15 @@ public class Frm_Product_Search extends javax.swing.JFrame {
             }
         } catch (Exception e) {
         }
+    }
+
+    private Boolean productValidatedToDelete(Integer idProd) {
+        if (daoProducts.existsProductOtherTable(idProd)) {
+            JOptionPane.showMessageDialog(null, "No se puede eliminar los productos seleccionados, existen otros elementos asociados al producto.",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

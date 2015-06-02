@@ -329,13 +329,18 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_InternActionPerformed
 
     public void initializeTable() {
+        String status=null;
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         intOrderList = daoIntOrder.IntOrderQry();
         try {
             for (int i = 0; i < intOrderList.size(); i++) {
+                if (intOrderList.get(i).getStatus()==1)
+                    status = "Activo";
+                else
+                    status = "Inactivo";
                 Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
-                    intOrderList.get(i).getDate(), intOrderList.get(i).getStatus(), false};
+                    intOrderList.get(i).getDate(), status, false};
                 modelo.addRow(fila);
             }
         } catch (Exception e) {

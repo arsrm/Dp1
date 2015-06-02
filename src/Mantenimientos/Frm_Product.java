@@ -101,6 +101,7 @@ public class Frm_Product extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_timeExpiration = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -181,7 +182,7 @@ public class Frm_Product extends javax.swing.JFrame {
 
         lbl_unitFreeStock.setText("Empaques");
 
-        jLabel2.setText("Tiempo de Expiración");
+        jLabel2.setText("Tiempo de Expiración (*)");
 
         txt_timeExpiration.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -189,7 +190,9 @@ public class Frm_Product extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("días");
+        jLabel3.setText("Días");
+
+        jLabel4.setText("(*) Campos Obligatorios");
 
         javax.swing.GroupLayout pnl_productLayout = new javax.swing.GroupLayout(pnl_product);
         pnl_product.setLayout(pnl_productLayout);
@@ -249,7 +252,8 @@ public class Frm_Product extends javax.swing.JFrame {
                                 .addGroup(pnl_productLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbl_unitPhysicalStock)
                                     .addComponent(lbl_unitFreeStock)
-                                    .addComponent(jLabel3))))))
+                                    .addComponent(jLabel3)))))
+                    .addComponent(jLabel4))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_productLayout.setVerticalGroup(
@@ -307,7 +311,8 @@ public class Frm_Product extends javax.swing.JFrame {
                         .addComponent(txt_timeExpiration, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel3))
                     .addComponent(jLabel2))
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(jLabel4))
         );
 
         btn_cancel.setText("Cancelar");
@@ -471,6 +476,7 @@ public class Frm_Product extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel lbl_FreeStock;
     private javax.swing.JLabel lbl_boxesPerPallet;
     private javax.swing.JLabel lbl_ean13;

@@ -35,4 +35,6 @@ public interface DaoProducts {
     public List<Product> ProductsQryByTrademark(Integer idTrademark);
     
     public String ProductUpdStock(Integer idProduct, Integer cantPallets, Integer idMovimiento);
+    
+    public Boolean existsProductOtherTable(Integer idProduct);
 }
