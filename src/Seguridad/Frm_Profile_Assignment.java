@@ -7,9 +7,12 @@
 package Seguridad;
 
 import Mantenimientos.*;
+import Model.Log;
 import Model.Profile;
 import Model.ProfileWindow;
+import dao.DaoLog;
 import dao.DaoProfile;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProfileImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -193,13 +196,13 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
             modelo.getDataVector().removeAllElements();
             modelo.fireTableDataChanged();
         }
-        if(hasWindow==0){
-            profileWindowList = daoProfile.windowsGet(profile.getIdprofile());
-            for(int i=0; i<profileWindowList.size(); i++)
-                daoProfile.profileWindowIns(profileWindowList.get(i));
-        }else{
+//        if(hasWindow==0){
+//            profileWindowList = daoProfile.windowsGet(profile.getIdprofile());
+//            for(int i=0; i<profileWindowList.size(); i++)
+//                daoProfile.profileWindowIns(profileWindowList.get(i));
+//        }else{
             profileWindowList = daoProfile.windowsGetById(profile.getIdprofile());
-        }
+//        }
         try {
             for (int i = 0; i < profileWindowList.size(); i++) {
                 
@@ -250,6 +253,9 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
             }
             profile.setStatus(1);
             daoProfile.profileUpd(profile);
+            DaoLog daoLog =new DaoLogImpl();
+            Log logSI = null; 
+            daoLog.clientIns("Se han actualizado los permisos del perfil " + profile.getName() ,Frm_Profile_Assignment.class.toString(), logSI.getIduser());
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se han asignado los permisos con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (ok_option == JOptionPane.OK_OPTION) {
                 initializeTable();

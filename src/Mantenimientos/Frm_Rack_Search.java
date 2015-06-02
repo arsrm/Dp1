@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -39,7 +43,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     DaoWH daoWH = new DaoWHImpl();
     ArrayList<Warehouse> warehouseList = new ArrayList<>();
     
-    DaoRackImpl daoRack = new DaoRackImpl();
+    DaoRackImpl daoRack = new DaoRackImpl();        
     DefaultTableModel modelo;        
     
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
@@ -47,6 +51,8 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
         menuaux = menu;
         initComponents();
         
+        TableColumn tc = tbl_rack.getColumnModel().getColumn(6);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_rack, 6));        
         initializeForm();        
     }
     
@@ -199,7 +205,7 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -288,35 +294,63 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
             int rowSel = tbl_rack.getSelectedRow();
             int colSel = tbl_rack.getSelectedColumn();
             if (colSel != 6) {
+                this.setVisible(false);
                 idRackSel = Integer.parseInt(tbl_rack.getValueAt(rowSel, 0).toString());
                 rack = daoRack.rackGet(idRackSel);
 
                 Frm_Rack frm_rack = new Frm_Rack(this, rack);
                 frm_rack.setVisible(true);
-                frm_rack.setLocationRelativeTo(null);
-                this.setVisible(false);
+                frm_rack.setLocationRelativeTo(null);                
             }
         }
     }//GEN-LAST:event_tbl_rackMouseClicked
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+        Rack rack = null;
         int idRackDelete;
-        for (int i = 0; i < tbl_rack.getRowCount(); i++) {
-            if ((Boolean) tbl_rack.getValueAt(i, 6)) {
-                idRackDelete = Integer.parseInt(tbl_rack.getValueAt(i, 0).toString());
-                daoRack.rackDel(idRackDelete);
+        String status;
+        
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < tbl_rack.getRowCount(); i++) {
+                if ((Boolean) tbl_rack.getValueAt(i, 6)) {
+                    idRackDelete = Integer.parseInt(tbl_rack.getValueAt(i, 0).toString());
+                    status = tbl_rack.getValueAt(i, 5).toString();
+                    if (status.equalsIgnoreCase("Activo")) {
+                        rack = daoRack.rackGet(idRackDelete);
+                        if (rackValidatedToDelete(rack)) {
+                            daoRack.rackDel(idRackDelete, 0);
+                        }
+                    } else {
+                        daoRack.rackDel(idRackDelete, 1);
+                    }
+                }
+            }
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Acciones realizadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initializeTable();
             }
         }
         initializeTable();
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+    private boolean rackValidatedToDelete(Rack rack){
+        if (daoRack.rackInUse(rack)){
+            JOptionPane.showMessageDialog(null,"No se puede eliminar. El rack esta siendo usado", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
+        return true;
+    }
+    
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         modelo = (DefaultTableModel) tbl_rack.getModel();
         initializeTable();
     }//GEN-LAST:event_btn_searchActionPerformed
           
     public void initializeTable(){
-        List<Rack> listRack = daoRack.rackQry(idDC_current,idWH_current,txt_identifier.getText());
+        List<Rack> listRack = daoRack.rackQry(idDC_current,idWH_current,txt_identifier.getText().trim());
         String status= null;
         if(modelo!=null){
             modelo.getDataVector().removeAllElements();

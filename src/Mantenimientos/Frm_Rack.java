@@ -7,12 +7,17 @@
 package Mantenimientos;
 
 import Model.Distribution_Center;
+import Model.LocationCell;
+import Model.LocationCellDetail;
+import Model.Log;
 import Model.Rack;
 import Model.Warehouse;
 import dao.DaoDistributionCenter;
+import dao.DaoLog;
 import dao.DaoRack;
 import dao.DaoWH;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoRackImpl;
 import dao.impl.DaoWHImpl;
 import java.util.ArrayList;
@@ -95,6 +100,11 @@ public class Frm_Rack extends javax.swing.JFrame {
         txt_length = new javax.swing.JTextField();
         lbl_width = new javax.swing.JLabel();
         txt_width = new javax.swing.JTextField();
+        lbl_unit_length = new javax.swing.JLabel();
+        lbl_unit_width = new javax.swing.JLabel();
+        lbl_unit_height_per_floor = new javax.swing.JLabel();
+        lbl_unit_resistance_weigth_per_floor = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -105,13 +115,13 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         pnl_rack.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_warehouse.setText("Almacen");
+        lbl_warehouse.setText("Almacen (*)");
 
         lbl_distribution_center.setText("Centro de Distribucion");
 
-        lbl_identifier.setText("ID");
+        lbl_identifier.setText("ID (*)");
 
-        lbl_description.setText("Descripcion");
+        lbl_description.setText("Descripcion (*)");
 
         javax.swing.GroupLayout pnl_rackLayout = new javax.swing.GroupLayout(pnl_rack);
         pnl_rack.setLayout(pnl_rackLayout);
@@ -124,13 +134,13 @@ public class Frm_Rack extends javax.swing.JFrame {
                     .addComponent(lbl_warehouse)
                     .addComponent(lbl_identifier)
                     .addComponent(lbl_description))
-                .addGap(45, 45, 45)
+                .addGap(57, 57, 57)
                 .addGroup(pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txt_identifier, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(195, Short.MAX_VALUE))
+                    .addComponent(cbo_warehouse, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_distribution_center, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(183, Short.MAX_VALUE))
         );
         pnl_rackLayout.setVerticalGroup(
             pnl_rackLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,17 +180,28 @@ public class Frm_Rack extends javax.swing.JFrame {
 
         jpn_dimension.setBorder(javax.swing.BorderFactory.createTitledBorder("Dimensiones"));
 
-        lbl_height_per_floor.setText("Altura por Piso (m2)");
+        lbl_height_per_floor.setText("Altura por Piso (*)");
 
-        lbl_floor_numbers.setText("Nro. Pisos");
+        lbl_floor_numbers.setText("Nro. Pisos (*)");
 
-        lbl_column_numbers.setText("Nro. Columnas");
+        lbl_column_numbers.setText("Nro. Columnas (*)");
 
-        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso (Kg)");
+        lbl_resistance_weigth_per_floor.setText("Resistencia Peso por Piso (*)");
 
-        lbl_length.setText("Largo (m2)");
+        lbl_length.setText("Largo (*)");
 
-        lbl_width.setText("Ancho (m2)");
+        lbl_width.setText("Ancho (*)");
+
+        lbl_unit_length.setText("m2");
+
+        lbl_unit_width.setText("m2");
+
+        lbl_unit_height_per_floor.setText("m2");
+
+        lbl_unit_resistance_weigth_per_floor.setText("Kg");
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        jLabel1.setText("(*) Campos Obligatorios");
 
         javax.swing.GroupLayout jpn_dimensionLayout = new javax.swing.GroupLayout(jpn_dimension);
         jpn_dimension.setLayout(jpn_dimensionLayout);
@@ -189,31 +210,40 @@ public class Frm_Rack extends javax.swing.JFrame {
             .addGroup(jpn_dimensionLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_width, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_length, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_height_per_floor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lbl_resistance_weigth_per_floor, javax.swing.GroupLayout.DEFAULT_SIZE, 144, Short.MAX_VALUE))
+                        .addGap(21, 21, 21)
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_length)
-                            .addComponent(lbl_width))
-                        .addGap(119, 119, 119)
-                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(83, 83, 83)
+                            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                                .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_unit_length))
+                            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                                .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_unit_width))
+                            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                                .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_unit_height_per_floor))
+                            .addGroup(jpn_dimensionLayout.createSequentialGroup()
+                                .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lbl_unit_resistance_weigth_per_floor)))
+                        .addGap(91, 91, 91)
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_floor_numbers)
                             .addComponent(lbl_column_numbers))
-                        .addGap(45, 45, 45)
+                        .addGap(33, 33, 33)
                         .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jpn_dimensionLayout.createSequentialGroup()
-                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_height_per_floor)
-                            .addComponent(lbl_resistance_weigth_per_floor))
-                        .addGap(30, 30, 30)
-                        .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(29, Short.MAX_VALUE))
+                            .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
         jpn_dimensionLayout.setVerticalGroup(
             jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -223,22 +253,27 @@ public class Frm_Rack extends javax.swing.JFrame {
                     .addComponent(lbl_length)
                     .addComponent(txt_length, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_floor_numbers)
-                    .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_floor_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_unit_length))
                 .addGap(18, 18, 18)
                 .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_width)
                     .addComponent(txt_width, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_column_numbers)
-                    .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_column_numbers, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_unit_width))
                 .addGap(36, 36, 36)
                 .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_height_per_floor)
-                    .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_height_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_unit_height_per_floor))
                 .addGap(18, 18, 18)
                 .addGroup(jpn_dimensionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_resistance_weigth_per_floor)
-                    .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(142, Short.MAX_VALUE))
+                    .addComponent(txt_resistance_weigth_per_floor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_unit_resistance_weigth_per_floor))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                .addComponent(jLabel1))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -314,53 +349,143 @@ public class Frm_Rack extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        
-        if (rack == null) {
-            rack = new Rack();
+        int idRack;
+        try {
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                if (rack == null) { // si es nuevo
+                    if (rackValidatedToSave(txt_identifier.getText().trim())) {
+                        for (int i = 0; i < warehouseList.size(); i++) {
+                            if (cbo_warehouse.getSelectedItem().equals(warehouseList.get(i).getDescription())) {
+                                this.currentWH = warehouseList.get(i).getIdWarehouse();
+                                break;
+                            }
+                        }
+                        rack = new Rack();
+                        rack.setWarehouse_Distribution_Center_idDistribution_Center(currentDC);
+                        rack.setIdentifier(txt_identifier.getText().trim());
+                        rack.setDescription(txt_description.getText().trim());
+                        rack.setWarehouse_idWarehouse(currentWH);
+                        rack.setLength(Double.parseDouble(txt_length.getText()));
+                        rack.setWidth(Double.parseDouble(txt_width.getText()));
+                        rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
+                        rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
+                        rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
+                        rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
 
-            for (int i = 0; i < warehouseList.size(); i++) {
-                if (cbo_warehouse.getSelectedItem().equals(warehouseList.get(i).getDescription())) {
-                    this.currentWH = warehouseList.get(i).getIdWarehouse();
-                    break;
+                        daoRack.rackIns(rack);
+                        idRack = daoRack.rackMaxIdGet();
+                        rack.setIdRack(idRack);
+                        buildRackLocationCells(rack);
+                        DaoLog daoLog = new DaoLogImpl();
+                        Log logSI = null;
+                        daoLog.clientIns("Se ha ingresado un nuevo rack al sistema con ID " + rack.getIdentifier(), Frm_Rack.class.toString(), logSI.getIduser());
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al rack con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {
+                            menu_padre.setVisible(true);
+                            menu_padre.setLocationRelativeTo(null);
+                            menu_padre.initializeTable();
+                            this.dispose();
+                        }
+                    }
+                } else { // si es modificacion
+                    if (txt_identifier.getText().trim().length() != 0 && txt_identifier.getText().trim().length() <= 11) {
+                        rack.setIdentifier(txt_identifier.getText().trim());
+                        rack.setDescription(txt_description.getText().trim());
+                        rack.setLength(Double.parseDouble(txt_length.getText()));
+                        rack.setWidth(Double.parseDouble(txt_width.getText()));
+                        rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
+                        rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
+                        rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
+                        rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
+
+                        daoRack.rackUpd(rack);
+                        DaoLog daoLog = new DaoLogImpl();
+                        Log logSI = null;
+                        daoLog.clientIns("Se ha modificado el rack con ID " + rack.getIdentifier(), Frm_Rack.class.toString(), logSI.getIduser());
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al rack con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {
+                            menu_padre.setVisible(true);
+                            menu_padre.setLocationRelativeTo(null);
+                            menu_padre.initializeTable();
+                            this.dispose();
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "El código de rack no puede ser vacio o mayor a 11 caracteres",
+                                "Advertencias", JOptionPane.WARNING_MESSAGE);
+                    }
+
+                }
+
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Algunos datos deben ser numéricos",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }
+        
+    }//GEN-LAST:event_btn_saveActionPerformed
+    
+    private boolean rackValidatedToSave(String identifier) {
+        String empty = "";
+        if (empty.equals(identifier)) {
+            JOptionPane.showMessageDialog(null, "El código de rack no puede ser vacio",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (daoRack.existsRackName(identifier)) {
+            JOptionPane.showMessageDialog(null, "El código de rack ya existe",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (identifier.length()>11) {
+            JOptionPane.showMessageDialog(null, "El código de rack es muy largo",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    
+    private void buildRackLocationCells(Rack rack){
+        int numFloors = rack.getFloor_numbers();
+        int length = rack.getLength().intValue();
+        int numColumns = rack.getColumn_number();
+        int numLCDByLC = length/numColumns;
+        int idLocationCell = 0;
+        int idLocationCellDetail = 0;
+        
+        for (int i=0; i<numFloors; i++){
+            for (int j=0; j<numColumns; j++){
+                idLocationCell++;
+                LocationCell locationCell = new LocationCell();
+                locationCell.setIdLocation_Cell(idLocationCell);
+                locationCell.setDescription("LC "+idLocationCell);
+                locationCell.setWidth(rack.getWidth());
+                locationCell.setLength((length/numColumns)*1.0);
+                locationCell.setHeight(rack.getHeight_per_floor());
+                locationCell.setRow_Cell(i+1);
+                locationCell.setColumn_Cell(j+1);
+                locationCell.setStatus(1);
+                locationCell.setLocation_State_idLocation_State(1);
+                locationCell.setRack_idRack(rack.getIdRack());
+                locationCell.setRack_Warehouse_idWarehouse(rack.getWarehouse_idWarehouse());
+                locationCell.setRack_Warehouse_Distribution_Center_idDistribution_Center(rack.getWarehouse_Distribution_Center_idDistribution_Center());
+                daoRack.rackLocationCellsIns(locationCell);
+                for (int k=0; k<numLCDByLC; k++){
+                    LocationCellDetail locationCellDetail = new LocationCellDetail();
+                    idLocationCellDetail = k + 1;
+                    locationCellDetail.setIdLocation_Cell_Detail(idLocationCellDetail);
+                    locationCellDetail.setDescription("LCD "+idLocationCellDetail);
+                    locationCellDetail.setAvailability(1);
+                    locationCellDetail.setLocation_Cell_idLocation_Cell(idLocationCell);
+                    locationCellDetail.setLocation_Cell_Rack_idRack(rack.getIdRack());
+                    locationCellDetail.setLocation_Cell_Rack_Warehouse_idWarehouse(rack.getWarehouse_idWarehouse());
+                    locationCellDetail.setIdDistribution_Center(rack.getWarehouse_Distribution_Center_idDistribution_Center());                    
+                    daoRack.rackLocationCellDetailIns(locationCellDetail);
                 }
             }
-            rack.setWarehouse_Distribution_Center_idDistribution_Center(currentDC);
-            rack.setWarehouse_idWarehouse(currentWH);
-            rack.setIdentifier(txt_identifier.getText());
-            rack.setDescription(txt_description.getText());
-            rack.setLength(Double.parseDouble(txt_length.getText()));
-            rack.setWidth(Double.parseDouble(txt_width.getText()));
-            rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
-            rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
-            rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
-            rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
-
-            daoRack.rackIns(rack);
-        } else {
-            rack.setIdentifier(txt_identifier.getText());
-            rack.setDescription(txt_description.getText());
-            rack.setLength(Double.parseDouble(txt_length.getText()));
-            rack.setWidth(Double.parseDouble(txt_width.getText()));
-            rack.setFloor_numbers(Integer.parseInt(txt_floor_numbers.getText()));
-            rack.setColumn_number(Integer.parseInt(txt_column_numbers.getText()));
-            rack.setHeight_per_floor(Integer.parseInt(txt_height_per_floor.getText()));
-            rack.setResistance_weigth_per_floor(Integer.parseInt(txt_resistance_weigth_per_floor.getText()));
-
-            daoRack.rackUpd(rack);            
-        }
-
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al rack con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                menu_padre.initializeTable();
-                this.dispose();
-            }
-        }
-    }//GEN-LAST:event_btn_saveActionPerformed
+        }        
+    }
     
     /**
      * @param args the command line arguments
@@ -402,6 +527,7 @@ public class Frm_Rack extends javax.swing.JFrame {
     private javax.swing.JButton btn_save;
     private javax.swing.JComboBox cbo_distribution_center;
     private javax.swing.JComboBox cbo_warehouse;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jpn_dimension;
     private javax.swing.JLabel lbl_column_numbers;
     private javax.swing.JLabel lbl_description;
@@ -411,6 +537,10 @@ public class Frm_Rack extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_identifier;
     private javax.swing.JLabel lbl_length;
     private javax.swing.JLabel lbl_resistance_weigth_per_floor;
+    private javax.swing.JLabel lbl_unit_height_per_floor;
+    private javax.swing.JLabel lbl_unit_length;
+    private javax.swing.JLabel lbl_unit_resistance_weigth_per_floor;
+    private javax.swing.JLabel lbl_unit_width;
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JLabel lbl_width;
     private javax.swing.JPanel pnl_rack;

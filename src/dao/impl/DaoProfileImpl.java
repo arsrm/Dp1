@@ -186,7 +186,7 @@ public class DaoProfileImpl implements DaoProfile {
 
                 ps.setString(1, profile.getName());
                 ps.setString(2, profile.getDescription());
-                ps.setInt(3, 0);
+                ps.setInt(3, 1);
                 // status en 0 para que luego al asignarsele los permisos recien pase a 1
                 ps.executeUpdate();
                 
@@ -202,7 +202,7 @@ public class DaoProfileImpl implements DaoProfile {
     }
 
     @Override
-    public int profileDel(Integer idProfile) {
+    public int profileDel(Integer idProfile, Integer statusToChange) {
         String sql = "UPDATE Profile SET "                
                 + "status=? "
                 + "WHERE idProfile=?; ";                
@@ -211,7 +211,7 @@ public class DaoProfileImpl implements DaoProfile {
             try {
                 
                 PreparedStatement ps = cn.prepareStatement(sql);                   
-                ps.setInt(1, 0);
+                ps.setInt(1, statusToChange);
                 ps.setInt(2, idProfile);
                 ps.executeUpdate();
                 
@@ -497,6 +497,35 @@ public class DaoProfileImpl implements DaoProfile {
                 }
             }
         }
+    }
+
+    @Override
+    public int profileMaxIdGet() {
+        int maxId=0;
+        String sql = "SELECT "
+                + "MAX(idProfile) "
+                + "FROM Profile;";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    maxId = rs.getInt(1);
+                    return maxId;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return -1;
     }
 }
 

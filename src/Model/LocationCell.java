@@ -17,129 +17,18 @@ import java.util.List;
  */
 
 public class LocationCell{
-    private Integer idLocation_Cell;
-    private Double width;
-    private Double length;
-    private Double height;
-    private Integer row;
-    private Integer column;
-    private Integer status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    
-    private Integer userCreated;
-    private Integer userUpdated;
-    private LocationState locationStateidLocationState;
-    private Rack rack;
-    private List<LocationCellDetail> locationCellDetailList;
-
-    public LocationCell() {
-    }
-
-
-    public Double getWidth() {
-        return width;
-    }
-
-    public void setWidth(Double width) {
-        this.width = width;
-    }
-
-    public Double getLength() {
-        return length;
-    }
-
-    public void setLength(Double length) {
-        this.length = length;
-    }
-
-    public Double getHeight() {
-        return height;
-    }
-
-    public void setHeight(Double height) {
-        this.height = height;
-    }
-
-    public Integer getRow() {
-        return row;
-    }
-
-    public void setRow(Integer row) {
-        this.row = row;
-    }
-
-    public Integer getColumn() {
-        return column;
-    }
-
-    public void setColumn(Integer column) {
-        this.column = column;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(Integer userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public Integer getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(Integer userUpdated) {
-        this.userUpdated = userUpdated;
-    }
-
-    public LocationState getLocationStateidLocationState() {
-        return locationStateidLocationState;
-    }
-
-    public void setLocationStateidLocationState(LocationState locationStateidLocationState) {
-        this.locationStateidLocationState = locationStateidLocationState;
-    }
-
-    public Rack getRack() {
-        return rack;
-    }
-
-    public void setRack(Rack rack) {
-        this.rack = rack;
-    }
-
-    public List<LocationCellDetail> getLocationCellDetailList() {
-        return locationCellDetailList;
-    }
-
-    public void setLocationCellDetailList(List<LocationCellDetail> locationCellDetailList) {
-        this.locationCellDetailList = locationCellDetailList;
-    }
+    public Integer idLocation_Cell;
+    public String description;
+    public Double width;
+    public Double length;
+    public Integer height;
+    public Integer row_cell;
+    public Integer column_cell;
+    public Integer status;
+    public Integer Location_State_idLocation_State;
+    public Integer Rack_idRack;
+    public Integer Rack_Warehouse_idWarehouse;
+    public Integer Rack_Warehouse_Distribution_Center_idDistribution_Center;
 
     /**
      * @return the idLocation_Cell
@@ -155,4 +44,160 @@ public class LocationCell{
         this.idLocation_Cell = idLocation_Cell;
     }
 
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the width
+     */
+    public Double getWidth() {
+        return width;
+    }
+
+    /**
+     * @param width the width to set
+     */
+    public void setWidth(Double width) {
+        this.width = width;
+    }
+
+    /**
+     * @return the length
+     */
+    public Double getLength() {
+        return length;
+    }
+
+    /**
+     * @param length the length to set
+     */
+    public void setLength(Double length) {
+        this.length = length;
+    }
+
+    /**
+     * @return the height
+     */
+    public Integer getHeight() {
+        return height;
+    }
+
+    /**
+     * @param height the height to set
+     */
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    /**
+     * @return the row_cell
+     */
+    public Integer getRow_Cell() {
+        return row_cell;
+    }
+
+    /**
+     * @param row_cell the row_cell to set
+     */
+    public void setRow_Cell(Integer row_cell) {
+        this.row_cell = row_cell;
+    }
+
+    /**
+     * @return the column_cell
+     */
+    public Integer getColumn_Cell() {
+        return column_cell;
+    }
+
+    /**
+     * @param column_cell the column_cell to set
+     */
+    public void setColumn_Cell(Integer column_cell) {
+        this.column_cell = column_cell;
+    }
+
+    /**
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the Location_State_idLocation_State
+     */
+    public Integer getLocation_State_idLocation_State() {
+        return Location_State_idLocation_State;
+    }
+
+    /**
+     * @param Location_State_idLocation_State the Location_State_idLocation_State to set
+     */
+    public void setLocation_State_idLocation_State(Integer Location_State_idLocation_State) {
+        this.Location_State_idLocation_State = Location_State_idLocation_State;
+    }
+
+    /**
+     * @return the Rack_idRack
+     */
+    public Integer getRack_idRack() {
+        return Rack_idRack;
+    }
+
+    /**
+     * @param Rack_idRack the Rack_idRack to set
+     */
+    public void setRack_idRack(Integer Rack_idRack) {
+        this.Rack_idRack = Rack_idRack;
+    }
+
+    /**
+     * @return the Rack_Warehouse_idWarehouse
+     */
+    public Integer getRack_Warehouse_idWarehouse() {
+        return Rack_Warehouse_idWarehouse;
+    }
+
+    /**
+     * @param Rack_Warehouse_idWarehouse the Rack_Warehouse_idWarehouse to set
+     */
+    public void setRack_Warehouse_idWarehouse(Integer Rack_Warehouse_idWarehouse) {
+        this.Rack_Warehouse_idWarehouse = Rack_Warehouse_idWarehouse;
+    }
+
+    /**
+     * @return the Rack_Warehouse_Distribution_Center_idDistribution_Center
+     */
+    public Integer getRack_Warehouse_Distribution_Center_idDistribution_Center() {
+        return Rack_Warehouse_Distribution_Center_idDistribution_Center;
+    }
+
+    /**
+     * @param Rack_Warehouse_Distribution_Center_idDistribution_Center the Rack_Warehouse_Distribution_Center_idDistribution_Center to set
+     */
+    public void setRack_Warehouse_Distribution_Center_idDistribution_Center(Integer Rack_Warehouse_Distribution_Center_idDistribution_Center) {
+        this.Rack_Warehouse_Distribution_Center_idDistribution_Center = Rack_Warehouse_Distribution_Center_idDistribution_Center;
+    }
+    
+    
+    
 }

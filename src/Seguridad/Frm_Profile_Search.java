@@ -7,15 +7,20 @@
 package Seguridad;
 
 import Mantenimientos.*;
+import Model.Log;
 import Model.Profile;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoLog;
 import dao.DaoProfile;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProfileImpl;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -37,6 +42,8 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
         menuaux = menu;
         initComponents();
         
+        TableColumn tc = tbl_profile.getColumnModel().getColumn(4);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_profile, 4));
         modelo = (DefaultTableModel) tbl_profile.getModel();
         initializeTable();
     }
@@ -143,7 +150,7 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Desactivar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -228,6 +235,7 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         int idProfileDelete;
+        String status;
                 
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
@@ -235,13 +243,25 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
             for (int i = 0; i < tbl_profile.getRowCount(); i++) {
                 if ((Boolean) tbl_profile.getValueAt(i, 4)) {
                     idProfileDelete = Integer.parseInt(tbl_profile.getValueAt(i, 0).toString());
-                    if (profileValidatedToDelete(idProfileDelete)) {
-                        daoProfile.profileWindowsDel(idProfileDelete);
-                        daoProfile.profileDel(idProfileDelete);
-                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Acciones realizadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                        if (ok_option == JOptionPane.OK_OPTION) {
-                            initializeTable();
+                    status = tbl_profile.getValueAt(i, 3).toString();
+                    if (status.equalsIgnoreCase("Activo")){
+                        if (profileValidatedToDelete(idProfileDelete)) {
+                            daoProfile.profileDel(idProfileDelete,0);
+                            daoProfile.profileWindowsDel(idProfileDelete);
+                            DaoLog daoLog =new DaoLogImpl();
+                            Log logSI = null; 
+                            daoLog.clientIns("Se ha desactivado el perfil " + daoProfile.profileGet(idProfileDelete).getName() ,Frm_Profile_Search.class.toString(), logSI.getIduser());
                         }
+                    }else{
+                        daoProfile.profileDel(idProfileDelete,1);
+                        DaoLog daoLog =new DaoLogImpl();
+                        Log logSI = null; 
+                        daoLog.clientIns("Se ha activado el perfil " + daoProfile.profileGet(idProfileDelete).getName() ,Frm_Profile_Search.class.toString(), logSI.getIduser());
+                    }
+                                                                        
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Acciones realizadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        initializeTable();
                     }
                 }
             }
@@ -269,7 +289,7 @@ public class Frm_Profile_Search extends javax.swing.JFrame {
     
     private boolean profileValidatedToDelete(Integer idProfile){
         if (daoProfile.existsUserWithProfile(idProfile)){
-            JOptionPane.showMessageDialog(null,"No se puede elminar. Hay usuarios con este perfil", 
+            JOptionPane.showMessageDialog(null,"No se puede eliminar. Hay usuarios con este perfil", 
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
             return false;
         } 

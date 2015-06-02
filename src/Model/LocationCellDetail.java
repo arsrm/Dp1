@@ -15,92 +15,13 @@ import java.util.List;
  * @author Luis Miguel
  */
 public class LocationCellDetail {
-    private Integer idLocation_Cell_Detail;
-    private String description;
-    private Integer availability;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Integer userCreated;
-    private Integer userUpdated;
-    private LocationCell locationCell;
-    //private List<PalletByProductByLocationCellDetail> palletByProductByLocationCellDetailList;
-    private List<PickingOrderDetail> pickingOrderDetailList;
-
-    public LocationCellDetail() {
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getAvailability() {
-        return availability;
-    }
-
-    public void setAvailability(Integer availability) {
-        this.availability = availability;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(Integer userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public Integer getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(Integer userUpdated) {
-        this.userUpdated = userUpdated;
-    }
-
-    public LocationCell getLocationCell() {
-        return locationCell;
-    }
-
-    public void setLocationCell(LocationCell locationCell) {
-        this.locationCell = locationCell;
-    }
-
-    /*public List<PalletByProductByLocationCellDetail> getPalletByProductByLocationCellDetailList() {
-        return palletByProductByLocationCellDetailList;
-    }
-
-    public void setPalletByProductByLocationCellDetailList(List<PalletByProductByLocationCellDetail> palletByProductByLocationCellDetailList) {
-        this.palletByProductByLocationCellDetailList = palletByProductByLocationCellDetailList;
-    }
-    */
-    public List<PickingOrderDetail> getPickingOrderDetailList() {
-        return pickingOrderDetailList;
-    }
-
-    public void setPickingOrderDetailList(List<PickingOrderDetail> pickingOrderDetailList) {
-        this.pickingOrderDetailList = pickingOrderDetailList;
-    }
-
+    public Integer idLocation_Cell_Detail;
+    public String description;
+    public Integer availability;
+    public Integer Location_Cell_idLocation_Cell;
+    public Integer Location_Cell_Rack_idRack;
+    public Integer Location_Cell_Rack_Warehouse_idWarehouse;
+    public Integer idDistribution_Center;            
 
     /**
      * @return the idLocation_Cell_Detail
@@ -115,5 +36,91 @@ public class LocationCellDetail {
     public void setIdLocation_Cell_Detail(Integer idLocation_Cell_Detail) {
         this.idLocation_Cell_Detail = idLocation_Cell_Detail;
     }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the availability
+     */
+    public Integer getAvailability() {
+        return availability;
+    }
+
+    /**
+     * @param availability the availability to set
+     */
+    public void setAvailability(Integer availability) {
+        this.availability = availability;
+    }
+
+    /**
+     * @return the Location_Cell_idLocation_Cell
+     */
+    public Integer getLocation_Cell_idLocation_Cell() {
+        return Location_Cell_idLocation_Cell;
+    }
+
+    /**
+     * @param Location_Cell_idLocation_Cell the Location_Cell_idLocation_Cell to set
+     */
+    public void setLocation_Cell_idLocation_Cell(Integer Location_Cell_idLocation_Cell) {
+        this.Location_Cell_idLocation_Cell = Location_Cell_idLocation_Cell;
+    }
+
+    /**
+     * @return the Location_Cell_Rack_idRack
+     */
+    public Integer getLocation_Cell_Rack_idRack() {
+        return Location_Cell_Rack_idRack;
+    }
+
+    /**
+     * @param Location_Cell_Rack_idRack the Location_Cell_Rack_idRack to set
+     */
+    public void setLocation_Cell_Rack_idRack(Integer Location_Cell_Rack_idRack) {
+        this.Location_Cell_Rack_idRack = Location_Cell_Rack_idRack;
+    }
+
+    /**
+     * @return the Location_Cell_Rack_Warehouse_idWarehouse
+     */
+    public Integer getLocation_Cell_Rack_Warehouse_idWarehouse() {
+        return Location_Cell_Rack_Warehouse_idWarehouse;
+    }
+
+    /**
+     * @param Location_Cell_Rack_Warehouse_idWarehouse the Location_Cell_Rack_Warehouse_idWarehouse to set
+     */
+    public void setLocation_Cell_Rack_Warehouse_idWarehouse(Integer Location_Cell_Rack_Warehouse_idWarehouse) {
+        this.Location_Cell_Rack_Warehouse_idWarehouse = Location_Cell_Rack_Warehouse_idWarehouse;
+    }
+
+    /**
+     * @return the idDistribution_Center
+     */
+    public Integer getIdDistribution_Center() {
+        return idDistribution_Center;
+    }
+
+    /**
+     * @param idDistribution_Center the idDistribution_Center to set
+     */
+    public void setIdDistribution_Center(Integer idDistribution_Center) {
+        this.idDistribution_Center = idDistribution_Center;
+    }
+    
+    
     
 }

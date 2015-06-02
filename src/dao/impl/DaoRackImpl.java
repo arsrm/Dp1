@@ -7,15 +7,17 @@
 package dao.impl;
 
 
-import dao.DaoRack;
+import Model.LocationCell;
+import Model.LocationCellDetail;
 import Model.Rack;
+import dao.DaoRack;
+import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
-import enlaceBD.ConectaDb;
 /**
  *
  * @author Luigi
@@ -142,7 +144,7 @@ public class DaoRackImpl implements DaoRack{
     }
 
     @Override
-    public int rackDel(Integer idRack) {
+    public int rackDel(Integer idRack, Integer statusToChange) {
         String sql = "UPDATE Rack SET "                
                 + "status=? "
                 + "WHERE idRack=?;";
@@ -151,7 +153,7 @@ public class DaoRackImpl implements DaoRack{
             try {
                 
                 PreparedStatement ps = cn.prepareStatement(sql);                   
-                ps.setInt(1, 0);
+                ps.setInt(1, statusToChange);
                 ps.setInt(2, idRack);
                 ps.executeUpdate();
                 
@@ -262,6 +264,180 @@ public class DaoRackImpl implements DaoRack{
     @Override
     public List<Object[]> rackCbo() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean existsRackName(String rackName) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM Rack WHERE identifier = ?;";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, rackName);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean rackInUse(Rack rack) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM Pallet_By_Product_By_Location_Cell_Detail "
+                + "WHERE Location_Cell_Detail_idDistribution_Center = ? AND "
+                + "Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse = ? AND "
+                + "Location_Cell_Detail_Location_Cell_Rack_idRack = ? AND "
+                + "status = 1; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, rack.getWarehouse_Distribution_Center_idDistribution_Center());
+                ps.setInt(2, rack.getWarehouse_idWarehouse());
+                ps.setInt(3, rack.getIdRack());
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public int rackMaxIdGet() {
+        int maxId=0;
+        String sql = "SELECT "
+                + "MAX(idRack) "
+                + "FROM Rack;";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    maxId = rs.getInt(1);
+                    return maxId;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void rackLocationCellsIns(LocationCell locationCell) {        
+        String sql = "INSERT INTO Location_Cell ("
+                + "idLocation_Cell, "
+                + "description, "
+                + "width, "    
+                + "length, "
+                + "height, "
+                + "row_cell, "
+                + "column_cell, "
+                + "status, "
+                + "Location_State_idLocation_State, "
+                + "Rack_idRack, "
+                + "Rack_Warehouse_idWarehouse, "
+                + "Rack_Warehouse_Distribution_Center_idDistribution_Center) "
+                + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, locationCell.getIdLocation_Cell());
+                ps.setString(2, locationCell.getDescription());
+                ps.setDouble(3, locationCell.getWidth());
+                ps.setDouble(4, locationCell.getLength());
+                ps.setInt(5, locationCell.getHeight());                
+                ps.setInt(6, locationCell.getRow_Cell());
+                ps.setInt(7, locationCell.getColumn_Cell());
+                ps.setInt(8, locationCell.getStatus());
+                ps.setInt(9, locationCell.getLocation_State_idLocation_State());
+                ps.setInt(10, locationCell.getRack_idRack());
+                ps.setInt(11, locationCell.getRack_Warehouse_idWarehouse());
+                ps.setInt(12, locationCell.getRack_Warehouse_Distribution_Center_idDistribution_Center());
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                //
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    
+                }
+            }
+        }
+    }
+
+    @Override
+    public void rackLocationCellDetailIns(LocationCellDetail locationCellDetail) {
+        String sql = "INSERT INTO Location_Cell_Detail ("
+                + "idLocation_Cell_Detail, "
+                + "description, "
+                + "availability, "    
+                + "Location_Cell_idLocation_Cell, "
+                + "Location_Cell_Rack_idRack, "
+                + "Location_Cell_Rack_Warehouse_idWarehouse, "
+                + "idDistribution_Center) "
+                + "VALUES (?,?,?,?,?,?,?);";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ps.setInt(1, locationCellDetail.getIdLocation_Cell_Detail());
+                ps.setString(2, locationCellDetail.getDescription());
+                ps.setInt(3, locationCellDetail.getAvailability());
+                ps.setInt(4, locationCellDetail.getLocation_Cell_idLocation_Cell());
+                ps.setInt(5, locationCellDetail.getLocation_Cell_Rack_idRack());
+                ps.setInt(6, locationCellDetail.getLocation_Cell_Rack_Warehouse_idWarehouse());
+                ps.setInt(7, locationCellDetail.getIdDistribution_Center());
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                //
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    
+                }
+            }
+        }
     }
     
 }

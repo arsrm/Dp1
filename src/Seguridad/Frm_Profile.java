@@ -7,9 +7,15 @@
 package Seguridad;
 
 import Mantenimientos.*;
+import Model.Log;
 import Model.Profile;
+import Model.ProfileWindow;
+import dao.DaoLog;
 import dao.DaoProfile;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProfileImpl;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -26,6 +32,7 @@ public class Frm_Profile extends javax.swing.JFrame {
     
     Profile profile;    
     DaoProfile daoProfile = new DaoProfileImpl();
+        List<ProfileWindow> profileWindowList = new ArrayList<>();
     
     public Frm_Profile(Frm_Profile_Search menu) {
         setTitle("Mantenimiento de Perfiles"); 
@@ -51,6 +58,7 @@ public class Frm_Profile extends javax.swing.JFrame {
         lbl_description = new javax.swing.JLabel();
         txt_name = new javax.swing.JTextField();
         txt_description = new javax.swing.JTextField();
+        lbl_obligatory_field = new javax.swing.JLabel();
         btn_cancel = new javax.swing.JButton();
         btn_save = new javax.swing.JButton();
 
@@ -63,9 +71,12 @@ public class Frm_Profile extends javax.swing.JFrame {
 
         pnl_profile.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_name.setText("Nombre");
+        lbl_name.setText("Nombre (*)");
 
         lbl_description.setText("Descripción");
+
+        lbl_obligatory_field.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
+        lbl_obligatory_field.setText("(*) Campos Obligatorios");
 
         javax.swing.GroupLayout pnl_profileLayout = new javax.swing.GroupLayout(pnl_profile);
         pnl_profile.setLayout(pnl_profileLayout);
@@ -74,12 +85,15 @@ public class Frm_Profile extends javax.swing.JFrame {
             .addGroup(pnl_profileLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_name)
-                    .addComponent(lbl_description))
-                .addGap(42, 42, 42)
-                .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lbl_obligatory_field)
+                    .addGroup(pnl_profileLayout.createSequentialGroup()
+                        .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_name)
+                            .addComponent(lbl_description))
+                        .addGap(42, 42, 42)
+                        .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_name, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(53, Short.MAX_VALUE))
         );
         pnl_profileLayout.setVerticalGroup(
@@ -93,7 +107,8 @@ public class Frm_Profile extends javax.swing.JFrame {
                 .addGroup(pnl_profileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_description))
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addComponent(lbl_obligatory_field))
         );
 
         btn_cancel.setText("Cancelar");
@@ -153,6 +168,7 @@ public class Frm_Profile extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         profile = new Profile();
+        Integer idProfile;
         profile.setName(txt_name.getText().trim());
         profile.setDescription(txt_description.getText().trim());        
         
@@ -161,6 +177,14 @@ public class Frm_Profile extends javax.swing.JFrame {
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             if (profileValidatedToSave(profile.getName())) {
                 daoProfile.profileIns(profile);
+                idProfile = daoProfile.profileMaxIdGet();                
+                profileWindowList = daoProfile.windowsGet(idProfile);
+                for (int i = 0; i < profileWindowList.size(); i++) {
+                    daoProfile.profileWindowIns(profileWindowList.get(i));
+                }
+                DaoLog daoLog =new DaoLogImpl();
+                Log logSI = null; 
+                daoLog.clientIns("Se ha ingresado un nuevo perfil al sistema con ID " + profile.getName(), Frm_Profile.class.toString(), logSI.getIduser());
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el perfil con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (ok_option == JOptionPane.OK_OPTION) {
                     menu_padre.setVisible(true);
@@ -177,13 +201,23 @@ public class Frm_Profile extends javax.swing.JFrame {
         if(empty.equals(name)) {
             JOptionPane.showMessageDialog(null,"El nombre de perfil no puede ser vacio", 
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
-            return false;    
+            return false;
         }
         if (daoProfile.existsProfileName(name)){
             JOptionPane.showMessageDialog(null,"El nombre de perfil ya existe", 
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
             return false;
-        }        
+        }
+        if (daoProfile.profileMaxIdGet()==-1){
+            JOptionPane.showMessageDialog(null,"No se pudieron asignar los permisos", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
+        if (name.length()>128){
+            JOptionPane.showMessageDialog(null,"El nombre del perfil es muy largo", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }
         return true;
     }
     
@@ -227,6 +261,7 @@ public class Frm_Profile extends javax.swing.JFrame {
     private javax.swing.JButton btn_save;
     private javax.swing.JLabel lbl_description;
     private javax.swing.JLabel lbl_name;
+    private javax.swing.JLabel lbl_obligatory_field;
     private javax.swing.JPanel pnl_profile;
     private javax.swing.JTextField txt_description;
     private javax.swing.JTextField txt_name;

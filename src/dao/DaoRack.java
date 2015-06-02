@@ -6,6 +6,8 @@
 
 package dao;
 
+import Model.LocationCell;
+import Model.LocationCellDetail;
 import Model.Rack;
 import java.util.List;
 
@@ -15,17 +17,16 @@ import java.util.List;
  */
 public interface DaoRack {
     
-    public List<Rack> rackQry(Integer idDistributionCenter, Integer idWarehouse, String idIdentifier);
-    
-    public void rackIns(Rack rack);
-    
-    public int rackDel(Integer idRack);
-    
-    public Rack rackGet(Integer idRack);
-    
-    public void rackUpd(Rack rack);
-    
-    public List<Object[]> rackCbo();
-    
+    public List<Rack> rackQry(Integer idDistributionCenter, Integer idWarehouse, String idIdentifier);    
+    public void rackIns(Rack rack);    
+    public int rackDel(Integer idRack, Integer statusToChange);    
+    public Rack rackGet(Integer idRack);    
+    public void rackUpd(Rack rack);    
+    public List<Object[]> rackCbo();    
+    public boolean existsRackName(String rackName);
+    public boolean rackInUse(Rack rack);
+    public int rackMaxIdGet();
+    public void rackLocationCellsIns(LocationCell locationCell);
+    public void rackLocationCellDetailIns(LocationCellDetail locationCellDetail);
     
 }

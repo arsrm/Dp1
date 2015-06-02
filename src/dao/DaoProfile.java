@@ -12,7 +12,7 @@ public interface DaoProfile {
     public Profile usersGet(String name);
     public List<ProfileWindow> windowsGet(Integer idProfile);
     public void profileIns(Profile profile);
-    public int profileDel(Integer idProfile);
+    public int profileDel(Integer idProfile, Integer statusToChange);
     public Profile profileGet(Integer idProfile);
     public int profileHasWindows(Integer idProfile);
     public List<ProfileWindow> windowsGetById(Integer idProfile);
@@ -23,4 +23,6 @@ public interface DaoProfile {
     //evalua si hay usuarios activos cn el perfil buscado
     public boolean existsUserWithProfile(Integer idProfile);
     public void profileUpd(Profile profile);
+    //obtiene el maximo id de tabla Profile
+    public int profileMaxIdGet();
 }

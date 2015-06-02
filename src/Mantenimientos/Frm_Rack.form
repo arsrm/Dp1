@@ -29,8 +29,8 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="pnl_rack" alignment="0" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Component id="pnl_rack" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Component id="jpn_dimension" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -84,14 +84,14 @@
                       <Component id="lbl_identifier" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_description" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="45" pref="45" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="txt_identifier" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="cbo_warehouse" min="-2" pref="400" max="-2" attributes="0"/>
-                      <Component id="txt_description" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
-                      <Component id="cbo_distribution_center" alignment="1" min="-2" pref="400" max="-2" attributes="0"/>
+                      <Component id="txt_description" min="-2" pref="400" max="-2" attributes="0"/>
+                      <Component id="cbo_warehouse" alignment="0" min="-2" pref="400" max="-2" attributes="0"/>
+                      <Component id="cbo_distribution_center" min="-2" pref="400" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="195" max="32767" attributes="0"/>
+                  <EmptySpace pref="183" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -126,7 +126,7 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_warehouse">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Almacen"/>
+            <Property name="text" type="java.lang.String" value="Almacen (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JComboBox" name="cbo_distribution_center">
@@ -150,14 +150,14 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_identifier">
           <Properties>
-            <Property name="text" type="java.lang.String" value="ID"/>
+            <Property name="text" type="java.lang.String" value="ID (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_identifier">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_description">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Descripcion"/>
+            <Property name="text" type="java.lang.String" value="Descripcion (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_description">
@@ -195,40 +195,50 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_length" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_width" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="lbl_width" max="32767" attributes="0"/>
+                              <Component id="lbl_length" max="32767" attributes="0"/>
+                              <Component id="lbl_height_per_floor" max="32767" attributes="0"/>
+                              <Component id="lbl_resistance_weigth_per_floor" pref="144" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="119" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txt_length" min="-2" pref="40" max="-2" attributes="0"/>
-                              <Component id="txt_width" min="-2" pref="40" max="-2" attributes="0"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txt_length" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbl_unit_length" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txt_width" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbl_unit_width" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txt_height_per_floor" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbl_unit_height_per_floor" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="txt_resistance_weigth_per_floor" min="-2" pref="40" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="lbl_unit_resistance_weigth_per_floor" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="91" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_floor_numbers" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_column_numbers" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_floor_numbers" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_column_numbers" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txt_column_numbers" min="-2" pref="40" max="-2" attributes="0"/>
                               <Component id="txt_floor_numbers" min="-2" pref="40" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_height_per_floor" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_resistance_weigth_per_floor" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txt_resistance_weigth_per_floor" min="-2" pref="40" max="-2" attributes="0"/>
-                              <Component id="txt_height_per_floor" min="-2" pref="40" max="-2" attributes="0"/>
-                          </Group>
-                      </Group>
                   </Group>
-                  <EmptySpace pref="29" max="32767" attributes="0"/>
+                  <EmptySpace pref="36" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -241,6 +251,7 @@
                       <Component id="txt_length" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_floor_numbers" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_floor_numbers" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_unit_length" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -248,18 +259,22 @@
                       <Component id="txt_width" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_column_numbers" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_column_numbers" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_unit_width" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_height_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_height_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_unit_height_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_resistance_weigth_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_resistance_weigth_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lbl_unit_resistance_weigth_per_floor" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="142" max="32767" attributes="0"/>
+                  <EmptySpace pref="131" max="32767" attributes="0"/>
+                  <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -267,12 +282,12 @@
       <SubComponents>
         <Component class="javax.swing.JLabel" name="lbl_height_per_floor">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Altura por Piso (m2)"/>
+            <Property name="text" type="java.lang.String" value="Altura por Piso (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_floor_numbers">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nro. Pisos"/>
+            <Property name="text" type="java.lang.String" value="Nro. Pisos (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_floor_numbers">
@@ -281,31 +296,59 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_column_numbers">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nro. Columnas"/>
+            <Property name="text" type="java.lang.String" value="Nro. Columnas (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_resistance_weigth_per_floor">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_resistance_weigth_per_floor">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Resistencia Peso por Piso (Kg)"/>
+            <Property name="text" type="java.lang.String" value="Resistencia Peso por Piso (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_column_numbers">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_length">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Largo (m2)"/>
+            <Property name="text" type="java.lang.String" value="Largo (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_length">
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_width">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ancho (m2)"/>
+            <Property name="text" type="java.lang.String" value="Ancho (*)"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_width">
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unit_length">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="m2"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unit_width">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="m2"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unit_height_per_floor">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="m2"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_unit_resistance_weigth_per_floor">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Kg"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel1">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Tahoma" size="9" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="(*) Campos Obligatorios"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
