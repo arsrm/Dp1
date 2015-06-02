@@ -296,6 +296,7 @@ public class DaoUserImpl implements DaoUsers {
         }
         return result;
     }
+    
     @Override
     public Integer login(String usuario, String clave) {
 
@@ -305,6 +306,7 @@ public class DaoUserImpl implements DaoUsers {
                + "idUser,"
                 + "name, "
                 + "password, "
+                + "status,"
                 + "Profile_idProfile, "
                 + "Distribution_Center_idDistribution_Center "
                 + "FROM User where idUser='" + usuario + "' ";
@@ -317,7 +319,8 @@ public class DaoUserImpl implements DaoUsers {
                 while (rs.next()) {
                     pwd = rs.getString(3);
                      if (checkpw(clave, pwd)){
-                       cap = 1;
+                        if (rs.getInt(4)==1) 
+                            cap = 1;
                      }
                 }
                 
