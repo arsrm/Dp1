@@ -9,6 +9,8 @@ package dao;
 import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.Rack;
+import Model.Warehouse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,5 +30,6 @@ public interface DaoRack {
     public int rackMaxIdGet();
     public void rackLocationCellsIns(LocationCell locationCell);
     public void rackLocationCellDetailIns(LocationCellDetail locationCellDetail);
+    public List<Rack> rackQueryByWarehouse(Warehouse warehouse);
     
 }

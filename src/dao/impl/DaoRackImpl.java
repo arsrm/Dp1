@@ -10,12 +10,14 @@ package dao.impl;
 import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.Rack;
+import Model.Warehouse;
 import dao.DaoRack;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 /**
@@ -438,6 +440,67 @@ public class DaoRackImpl implements DaoRack{
                 }
             }
         }
+    }
+
+    @Override
+    public List<Rack> rackQueryByWarehouse(Warehouse warehouse) {
+        List<Rack> list = null;
+        String sql = "SELECT "
+                + "idRack, "
+                + "identifier, "
+                + "description, "
+                + "length, "    
+                + "width, "
+                + "floor_numbers, "
+                + "height_per_floor, "
+                + "resistance_weigth_per_floor, "
+                + "column_number, "
+                + "status, "
+                + "Warehouse_idWarehouse, "
+                + "Warehouse_Distribution_Center_idDistribution_Center "
+                + "FROM Rack "
+                + "WHERE "
+                + "Warehouse_Distribution_Center_idDistribution_Center = ? AND "
+                + "Warehouse_idWarehouse = ? ";
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                
+                PreparedStatement ps = cn.prepareStatement(sql);                                
+                ps.setInt(1, warehouse.getDistribution_Center_idDistribution_Center());
+                ps.setInt(2, warehouse.getIdWarehouse());                
+                ResultSet rs = ps.executeQuery();
+                  
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    Rack c = new Rack();
+                    c.setIdRack(rs.getInt(1));
+                    c.setIdentifier(rs.getString(2));
+                    c.setDescription(rs.getString(3));
+                    c.setLength(rs.getDouble(4));
+                    c.setWidth(rs.getDouble(5));
+                    c.setFloor_numbers(rs.getInt(6));
+                    c.setHeight_per_floor(rs.getInt(7));
+                    c.setResistance_weigth_per_floor(rs.getInt(8));
+                    c.setColumn_number(rs.getInt(9));
+                    c.setStatus(rs.getInt(10));
+                    c.setWarehouse_idWarehouse(rs.getInt(11));
+                    c.setWarehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        
+        return list;
     }
     
 }

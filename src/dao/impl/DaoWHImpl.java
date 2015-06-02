@@ -208,6 +208,7 @@ public class DaoWHImpl implements DaoWH{
     public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center) {
          ArrayList<Warehouse> list = new ArrayList<>();
         String sql = "SELECT "
+                + "Distribution_Center_idDistribution_Center, "
                 + "idWarehouse, "
                 + "description, "
                 + "status "
@@ -224,8 +225,10 @@ public class DaoWHImpl implements DaoWH{
                 while (rs.next()) {
                     Warehouse c = new Warehouse();
                     
-                    c.setIdWH(rs.getInt(1));
-                    c.setDescription(rs.getString(2));                   
+                    c.setDistribution_Center_idDistribution_Center(rs.getInt(1));
+                    c.setIdWH(rs.getInt(2));
+                    c.setDescription(rs.getString(3));
+                    c.setStatus(rs.getInt(4));
                     list.add(c);
                 }
 

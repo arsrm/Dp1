@@ -2,15 +2,15 @@ package Seguridad;
 
 import Mantenimientos.Frm_Client_Search;
 import Mantenimientos.Frm_Distribution_Center;
+import Mantenimientos.Frm_Location_Cell_Search;
+import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletLocation;
-import Mantenimientos.Frm_PalletLocation_Search;
-import Mantenimientos.Frm_PalletProduct;
-import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletLocation;
 //gzavala-inicio 24/05 23:45
 
 import Mantenimientos.Frm_PalletLocation_Search;
+import Mantenimientos.Frm_PalletProduct;
 import Mantenimientos.Frm_PalletProduct_Search;
 import Mantenimientos.Frm_Pallet_SearchIni;
 import Mantenimientos.Frm_Product_Search;
@@ -136,6 +136,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Pallet = new javax.swing.JMenuItem();
         op_Pallet_Product = new javax.swing.JMenuItem();
         op_PalletProduct_Location = new javax.swing.JMenuItem();
+        op_Location_Cell = new javax.swing.JMenuItem();
         menu_operaciones = new javax.swing.JMenu();
         jMenu5 = new javax.swing.JMenu();
         op_loadIntermentOrder = new javax.swing.JMenuItem();
@@ -271,6 +272,14 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenu_Pallet.add(op_PalletProduct_Location);
 
         menu_mantenimientos.add(jMenu_Pallet);
+
+        op_Location_Cell.setText("Celda de Ubicación");
+        op_Location_Cell.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Location_CellActionPerformed(evt);
+            }
+        });
+        menu_mantenimientos.add(op_Location_Cell);
 
         menu_principal.add(menu_mantenimientos);
 
@@ -754,6 +763,10 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_kardex.setVisible(true);
         frm_kardex.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Reporte_Kardex_segun_fechaActionPerformed
+
+    private void op_Location_CellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Location_CellActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_op_Location_CellActionPerformed
 //gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments
@@ -787,6 +800,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_DispatchOrderSearch;
     private javax.swing.JMenuItem op_GenerateDispatchOrders;
     private javax.swing.JMenuItem op_Guia_Transportista;
+    private javax.swing.JMenuItem op_Location_Cell;
     private javax.swing.JMenuItem op_Pallet;
     private javax.swing.JMenuItem op_PalletProduct_Location;
     private javax.swing.JMenuItem op_Pallet_Product;
