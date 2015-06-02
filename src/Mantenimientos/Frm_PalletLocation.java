@@ -398,10 +398,13 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        
+        /*
         Object[] options = {"OK"};
+        
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado datos del Pallet con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) 
+        {   int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha registrado datos del Pallet con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             if(ok_option==JOptionPane.OK_OPTION){
                 ventprev.setVisible(true);
                 ventprev.setLocationRelativeTo(null);
@@ -409,6 +412,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                 this.setVisible(false);
             }
         }         // TODO add your handling code here:
+        */
+        
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
