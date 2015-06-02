@@ -19,7 +19,7 @@ public class Pallet {
     Timestamp created_at;
     Timestamp updated_at;
     Integer Pallet_State_idPallet_Type;
-    String Location_Cell_Detail_idLocation_Cell_Detail="";    
+    String  Location_Cell_Detail_idLocation_Cell_Detail="";    
     Integer Location_Cell_Detail_Pallet_idPallet; 
     Integer Location_Cell_Detail_Location_Cell_idLocation_Cell;
     Integer Location_Cell_Detail_Location_Cell_Rack_idRack; 
@@ -172,7 +172,5 @@ public class Pallet {
     public void setProduct_Trademark_id_Trademark(Integer Product_Trademark_id_Trademark) {
         this.Product_Trademark_id_Trademark = Product_Trademark_id_Trademark;
     }
-    
-    
     
 }

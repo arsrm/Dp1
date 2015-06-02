@@ -8,6 +8,7 @@ package dao;
 import Model.Pallet;
 import Model.Warehouse;
 import Model.Distribution_Center;
+import Model.LocationCellDetail;
 import Model.Rack;
 import java.util.*;
 
@@ -40,4 +41,8 @@ public interface DaoPallet {
     public List<Object[]> PalletCbo();
     
     public Rack Rackid(String identifier ); 
+    
+    public Pallet GetPallet(LocationCellDetail obj); 
+    
+
 }

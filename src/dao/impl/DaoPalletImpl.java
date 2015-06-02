@@ -7,7 +7,9 @@
 package dao.impl;
 import Model.Pallet;
 import Model.Distribution_Center;
+import Model.LocationCellDetail;
 import Model.PalletIni;
+import Model.Product;
 import Model.Rack;
 import Model.Warehouse;
 import dao.DaoPallet;
@@ -326,5 +328,47 @@ public class DaoPalletImpl implements DaoPallet{
         }
         return list;
     }
-    
+
+    @Override
+    public Pallet GetPallet(LocationCellDetail obj) {
+        Pallet objmodel = null;
+        String sql = "select Pallet_By_Product_Pallet_idPallet, Pallet_By_Product_Product_Trademark_id_Trademark,\n" +
+                    "Pallet_By_Product_Product_idProduct,Location_Cell_Detail_idLocation_Cell_Detail,\n" +
+                    "Location_Cell_Detail_Location_Cell_idLocation_Cell,Location_Cell_Detail_Location_Cell_Rack_idRack,\n" +
+                    "Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,Location_Cell_Detail_idDistribution_Center,\n" +
+                    "status,created_at,updated_at,user_created,user_updated \n" +
+                    "from pallet_by_product_by_location_cell_detail\n" +
+                    "where  Location_Cell_Detail_idLocation_Cell_Detail ="+obj.getIdLocation_Cell_Detail()+" ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel = new Pallet();
+                    objmodel.setIdPallet(rs.getInt(1));
+                    objmodel.setProduct_Trademark_id_Trademark(rs.getInt(2));
+                    objmodel.setProduct_idProduct(rs.getInt(3));
+                    objmodel.setLocation_Cell_Detail_idLocation_Cell_Detail(rs.getString(4));
+                    objmodel.setLocation_Cell_Detail_Location_Cell_idLocation_Cell(rs.getInt(5));
+                    objmodel.setLocation_Cell_Detail_Location_Cell_Rack_idRack(rs.getInt(6));
+                    objmodel.setLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse(rs.getInt(7));
+                    objmodel.setIdDistribution_Center(rs.getInt(8));
+                    objmodel.setStatus(rs.getInt(9));
+                    objmodel.setCreated_at(rs.getTimestamp(10));
+                    objmodel.setUpdated_at(rs.getTimestamp(11));
+                    objmodel.setUser_created(rs.getInt(12));
+                    objmodel.setUser_updated(rs.getInt(13));
+                }
+            } catch (SQLException e) {
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
 }
