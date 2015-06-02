@@ -59,6 +59,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         txt_description.setText(pallet.getDescription());
         stateind=inicia_estado_pallet(pallet.getStatuspallet(),1);
         cbo_pallet_state.setSelectedIndex(stateind);
+        txt_cant.setEnabled(false);
       }
       if (accion.equals("INS"))
       { txt_idpallet.setEnabled(false);
@@ -232,6 +233,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
       Integer cantpallet=0; 
       //idpallet=daopalletini.PalletIniMax();
       PalletIni objpalletini=new PalletIni();
+      Integer maxidpallet=daopalletini.PalletIniMax(); 
       
       //accion es UPD --> Update y INS ---> Insert
       if (accion.equals("INS"))
@@ -247,7 +249,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
         if (reply == JOptionPane.YES_OPTION) 
         { 
           for (int i=0; i<cantpallet; i++)
-          {daopalletini.PalletIniIns(objpalletini,(i+1)); //Inserción masiva de los pallet
+          {daopalletini.PalletIniIns(objpalletini,(maxidpallet+i+1)); //Inserción masiva de los pallet
            }
           this.dispose();
           menu_padre.setVisible(true);
