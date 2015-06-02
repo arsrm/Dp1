@@ -89,7 +89,6 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         table_orders = new javax.swing.JTable();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
-        btn_Validate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -236,13 +235,6 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_Validate.setText("Validar Pedidos");
-        btn_Validate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ValidateActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pnl_ordersLayout = new javax.swing.GroupLayout(pnl_orders);
         pnl_orders.setLayout(pnl_ordersLayout);
         pnl_ordersLayout.setHorizontalGroup(
@@ -253,8 +245,6 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
                         .addComponent(btn_delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_Validate)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
                         .addGap(4, 4, 4))))
@@ -267,8 +257,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
-                    .addComponent(btn_cancel)
-                    .addComponent(btn_Validate))
+                    .addComponent(btn_cancel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -376,40 +365,6 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         fillTable();
     }//GEN-LAST:event_btn_searchActionPerformed
 
-    private void btn_ValidateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ValidateActionPerformed
-        // TODO add your handling code here:
-        List<Integer> requestToDelete = new ArrayList<>();
-        Object[] options = {"OK"};
-        if(ifNoColummnSelected()==false){
-             for (int i = 0; i < table_orders.getRowCount(); i++) {
-                if ((Boolean) table_orders.getValueAt(i, 3)) {
-                    if(validateRequest(Integer.parseInt(table_orders.getValueAt(i,0).toString()))==false)
-                        requestToDelete.add(Integer.parseInt(table_orders.getValueAt(i,0).toString()));
-                }
-            }
-            int ok_option;
-            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                int size = requestToDelete.size();
-                if(size==0)
-                       ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron pedidos no válidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]); 
-                else{
-                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se encontraron "+requestToDelete.size()+". Se procederá a anularlos. ","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                    if(ok_option==JOptionPane.OK_OPTION){
-                        for(int i=0;i<size;i++)
-                            daoRequest.requestsDelInvalidate(requestToDelete.get(i));
-                        ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se eliminaron los pedidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                        refreshGrid();
-                        searchFilter();
-                        fillTable();
-                    }
-                }
-            }
-        }else{
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        }
-    }//GEN-LAST:event_btn_ValidateActionPerformed
-
     private void cbo_statusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_statusActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbo_statusActionPerformed
@@ -492,7 +447,6 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_Validate;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_client_search;
     private javax.swing.JButton btn_delete;

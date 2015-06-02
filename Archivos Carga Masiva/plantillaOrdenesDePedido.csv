@@ -6,7 +6,7 @@ Estado,2,
 DETALLE,,
 Nro Linea,idProducto,Cantidad
 1,1,200
-2,1,200
+2,1,600
 FIN DETALLE,,
 NroOrden,12121355,
 Fecha Llegada,25/07/2014,
@@ -16,5 +16,5 @@ Estado,2,
 DETALLE,,
 Nro Linea,idProducto,Cantidad
 1,1,400
-2,1,200
+2,1,600
 FIN DETALLE,,

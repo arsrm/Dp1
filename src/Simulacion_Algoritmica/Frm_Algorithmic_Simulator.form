@@ -244,6 +244,8 @@
                       <Component id="jScrollPane1" alignment="0" pref="685" max="32767" attributes="0"/>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="test" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_generate_routes" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -256,7 +258,10 @@
               <Group type="102" attributes="0">
                   <Component id="jScrollPane1" min="-2" pref="91" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btn_generate_routes" min="-2" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="btn_generate_routes" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="test" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -322,6 +327,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_generate_routesActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="test">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="test"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="testActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

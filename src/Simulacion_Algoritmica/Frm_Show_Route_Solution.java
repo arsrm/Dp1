@@ -6,6 +6,13 @@
 
 package Simulacion_Algoritmica;
 
+import Model.Client;
+import Model.Distribution_Center;
+import dao.DaoClient;
+import dao.DaoDistributionCenter;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoDistributionCenterImpl;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,10 +26,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -33,36 +44,77 @@ import javax.swing.JScrollPane;
  * @author Luis Miguel
  */
 public class Frm_Show_Route_Solution extends javax.swing.JFrame {
+    ImageIcon map ;
+    Integer posX=-1, posY=-1;
+    Imagen imagen;
+    List<String> listPerSol;
+    DaoClient daoClient = new DaoClientImpl();
+    DaoDistributionCenter daoDB = new DaoDistributionCenterImpl();
+    Integer flag = 0;
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
-            public Imagen(/*JPanel p*/) {
-                Path path = Paths.get("C:\\Users\\Luis Miguel\\Desktop\\CHECKOUT\\trunk\\Imagenes\\test.png");
-                
+            String routes = null;
+            Path path = Paths.get(".\\Imagenes\\test.png");
+           
+            BufferedImage imageMap;
+            public Imagen() {
                 byte[] data;
                 try {
                     data = Files.readAllBytes(path);
                     imageMap = ImageIO.read(new ByteArrayInputStream(data));
                     simbolo = new ImageIcon(imageMap.getScaledInstance(imageMap.getWidth(),imageMap.getHeight(), java.awt.Image.SCALE_SMOOTH)); 
+                    map = simbolo;
                 } catch (IOException ex) {
-                    Logger.getLogger(Frm_Show_Route_Solution.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
                 this.setSize(imageMap.getWidth(), imageMap.getHeight()); //se selecciona el tamaño del panel
+                
+            }
+            
+            public void refresh(){
+                simbolo = map;
             }
 
     //Se crea un método cuyo parámetro debe ser un objeto Graphics
 
             public void paint(Graphics grafico) {
             Dimension height = getSize();
-            
-            //Se selecciona la imagen que tenemos en el paquete de la //ruta del programa
-
-            //se dibuja la imagen que tenemos en el paquete Images //dentro de un panel
-
             grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
+          
+            Graphics2D g2 = (Graphics2D) grafico;
+            if(routes!=null){
+                String[] clients = routes.split("-");
+                int sizeRoute = clients.length;
+                for(int i=0;i<sizeRoute;i++){
+                 if(Integer.parseInt(clients[i])==0){
+                    Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
+                    Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
+                    g2.drawLine(dis.getPos_x(),dis.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                }else if(i==sizeRoute-2){
+                     Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
+                     Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
+                     g2.drawLine(start.getPos_x(),start.getPos_y(),dis.getPos_x(),dis.getPos_y());
+                     g2.drawString(dis.getName(),dis.getPos_x(),dis.getPos_y());
+                     g2.drawLine(dis.getPos_x(),dis.getPos_y(),dis.getPos_x(),dis.getPos_y());
+                     break;
+
+                }else{
+                    Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
+                    Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
+                    g2.drawLine(start.getPos_x(),start.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                 }
+                }   
+            }
+           
             setOpaque(false);
             super.paintComponent(grafico);
         }
     }
+    
     Frm_Algorithmic_Simulator frm_asAux = new Frm_Algorithmic_Simulator();
     BufferedImage imageMap;
     /**
@@ -72,26 +124,55 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         frm_asAux=frm_as;
         setTitle("VISUALIZACIÓN DE LA RUTA");
         initComponents();
-        Imagen img = new Imagen(/*pnl_img*/);
-        int width = img.simbolo.getIconWidth();
-        int height = img.simbolo.getIconHeight();
+        //printMap(posX,posY);
+    }
+    
+    public Frm_Show_Route_Solution(Frm_Algorithmic_Simulator frm_as,List<String> solutionsPerList) throws IOException {
+        frm_asAux=frm_as;
+        setTitle("VISUALIZACIÓN DE LA RUTA");
+        initComponents();
+        listPerSol = solutionsPerList;
+        initializeCombo();
+        printMap();
+        
+        showRoute(solutionsPerList.get(0));
+        
+    }
+    
+    private void initializeCombo(){
+        int size = listPerSol.size();
+        
+        for(int i=0;i<size;i++){
+            String item = "RUTA VEHICULO " + i;
+            
+            cbo_vehicles.addItem(item);
+        }
+       
+        
+        
+        
+    }
+    
+     
+
+     private void printMap(){
+        imagen = new Imagen();
+        int width = imagen.simbolo.getIconWidth();
+        int height = imagen.simbolo.getIconHeight();
         Dimension d = new Dimension();
         d.height = height;
         d.width = width;
         pnl_img.setPreferredSize(d);
         JScrollPane scroll = new JScrollPane(pnl_img);        
-        scroll.setBounds(10,50,1200,600);        
+        scroll.setBounds(10,80,1200,600);        
         scroll.setAutoscrolls(true);
-        pnl_img.add(img);
+        pnl_img.add(imagen);
         pnl_img.repaint();
         scroll.setViewportView(pnl_img);
         scroll.getViewport().setView(pnl_img); 
-        
         this.add(scroll);
-       
-        
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,7 +203,11 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
 
         lbl_select_vehicle.setText("Seleccionar Vehículo");
 
-        cbo_vehicles.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbo_vehicles.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbo_vehiclesItemStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_imgLayout = new javax.swing.GroupLayout(pnl_img);
         pnl_img.setLayout(pnl_imgLayout);
@@ -180,6 +265,54 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    private void cbo_vehiclesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_vehiclesItemStateChanged
+        // TODO add your handling code here:
+        if(flag==0){
+            flag=1;
+        }else{
+            int indexVehicleList = cbo_vehicles.getSelectedIndex();
+            String solutionForVehicle = listPerSol.get(indexVehicleList);
+            showRoute(solutionForVehicle);
+        }
+        
+    }//GEN-LAST:event_cbo_vehiclesItemStateChanged
+
+    private void showRoute(String sol){
+        //imagen = new Imagen();
+        imagen.refresh();
+        imagen.routes = sol;
+        pnl_img.add(imagen);
+        pnl_img.repaint();
+         Graphics2D g2 = (Graphics2D) pnl_img.getGraphics();
+         imagen.routes = sol;
+         String[] clients = sol.split("-");
+            int sizeRoute = clients.length;
+            for(int i=0;i<sizeRoute;i++){
+             if(Integer.parseInt(clients[i])==0){
+                Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
+                Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
+                g2.drawLine(dis.getPos_x(),dis.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
+            }else if(i==sizeRoute-2){
+                 Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
+                 Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
+                 g2.drawLine(start.getPos_x(),start.getPos_y(),dis.getPos_x(),dis.getPos_y());
+                 g2.drawString(dis.getName(),dis.getPos_x(),dis.getPos_y());
+                 g2.drawLine(dis.getPos_x(),dis.getPos_y(),dis.getPos_x(),dis.getPos_y());
+                 break;
+                 
+            }else{
+                Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
+                Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
+                g2.drawLine(start.getPos_x(),start.getPos_y(),finish.getPos_x(),finish.getPos_y());
+                g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
+             }
+        }
+        
+    }
+   
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

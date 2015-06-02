@@ -23,7 +23,6 @@ public class PickingOrderDetail{
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private LocationCellDetail locationCellDetail;
-    private Pallet pallet;
     private PickingOrder pickingOrder;
     private Integer userCreated;
     private Integer userUpdated;
@@ -117,20 +116,7 @@ public class PickingOrderDetail{
         this.locationCellDetail = locationCellDetail;
     }
 
-    /**
-     * @return the pallet
-     */
-    public Pallet getPallet() {
-        return pallet;
-    }
-
-    /**
-     * @param pallet the pallet to set
-     */
-    public void setPallet(Pallet pallet) {
-        this.pallet = pallet;
-    }
-
+    
     /**
      * @return the pickingOrder
      */

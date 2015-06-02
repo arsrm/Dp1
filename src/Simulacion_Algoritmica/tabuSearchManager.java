@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,14 +24,27 @@ import java.util.logging.Logger;
  */
 public class tabuSearchManager {
     
-    private static ArrayList<Vehicle> vehicleList = new ArrayList<>(); //--> LISTA DE CAMIONES
-    private static ArrayList<Client> clientList = new ArrayList<>(); //---> LISTA DE CLIENTES
+    private static List<Vehicle> vehicleList = new ArrayList<>(); //--> LISTA DE CAMIONES
+    private static List<Client> clientList = new ArrayList<>(); //---> LISTA DE CLIENTES
     private ArrayList<Integer> initialSolution = new ArrayList<>();//---> SOLUCION INICIAL
     private double [][] distances;//---> MATRIZ DE COSTO (DE PUNTO A PUNTO)
-    private static int stoppingCriterion = 1000;//---> CRITERIO DE PARADA
-    private static int maxSizeTL = 20; //---> TAMAÑO MAXIMO DE LA LISTA TABU
-    private static int maxNumbIteration =20; //--->NUMERO MAXIMO DE ITERACIONES PENALIZADAS POR SOLUCION.
-    private static int neighborpivot = 3;
+    private int stoppingCriterion;//---> CRITERIO DE PARADA
+    private int maxSizeTL = 20; //---> TAMAÑO MAXIMO DE LA LISTA TABU
+    private int maxNumbIteration =20; //--->NUMERO MAXIMO DE ITERACIONES PENALIZADAS POR SOLUCION.
+    private int neighborpivot = 3;
+    
+    
+    public tabuSearchManager(){
+        
+    }
+    
+    public tabuSearchManager(List<Vehicle> vecList,List<Client> cliList,Integer stop){
+        this.vehicleList = vehicleList;
+        this.clientList = cliList;
+        this.stoppingCriterion = stop;
+    }
+    
+    
     /**
      * @return the routesCost
      */
@@ -157,131 +171,34 @@ public class tabuSearchManager {
         
     }
     
-    public void loadData(String fileV, String fileC  ) throws FileNotFoundException, IOException{        
-        /*int id;
-        String nameV;
-        double capacity;
-        int numbOrders;
-        //LECTURA DEL ARCHIVO DE VEHICULOS
-        
-        if(fileV !=null){
-            BufferedReader vehicleFile = new BufferedReader(new FileReader(fileV));
-            
-             try {
-                String line = vehicleFile.readLine();
-                String [] words = line.split("/");
-                id = Integer.parseInt(words[0]);
-                nameV = words[1];
-                capacity = Double.parseDouble(words[2]);
-                numbOrders = Integer.parseInt(words[3]);
-                vehicle vec = new vehicle (id,nameV,capacity,numbOrders);
-                getVehicleList().add(vec);
-                
-                              
-                while (line != null) {
-                    line = vehicleFile.readLine();
-                    if(line!=null){
-                        words = line.split("/");
-                        id = Integer.parseInt(words[0]);
-                        nameV = words[1];
-                                               
-                        capacity = Double.parseDouble(words[2]);
-                        numbOrders = Integer.parseInt(words[3]);
-                        vec = new vehicle (id,nameV,capacity,numbOrders);
-                        getVehicleList().add(vec);
-                    }                
-                }
-
-            } catch (IOException ex) {
-                Logger.getLogger(tabuSearchManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            vehicleFile.close();
-        }
-        //LECTURA DEL ARCHIVO DE CLIENTES
-        if(fileC!=null){
-            BufferedReader clientFile = new BufferedReader(new FileReader(fileC));
-            String nameC;
-            String location;
-            int posX;
-            int posY;
-            double requestWeight;
-            int priority;
-             try {
-                String line = clientFile.readLine();
-                String [] words = line.split("/");
-                id = Integer.parseInt(words[0]);                
-                nameC = words[1];
-                location = words[2];
-                posX = Integer.parseInt(words[3]);
-                posY = Integer.parseInt(words[4]);
-                requestWeight = Double.parseDouble(words[5]);
-                priority = Integer.parseInt(words[6]);
-                client c = new client(id,nameC,location,posX,posY,requestWeight,priority);
-                
-                getClientList().add(c);
-                while (line != null) {
-                    line = clientFile.readLine();
-                    if(line!=null ){
-                        words = line.split("/");
-                        id = Integer.parseInt(words[0]);
-                        nameC = words[1];
-                        location = words[2];
-                        posX = Integer.parseInt(words[3]);
-                        posY = Integer.parseInt(words[4]);
-                        requestWeight = Double.parseDouble(words[5]);
-                        priority = Integer.parseInt(words[6]);
-                        c = new client(id,nameC,location,posX,posY,requestWeight,priority);
-                        getClientList().add(c);
-                    }                
-                }
-
-            } catch (IOException ex) {
-                Logger.getLogger(tabuSearchManager.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            clientFile.close();
-        }    
-       */
-    }
-
-    public void loadRoutesCosts(int numejec) throws FileNotFoundException, IOException{
-        /*int sizeClient = clientList.size();
-        //Se crea el archivo de costos por determinado numero de ejecucion
-        String fileC = new String("..\\archivos\\Costos"+numejec+".txt");
-        double[][] costs = getTrafficMatrix(fileC);//función que lee el archivo de costos.
-        routesCost = costs;*/
-}
-    
-    //POSTERIORMENTE CAMBIARLO PARA INSERTAR LA FUNCION DE COSTO
-    public double[][] getTrafficMatrix(String fileC) throws FileNotFoundException, IOException{
-       int sizeClient = clientList.size();
+    public double[][] getDistancesMatrix(){
+        int sizeClient = clientList.size();
+        double[][]distances =  new double[sizeClient][sizeClient];
         double[][]costs = new double[sizeClient][sizeClient];
-       /* if(fileC!=null){
-            BufferedReader costFile = new BufferedReader(new FileReader(fileC));
-            double cost;
-             try {
-                String line = costFile.readLine();
-                String [] words = line.split("\t");
-                for(int i=0;i<sizeClient;i++){
-                    costs[0][i]=Double.parseDouble(words[i]);
+        Client client1=null;
+        Client client2=null;
+        
+            for(int i=0;i<sizeClient;i++){
+                for(int j=0;j<sizeClient;j++){
+                    if(i==j){
+                        distances[i][j]=0;
+                        costs[i][j]=0;
+                    }
+                    else{
+                        client1 = clientList.get(i);//cliente i
+                        client2 = clientList.get(j);//cliente j
+                        //extraemos las coordenadas
+                        int client1x = client1.getPos_x();
+                        int client1y = client1.getPos_y();
+                        int client2x = client2.getPos_x();
+                        int client2y = client2.getPos_y();
+                        //calculamos la distancia
+                        double distance = (double)Math.round(Math.pow(Math.pow(client1x-client2x,2)+Math.pow(client1y-client2y,2),0.5)*100)/100;
+                        distances[i][j]= distance;
+                    } 
                 }
-                int index = 1;
-                while (line != null) {
-                    line = costFile.readLine();
-                    if(line!=null ){
-                        words = line.split("\t");
-                        for(int i=0;i<sizeClient;i++){
-                            costs[index][i]=Double.parseDouble(words[i]);
-                        }
-                        index++;
-                    }                
-                }
-
-            } catch (IOException ex) {
-                Logger.getLogger(tabuSearchManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-            costFile.close();
-        }*/
-        return costs;
+            return distances;
     }
     
     public ArrayList<Integer> generateInitialSolution(){
@@ -356,7 +273,6 @@ public class tabuSearchManager {
         bestSolution = reducedSizeSolution(bestSolution);
         return bestSolution;
     }
-    
     
     public ArrayList<Integer> reducedSizeSolution(ArrayList<Integer> solution){
         //FUNCION QUE REDUCE EL TAMAÑO DE LA SOLUCION ELIMINANDO LOS VALORES NULL.
@@ -459,6 +375,7 @@ public class tabuSearchManager {
         cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
         return cost;
     }
+    
     public int searchNBestNextClient(int pivot,int position,int veh){
         //FUNCION QUE RETORNA EL INDICE DEL SIGUIENTE MEJOR N° CLIENTE.
         //si position=0 --> 1er mejor
@@ -534,14 +451,12 @@ public class tabuSearchManager {
         return bestIndex;
     }
     
-    
-    public ArrayList<Integer> OptimizeTSearch() throws IOException{        
+    public ArrayList<Integer> OptimizeTSearch(){        
         ArrayList<Integer> actualSolution = new ArrayList<Integer>();
         ArrayList<tabuElement> tabuList = new ArrayList<>(); 
         //Primero generar la solucion inicial
         initialSolution = generateInitialSolution();
-        //p.print(""+calculateFunctionCost(initialSolution)+","); 
-        //printSolution(initialSolution,0,time);
+        
         actualSolution = initialSolution;
         //Realizar el bucle de parada:
         int index = 0;
@@ -594,6 +509,7 @@ public class tabuSearchManager {
             }
         }
     }
+    
     public ArrayList<solutionElement> optFindApplicants(double actualSolutionCost,ArrayList<Integer> actualSolution,ArrayList<tabuElement> tabuList){
        /*FUNCION QUE SE ENCARGA DE BUSCAR ASPIRANTES
         SABIENDO QUE UN ASPIRANTES AQUELLAS SOLUCIONES TABU QUE PUEDEN SER
@@ -942,16 +858,14 @@ public class tabuSearchManager {
         
     }
     
-    
-    public ArrayList<Vehicle> getVehicleList() {
+    public List<Vehicle> getVehicleList() {
         return vehicleList;
     }
 
-    public void setVehiculeList(ArrayList<Vehicle> vehiculeList) {
+    public void setVehiculeList(List<Vehicle> vehiculeList) {
         this.vehicleList = vehicleList;
     }
 
-    
     public Client queryByClienteId(int id){
         /*FUNCION QUE BUSCA EL CLIENTE POR ID**/
         int size = getClientList().size();
@@ -963,15 +877,14 @@ public class tabuSearchManager {
         return null;
     }
 
-    public ArrayList<Client> getClientList() {
+    public List<Client> getClientList() {
         return clientList;
     }
 
-    public void setClientList(ArrayList<Client> clientList) {
+    public void setClientList(List<Client> clientList) {
         this.clientList = clientList;
     }
     
-  
     public void showRoute(ArrayList<Integer> solution){  
         /*FUNCION QUE RETORNA LA RUTA IMPRESA*/
         int size = solution.size();
@@ -991,7 +904,6 @@ public class tabuSearchManager {
                 System.out.print(solution.get(i)+"-");            
         }
     }
-    
     
     public void showNoAttendedClients(){        
         /*FUNCION QUE MUESTRA QUE CLIENTES NO FUERON ATENDIDOS*/
