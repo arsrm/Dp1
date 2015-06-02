@@ -455,4 +455,9 @@ public class DaoPalletImpl implements DaoPallet{
         }
         return list;
     }
+
+    @Override
+    public String PalletLocationIns(Integer idpallet, Integer idmarca, Integer idproduct, Integer numorden, String idCD, String idware, String idrack, String idcelda, String idceldadet) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

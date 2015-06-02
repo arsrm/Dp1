@@ -56,6 +56,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     String Cadenarack="";
     String Cadenacelda="";
     String Cadenadetallecelda="";
+    DaoPalletProduct daoPalletProduct=new DaoPalletProductImpl();
+    
     
     public void  loadceldadetalle(String Cadenacelda)//          
     { 
@@ -413,6 +415,62 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
             }
         }         // TODO add your handling code here:
         */
+         DefaultTableModel modelo = (DefaultTableModel) tbl_palletlocation.getModel();
+         List<Integer> listidpallet=new  ArrayList<Integer>();
+         List<Integer> listidmarca= new ArrayList<Integer>();
+         List<Integer> listidproduct= new ArrayList<Integer>();
+         List<Integer>  listidorden=new ArrayList<Integer>(); 
+         Integer idpallet;
+         Integer idmarca;
+         Integer idproduct;
+         Integer numorden; 
+         int cantreg=0;    
+         int nr =modelo.getRowCount(); 
+         String idCD=""; 
+         String idware=""; 
+         String idrack=""; 
+         String idcelda=""; 
+         String idceldadet=""; 
+         
+        for (int i=0; i<nr ;i++){
+         try {   
+         Object prueba =  modelo.getValueAt(i, 4);
+             if ((Boolean)prueba){
+                //Integer numm= (Integer)modelo.getValueAt(i, 8);
+               idpallet=(Integer)modelo.getValueAt(i, 0);
+               idmarca= (Integer)daoPalletProduct.GetTrademarkname((String)modelo.getValueAt(i,1)).getId_Trademark();
+               idproduct=(Integer)daoPalletProduct.GetProduct((String)modelo.getValueAt(i, 2)).getIdProduct();
+               numorden=(Integer)modelo.getValueAt(i, 3);
+               listidpallet.add(idpallet);
+               listidmarca.add(idmarca);
+               listidproduct.add(idproduct);
+               listidorden.add(numorden);
+               cantreg=cantreg+1;
+               } 
+         }catch(Exception e)
+          { 
+          }  
+        }   
+        if (cantreg>1)    
+        {
+           String message = "Solo debe agregar un pallet-producto a la ubicación";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);             
+         }   
+        else if(cantreg==1)
+        {    idpallet=listidpallet.get(0);
+             idmarca=listidmarca.get(0);
+             idproduct=listidproduct.get(0);
+             numorden=listidorden.get(0);
+             idCD=cbo_center_distribution.getSelectedItem().toString().trim(); 
+             idware=cbo_warehouse.getSelectedItem().toString().trim(); 
+             idrack=cbo_rack.getSelectedItem().toString().trim();
+             idcelda=cbo_location_cell.getSelectedItem().toString().trim(); 
+             idceldadet=cbo_locationcell_detail.getSelectedItem().toString().trim(); 
+             daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idCD, idware, idrack, idcelda, idceldadet);
+         }     
         
     }//GEN-LAST:event_btn_saveActionPerformed
 

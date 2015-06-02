@@ -35,6 +35,10 @@ public interface DaoPallet {
     
     public String PalletIns(Pallet pallet);
    
+    public String PalletLocationIns(Integer idpallet,Integer idmarca,Integer  idproduct,Integer  numorden,String idCD,
+            String idware,String idrack, String idcelda,String idceldadet);     
+    
+            
     public String PalletDel(Pallet pallet ); 
     
     public String PalletUpd(Pallet pallet);
@@ -48,6 +52,6 @@ public interface DaoPallet {
     public LocationCell LocationCellid(String description); 
     
     public Pallet GetPallet(LocationCellDetail obj); 
-    
-
+        
+ 
 }
