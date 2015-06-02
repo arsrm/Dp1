@@ -19,7 +19,7 @@ public class Pallet {
     Timestamp created_at;
     Timestamp updated_at;
     Integer Pallet_State_idPallet_Type;
-    String  Location_Cell_Detail_idLocation_Cell_Detail="";    
+    Integer  Location_Cell_Detail_idLocation_Cell_Detail;    
     Integer Location_Cell_Detail_Pallet_idPallet; 
     Integer Location_Cell_Detail_Location_Cell_idLocation_Cell;
     Integer Location_Cell_Detail_Location_Cell_Rack_idRack; 
@@ -92,11 +92,11 @@ public class Pallet {
         this.Pallet_State_idPallet_Type = Pallet_State_idPallet_Type;
     }
 
-    public String getLocation_Cell_Detail_idLocation_Cell_Detail() {
+    public Integer getLocation_Cell_Detail_idLocation_Cell_Detail() {
         return Location_Cell_Detail_idLocation_Cell_Detail;
     }
 
-    public void setLocation_Cell_Detail_idLocation_Cell_Detail(String Location_Cell_Detail_idLocation_Cell_Detail) {
+    public void setLocation_Cell_Detail_idLocation_Cell_Detail(Integer Location_Cell_Detail_idLocation_Cell_Detail) {
         this.Location_Cell_Detail_idLocation_Cell_Detail = Location_Cell_Detail_idLocation_Cell_Detail;
     }
 

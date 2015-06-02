@@ -349,7 +349,7 @@ public class DaoPalletImpl implements DaoPallet{
                     objmodel.setIdPallet(rs.getInt(1));
                     objmodel.setProduct_Trademark_id_Trademark(rs.getInt(2));
                     objmodel.setProduct_idProduct(rs.getInt(3));
-                    objmodel.setLocation_Cell_Detail_idLocation_Cell_Detail(rs.getString(4));
+                    objmodel.setLocation_Cell_Detail_idLocation_Cell_Detail(rs.getInt(4));
                     objmodel.setLocation_Cell_Detail_Location_Cell_idLocation_Cell(rs.getInt(5));
                     objmodel.setLocation_Cell_Detail_Location_Cell_Rack_idRack(rs.getInt(6));
                     objmodel.setLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse(rs.getInt(7));
