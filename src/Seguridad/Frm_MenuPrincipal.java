@@ -765,7 +765,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_Reporte_Kardex_segun_fechaActionPerformed
 
     private void op_Location_CellActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Location_CellActionPerformed
-        // TODO add your handling code here:
+        Frm_Location_Cell_Search frm_location_cell_search = new Frm_Location_Cell_Search(this);
+        frm_location_cell_search.setVisible(true);        
+        frm_location_cell_search.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Location_CellActionPerformed
 //gzavala-fin 24/05 23:45    
     /**

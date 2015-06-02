@@ -36,9 +36,6 @@ import tool.SelectAllHeader;
  */
 public class Frm_Location_Cell_Search extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Frm_rack_search
-     */
     Frm_MenuPrincipal menuaux=new Frm_MenuPrincipal();        
     
     DaoDistributionCenter daoDC = new DaoDistributionCenterImpl();
@@ -64,8 +61,8 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
         menuaux = menu;
         initComponents();
         
-        TableColumn tc = tbl_location_cell.getColumnModel().getColumn(5);
-        tc.setHeaderRenderer(new SelectAllHeader(tbl_location_cell, 5));        
+        TableColumn tc = tbl_location_cell.getColumnModel().getColumn(8);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_location_cell, 8));        
         initializeForm();        
     }
     
@@ -109,11 +106,6 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
         lbl_warehouse.setText("Almacén");
 
         cbo_distribution_center.setEnabled(false);
-        cbo_distribution_center.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_distribution_centerActionPerformed(evt);
-            }
-        });
 
         cbo_warehouse.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -338,14 +330,17 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
                     idWarehouse = Integer.parseInt(tbl_location_cell.getValueAt(i, 1).toString());
                     idRack = Integer.parseInt(tbl_location_cell.getValueAt(i, 2).toString());
                     idLocationCell = Integer.parseInt(tbl_location_cell.getValueAt(i, 3).toString());
-                    status = tbl_location_cell.getValueAt(i, 8).toString();
+                    status = tbl_location_cell.getValueAt(i, 7).toString();
                     if (status.equalsIgnoreCase("Activo")) {                        
                         locationCell = daoLocationCell.LocationCellGet(idDistributionCenter, idWarehouse, idRack, idLocationCell);
                         if (rackValidatedToDelete(locationCell)) {
                             daoLocationCell.locationCellChangeState(locationCell, 0);
+                            daoLocationCell.LocationCellAvailabilityUpd(locationCell, 0);
                         }
                     } else {
+                        locationCell = daoLocationCell.LocationCellGet(idDistributionCenter, idWarehouse, idRack, idLocationCell);
                         daoLocationCell.locationCellChangeState(locationCell, 1);
+                        daoLocationCell.LocationCellAvailabilityUpd(locationCell, 1);
                     }
                 }
             }
@@ -358,11 +353,11 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private boolean rackValidatedToDelete(LocationCell locationCell){
-//        if (daoLocationCell.locationCellInUse(locationCell)){
-//            JOptionPane.showMessageDialog(null,"No se puede eliminar. La celda de ubicación esta siendo usada", 
-//                        "Advertencias", JOptionPane.WARNING_MESSAGE);
-//            return false;
-//        } 
+        if (daoLocationCell.locationCellInUse(locationCell)){
+            JOptionPane.showMessageDialog(null,"No se puede eliminar. La celda de ubicación esta siendo usada", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
         return true;
     }
     
@@ -395,10 +390,6 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_cbo_rackMouseClicked
-
-    private void cbo_distribution_centerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_distribution_centerActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbo_distribution_centerActionPerformed
           
     public void initializeTable(){
         
@@ -431,6 +422,9 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
                     }
 
                     Object newRow[] = {
+                        locationCellList.get(i).getRack_Warehouse_Distribution_Center_idDistribution_Center(),
+                        locationCellList.get(i).getRack_Warehouse_idWarehouse(),
+                        locationCellList.get(i).getRack_idRack(),                        
                         locationCellList.get(i).getIdLocation_Cell(),
                         locationCellList.get(i).getRow_Cell(),
                         locationCellList.get(i).getColumn_Cell(),

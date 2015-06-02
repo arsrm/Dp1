@@ -37,21 +37,23 @@ public class DaoLocationCellImpl implements DaoLocationCell {
     public LocationCell LocationCellGet(Integer idDistributionCenter, Integer idWarehouse, Integer idRack, Integer idLocCell) {
         LocationCell locCell = null;
         String sql = "SELECT "
-                + "description,"
-                + "width,"
-                + "length,"
-                + "height,"
-                + "row,"
-                + "column,"
-                + "status,"
-                + "Location_State_idLocation_State,"
-                + "Rack_idRack,"
-                + "Rack_Warehouse_idWarehouse "
+                + "idLocation_Cell, "
+                + "description, "
+                + "width, "
+                + "length, "
+                + "height, "
+                + "row_cell, "
+                + "column_cell, "
+                + "status, "
+                + "Location_State_idLocation_State, "
+                + "Rack_idRack, "
+                + "Rack_Warehouse_idWarehouse, "
+                + "Rack_Warehouse_Distribution_Center_idDistribution_Center "
                 + "FROM Location_Cell "
-                + "WHERE idDistribution_Center = ? AND "
-                + "Location_Cell_Rack_Warehouse_idWarehouse = ? AND "
-                + "Location_Cell_Rack_idRack = ? AND "
-                + "Location_Cell_idLocation_Cell = ?;";
+                + "WHERE Rack_Warehouse_Distribution_Center_idDistribution_Center = ? AND "
+                + "Rack_Warehouse_idWarehouse = ? AND "
+                + "Rack_idRack = ? AND "
+                + "idLocation_Cell = ?;";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -64,18 +66,19 @@ public class DaoLocationCellImpl implements DaoLocationCell {
 
                 while (rs.next()) {
                     locCell = new LocationCell();
-
-                    locCell.setIdLocation_Cell(idLocCell);
-                    locCell.setDescription(rs.getString(1));
-                    locCell.setWidth(rs.getDouble(2));
-                    locCell.setLength(rs.getDouble(3));
-                    locCell.setHeight(rs.getInt(4));
-                    locCell.setRow_Cell(rs.getInt(5));
-                    locCell.setColumn_Cell(rs.getInt(6));
-                    locCell.setStatus(rs.getInt(7));
-                    locCell.setLocation_State_idLocation_State(rs.getInt(8));
-                    locCell.setRack_idRack(rs.getInt(9));
-                    locCell.setRack_Warehouse_idWarehouse(rs.getInt(10));
+                    
+                    locCell.setIdLocation_Cell(rs.getInt(1));
+                    locCell.setDescription(rs.getString(2));
+                    locCell.setWidth(rs.getDouble(3));
+                    locCell.setLength(rs.getDouble(4));
+                    locCell.setHeight(rs.getInt(5));
+                    locCell.setRow_Cell(rs.getInt(6));
+                    locCell.setColumn_Cell(rs.getInt(7));
+                    locCell.setStatus(rs.getInt(8));
+                    locCell.setLocation_State_idLocation_State(rs.getInt(9));
+                    locCell.setRack_idRack(rs.getInt(10));
+                    locCell.setRack_Warehouse_idWarehouse(rs.getInt(11));
+                    locCell.setRack_Warehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
                 }
 
             } catch (SQLException e) {
@@ -195,7 +198,75 @@ public class DaoLocationCellImpl implements DaoLocationCell {
     public void locationCellChangeState(LocationCell locationCell, Integer statusToChange) {
         String sql = "UPDATE Location_Cell SET "                
                 + "status=? "
-                + "FROM Location_Cell "
+                + "WHERE Rack_Warehouse_Distribution_Center_idDistribution_Center = ? AND "
+                + "Rack_Warehouse_idWarehouse = ? AND "
+                + "Rack_idRack = ? AND "
+                + "idLocation_Cell = ?;";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                
+                PreparedStatement ps = cn.prepareStatement(sql);                   
+                ps.setInt(1, statusToChange);
+                ps.setInt(2, locationCell.getRack_Warehouse_Distribution_Center_idDistribution_Center());
+                ps.setInt(3, locationCell.getRack_Warehouse_idWarehouse());
+                ps.setInt(4, locationCell.getRack_idRack());
+                ps.setInt(5, locationCell.getIdLocation_Cell());
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                e.getMessage();
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        
+    }
+
+    @Override
+    public boolean locationCellInUse(LocationCell locationCell) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM Pallet_By_Product_By_Location_Cell_Detail "
+                + "WHERE Location_Cell_Detail_idDistribution_Center = ? AND "
+                + "Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse = ? AND "
+                + "Location_Cell_Detail_Location_Cell_Rack_idRack = ? AND "
+                + "Location_Cell_Detail_Location_Cell_idLocation_Cell = ? AND "
+                + "status = 1; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, locationCell.getRack_Warehouse_Distribution_Center_idDistribution_Center());
+                ps.setInt(2, locationCell.getRack_Warehouse_idWarehouse());
+                ps.setInt(3, locationCell.getRack_idRack());
+                ps.setInt(4, locationCell.getIdLocation_Cell());
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void LocationCellAvailabilityUpd(LocationCell locationCell, Integer statusToChange) {
+        String sql = "UPDATE Location_Cell_Detail SET "                
+                + "availability=? "
                 + "WHERE idDistribution_Center = ? AND "
                 + "Location_Cell_Rack_Warehouse_idWarehouse = ? AND "
                 + "Location_Cell_Rack_idRack = ? AND "
@@ -222,7 +293,6 @@ public class DaoLocationCellImpl implements DaoLocationCell {
                 }
             }
         }
-        
     }
 
 }
