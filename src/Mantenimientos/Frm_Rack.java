@@ -335,6 +335,13 @@ public class Frm_Rack extends javax.swing.JFrame {
         txt_column_numbers.setText(rack.getColumn_number().toString());
         txt_height_per_floor.setText(rack.getHeight_per_floor().toString());
         txt_resistance_weigth_per_floor.setText(rack.getResistance_weigth_per_floor().toString());
+        
+        txt_length.setEnabled(false);
+        txt_width.setEnabled(false);
+        txt_floor_numbers.setEnabled(false);
+        txt_column_numbers.setEnabled(false);
+        txt_height_per_floor.setEnabled(false);
+        txt_resistance_weigth_per_floor.setEnabled(false);
     }
     
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
