@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -305,11 +306,11 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
     }
 
     @Override
-    public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct) {
+    public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct, Date expirationDate,Integer idIntOrd) {
         int sizelist= listidpallet.size();
         String result = null;
-        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,status) "
-                + " values(?,?,?,1) ";
+        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,status,expiration_date,Internment_Order_idInternment_Order) "
+                + " values(?,?,?,1,?,?) ";
         Connection cn = db.getConnection();
         PalletIni objmodelpalletini=new PalletIni();
         DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
@@ -322,6 +323,8 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                     ps.setInt(1,idpallet);
                     ps.setInt(2,idmarca);
                     ps.setInt(3,idproduct);
+                    ps.setDate(4, new java.sql.Date(expirationDate.getTime()));
+                    ps.setInt(5, idIntOrd);
                     //Se actualiza el pallet como no disponible
                     objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
                     objmodelpalletini.setStatuspallet(1); 

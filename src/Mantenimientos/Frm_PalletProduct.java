@@ -364,7 +364,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
         if (reply == JOptionPane.YES_OPTION) {
-            daoPalletProduct.PalletProductInsMasive(listidpallet, idmarca, idproduct);
+            daoPalletProduct.PalletProductInsMasive(listidpallet, idmarca, idproduct,);
         }
         load_tablefilter();    
 

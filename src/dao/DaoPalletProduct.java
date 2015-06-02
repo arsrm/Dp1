@@ -6,9 +6,10 @@
 
 package dao;
 import Model.PalletIni;
+import Model.PalletProduct;
 import Model.Product;
 import Model.Trademark;
-import Model.PalletProduct;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface DaoPalletProduct {
     
     public String PalletProductDelMasive(List<Integer> idpallet, List<Integer> idmark, List<Integer> idproduct,List<Integer> idstatus );    
    
-    public String PalletProductInsMasive(List<Integer>listidpallet, Integer idmarca, Integer idproduct)  ;
+    public String PalletProductInsMasive(List<Integer>listidpallet, Integer idmarca, Integer idproduct,Date expirationDate,Integer idIntOrd);
     
     public List<Integer> GetPalletByStatus(Integer status, Integer cantPallets);
     

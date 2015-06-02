@@ -148,7 +148,8 @@ public class DaoProdImpl implements DaoProducts {
                 + "status,"
                 + "cod_ean13,"
                 + "Trademark_id_Trademark,"
-                + "Type_Condition_idType_Condition "
+                + "Type_Condition_idType_Condition, "
+                + "time_expiration "
                 + "FROM Product WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
@@ -170,6 +171,7 @@ public class DaoProdImpl implements DaoProducts {
                     p.setCodeEAN13(rs.getString(8));
                     p.setTrademark(rs.getInt(9));
                     p.setTypeConditionWH(rs.getInt(10));
+                    p.setTimeExpiration(rs.getInt(11));
                 }
 
             } catch (SQLException e) {
@@ -428,6 +430,38 @@ public class DaoProdImpl implements DaoProducts {
         }
 
         return products;
+    }
+
+    @Override
+    public String ProductUpdStock(Integer idProduct, Integer cantPallets, Integer idMovimiento) {
+        String result = null;
+        String sql = "UPDATE Product SET "
+                + "physical_stock = ? "
+                + "WHERE idProduct = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                Product product = ProductsGet(idProduct);
+                PreparedStatement ps = cn.prepareStatement(sql);
+                if (idMovimiento == 1) {
+                    ps.setInt(1, product.getPhysicalStock() + cantPallets * product.getQuantityBoxesPerPallet());
+                } else {
+                    ps.setInt(1, product.getPhysicalStock() - cantPallets * product.getQuantityBoxesPerPallet());
+                }
+                ps.setInt(2, idProduct);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
     }
 
 }

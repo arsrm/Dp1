@@ -33,4 +33,6 @@ public interface DaoProducts {
     public List<Product> ProductsSearch(String EAN13, String name, Trademark trademark);
     
     public List<Product> ProductsQryByTrademark(Integer idTrademark);
+    
+    public String ProductUpdStock(Integer idProduct, Integer cantPallets, Integer idMovimiento);
 }
