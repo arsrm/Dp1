@@ -324,7 +324,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                     ps.setInt(3,idproduct);
                     //Se actualiza el pallet como no disponible
                     objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
-                    objmodelpalletini.setStatuspallet(1);
+                    objmodelpalletini.setStatuspallet(1); 
                     objdaopalletini.PalletIniUpd(objmodelpalletini);
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {

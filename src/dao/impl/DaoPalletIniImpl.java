@@ -123,13 +123,20 @@ public class DaoPalletIniImpl implements DaoPalletIni {
                 + "Pallet_State_idPallet_Type=? "
                 + "WHERE idPallet=?";
 
+        Integer idpallet= palletini.getIdpallet();
+        String description=palletini.getDescription();
+        Integer status=palletini.getStatuspallet();
+        Integer cantreg=cuentaregistros(idpallet);
+        if (cantreg>0)
+        { status=0; 
+         }
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, palletini.getDescription());
-                ps.setInt(2, palletini.getStatuspallet());
-                ps.setInt(3, palletini.getIdpallet());
+                ps.setString(1, description);
+                ps.setInt(2, status);
+                ps.setInt(3, idpallet);
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -252,7 +259,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
     @Override
     public Integer PalletIniMax() {
         Integer maxid = 0;
-        String sql = " select (COALESCE(max(idPallet),0)  +1 ) from  pallet ";
+        String sql = " select COALESCE(max(idPallet),0)  from  pallet ";
         Connection cn = db.getConnection();
 
         if (cn != null) {
@@ -325,7 +332,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
     @Override
     public Integer cuentaregistros(Integer idpallet) {
         Integer cantreg=0; 
-        String sql = " select (count(1) from  pallet_by_product where Pallet_idPallet=? ";
+        String sql = " select count(1) from  pallet_by_product where Pallet_idPallet=? ";
         Connection cn = db.getConnection();
         
         if (cn != null) {
