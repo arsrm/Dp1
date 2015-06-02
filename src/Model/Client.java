@@ -12,9 +12,11 @@ public class Client {
     private Integer pos_x;
     private Integer pos_y;
     private Integer status;
+    private Integer requestState;
+    private Double totalWeight;
    
     public Client() {
-        
+        this.requestState = 0;
     }
     
     public Integer getIdClient() {
@@ -79,6 +81,34 @@ public class Client {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    /**
+     * @return the requestState
+     */
+    public Integer getRequestState() {
+        return requestState;
+    }
+
+    /**
+     * @param requestState the requestState to set
+     */
+    public void setRequestState(Integer requestState) {
+        this.requestState = requestState;
+    }
+
+    /**
+     * @return the totalWeight
+     */
+    public Double getTotalWeight() {
+        return totalWeight;
+    }
+
+    /**
+     * @param totalWeight the totalWeight to set
+     */
+    public void setTotalWeight(Double totalWeight) {
+        this.totalWeight = totalWeight;
     }
     
 }

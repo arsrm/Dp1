@@ -142,7 +142,6 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
                 ResultSet rs = ps.executeQuery();
 
                 if (rs.next()) {
-                    System.out.println("ETAJSHD");
                     requestOrderDetail = new RequestOrderDetail();
                     Product product = daoProducts.ProductsGet(rs.getInt(2));
                     requestOrderDetail.setIdRequest_Order_Detail(rs.getInt(1));
@@ -199,7 +198,6 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
 
                 requestOrderDetail = new LinkedList<>();
                 while (rs.next()) {
-                    System.out.println("ENTRO 2");
                     RequestOrderDetail requestOrderDet = new RequestOrderDetail();
                     Product product = daoProducts.ProductsGet(rs.getInt(2));
                     requestOrderDet.setIdRequest_Order_Detail(rs.getInt(1));
@@ -222,6 +220,22 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
         }
 
         return requestOrderDetail;
+    }
+
+    @Override
+    public String requestOrderDetailsDel(List<Integer> idOrderDetailList, Integer idRequestOrder) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        int status = -1;
+        for (Integer id : idOrderDetailList) {
+            RequestOrderDetail roD = requestOrderDetailGet(idRequestOrder, id);
+            if(roD.getStatus()==0){
+                status=1;
+            }else if(roD.getStatus()==1 || roD.getStatus()==2)
+                status=0;
+            result = requestOrderDetailDel(id,idRequestOrder,status);
+        }
+        return result;
     }
     
 }

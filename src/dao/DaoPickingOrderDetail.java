@@ -15,15 +15,13 @@ import java.util.List;
  */
 public interface DaoPickingOrderDetail {
     
-    public List<PickingOrderDetail> pickingOrderDetailQry();
-    
-    public List<PickingOrderDetail> pickingOrderDetailQry_search();
+    public List<PickingOrderDetail> pickingOrderDetailQry(Integer idPickingOrder);
     
     public String pickingOrderDetailIns(PickingOrderDetail pickingOrderDetail);
     
-    public String pickingOrderDetailDel(List<String> ids);
+    public String pickingOrderDetailDel(Integer idPickingOrderDetail,Integer idPickingOrder, Integer status);
     
-    public PickingOrderDetail pickingOrderDetailGet(String idpickingOrderDetail);
+    public PickingOrderDetail pickingOrderDetailGet(Integer idpickingOrderDetail);
     
     public String pickingOrderDetailUpd(PickingOrderDetail pickingOrderDetail);
     

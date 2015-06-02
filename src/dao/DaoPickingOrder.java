@@ -21,9 +21,9 @@ public interface DaoPickingOrder {
     
     public String pickingOrderIns(PickingOrder pickingOrder);
     
-    public String pickingOrderDel(List<String> ids);
+    public String pickingOrderDel(Integer idPickingOrder);
     
-    public PickingOrder pickingOrderGet(String idpickingOrder);
+    public PickingOrder pickingOrderGet(Integer idpickingOrder);
     
     public String pickingOrderUpd(PickingOrder pickingOrder);
 }

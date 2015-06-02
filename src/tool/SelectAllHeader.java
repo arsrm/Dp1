@@ -96,7 +96,7 @@ public class SelectAllHeader extends JToggleButton implements TableCellRenderer 
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            //viewColumn = header.columnAtPoint(e.getPoint());
+            viewColumn = header.columnAtPoint(e.getPoint());
             int modelColumn = tcm.getColumn(viewColumn).getModelIndex();
             if (modelColumn == targetColumn) {
                 doClick();

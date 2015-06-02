@@ -29,4 +29,6 @@ public interface DaoRequestOrder {
     
     public String requestsDel(List<Integer> requestListToDelete);
     
+    public String requestsDelInvalidate(Integer idRequest);
+    
 }

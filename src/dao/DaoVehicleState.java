@@ -23,7 +23,7 @@ public interface DaoVehicleState {
     
     public String vehicleStateDel(List<String> ids);
     
-    public VehicleState vehicleStateGet(String idvehicleState);
+    public VehicleState vehicleStateGet(Integer idvehicleState);
     
     public String vehicleStateUpd(VehicleState vehicleState);
 }

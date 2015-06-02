@@ -17,15 +17,15 @@ import java.util.List;
 
 public class PickingOrder{
     private Integer idPickingOrder;
-    private Timestamp date;
+    private Date date;
     private Integer status;
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Integer userCreated;
     private Integer userUpdated;
-    private List<RequestOrder> requestOrderList;
-    private List<DispatchOrder> dispatchOrderList;
     private List<PickingOrderDetail> pickingOrderDetailList;
+    private Integer idClient;
+    private RequestOrder requestOrder;
 
     public PickingOrder() {
     }
@@ -42,11 +42,11 @@ public class PickingOrder{
         this.idPickingOrder = idPickingOrder;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -90,21 +90,6 @@ public class PickingOrder{
         this.userUpdated = userUpdated;
     }
 
-    public List<RequestOrder> getRequestOrderList() {
-        return requestOrderList;
-    }
-
-    public void setRequestOrderList(List<RequestOrder> requestOrderList) {
-        this.requestOrderList = requestOrderList;
-    }
-
-    public List<DispatchOrder> getDispatchOrderList() {
-        return dispatchOrderList;
-    }
-
-    public void setDispatchOrderList(List<DispatchOrder> dispatchOrderList) {
-        this.dispatchOrderList = dispatchOrderList;
-    }
 
     public List<PickingOrderDetail> getPickingOrderDetailList() {
         return pickingOrderDetailList;
@@ -112,6 +97,34 @@ public class PickingOrder{
 
     public void setPickingOrderDetailList(List<PickingOrderDetail> pickingOrderDetailList) {
         this.pickingOrderDetailList = pickingOrderDetailList;
+    }
+
+    /**
+     * @return the idClient
+     */
+    public Integer getIdClient() {
+        return idClient;
+    }
+
+    /**
+     * @param idClient the idClient to set
+     */
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
+    }
+
+    /**
+     * @return the requestOrder
+     */
+    public RequestOrder getRequestOrder() {
+        return requestOrder;
+    }
+
+    /**
+     * @param requestOrder the requestOrder to set
+     */
+    public void setRequestOrder(RequestOrder requestOrder) {
+        this.requestOrder = requestOrder;
     }
 
     

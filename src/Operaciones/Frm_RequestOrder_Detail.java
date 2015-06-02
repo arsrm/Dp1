@@ -6,15 +6,33 @@
 
 package Operaciones;
 
+import Model.LocationCellDetail;
+import Model.Pallet;
+import Model.PickingOrder;
+import Model.PickingOrderDetail;
+import Model.Product;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
+import Model.Users;
 import dao.DaoRequestOrder;
+import dao.DaoRequestOrderDetail;
+import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
+import java.awt.Component;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+import javax.swing.text.TableView.TableCell;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -23,8 +41,13 @@ import javax.swing.table.DefaultTableModel;
 public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     Frm_RequestOrder_Search frm_rosAux = new Frm_RequestOrder_Search();
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoRequestOrderDetail daoRequestOrderDetail = new DaoRequestOrderDetailImpl();
     RequestOrder roAux = new RequestOrder();
     DefaultTableModel model = new DefaultTableModel();
+    List<Integer> listRequestToDelete =  new ArrayList<>();
+    Integer idRequest;
+    Boolean validateRequest = true;
+    
     /**
      * Creates new form Frm_VerDetalleOrdenPedido1
      */
@@ -36,18 +59,53 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     
     public Frm_RequestOrder_Detail(Frm_RequestOrder_Search frm_ros, Integer idRequestOrder) {
         setTitle("ORDEN DE PEDIDO");
-        roAux = daoRequestOrder.requestOrderGet(idRequestOrder);
+        idRequest = idRequestOrder;
+        roAux = daoRequestOrder.requestOrderGet(idRequest);
         frm_rosAux = frm_ros;
         initComponents();
+        TableColumn tc = table_products.getColumnModel().getColumn(7);
+        tc.setHeaderRenderer(new SelectAllHeader(table_products, 7));
         model = (DefaultTableModel) table_products.getModel();
         fillData();
-        if(roAux.getStatus()==0){
+        if(roAux.getStateRequestOrder().getIdStateRequestOrder()==3){//si esta cancelado
             btn_delete.setEnabled(false);
             btn_generate_order.setEnabled(false);
         }
-            
+        verifyProducts();
+        putComboInTable();
     }
 
+    private void putComboInTable(){
+        TableColumn tC = table_products.getColumnModel().getColumn(5);
+        List<RequestOrderDetail> rodList = roAux.getRequestOrderDetailList();
+        int sizeRows = table_products.getRowCount();
+        List<Integer[]> quantities = new ArrayList<>();
+        for(int i=0;i<sizeRows;i++){
+            TableCellEditor tce = table_products.getCellEditor(i, 5);
+            JComboBox comboBox = new JComboBox();
+                try {
+                    RequestOrderDetail roD = rodList.get(i);
+                    int size = roD.getProduct().getFreeStock()/roD.getProduct().getQuantityBoxesPerPallet();
+                    Integer[] list = new Integer[size+1];
+                    int item = 0;
+                    for(int j=0;j<size+1;j++){
+                        list[j]=item;
+                        item+=roD.getProduct().getQuantityBoxesPerPallet();
+                    }
+                    quantities.add(list);
+                } catch (NullPointerException e) {
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }            
+            }
+        
+                
+        tC.setCellEditor(new MyComboEditor(quantities));
+        }
+    
+        
+        
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -102,7 +160,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "INACTIVO", "ACTIVO" }));
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ATENDIDO", "PENDIENTE", "CANCELADO" }));
         cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");
@@ -192,14 +250,14 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código Producto", "Descripción", "Cantidad Solicitado", "Cantidad Disponible", "Estado", "Hacer Entrega Parcial"
+                "N° Línea", "Código Producto", "Descripción", "Cantidad Solicitado", "Cantidad Disponible", "Cantidad Entregada", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, true
+                false, false, false, false, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -293,23 +351,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         txt_client_address.setText(roAux.getClient().getAddress());
         jdate_register_date.setDate(roAux.getDateArrive());
         jdate_deliver_date.setDate(roAux.getDateline());
-        cbo_status.setSelectedIndex(roAux.getStatus());
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
-        List<RequestOrderDetail> list = roAux.getRequestOrderDetailList();
-        
-        
-        int size = list.size();
-        for(int i=0;i<size;i++){
-            RequestOrderDetail roD = list.get(i);
-            String status = null;
-            if(roD.getStatus()==0)
-                status = "Inactivo";
-            else
-                status = "Activo";
-            Object[] fila = {roD.getProduct().getIdProduct().toString(),roD.getProduct().getName(),roD.getQuantity().toString(),
-                            roD.getProduct().getFreeStock().toString(),status,false};           
-            model.addRow(fila);
-        }
+        cbo_status.setSelectedIndex(roAux.getStateRequestOrder().getIdStateRequestOrder()-1);
+        fillTable();
         
     }
     
@@ -332,36 +375,160 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
-                frm_rosAux.setVisible(true);
-                frm_rosAux.setLocationRelativeTo(null);
-                this.dispose();
+        
+        if(ifNoColummnSelected()==false){
+            listRequestToDelete = new ArrayList<>();
+            for (int i = 0; i < table_products.getRowCount(); i++) {
+                if ((Boolean) table_products.getValueAt(i, 7)) {
+                    listRequestToDelete.add(Integer.parseInt(table_products.getValueAt(i, 0).toString()));
+
+                }
             }
             
-        } 
+            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                if(ok_option==JOptionPane.OK_OPTION){
+                    daoRequestOrderDetail.requestOrderDetailsDel(listRequestToDelete, idRequest);
+                }
+                refreshGrid();
+                roAux = daoRequestOrder.requestOrderGet(idRequest);
+                fillTable();
+                verifyProducts();
+            }
+        }else{
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+    private void refreshGrid(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
+    
+    private void fillTable(){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
+        List<RequestOrderDetail> list = roAux.getRequestOrderDetailList();
+        int size = list.size();
+        for(int i=0;i<size;i++){
+            RequestOrderDetail roD = list.get(i);
+            String status = null;
+            if(roD.getStatus()==0)
+                status = "Inactivo";
+            else
+                status = "Activo";
+            
+            Object[] fila = {list.get(i).getIdRequest_Order_Detail(),roD.getProduct().getIdProduct().toString(),roD.getProduct().getName(),roD.getQuantity().toString(),
+                            roD.getProduct().getFreeStock().toString(),"",status,false};
+            
+            model.addRow(fila);
+           
+        }
+    }
+    
+    
+    private void verifyProducts(){
+        boolean emptyRequest = allUnable();
+        if(emptyRequest == true){
+            btn_generate_order.setEnabled(false);
+        }else{
+            btn_generate_order.setEnabled(true);
+        }
+    }
+    
     private void btn_generate_orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_orderActionPerformed
         // TODO add your handling code here:
-        Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Acción efectuada con éxito!","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){                
-                Frm_RequestOrder_Preview frm_rop = new Frm_RequestOrder_Preview(frm_rosAux);
-                frm_rop.setVisible(true);
-                frm_rop.setLocationRelativeTo(null);
-                this.dispose();
+        //MENSAJE DE "ESTA SEGURO":
+        //PRIMERO: se verifica que por producto, se este solicitando cantidades multiplos en los pallets
+        //NO ES NECESARIO PUESTO QUE LOS COMBOBOX ya lo estan validando
+        //SEGUNDO: leer los cantidades y los productos (actualizar estado del pedido)
+        int size = table_products.getRowCount();
+        for(int i=0;i<size;i++){
+            Integer delivered = (Integer)table_products.getValueAt(i, 5);
+            Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
+            System.out.println(delivered);
+            roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
+            roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
+            //y se ajusta la nueva cantidad solicitada con lo que falta
+            roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+        }
+        //SE PROCEDE CON UN UPDATE
+        daoRequestOrder.requestOrderUpd(roAux);
+        //TERCERO: buscar los pallets
+        PickingOrder po = new PickingOrder();
+        //seteamos datos principales
+        po.setDate(new Date());
+        po.setStatus(1);
+        Users actualUser = new Users();
+        //SETEAMOS EL USUARIO ACTUAL;
+        po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
+        PickingOrderDetail poD = new PickingOrderDetail();
+        for(int i=0;i<size;i++){
+            //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
+            int quantityDeliver = (int)table_products.getValueAt(i,5);
+            int quantityPerPallet = roAux.getRequestOrderDetailList().get(i).getProduct().getQuantityBoxesPerPallet();
+            int palletsNumberDemanding = quantityDeliver/quantityPerPallet;
+            int completed = 0;
+            Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
+            while(completed<palletsNumberDemanding){
+                Pallet pallet = searchPallet(product);
+                //insertamos el pallet en el detalle de picking order
+                
             }
-            
-        } 
+        }
     }//GEN-LAST:event_btn_generate_orderActionPerformed
 
+    private Pallet searchPallet(Product product){
+        Pallet pallet = null;
+        
+        return pallet;
+    }
+    
+    private boolean ifNoColummnSelected(){
+        int sizeRows =  table_products.getRowCount();
+        for(int i=0;i<sizeRows;i++){
+            boolean statusSelected = (Boolean)table_products.getValueAt(i, 7);
+            if(statusSelected == true)
+                return false;
+        }
+        return true;
+    }
+    
+    private boolean allUnable(){
+        List<RequestOrderDetail> roD = roAux.getRequestOrderDetailList();
+        int size = roD.size();
+        for (int i=0;i<size;i++){
+            String status = table_products.getValueAt(i, 6).toString();
+            if(status.equals("Activo")==true)
+                return false;
+        }
+        return true;
+    }
+    
+    private class MyComboEditor extends DefaultCellEditor{
+                
+                List<Integer[]> values;
+                
+                public MyComboEditor(List<Integer[]> values){
+                        super(new JComboBox());
+                        this.values = values;
+                }
+                
+                public Component getTableCellEditorComponent(JTable table, Object value,
+                          boolean isSelected, int row, int column) {
+                        
+                        JComboBox combo = (JComboBox)getComponent();
+                        combo.removeAllItems();
+                        Integer[] valores = values.get(row);
+                        
+                        for(int i=0; i<valores.length; i++){
+                                combo.addItem(valores[i]);
+                        }
+                        combo.setSelectedItem(value);
+                        
+                        return combo;
+                }
+        }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

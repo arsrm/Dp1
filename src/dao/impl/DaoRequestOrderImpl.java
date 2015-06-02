@@ -134,10 +134,12 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
 
         if(index_status == 0){ //es cualquiera de los dos tipos
             sql+="";
-        }else if(index_status == 1){ //inactivo
-            sql+= "AND status=0";
-        }else if(index_status==2){
-            sql+= "AND status=1";
+        }else if(index_status == 1){ //atendido
+            sql+= "AND State_Request_Order_idStateRequest_Order=1";
+        }else if(index_status==2){//pendiente
+            sql+= "AND State_Request_Order_idStateRequest_Order=2";
+        }else if(index_status==3){//cancelado
+            sql+= "AND State_Request_Order_idStateRequest_Order=3";
         }
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -247,11 +249,10 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
     public String requestOrderDel(Integer idRequestOrder) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Integer status;
-        Integer id_status_request;
+        Integer status_detail;
         DaoRequestOrderDetail daoDetail = new DaoRequestOrderDetailImpl();
         String result = null;
-        String sql = "UPDATE request_order SET "
-                + "status = ? ,"
+        String sql = "UPDATE request_order SET "                
                 + "State_Request_Order_idStateRequest_Order = ? "
                 + "WHERE idRequest_Order = ?";
 
@@ -262,22 +263,21 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                
                 RequestOrder ro = requestOrderGet(idRequestOrder);
                 
-                if (ro.getStatus() == 0) {
-                    status = 1;
-                    id_status_request = 1;
-                } else {
-                    status = 0;
-                    id_status_request = 2;
+                if (ro.getStateRequestOrder().getIdStateRequestOrder()==2) {//pendiente
+                    status = 3;//cancelada
+                    status_detail = 0;
+                } else {//cancelada
+                   status = 2; 
+                   status_detail = 1;
                 }
                 
-                ps.setInt(1, status);//se cambia a cero el campo status
-                ps.setInt(2,id_status_request);
-                ps.setInt(3, idRequestOrder);
+                ps.setInt(1, status);
+                ps.setInt(2, idRequestOrder);
                 
                 List<RequestOrderDetail> list = ro.getRequestOrderDetailList();
                 int size = list.size();
                 for(int i=0;i<size;i++){
-                        daoDetail.requestOrderDetailDel(list.get(i).getIdRequest_Order_Detail(),idRequestOrder,status);
+                        daoDetail.requestOrderDetailDel(list.get(i).getIdRequest_Order_Detail(),idRequestOrder,status_detail);
                 }
                 ps.executeUpdate();
             } catch (SQLException e) {
@@ -297,7 +297,6 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
     public RequestOrder requestOrderGet(Integer idRequestOrder) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
          RequestOrder requestOrder = null;
-         List<RequestOrder> requestOrderDetailList = null;
           String sql =  "SELECT idRequest_Order,"
                 + "dateArrive,"
                 + "dateline,"
@@ -356,6 +355,48 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         String result = null;
         for (Integer id : requestListToDelete) {
             result = requestOrderDel(id);
+        }
+        return result;
+    }
+
+    @Override
+    public String requestsDelInvalidate(Integer idRequest) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        DaoRequestOrderDetail daoDetail = new DaoRequestOrderDetailImpl();
+        String result = null;
+        String sql = "UPDATE request_order SET "
+                + "status = ? ,"
+                + "State_Request_Order_idStateRequest_Order = ? "
+                + "WHERE idRequest_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+               
+                RequestOrder ro = requestOrderGet(idRequest);
+               
+                
+                ps.setInt(1, 0);//se cambia a cero el campo status
+                ps.setInt(2,3);
+                ps.setInt(3, idRequest);
+                
+                List<RequestOrderDetail> list = ro.getRequestOrderDetailList();
+                int size = list.size();
+                for(int i=0;i<size;i++){
+                        daoDetail.requestOrderDetailDel(list.get(i).getIdRequest_Order_Detail(),idRequest,0);
+                }
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
         }
         return result;
     }

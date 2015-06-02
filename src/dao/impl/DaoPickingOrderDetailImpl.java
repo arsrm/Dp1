@@ -17,13 +17,10 @@ import java.util.List;
 public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
 
     @Override
-    public List<PickingOrderDetail> pickingOrderDetailQry() {
+    public List<PickingOrderDetail> pickingOrderDetailQry(Integer idPickingOrder) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<PickingOrderDetail> pickingOrderDetailQry_search() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+    
     }
 
     @Override
@@ -32,12 +29,12 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
     }
 
     @Override
-    public String pickingOrderDetailDel(List<String> ids) {
+    public String pickingOrderDetailDel(Integer idPickingOrderDetail, Integer idPickingOrder,Integer status) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public PickingOrderDetail pickingOrderDetailGet(String idpickingOrderDetail) {
+    public PickingOrderDetail pickingOrderDetailGet(Integer idpickingOrderDetail) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

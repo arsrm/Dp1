@@ -22,7 +22,7 @@ public interface DaoDriver {
     
     public String driverDel(List<String> ids);
     
-    public Driver driverGet(String iddriver);
+    public Driver driverGet(Integer idDriver);
     
     public String driverUpd(Driver driver);
     

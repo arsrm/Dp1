@@ -28,6 +28,8 @@ public class Vehicle implements Serializable {
     private Driver driver;
     private VehicleState vehicleState;
     private List<DispatchOrder> dispatchOrderList;
+    private List<Integer> route;
+    private Double availableCapacity;
 
     public Vehicle() {
     }
@@ -125,6 +127,34 @@ public class Vehicle implements Serializable {
      */
     public void setIdVehicle(Integer idVehicle) {
         this.idVehicle = idVehicle;
+    }
+
+    /**
+     * @return the route
+     */
+    public List<Integer> getRoute() {
+        return route;
+    }
+
+    /**
+     * @param route the route to set
+     */
+    public void setRoute(List<Integer> route) {
+        this.route = route;
+    }
+
+    /**
+     * @return the availableCapacity
+     */
+    public Double getAvailableCapacity() {
+        return availableCapacity;
+    }
+
+    /**
+     * @param availableCapacity the availableCapacity to set
+     */
+    public void setAvailableCapacity(Double availableCapacity) {
+        this.availableCapacity = availableCapacity;
     }
 
 }

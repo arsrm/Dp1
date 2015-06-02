@@ -17,12 +17,6 @@ public interface DaoVehicle {
     
     public List<Vehicle> vehicleQry();
     
-    public List<Vehicle> vehicleQry_search();
-    
-    public String vehicleIns(Vehicle client);
-    
-    public String vehicleDel(List<Vehicle> ids);
-    
     public Vehicle vehicleGet(Integer idvehicle);
     
     public String vehicleUpd(Vehicle vehicle);
