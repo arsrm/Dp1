@@ -520,12 +520,12 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(internmentOrder.getDate());
                 cal.add(Calendar.DATE, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTimeExpiration());
-                freePalletList = daoPalletProduct.GetPalletByStatus(1, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
+                freePalletList = daoPalletProduct.GetPalletByStatus(2, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
                 daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
                         internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct(),
                         cal.getTime(), internmentOrder.getIdInternmentOrder());                
                 for (int j = 0; j < freePalletList.size(); j++) {
-                    daoPalletIni.PalletsIniUpdStatus(freePalletList, 2);//2 Estado no disponible
+                    daoPalletIni.PalletsIniUpdStatus(freePalletList, 1);//1 Estado no disponible
                 }
             }
             modelo.getDataVector().removeAllElements();
