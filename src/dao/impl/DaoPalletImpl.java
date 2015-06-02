@@ -429,7 +429,7 @@ public class DaoPalletImpl implements DaoPallet{
         String model= "";
         String sql = "select description" +
                     " from location_cell_detail \n" +
-                    "where " +Cadenacelda+ " )" ;
+                    "where " +Cadenacelda+ " " ;
         Connection cn = db.getConnection();
         
         System.out.println("Query para Detalle Celda : " + sql);   

@@ -154,7 +154,8 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        return cadWhere; 
     }       
     public void llenatabla(String CadenaWhere)
-    { DaoPalletProduct objdao=new DaoPalletProductImpl();
+    { 
+      DaoPalletProduct objdao=new DaoPalletProductImpl();
       Integer cantreg=objdao.GetPalletProductList(CadenaWhere).size();
       PalletProduct[] list=new PalletProduct[cantreg];
       DefaultTableModel model= (DefaultTableModel)tbl_palletproduct.getModel(); 

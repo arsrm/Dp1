@@ -6,6 +6,7 @@
 
 package Model;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -22,8 +23,39 @@ public class PalletProduct {
     Timestamp updated_at; 
     Integer user_created; 
     Integer user_updated; 
+    Date dateexpira; 
+    Integer numinterna; 
 
     public PalletProduct() {
+    }
+
+    public PalletProduct(Integer idpallet, Integer idtrademark, Integer idproduct, Integer status, Timestamp created_at, Timestamp updated_at, Integer user_created, Integer user_updated, Date dateexpira, Integer numinterna) {
+        this.idpallet = idpallet;
+        this.idtrademark = idtrademark;
+        this.idproduct = idproduct;
+        this.status = status;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.user_created = user_created;
+        this.user_updated = user_updated;
+        this.dateexpira = dateexpira;
+        this.numinterna = numinterna;
+    }
+
+    public Date getDateexpira() {
+        return dateexpira;
+    }
+
+    public void setDateexpira(Date dateexpira) {
+        this.dateexpira = dateexpira;
+    }
+
+    public Integer getNuminterna() {
+        return numinterna;
+    }
+
+    public void setNuminterna(Integer numinterna) {
+        this.numinterna = numinterna;
     }
 
     public PalletProduct(Integer idpallet, Integer idtrademark, Integer idproduct, Integer status, Timestamp created_at, Timestamp updated_at, Integer user_created, Integer user_updated) {

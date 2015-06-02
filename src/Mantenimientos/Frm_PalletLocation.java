@@ -6,12 +6,11 @@
 
 package Mantenimientos;
 
-import Mantenimientos.Frm_PalletLocation_Search;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import Mantenimientos.Frm_PalletLocation;
+import Mantenimientos.Frm_PalletLocation_Search;
 import Model.Distribution_Center;
 import Model.LocationCell;
+import Model.PalletProduct;
 import Model.PalletState;
 import Model.Rack;
 import Model.Trademark;
@@ -19,13 +18,20 @@ import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoDistributionCenter;
 import dao.DaoPallet;
+import dao.DaoPalletProduct;
 import dao.DaoPalletState;
+import dao.DaoProducts;
 import dao.DaoTrademark;
 import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoPalletImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPalletStateImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import java.util.*;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /** 
  *
@@ -51,6 +57,19 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     String Cadenacelda="";
     String Cadenadetallecelda="";
     
+    public void  loadceldadetalle(String Cadenacelda)//          
+    { 
+        DaoPallet objdao=new DaoPalletImpl();
+        Integer cantreg=objdao.DetalleCeldaQry(Cadenacelda).size();
+        String[] list=new String[cantreg];
+       for (int i=0; i<cantreg; i++)
+        {  list[i]=objdao.DetalleCeldaQry(Cadenacelda).get(i);
+           cbo_locationcell_detail.addItem(list[i].toString());
+        } 
+      cbo_locationcell_detail.addItem(" ");
+      cbo_locationcell_detail.setSelectedIndex(cantreg);
+        
+    }        
 
     public void  loadcelda(String cadrack)      
     {
@@ -114,6 +133,43 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
       indcentrodistribucion=1; 
      }       
     
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_palletlocation.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+     }        
+
+    public void llenatabla()
+    { String CadenaWhere=" ";
+      DaoPalletProduct objdao=new DaoPalletProductImpl();
+      Integer cantreg=objdao.GetPalletProductList(CadenaWhere).size();
+      PalletProduct[] list=new PalletProduct[cantreg];
+      DefaultTableModel model= (DefaultTableModel)tbl_palletlocation.getModel(); 
+      DaoPalletProduct objmarca=new DaoPalletProductImpl();
+      DaoProducts objproduc= new DaoProdImpl();
+      String status="";
+      for (int i=0; i<cantreg; i++)
+      { list[i]=objdao.GetPalletProductList(CadenaWhere).get(i);
+     
+      if(list[i].getStatus()==1)
+      {
+       model.addRow(new Object[]{list[i].getIdpallet(),
+       objmarca.GetTradamarkid(list[i].getIdtrademark()).getName(),
+       objproduc.ProductsGet(list[i].getIdproduct()).getName(),list[i].getNuminterna()});
+      }
+      }   
+        
+     }       
+    
+    public void load_tablefilter()
+    {  limpiatabla();
+       llenatabla();
+    }
+    
     public  Frm_PalletLocation()
     {
     }
@@ -149,7 +205,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         btn_save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tbl_palletlocation = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -186,6 +242,12 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
 
         lbl_cell.setText("Celda");
 
+        cbo_location_cell.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbo_location_cellItemStateChanged(evt);
+            }
+        });
+
         lbl_date_to.setText("Detalle Celda");
 
         cbo_locationcell_detail.addActionListener(new java.awt.event.ActionListener() {
@@ -195,6 +257,11 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         });
 
         btn_search.setLabel("Buscar");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_palletLayout = new javax.swing.GroupLayout(pnl_pallet);
         pnl_pallet.setLayout(pnl_palletLayout);
@@ -212,8 +279,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                     .addComponent(cbo_center_distribution, 0, 173, Short.MAX_VALUE)
                     .addComponent(cbo_rack, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(68, 68, 68)
-                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_search, javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnl_palletLayout.createSequentialGroup()
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbl_cell, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -221,7 +287,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(cbo_warehouse, 0, 160, Short.MAX_VALUE)
-                            .addComponent(cbo_location_cell, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(cbo_location_cell, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btn_search, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37))
         );
         pnl_palletLayout.setVerticalGroup(
@@ -262,19 +329,19 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_palletlocation.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Seleccionar"
+                "IdPallet", "Marca", "Producto", "Num Internamiento", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -285,7 +352,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tbl_palletlocation);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -409,6 +476,28 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbo_locationcell_detailActionPerformed
 
+    private void cbo_location_cellItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_location_cellItemStateChanged
+
+      if (indcelda==1)
+      { try {      
+          if (cbo_location_cell.getSelectedItem().toString().trim().equals(null) || cbo_location_cell.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenacelda= Cadenarack+" and (1=1) ";}
+         else 
+         { Cadenacelda= Cadenarack+ " and Location_Cell_idLocation_Cell="+ daoPallet.LocationCellid(cbo_location_cell.getSelectedItem().toString().trim()).getIdLocation_Cell()  +"  ";
+          }    
+      } catch(Exception e)
+       {  } 
+       inddetallecelda=1; 
+       cbo_locationcell_detail.removeAllItems();
+       loadceldadetalle(Cadenacelda);      
+      }
+
+    }//GEN-LAST:event_cbo_location_cellItemStateChanged
+
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        load_tablefilter();
+    }//GEN-LAST:event_btn_searchActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -423,12 +512,12 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_rack;
     private javax.swing.JComboBox cbo_warehouse;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_CenterDistribution;
     private javax.swing.JLabel lbl_cell;
     private javax.swing.JLabel lbl_date_to;
     private javax.swing.JLabel lbl_rack;
     private javax.swing.JLabel lbl_warehouse;
     private javax.swing.JPanel pnl_pallet;
+    private javax.swing.JTable tbl_palletlocation;
     // End of variables declaration//GEN-END:variables
 }

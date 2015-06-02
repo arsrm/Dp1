@@ -54,9 +54,17 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     String Cadenarack="";
     String Cadenacelda="";
     String Cadenadetallecelda="";
-    public void inicia_estado_actividad()
-    { 
-     }       
+
+    public void load_state()
+    {
+      cbo_state.removeAllItems();
+      cbo_state.addItem("Activo");
+      cbo_state.addItem("Inactivo");
+      cbo_state.addItem(" ");
+      cbo_state.setSelectedIndex(2);        
+    }        
+
+    
     public void inicia_estado_pallet()
     { 
     }        
@@ -121,7 +129,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_location_cell.setSelectedIndex(cantreg);
     }       
 
-    public void  loadceldadetalle(String Cadenacelda)          
+    public void  loadceldadetalle(String Cadenacelda)//          
     { 
         DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.DetalleCeldaQry(Cadenacelda).size();
@@ -149,6 +157,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         menuaux = menu;
         initComponents();
         load_parameter();
+        load_state();
     }
     /**
      * This method is called from within the constructor to initialize the form.

@@ -219,7 +219,9 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "created_at, "
                 + "updated_at, "
                 + "user_created, "
-                + "user_updated "
+                + "user_updated, "
+                + "expiration_date, "                
+                + "Internment_Order_idInternment_Order "                                
                 + "FROM pallet_by_product  " +CadenaWhere+" ";
         Connection cn = db.getConnection();
         
@@ -240,6 +242,8 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                     objmodel.setUpdated_at(rs.getTimestamp(6));
                     objmodel.setUser_created(rs.getInt(7));
                     objmodel.setUser_updated(rs.getInt(8));
+                    objmodel.setDateexpira(rs.getDate(9));
+                    objmodel.setNuminterna(rs.getInt(10));
                     list.add(objmodel);
                 }
             } catch (SQLException e) {
