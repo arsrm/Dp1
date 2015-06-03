@@ -489,7 +489,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
              idcelda=1; 
              idceldadet=1; 
              daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idCD, idware, idrack, idcelda, idceldadet);
-
+             load_tablefilter();
         }     
         
     }//GEN-LAST:event_btn_saveActionPerformed
