@@ -94,6 +94,25 @@ public class Frm_Client_Location extends javax.swing.JFrame {
         flag = 1;
         initComponents();
         cliente = daoClient.clientGet(idCliente);
+        if(cliente!=null){
+            if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
+                Double x = Double.parseDouble(posx);
+                posX = Integer.valueOf(x.intValue());
+            }
+            if(posy.equals("")==false){//si no es nuevo se setea la coordenada
+                Double y = Double.parseDouble(posy);
+                posY = Integer.valueOf(y.intValue());
+            }
+        }
+        printMap(posX,posY);
+        
+       
+    }
+    
+    public Frm_Client_Location(Frm_Client frm_client, String posx,String posy) {
+        frm_clientAux = frm_client;      
+        flag = 1;
+        initComponents();
         if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
             Double x = Double.parseDouble(posx);
             posX = Integer.valueOf(x.intValue());
@@ -103,7 +122,6 @@ public class Frm_Client_Location extends javax.swing.JFrame {
             posY = Integer.valueOf(y.intValue());
         }
         printMap(posX,posY);
-        
        
     }
     

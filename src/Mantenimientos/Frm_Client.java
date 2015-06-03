@@ -13,7 +13,7 @@ public class Frm_Client extends javax.swing.JFrame {
 
     Frm_Client_Search frm_Client_Search = new Frm_Client_Search();
     DaoClient daoClient = new DaoClientImpl();
-    Integer idCliente;
+    Integer idCliente=-1;
    
     public Frm_Client(Frm_Client_Search client, Client cliente) {
        setTitle("Datos del Cliente");
@@ -312,7 +312,13 @@ public class Frm_Client extends javax.swing.JFrame {
 
     private void btn_LocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_LocationActionPerformed
         // TODO add your handling code here:
-        Frm_Client_Location frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText(),idCliente);
+        Frm_Client_Location frm_clientLocation;
+        if(idCliente==-1){
+          frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText());
+            
+        }else
+          frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText(),idCliente);
+          
         //frm_srs.setLocation(450,150);
         frm_clientLocation.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frm_clientLocation.setVisible(true);
