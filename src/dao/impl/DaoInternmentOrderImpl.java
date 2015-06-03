@@ -279,40 +279,40 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
     public String IntOrderIntern(Integer id) {
         String result = null;
         for (InternmentOrderDetail intOrdDet : IntOrderGet(id).getInternmentOrderDetail()) {
-            result = IntOrderDetailIntern(id,intOrdDet);
+            result = IntOrderDetailIntern(id, intOrdDet);
         }
         return result;
     }
 
-    public String IntOrderDetailIntern(Integer idIntOrder,InternmentOrderDetail intOrdDetail) {
+    public String IntOrderDetailIntern(Integer idIntOrder, InternmentOrderDetail intOrdDetail) {
         String result = null;
         List<LocationCellDetail> freeLocCellList = GetFreeLocationCellsDetail(intOrdDetail.getProduct().getIdProduct());
-        List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder);
+        List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder, intOrdDetail.getProduct().getIdProduct());
         Integer cantPalletsIngresados = 0;
-        Integer cantFreeLocCells = freeLocCellList.size();        
+        Integer cantFreeLocCells = freeLocCellList.size();
         int lastFreeLocCell;
         for (int i = 0; i < palletProduList.size(); i++) {
             lastFreeLocCell = 0;
             for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
-                LocationCell locCell = daoLocCell.LocationCellGet(1,freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
-                            freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
+                LocationCell locCell = daoLocCell.LocationCellGet(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
+                        freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
                 if (freeLocCellList.get(j).getAvailability() == 1
                         && intOrdDetail.getProduct().getTypeConditionWH()
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
                         && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
                     PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
                     freeLocCellList.get(j).setAvailability(0);
-                    daoLocCell.LocationCellAvailabilityUpd(1,freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
-                            freeLocCellList.get(j).getLocation_Cell_Rack_idRack(),locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
+                    daoLocCell.LocationCellAvailabilityUpd(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
+                            freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), locCell.getIdLocation_Cell(), freeLocCellList.get(j).getIdLocation_Cell_Detail(), 0);
                     Movement mov = new Movement();
                     mov.setDate(IntOrderGet(idIntOrder).getDate());
                     mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
                     mov.setIdWh(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                     mov.setStock_inicial(intOrdDetail.getProduct().getPhysicalStock());
-                    mov.setStock_final(intOrdDetail.getProduct().getPhysicalStock() + intOrdDetail.getProduct().getQuantityBoxesPerPallet()*intOrdDetail.getQuantityPallets());
+                    mov.setStock_final(intOrdDetail.getProduct().getPhysicalStock() + intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getQuantityPallets());
                     mov.setType_Movement_id(1);
-                    mov.setType_Movement_idSubtype(1);                    
+                    mov.setType_Movement_idSubtype(1);
                     daoKardex.MovementIns(mov);
                     cantPalletsIngresados++;
                     lastFreeLocCell = j;
@@ -321,7 +321,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             }
         }
         daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos
-        if(cantPalletsIngresados < intOrdDetail.getQuantityPallets()){
+        if (cantPalletsIngresados < intOrdDetail.getQuantityPallets()) {
             VirtualWarehouse virtualWh = new VirtualWarehouse();
             virtualWh.setIdIntermentOrder(idIntOrder);
             virtualWh.setIdInternmentOrderDetail(intOrdDetail.getIdInternmentOrderDetail());
@@ -330,7 +330,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             virtualWh.setQuantity(intOrdDetail.getQuantityPallets() - cantPalletsIngresados);
             daoVirtualWh.VirtualWarehouseIns(virtualWh);
         }
-        
+
         return result;
 
     }
@@ -342,7 +342,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 + "description,"
                 + "Location_Cell_idLocation_Cell,"
                 + "Location_Cell_Rack_idRack,"
-                + "Location_Cell_Rack_Warehouse_idWarehouse "
+                + "Location_Cell_Rack_Warehouse_idWarehouse, "
+                + "availability "
                 + "FROM Location_Cell_Detail "
                 + "WHERE availability=?";
 
@@ -362,6 +363,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     locCellDetail.setLocation_Cell_idLocation_Cell(rs.getInt(3));
                     locCellDetail.setLocation_Cell_Rack_idRack(rs.getInt(4));
                     locCellDetail.setLocation_Cell_Rack_Warehouse_idWarehouse(rs.getInt(5));
+                    locCellDetail.setAvailability(rs.getInt(6));
                     locCellDetList.add(locCellDetail);
                 }
 
@@ -376,19 +378,19 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         }
         return locCellDetList;
     }
-    
-    public String PalletProductLocaCellIns(LocationCellDetail locCellDet,Integer idIntOrd,Integer idPalletProduct,InternmentOrderDetail intOrderDetail) {
+
+    public String PalletProductLocaCellIns(LocationCellDetail locCellDet, Integer idIntOrd, Integer idPalletProduct, InternmentOrderDetail intOrderDetail) {
         String result = null;
         String sql = "INSERT INTO Pallet_By_Product_By_Location_Cell_Detail("
                 + "Pallet_By_Product_Pallet_idPallet,"
                 + "Pallet_By_Product_Product_Trademark_id_Trademark,"
                 + "Pallet_By_Product_Product_idProduct,"
-                +"Location_Cell_Detail_idLocation_Cell_Detail,"
-                +"Location_Cell_Detail_Location_Cell_idLocation_Cell,"
-                +"Location_Cell_Detail_Location_Cell_Rack_idRack,"
-                +"Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,"
-                +"Location_Cell_Detail_idDistribution_Center,"
-                +"status"
+                + "Location_Cell_Detail_idLocation_Cell_Detail,"
+                + "Location_Cell_Detail_Location_Cell_idLocation_Cell,"
+                + "Location_Cell_Detail_Location_Cell_Rack_idRack,"
+                + "Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,"
+                + "Location_Cell_Detail_idDistribution_Center,"
+                + "status"
                 + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
@@ -404,7 +406,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 ps.setInt(7, locCellDet.getLocation_Cell_Rack_Warehouse_idWarehouse());
                 ps.setInt(8, 1);
                 ps.setInt(9, 1);
-                
+
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");

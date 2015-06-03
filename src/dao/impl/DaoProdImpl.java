@@ -438,7 +438,8 @@ public class DaoProdImpl implements DaoProducts {
     public String ProductUpdStock(Integer idProduct, Integer cantPallets, Integer idMovimiento) {
         String result = null;
         String sql = "UPDATE Product SET "
-                + "physical_stock = ? "
+                + "physical_stock = ?, "
+                + "free_stock = ? "
                 + "WHERE idProduct = ?";
 
         Connection cn = db.getConnection();
@@ -448,8 +449,10 @@ public class DaoProdImpl implements DaoProducts {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 if (idMovimiento == 1) {
                     ps.setInt(1, product.getPhysicalStock() + cantPallets * product.getQuantityBoxesPerPallet());
+                    ps.setInt(2, product.getFreeStock()+ cantPallets * product.getQuantityBoxesPerPallet());
                 } else {
                     ps.setInt(1, product.getPhysicalStock() - cantPallets * product.getQuantityBoxesPerPallet());
+                    ps.setInt(2, product.getFreeStock()+ cantPallets * product.getQuantityBoxesPerPallet());
                 }
                 ps.setInt(2, idProduct);
                 ps.executeUpdate();
@@ -509,10 +512,9 @@ public class DaoProdImpl implements DaoProducts {
                 ps.setInt(4, idProduct);
                 ps.setInt(5, idProduct);
                 ps.setInt(6, idProduct);
-                
-                
+
                 ResultSet rs = ps.executeQuery();
-                
+
                 while (rs.next()) {
                     return true;
                 }

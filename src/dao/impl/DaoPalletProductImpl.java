@@ -390,18 +390,20 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
     }
 
     @Override
-    public List<Integer> GetPalletsByIntOrder(Integer idIntOrder) {
+    public List<Integer> GetPalletsByIntOrder(Integer idIntOrder, Integer idProd) {
         List<Integer> palletList = null;
         String sql = "SELECT "
                 + "Pallet_idPallet "
                 + "FROM Pallet_By_Product "
-                + "WHERE Internment_Order_idInternment_Order = ?";
+                + "WHERE Internment_Order_idInternment_Order = ? "
+                +"AND Product_idProduct = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, idIntOrder);
+                ps.setInt(2, idProd);
                 ResultSet rs = ps.executeQuery();
 
                 palletList = new LinkedList<>();

@@ -274,11 +274,12 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 idIntOrderDeleteList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
             }
         }
-        daoIntOrder.IntOrderDel(idIntOrderDeleteList);
+        
 
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            daoIntOrder.IntOrderDel(idIntOrderDeleteList);
             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha desactivado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             if (ok_option == JOptionPane.OK_OPTION) {
                 initializeTable();
@@ -325,20 +326,30 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
             }
         }
-        
+
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            daoIntOrder.IntOrdersIntern(idIntOrderInternList);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initializeTable();
+            }
+        }
     }//GEN-LAST:event_btn_InternActionPerformed
 
     public void initializeTable() {
-        String status=null;
+        String status = null;
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         intOrderList = daoIntOrder.IntOrderQry();
         try {
             for (int i = 0; i < intOrderList.size(); i++) {
-                if (intOrderList.get(i).getStatus()==1)
+                if (intOrderList.get(i).getStatus() == 1) {
                     status = "Activo";
-                else
+                } else {
                     status = "Inactivo";
+                }
                 Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
                     intOrderList.get(i).getDate(), status, false};
                 modelo.addRow(fila);
