@@ -6,7 +6,10 @@
 
 package Mantenimientos;
 
+import Model.Client;
 import Simulacion_Algoritmica.Frm_Show_Route_Solution;
+import dao.DaoClient;
+import dao.impl.DaoClientImpl;
 import java.awt.BasicStroke;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -36,6 +39,10 @@ public class Frm_Client_Location extends javax.swing.JFrame {
     Integer posX=-1, posY=-1;
     Imagen imagen;
     int flag;
+    DaoClient daoClient = new DaoClientImpl();
+    Client cliente;
+    
+    
     
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
@@ -70,8 +77,10 @@ public class Frm_Client_Location extends javax.swing.JFrame {
                 g2.setStroke(new BasicStroke(10));
                 g2.drawLine(posX,posY,posX,posY);
                 grafico.setFont(grafico.getFont().deriveFont(12f));
-                grafico.drawString("Centro de Distribución",posX,posY);
-                
+                if(flag==1)
+                    grafico.drawString(cliente.getName(),posX,posY);
+                else
+                    grafico.drawString("Centro de Distribuciòn",posX,posY);
             }
             setOpaque(false);
             super.paintComponent(grafico);
@@ -80,10 +89,11 @@ public class Frm_Client_Location extends javax.swing.JFrame {
     /**
      * Creates new form Frm_Client_Location
      */
-    public Frm_Client_Location(Frm_Client frm_client, String posx,String posy) {
+    public Frm_Client_Location(Frm_Client frm_client, String posx,String posy, Integer idCliente) {
         frm_clientAux = frm_client;      
         flag = 1;
         initComponents();
+        cliente = daoClient.clientGet(idCliente);
         if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
             Double x = Double.parseDouble(posx);
             posX = Integer.valueOf(x.intValue());
