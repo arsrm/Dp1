@@ -410,9 +410,24 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
             },
             new String [] {
-                "IdPallet", "Codigo EAN", "Descripcion", "Rack", "Celda", "Ubicacion_Celda", "Estato Pallet", "Estado Actividad"
+                "IdPallet", "Marca", "Producto", "Almacen", "Rack", "Celda", "Estado Actividad"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scrl_pallet.setViewportView(tbl_pallet_detail);
 
         btn_new.setText("Nuevo");

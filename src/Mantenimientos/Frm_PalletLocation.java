@@ -73,8 +73,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.DetalleCeldaQry(Cadenacelda).get(i);
            cbo_locationcell_detail.addItem(list[i].toString());
         } 
-      cbo_locationcell_detail.addItem(" ");
-      cbo_locationcell_detail.setSelectedIndex(cantreg);
+      //cbo_locationcell_detail.addItem(" ");
+      cbo_locationcell_detail.setSelectedIndex(0);
         
     }        
 
@@ -87,8 +87,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.CeldaQry(cadrack).get(i);
            cbo_location_cell.addItem(list[i].toString());
         } 
-      cbo_location_cell.addItem(" ");
-      cbo_location_cell.setSelectedIndex(cantreg);
+      //cbo_location_cell.addItem(" ");
+      cbo_location_cell.setSelectedIndex(0);
     }       
     public void  loadrack_CD(String cadena)
     {
@@ -99,8 +99,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.RackQry(cadena).get(i);
            cbo_rack.addItem(list[i].getIdentifier());
         } 
-      cbo_rack.addItem(" ");
-      cbo_rack.setSelectedIndex(cantreg);
+      //cbo_rack.addItem(" ");
+      cbo_rack.setSelectedIndex(0);
     } 
     public void loadalmacen_CD(String CenterD)
     { 
@@ -111,8 +111,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.WarehoseQry(CenterD).get(i);
            cbo_warehouse.addItem(list[i].getDescription());
         } 
-      cbo_warehouse.addItem(" ");
-      cbo_warehouse.setSelectedIndex(cantreg);
+      //cbo_warehouse.addItem(" ");
+      cbo_warehouse.setSelectedIndex(0);
     }       
     public void cargacentrodistribucion()
     {
@@ -123,8 +123,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
        {  list[i]=objdao.CDQry().get(i);
           cbo_center_distribution.addItem(list[i].getName());
        } 
-      cbo_center_distribution.addItem(" ");
-      cbo_center_distribution.setSelectedIndex(cantreg);
+      //cbo_center_distribution.addItem(" ");
+      cbo_center_distribution.setSelectedIndex(0);
     }        
     public void limpiacombos()
     { cbo_center_distribution.removeAllItems();
@@ -484,9 +484,9 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
              idcelda=cbo_location_cell.getSelectedItem().toString().trim(); 
              idceldadet=cbo_locationcell_detail.getSelectedItem().toString().trim(); 
              */
-             idware=1; 
-             idrack=1;
-             idcelda=1; 
+             idware=daoPallet.GetIdwarehouse(idCD, cbo_warehouse.getSelectedItem().toString().trim()); 
+             idrack=daoPallet.GetIdRack(idCD, idware, cbo_rack.getSelectedItem().toString().trim());
+             idcelda=daoPallet.GetIdCelda(idCD, idware, idrack, cbo_location_cell.getSelectedItem().toString().trim()); 
              idceldadet=1; 
              daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idCD, idware, idrack, idcelda, idceldadet);
              load_tablefilter();

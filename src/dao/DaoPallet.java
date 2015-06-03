@@ -53,5 +53,12 @@ public interface DaoPallet {
     
     public Pallet GetPallet(LocationCellDetail obj); 
         
- 
+    public Integer GetIdwarehouse(Integer idCD, String nameWare);
+    
+    public Integer GetIdRack(Integer idCD, Integer idware, String namerack); 
+    
+    public Integer GetIdCelda(Integer idCD, Integer idware, Integer idrackm,  String celda); 
+    
+    public Integer GetIdCeldaDetail(Integer idCD, Integer idware, Integer idrackm,  Integer idcelda, String celdadetail);
+    
 }

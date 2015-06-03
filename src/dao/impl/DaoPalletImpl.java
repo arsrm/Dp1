@@ -499,4 +499,99 @@ public class DaoPalletImpl implements DaoPallet{
         return result;
         
     }
+
+    @Override
+    public Integer GetIdwarehouse(Integer idCD, String nameWare) {
+        Integer objmodel = 0;
+        String sql = "SELECT "
+                + "idWarehouse "
+                + "FROM warehouse where description='" + nameWare +"' "
+                + " and Distribution_Center_idDistribution_Center= "+idCD+" " ;
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                objmodel = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public Integer GetIdRack(Integer idCD, Integer idware, String namerack) {
+        Integer objmodel = 0;
+        String sql = "SELECT "
+                + "idRack "
+                + "FROM rack where identifier='" + namerack +"' "
+                + " and Warehouse_idWarehouse= "+idware+" " 
+                + " and Warehouse_Distribution_Center_idDistribution_Center= "+idCD+" " ;
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                objmodel = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public Integer GetIdCelda(Integer idCD, Integer idware, Integer idrackm, String celda) {
+        Integer objmodel = 0;
+        String sql = "SELECT "
+                + "idLocation_Cell"
+                + "FROM location_cell where description='" + celda +"' "
+                + " and Rack_idRack= "+idrackm+" " 
+                + " and Rack_Warehouse_idWarehouse= "+idware+" " 
+                + " and Rack_Warehouse_Distribution_Center_idDistribution_Center= "+idCD+" ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                objmodel = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public Integer GetIdCeldaDetail(Integer idCD, Integer idware, Integer idrackm, Integer idcelda, String celdadetail) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
