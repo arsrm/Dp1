@@ -5,13 +5,16 @@
  */
 package Reportes;
 
+import JasperReports.Prueba;
 import Model.Movement;
 import Model.Product;
 import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoKardex;
+import dao.DaoProducts;
 import dao.DaoTrademark;
 import dao.impl.DaoKardexImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,8 +37,15 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     List<Trademark> trademarkList = null;
     DaoTrademark daoTrademark = new DaoTrademarkImpl();
     DaoKardex daoKardex = new DaoKardexImpl();
+    DaoProducts daoProducts = new DaoProdImpl();
     List<Movement> movementList = new ArrayList<>();
+    List<Movement> movList = new ArrayList<>();
+    List<Product> productList = new ArrayList<>();
     DefaultTableModel modelo;
+    public Integer idAl;
+    public Integer idP;
+    public Date dateI;
+    public Date dateF;
 
     /**
      * Creates new form Frm_KardexReport
@@ -90,6 +100,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         btn_Cancel = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tbl_Kardex = new javax.swing.JTable();
+        btn_Report = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -197,7 +208,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(51, 51, 51)
                 .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 130, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 426, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(77, 77, 77)
                 .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -253,7 +264,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                         .addGap(6, 6, 6))))
         );
 
-        btn_Kardex.setText("Generar Kardex");
+        btn_Kardex.setText("Filtrar");
         btn_Kardex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_KardexActionPerformed(evt);
@@ -261,6 +272,11 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         });
 
         btn_Export.setText("Exportar");
+        btn_Export.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ExportActionPerformed(evt);
+            }
+        });
 
         btn_Cancel.setText("Cancelar");
         btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -271,16 +287,23 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         tbl_Kardex.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha", "Motivo de Moviemiento", "Entrada", "Salida", "StockInicial", "StockFinal"
+                "ID WH", "ID Producto", "Fecha", "Motivo de Moviemiento", "Entrada", "Salida", "StockInicial", "StockFinal"
             }
         ));
         jScrollPane4.setViewportView(tbl_Kardex);
+
+        btn_Report.setText("Generar Reporte");
+        btn_Report.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ReportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -298,9 +321,11 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(13, 13, 13)
                                 .addComponent(btn_Kardex)
-                                .addGap(142, 142, 142)
-                                .addComponent(btn_Export)
+                                .addGap(246, 246, 246)
+                                .addComponent(btn_Report)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btn_Export)
+                                .addGap(113, 113, 113)
                                 .addComponent(btn_Cancel))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -321,7 +346,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Cancel)
                     .addComponent(btn_Export)
-                    .addComponent(btn_Kardex))
+                    .addComponent(btn_Kardex)
+                    .addComponent(btn_Report))
                 .addGap(39, 39, 39))
         );
 
@@ -335,23 +361,34 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private void btn_KardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_KardexActionPerformed
         Date dateIniSearch = null;
         Date dateEndSearch = null;
-        if (date_Ini.getDate() != null) {
-            dateIniSearch = date_Ini.getDate();
+        Movement movimiento = new Movement();
+        int idp;
+
+        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() == null && date_End.getDate() == null) {
+            productList = daoProducts.ProductsQry();
+            movementList = daoKardex.ProductsQry();
+
+            initializeTable();
         } else {
-            dateIniSearch = new Date();
-            dateIniSearch.setTime(0);
-        }
-        if (date_End.getDate() != null) {
-            dateEndSearch = date_End.getDate();
-        } else {
-            dateEndSearch = new Date();
+            if (date_Ini.getDate() != null) {
+                dateIniSearch = date_Ini.getDate();
+            } else {
+                dateIniSearch = new Date();
+                dateIniSearch.setTime(0);
+            }
+            if (date_End.getDate() != null) {
+                dateEndSearch = date_End.getDate();
+            } else {
+                dateEndSearch = new Date();
+            }
+
+            if (dateEndSearch.before(dateIniSearch)) {
+                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+            }
+            movementList = daoKardex.MovementSearch(producto.getIdProduct(), idAlmacen, dateIniSearch, dateEndSearch);
+            initializeTable();
         }
 
-        if (dateEndSearch.before(dateIniSearch)) {
-            JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
-        }
-        movementList = daoKardex.MovementSearch(producto.getIdProduct(), idAlmacen, dateIniSearch, dateEndSearch);
-        initializeTable();
     }//GEN-LAST:event_btn_KardexActionPerformed
 
     private void btn_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductActionPerformed
@@ -386,6 +423,56 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
+    private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
+
+        Date dateIniSearch = null;
+        Date dateEndSearch = null;
+
+        Prueba reporte = new Prueba();
+
+        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() == null && date_End.getDate() == null) {
+
+            dateIniSearch = new Date();
+            dateIniSearch.setTime(0);
+            dateEndSearch = new Date();
+
+            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+        }
+        else{
+        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() != null || date_End.getDate() != null) {
+            dateIniSearch = date_Ini.getDate();
+            dateEndSearch = date_End.getDate();
+            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+        } else {
+            idAl = Integer.parseInt(txt_Name.getText());
+            idP = producto.getIdProduct();
+            
+            if (date_Ini.getDate() != null) {
+                dateIniSearch = date_Ini.getDate();
+            } else {
+                dateIniSearch = new Date();
+                dateIniSearch.setTime(0);
+            }
+            if (date_End.getDate() != null) {
+                dateEndSearch = date_End.getDate();
+            } else {
+                dateEndSearch = new Date();
+            }
+
+            if (dateEndSearch.before(dateIniSearch)) {
+                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+            }
+            reporte.mostrarReporteKardexConFiltro(idAl, idP, dateIniSearch, dateEndSearch);
+        }
+        }
+
+    }//GEN-LAST:event_btn_ReportActionPerformed
+
+    private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
+        Prueba exportar = new Prueba();
+        exportar.exportarReporte();
+    }//GEN-LAST:event_btn_ExportActionPerformed
+
     public void setIdWh(Integer id) {
 
         idAlmacen = id;
@@ -415,6 +502,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private javax.swing.JButton btn_Export;
     private javax.swing.JButton btn_Kardex;
     private javax.swing.JButton btn_Product;
+    private javax.swing.JButton btn_Report;
     private javax.swing.JButton btn_Wh;
     private javax.swing.JComboBox cbo_trademark;
     private com.toedter.calendar.JDateChooser date_End;
@@ -449,12 +537,12 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 String salidaStr = "";
                 if (movementList.get(i).getType_Movement_id() == 1) {
                     entrada = (movementList.get(i).getStock_final() - movementList.get(i).getStock_inicial());
-                    entradaStr =entrada.toString();
+                    entradaStr = entrada.toString();
                 } else {
                     salida = (movementList.get(i).getStock_inicial() - movementList.get(i).getStock_final());
                     salidaStr = salida.toString();
                 }
-                Object[] fila = {movementList.get(i).getDate(), movementList.get(i).getType_Movement_idSubtype(),
+                Object[] fila = {movementList.get(i).getIdWh(), movementList.get(i).getIdProduct(), movementList.get(i).getDate(), movementList.get(i).getType_Movement_idSubtype(),
                     entradaStr, salidaStr, movementList.get(i).getStock_inicial(), movementList.get(i).getStock_final()};
 
                 modelo.addRow(fila);

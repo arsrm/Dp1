@@ -7,6 +7,7 @@ import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletLocation;
 import Mantenimientos.Frm_PalletLocation;
+import Reportes.Frm_InternmentReport;
 //gzavala-inicio 24/05 23:45
 
 import Mantenimientos.Frm_PalletLocation_Search;
@@ -701,10 +702,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_Reporte_DespachoActionPerformed
 
     private void op_Reporte_InternamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_InternamientoActionPerformed
-        Frm_InternmentReport intRep = new Frm_InternmentReport(this);
-        intRep.setVisible(true);
-        intRep.setLocationRelativeTo(null);
-        this.setEnabled(false);
+        Frm_InternmentReport frm_InternmentReport=new Frm_InternmentReport(this);
+        frm_InternmentReport.setVisible(true);
+        frm_InternmentReport.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Reporte_InternamientoActionPerformed
 
     private void op_Guia_TransportistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Guia_TransportistaActionPerformed

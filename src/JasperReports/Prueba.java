@@ -8,10 +8,12 @@ package JasperReports;
 import enlaceBD.ConectaDb;
 import java.awt.Frame;
 import java.sql.Connection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static jdk.nashorn.internal.runtime.Debug.id;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperExportManager;
@@ -37,6 +39,8 @@ public class Prueba {
     public void mostrarReporte() {
         try {
 
+            HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap();
             JasperReport reporte = JasperCompileManager.compileReport("report2.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             
@@ -50,13 +54,71 @@ public class Prueba {
         }
     }
     
-        public void exportarReporte() {
+    public void exportarReporte() {
         try {
 
             JasperReport reporte = JasperCompileManager.compileReport("report2.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             
             JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteKardexConFiltro(Integer idA, Integer idP, Date dI, Date dF) {
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idA);
+            parameters.put("idP", idP);
+            parameters.put("fechaI", dI);
+            parameters.put("fechaF", dF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportKardexConFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Kardex");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteKardexSinFiltro(Date dI, Date dF) {
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+//            parameters.put("idW",idA);
+//            parameters.put("idP", idP);
+            parameters.put("fechaI", dI);
+            parameters.put("fechaF", dF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportKardexSinFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Kardex sin filtro");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+
+        
+    public void exportarReporteKardex() {
+        try {
+
+            JasperReport reporte = JasperCompileManager.compileReport("kardexReport.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
+            
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/kardexReport.pdf");
         } catch (JRException ex) {
             Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }

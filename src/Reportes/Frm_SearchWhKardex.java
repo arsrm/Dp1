@@ -35,7 +35,7 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
     Frm_SearchWhKardex(Frm_KardexReport menu) {
         menuPadre = menu;
         initComponents();
-        modelo = (DefaultTableModel) tbl_SearchWhkardex.getModel();
+        modelo = (DefaultTableModel)tbl_SearchWhkardex.getModel();
         initilizeTable();
     }
 
@@ -51,6 +51,7 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_SearchWhkardex = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        btn_Cancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -64,7 +65,15 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
             new String [] {
                 "Id", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_SearchWhkardex.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_SearchWhkardexMouseClicked(evt);
@@ -74,15 +83,24 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
 
         jLabel1.setText("Seleccionar Almaen:");
 
+        btn_Cancelar.setText("Cancelar");
+        btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_Cancelar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -92,7 +110,9 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_Cancelar)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         pack();
@@ -113,12 +133,18 @@ public class Frm_SearchWhKardex extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_tbl_SearchWhkardexMouseClicked
 
+    private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
+        menuPadre.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_CancelarActionPerformed
+
     /**
      * @param args the command line arguments
      */
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Cancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_SearchWhkardex;

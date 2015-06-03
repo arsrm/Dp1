@@ -46,6 +46,24 @@ public class DaoKardexImpl implements DaoKardex {
                 + "AND date <= ? "
                 + "AND Warehouse_idWarehouse=? "
                 + "AND Product_idProduct = ?";
+        
+//         SELECT idMovement, date, Type_Movement_idType_Movement,  Type_Movement_idSubtype,  stock_initial, 
+//                 stock_final  FROM Movement  WHERE date >= ? AND date <= ? AND Warehouse_idWarehouse=?AND 
+//                         Product_idProduct = ?;
+      
+            sql = "SELECT "
+                    + "idMovement,"
+                    + "date,"
+                    + "Type_Movement_idType_Movement, "
+                    +"Type_Movement_idSubtype, "
+                    +"stock_initial, "
+                    +"stock_final "
+                    + "FROM Movement "
+                    + "WHERE date >= ? "
+                    + "AND date <= ? "
+                    + "AND Warehouse_idWarehouse=? "
+                    + "AND Product_idProduct = ?";
+        
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -132,4 +150,59 @@ public class DaoKardexImpl implements DaoKardex {
         return result;
     }
 
+    @Override
+    public List<Movement> ProductsQry() {
+        List<Movement> movimientos = null;
+        String sql = "SELECT "
+                + "idMovement,"
+                + "date,"
+                + "Type_Movement_idType_Movement,"
+                + "Type_Movement_idSubtype,"
+                + "stock_initial,"
+                + "stock_final,"
+                + "Product_idProduct,"
+                + "Warehouse_idWarehouse,"
+                + "Warehouse_Distribution_Center_idDistribution_Center "
+                + "FROM Movement "
+                + "ORDER BY Warehouse_idWarehouse,Product_idProduct ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                movimientos = new LinkedList<>();
+                while (rs.next()) {
+                    Movement m = new Movement();
+                    
+                    m.setIdMovement(rs.getInt(1));
+                    m.setDate(rs.getDate(2));
+                    m.setType_Movement_id(rs.getInt(3));
+                    m.setType_Movement_idSubtype(rs.getInt(4));
+                    m.setStock_inicial(rs.getInt(5));
+                    m.setStock_final(rs.getInt(6));
+                    m.setIdProduct(rs.getInt(7));
+                    m.setIdWh(rs.getInt(8));
+                    
+                   
+
+                    movimientos.add(m);
+                }
+
+            } catch (SQLException e) {
+                movimientos = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return movimientos;
+    }
+
+    
+    
 }

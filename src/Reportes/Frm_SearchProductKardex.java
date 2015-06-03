@@ -58,6 +58,7 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_SearchProductKardex = new javax.swing.JTable();
+        btn_Cancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -78,7 +79,15 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
             new String [] {
                 "IdProducto", "EAN 13", "Nombre"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tbl_SearchProductKardex.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tbl_SearchProductKardexMouseClicked(evt);
@@ -91,15 +100,24 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
             tbl_SearchProductKardex.getColumnModel().getColumn(0).setMaxWidth(0);
         }
 
+        btn_Cancelar.setText("Cancelar");
+        btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_Cancelar)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -109,7 +127,9 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btn_Cancelar)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -132,12 +152,35 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
         menuPadre.setVisible(true);
 
         this.dispose();
+        
+//        Integer idProductSel;
+//        String ean=null;
+//        if (evt.getSource() == tbl_SearchProductKardex) {
+//            rowSel = tbl_SearchProductKardex.getSelectedRow();
+//            colSel = tbl_SearchProductKardex.getSelectedColumn();
+//        }
+//        
+//        //idProductSel = Integer.parseInt(tbl_SearchProductKardex.getValueAt(rowSel, 0).toString());
+//        idProductSel=Integer.parseInt(tbl_SearchProductKardex.getValueAt(rowSel, 0).toString());
+//        menuPadre.setProduct(daoProducts.ProductsGet(idProductSel));
+//        menuPadre.setTextIdEan();
+//        //menuPadre.setIdProduct(idProductSel);
+//        //menuPadre.setTextIdProduct();
+//        menuPadre.setVisible(true);
+//
+//        this.dispose();
     }//GEN-LAST:event_tbl_SearchProductKardexMouseClicked
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         menuPadre.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosed
+
+
+    private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
+        menuPadre.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_CancelarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -161,6 +204,7 @@ public class Frm_SearchProductKardex extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Cancelar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tbl_SearchProductKardex;

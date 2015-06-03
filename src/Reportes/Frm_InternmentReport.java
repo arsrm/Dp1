@@ -5,11 +5,24 @@
  */
 package Reportes;
 
+
+import Model.InternmentOrder;
+import Model.Product;
+import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoProducts;
+import dao.DaoTrademark;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoTrademarkImpl;
 import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javafx.stage.FileChooser;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,14 +35,33 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
      */
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     String fileExport;
+    DefaultTableModel modelo;
+    List<InternmentOrder> internmentOrderList = new ArrayList<>();
+    Integer idOrder;
+    List<Trademark> trademarkList = null;
+    DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    Integer idtrademark = 0;
+    Product producto = new Product();
+    List<Product> productList = new ArrayList<>();
+    DaoProducts daoProducts = new DaoProdImpl();
+
+   
 
     public Frm_InternmentReport(Frm_MenuPrincipal menu) {
-
-        setTitle("Reporte Internamiento de Producto");
         menuaux = menu;
-        menuaux.setEnabled(false);
+        initComponents();
+        modelo = (DefaultTableModel) tbl_IntermentReport.getModel();
+        trademarkList = daoTrademark.TrademarkQry();
+        for (int i = 0; i < trademarkList.size(); i++) {
+            cbo_trademark.addItem(trademarkList.get(i).getName());
+        }
+    }
+
+    public Frm_InternmentReport() {
         initComponents();
     }
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,12 +73,23 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
     private void initComponents() {
 
         pnl_InternmentReport = new javax.swing.JPanel();
-        lbl_dateIni = new javax.swing.JLabel();
-        lbl_dateFin = new javax.swing.JLabel();
         btn_GenerarReporte = new javax.swing.JButton();
-        jDate_Ini = new com.toedter.calendar.JDateChooser();
-        jDate_Fin = new com.toedter.calendar.JDateChooser();
         btn_Exportar = new javax.swing.JToggleButton();
+        btn_Filtrar = new javax.swing.JButton();
+        panel = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txt_idOrder = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        txt_EanOrder = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
+        cbo_trademark = new javax.swing.JComboBox();
+        jPanel3 = new javax.swing.JPanel();
+        jDate_Fin = new com.toedter.calendar.JDateChooser();
+        jDate_Ini = new com.toedter.calendar.JDateChooser();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tbl_IntermentReport = new javax.swing.JTable();
         btn_Cancelar = new javax.swing.JToggleButton();
@@ -56,10 +99,6 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
         setResizable(false);
 
         pnl_InternmentReport.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de filtro"));
-
-        lbl_dateIni.setText("Fecha Inicio");
-
-        lbl_dateFin.setText("Fecha Fin");
 
         btn_GenerarReporte.setText("Generar Reporte");
         btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
@@ -75,39 +114,171 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
             }
         });
 
+        btn_Filtrar.setText("Filtrar");
+        btn_Filtrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_FiltrarActionPerformed(evt);
+            }
+        });
+
+        panel.setBorder(javax.swing.BorderFactory.createTitledBorder("Ordén"));
+
+        jLabel1.setText("Nº de ordén:");
+
+        txt_idOrder.setEnabled(false);
+
+        jButton1.setText("Buscar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
+        panel.setLayout(panelLayout);
+        panelLayout.setHorizontalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addGap(42, 42, 42)
+                .addComponent(txt_idOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+        panelLayout.setVerticalGroup(
+            panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt_idOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addContainerGap(12, Short.MAX_VALUE))
+        );
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
+
+        jLabel4.setText("EAN 13:");
+
+        txt_EanOrder.setEnabled(false);
+        txt_EanOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_EanOrderActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Buscar");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        cbo_trademark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_trademarkActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel4)
+                .addGap(65, 65, 65)
+                .addComponent(txt_EanOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 365, Short.MAX_VALUE)
+                .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(205, 205, 205)
+                .addComponent(jButton3)
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txt_EanOrder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3)
+                    .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Fecha"));
+
+        jLabel2.setText("Fecha Inicio:");
+
+        jLabel3.setText("Fecha Fin:");
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(58, 58, 58)
+                .addComponent(jDate_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel3)
+                .addGap(47, 47, 47)
+                .addComponent(jDate_Fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jDate_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGroup(jPanel3Layout.createSequentialGroup()
+                            .addGap(6, 6, 6)
+                            .addComponent(jDate_Fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout pnl_InternmentReportLayout = new javax.swing.GroupLayout(pnl_InternmentReport);
         pnl_InternmentReport.setLayout(pnl_InternmentReportLayout);
         pnl_InternmentReportLayout.setHorizontalGroup(
             pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_InternmentReportLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_GenerarReporte)
+                .addGroup(pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(pnl_InternmentReportLayout.createSequentialGroup()
-                        .addComponent(lbl_dateIni)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDate_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(66, 66, 66)
-                        .addComponent(lbl_dateFin)
-                        .addGap(47, 47, 47)
-                        .addComponent(jDate_Fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
-                .addComponent(btn_Exportar)
+                        .addComponent(btn_Filtrar)
+                        .addGap(296, 296, 296)
+                        .addComponent(btn_GenerarReporte)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Exportar)
+                        .addGap(16, 16, 16)))
                 .addContainerGap())
         );
         pnl_InternmentReportLayout.setVerticalGroup(
             pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_InternmentReportLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_dateIni)
-                    .addComponent(jDate_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jDate_Fin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_dateFin))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(panel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(pnl_InternmentReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_Filtrar)
                     .addComponent(btn_GenerarReporte)
-                    .addComponent(btn_Exportar)))
+                    .addComponent(btn_Exportar))
+                .addGap(121, 121, 121))
         );
 
         tbl_IntermentReport.setModel(new javax.swing.table.DefaultTableModel(
@@ -118,7 +289,7 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "ID Producto", "Cantidad", "ID Orden", "Fecha"
+                "ID Ordén", "ID Producto", "Cantidad de pallets", "Fecha"
             }
         ));
         jScrollPane2.setViewportView(tbl_IntermentReport);
@@ -138,23 +309,23 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnl_InternmentReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_Cancelar)
+                        .addGap(30, 30, 30)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_Cancelar)
-                .addGap(25, 25, 25))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_InternmentReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnl_InternmentReport, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_Cancelar)
-                .addGap(14, 14, 14)
+                .addGap(27, 27, 27)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(311, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -165,6 +336,37 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
         menuaux.setVisible(true);
     }//GEN-LAST:event_btn_CancelarActionPerformed
 
+    private void btn_FiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_FiltrarActionPerformed
+
+        Date dateIniSearch = null;
+        Date dateEndSearch = null;
+
+        if( txt_idOrder.getText().length()==0 && txt_EanOrder.getText().length()==0 && jDate_Ini.getDate() == null && jDate_Fin.getDate() == null)
+        {
+            productList=daoProducts.ProductsQry();
+            
+        }
+        else
+        {
+            if (jDate_Ini.getDate() != null) {
+                dateIniSearch = jDate_Ini.getDate();
+            } else {
+                dateIniSearch = new Date();
+                dateIniSearch.setTime(0);
+            }
+            if (jDate_Fin.getDate() != null) {
+                dateEndSearch = jDate_Fin.getDate();
+            } else {
+                dateEndSearch = new Date();
+            }
+
+            if (dateEndSearch.before(dateIniSearch)) {
+                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+            }
+        }
+
+    }//GEN-LAST:event_btn_FiltrarActionPerformed
+
     private void btn_ExportarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportarActionPerformed
         JFileChooser fileChooser = new JFileChooser();
         int res = fileChooser.showOpenDialog(this);
@@ -173,13 +375,39 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
 
         } catch (Exception e) {}
 
-        
-        
     }//GEN-LAST:event_btn_ExportarActionPerformed
 
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Frm_SearchIntermentOrder frm_SearchIntermentOrder = new Frm_SearchIntermentOrder(this);
+        frm_SearchIntermentOrder.setVisible(true);
+        frm_SearchIntermentOrder.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
+         if (cbo_trademark.getSelectedItem() != null) {
+            for (int i = 0; i < trademarkList.size(); i++) {
+                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                    idtrademark = trademarkList.get(i).getId_Trademark();
+                }
+            }
+        }
+    }//GEN-LAST:event_cbo_trademarkActionPerformed
+
+    private void txt_EanOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_EanOrderActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_EanOrderActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        Frm_SearchProductIO frm_SearchProductIO = new Frm_SearchProductIO(this, idtrademark);
+        frm_SearchProductIO.setVisible(true);
+        frm_SearchProductIO.setLocationRelativeTo(null);
+        this.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);
@@ -194,13 +422,69 @@ public class Frm_InternmentReport extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btn_Cancelar;
     private javax.swing.JToggleButton btn_Exportar;
+    private javax.swing.JButton btn_Filtrar;
     private javax.swing.JButton btn_GenerarReporte;
+    private javax.swing.JComboBox cbo_trademark;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton3;
     private com.toedter.calendar.JDateChooser jDate_Fin;
     private com.toedter.calendar.JDateChooser jDate_Ini;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JLabel lbl_dateFin;
-    private javax.swing.JLabel lbl_dateIni;
+    private javax.swing.JPanel panel;
     private javax.swing.JPanel pnl_InternmentReport;
     private javax.swing.JTable tbl_IntermentReport;
+    private javax.swing.JTextField txt_EanOrder;
+    private javax.swing.JTextField txt_idOrder;
     // End of variables declaration//GEN-END:variables
+
+    private void initializeTable() {
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+//        try {
+//            for (int i = 0; i < internmentOrderList.size(); i++) {
+//                Integer entrada = 0;
+//                Integer salida = 0;
+//                String entradaStr = "";
+//                String salidaStr = "";
+//                if (movementList.get(i).getType_Movement_id() == 1) {
+//                    entrada = (movementList.get(i).getStock_final() - movementList.get(i).getStock_inicial());
+//                    entradaStr =entrada.toString();
+//                } else {
+//                    salida = (movementList.get(i).getStock_inicial() - movementList.get(i).getStock_final());
+//                    salidaStr = salida.toString();
+//                }
+//                Object[] fila = {movementList.get(i).getIdWh(), movementList.get(i).getIdProduct(), movementList.get(i).getDate(), movementList.get(i).getType_Movement_idSubtype(),
+//                    entradaStr, salidaStr, movementList.get(i).getStock_inicial(), movementList.get(i).getStock_final()};
+//
+//                modelo.addRow(fila);
+//            }
+//        } catch (Exception e) {
+//        }
+    }
+    
+    public void setIdIO(Integer idIO) {
+
+        idOrder = idIO;
+    }
+
+    public void setTextIdIO() {
+
+        txt_idOrder.setText(idOrder.toString());
+    }
+    
+    public void setProduct(Product p) {
+
+        producto = p;
+    }
+
+    public void setTextIdEan() {
+
+        txt_EanOrder.setText(producto.getCodeEAN13());
+    }
 }
