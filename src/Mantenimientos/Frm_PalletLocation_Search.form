@@ -109,7 +109,7 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="cbo_rack" alignment="0" max="32767" attributes="0"/>
                       <Component id="cbo_locationcell_detail" max="32767" attributes="0"/>
-                      <Component id="cbo_marca" max="32767" attributes="0"/>
+                      <Component id="cbo_mark" max="32767" attributes="0"/>
                       <Component id="cbo_center_distribution" pref="189" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
@@ -164,7 +164,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_marca" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_marca" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="cbo_mark" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_product" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbo_product" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -266,12 +266,15 @@
             <Property name="text" type="java.lang.String" value="Marca"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JComboBox" name="cbo_marca">
+        <Component class="javax.swing.JComboBox" name="cbo_mark">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
               <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="cbo_markItemStateChanged"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_product">
           <Properties>

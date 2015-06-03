@@ -82,6 +82,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        cbo_product.addItem(" ");
        cbo_product.setSelectedIndex(cantreg);
     }
+  
     public void load_product(String marca)
     {   Trademark objmodel=new Trademark();
         DaoPalletProduct daomark= new DaoPalletProductImpl();
@@ -101,6 +102,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
        cbo_product.setSelectedIndex(cantreg);
       
     }        
+  
     public void loadproduct_mark(String marca)    
     { if (marca.isEmpty())
       { load_product();}   

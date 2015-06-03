@@ -18,17 +18,22 @@ import Mantenimientos.Frm_PalletLocation;
 import Model.Distribution_Center;
 import Model.LocationCell;
 import Model.PalletState;
+import Model.Product;
 import Model.Rack;
 import Model.Trademark;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoDistributionCenter;
 import dao.DaoPallet;
+import dao.DaoPalletProduct;
 import dao.DaoPalletState;
+import dao.DaoProducts;
 import dao.DaoTrademark;
 import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoPalletImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPalletStateImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import java.util.*;
 /**
@@ -47,6 +52,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     Integer indcelda=0; 
     Integer inddetallecelda=0; 
     Integer indmarca=0; 
+    Integer indpaso=0; 
     DaoDistributionCenter daoDC=new  DaoDistributionCenterImpl(); 
     DaoPallet daoPallet = new DaoPalletImpl();
     String CadenaCD="";    
@@ -64,6 +70,64 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_state.setSelectedIndex(2);        
     }        
 
+    public void load_mark()
+    { 
+        cbo_mark.removeAllItems();
+        DaoTrademark objdao=new DaoTrademarkImpl();
+        Integer cantreg=objdao.TrademarkQry().size();
+        Trademark[] list=new Trademark[cantreg];
+       for (int i=0; i<cantreg; i++)
+       {  list[i]=objdao.TrademarkQry().get(i);
+          // Se agregan los status activos
+           cbo_mark.addItem(list[i].getName());
+       }   
+       cbo_mark.addItem(" ");
+       cbo_mark.setSelectedIndex(cantreg);
+    }       
+    public void load_product()
+    {
+        cbo_product.removeAllItems();
+        DaoProducts objdao=new DaoProdImpl();
+        Integer cantreg=objdao.ProductsQry().size();
+        Product[] list=new Product[cantreg];
+       for (int i=0; i<cantreg; i++)
+       {  list[i]=objdao.ProductsQry().get(i);
+          // Se agregan los status activos
+           if(list[i].getStatus()==1)
+           {cbo_product.addItem(list[i].getName());
+           }
+       }   
+       cbo_product.addItem(" ");
+       cbo_product.setSelectedIndex(cantreg);
+    }
+  
+    public void load_product(String marca)
+    {   Trademark objmodel=new Trademark();
+        DaoPalletProduct daomark= new DaoPalletProductImpl();
+        objmodel=daomark.GetTrademarkname(marca); 
+        cbo_product.removeAllItems();
+        DaoPalletProduct objdao=new DaoPalletProductImpl();
+        Integer cantreg=objdao.GetProductList(objmodel.getId_Trademark()).size();
+        Product[] list=new Product[cantreg];
+       for (int i=0; i<cantreg; i++)
+       {  list[i]=objdao.GetProductList(objmodel.getId_Trademark()).get(i);
+          // Se agregan los status activos
+           if(list[i].getStatus()==1)
+           {cbo_product.addItem(list[i].getName());
+           }
+       }   
+       cbo_product.addItem(" ");
+       cbo_product.setSelectedIndex(cantreg);
+      
+    }        
+  
+    public void loadproduct_mark(String marca)    
+    { if (marca.isEmpty())
+      { load_product();}   
+      else 
+      { load_product(marca);  
+       }
+    }       
     
     public void inicia_estado_pallet()
     { 
@@ -75,8 +139,8 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_location_cell.removeAllItems();  
       cbo_locationcell_detail.removeAllItems();  
       cbo_state.removeAllItems();  
-      cbo_marca.removeAllItems();  
-      cbo_marca.removeAllItems();  
+      cbo_mark.removeAllItems();  
+      cbo_mark.removeAllItems();  
       cbo_product.removeAllItems();  
      }       
     public void cargacentrodistribucion() //
@@ -155,9 +219,14 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     public Frm_PalletLocation_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet");
         menuaux = menu;
+        indpaso=0; 
         initComponents();
         load_parameter();
         load_state();
+        load_mark();
+        load_product();
+        indpaso=1;         
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -182,7 +251,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         cbo_location_cell = new javax.swing.JComboBox();
         cbo_locationcell_detail = new javax.swing.JComboBox();
         lbl_marca = new javax.swing.JLabel();
-        cbo_marca = new javax.swing.JComboBox();
+        cbo_mark = new javax.swing.JComboBox();
         lbl_product = new javax.swing.JLabel();
         cbo_product = new javax.swing.JComboBox();
         cbo_center_distribution = new javax.swing.JComboBox();
@@ -255,6 +324,12 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
         lbl_marca.setText("Marca");
 
+        cbo_mark.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                cbo_markItemStateChanged(evt);
+            }
+        });
+
         lbl_product.setText("Producto");
 
         cbo_center_distribution.addItemListener(new java.awt.event.ItemListener() {
@@ -278,7 +353,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(cbo_rack, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbo_locationcell_detail, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cbo_marca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cbo_mark, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(cbo_center_distribution, 0, 189, Short.MAX_VALUE))
                 .addGap(48, 48, 48)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -322,7 +397,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_marca)
-                    .addComponent(cbo_marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbo_mark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_product)
                     .addComponent(cbo_product, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -526,6 +601,22 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
        loadceldadetalle(Cadenacelda);      
       }
     }//GEN-LAST:event_cbo_location_cellItemStateChanged
+
+    private void cbo_markItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_markItemStateChanged
+      String marca="";
+      if (indpaso==1)
+      { try {      
+         if (cbo_mark.getSelectedItem().toString().trim().equals(null) || cbo_mark.getSelectedItem().toString().trim().isEmpty())    
+         { marca="";}
+         else 
+         { marca=cbo_mark.getSelectedItem().toString().trim(); }    
+       } catch(Exception e)
+         {  } 
+       cbo_product.removeAllItems();
+       loadproduct_mark(marca);      
+      }
+// TODO add your handling code here:
+    }//GEN-LAST:event_cbo_markItemStateChanged
     
     /**
      * @param args the command line arguments
@@ -539,7 +630,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_center_distribution;
     private javax.swing.JComboBox cbo_location_cell;
     private javax.swing.JComboBox cbo_locationcell_detail;
-    private javax.swing.JComboBox cbo_marca;
+    private javax.swing.JComboBox cbo_mark;
     private javax.swing.JComboBox cbo_product;
     private javax.swing.JComboBox cbo_rack;
     private javax.swing.JComboBox cbo_state;
