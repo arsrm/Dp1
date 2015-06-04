@@ -125,6 +125,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
         lbl_welcome = new javax.swing.JLabel();
         lbl_name = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
         menu_principal = new javax.swing.JMenuBar();
         menu_mantenimientos = new javax.swing.JMenu();
         op_Centro_distribucion = new javax.swing.JMenuItem();
@@ -189,12 +190,24 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
+        getContentPane().setLayout(null);
 
         lbl_welcome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_welcome.setForeground(new java.awt.Color(255, 255, 255));
         lbl_welcome.setText("Bienvenido:");
+        getContentPane().add(lbl_welcome);
+        lbl_welcome.setBounds(440, 50, 92, 20);
 
         lbl_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_name.setForeground(new java.awt.Color(255, 255, 255));
         lbl_name.setText("Nombre");
+        getContentPane().add(lbl_name);
+        lbl_name.setBounds(550, 50, 160, 20);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/Alejandro/NetBeansProjects/Proyecto/trunk/Imagenes/fondop.jpg")); // NOI18N
+        jLabel1.setText("       ");
+        getContentPane().add(jLabel1);
+        jLabel1.setBounds(0, -30, 1280, 800);
 
         menu_mantenimientos.setText("Mantenimientos");
 
@@ -485,27 +498,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
         setJMenuBar(menu_principal);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lbl_welcome)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lbl_name)
-                .addContainerGap(379, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(250, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_welcome)
-                    .addComponent(lbl_name))
-                .addContainerGap())
-        );
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -775,6 +767,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;

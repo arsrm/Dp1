@@ -43,16 +43,20 @@ public class Frm_Login extends javax.swing.JFrame {
         lbl_password = new javax.swing.JLabel();
         btn_accept = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
+        lbl_log = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
+        setMinimumSize(new java.awt.Dimension(507, 290));
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
             }
         });
+        getContentPane().setLayout(null);
 
-        jpn_login.setBorder(javax.swing.BorderFactory.createTitledBorder("Login"));
+        jpn_login.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Login", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 13), new java.awt.Color(255, 255, 255))); // NOI18N
+        jpn_login.setOpaque(false);
         jpn_login.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 jpn_loginKeyPressed(evt);
@@ -73,8 +77,10 @@ public class Frm_Login extends javax.swing.JFrame {
 
         jLabel6.setText("  ");
 
+        lbl_user.setForeground(new java.awt.Color(255, 255, 255));
         lbl_user.setText("Usuario");
 
+        lbl_password.setForeground(new java.awt.Color(255, 255, 255));
         lbl_password.setText("Contraseña");
 
         javax.swing.GroupLayout jpn_loginLayout = new javax.swing.GroupLayout(jpn_login);
@@ -112,6 +118,9 @@ public class Frm_Login extends javax.swing.JFrame {
                 .addContainerGap(49, Short.MAX_VALUE))
         );
 
+        getContentPane().add(jpn_login);
+        jpn_login.setBounds(6, 6, 495, 207);
+
         btn_accept.setText("Aceptar");
         btn_accept.setMaximumSize(new java.awt.Dimension(73, 23));
         btn_accept.setMinimumSize(new java.awt.Dimension(73, 23));
@@ -121,13 +130,15 @@ public class Frm_Login extends javax.swing.JFrame {
             }
         });
         btn_accept.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btn_acceptKeyPressed(evt);
-            }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 btn_acceptKeyTyped(evt);
             }
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                btn_acceptKeyPressed(evt);
+            }
         });
+        getContentPane().add(btn_accept);
+        btn_accept.setBounds(28, 231, 92, 29);
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -135,33 +146,13 @@ public class Frm_Login extends javax.swing.JFrame {
                 btn_cancelActionPerformed(evt);
             }
         });
+        getContentPane().add(btn_cancel);
+        btn_cancel.setBounds(382, 231, 98, 29);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(btn_accept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_cancel)
-                .addGap(27, 27, 27))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpn_login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_accept, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_cancel))
-                .addContainerGap())
-        );
+        lbl_log.setIcon(new javax.swing.ImageIcon("/Users/Alejandro/NetBeansProjects/Proyecto/trunk/Imagenes/login.jpg")); // NOI18N
+        lbl_log.setText("    ");
+        getContentPane().add(lbl_log);
+        lbl_log.setBounds(0, 0, 510, 270);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -515,6 +506,7 @@ public class Frm_Login extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jpn_login;
+    private javax.swing.JLabel lbl_log;
     private javax.swing.JLabel lbl_password;
     private javax.swing.JLabel lbl_user;
     private javax.swing.JPasswordField txt_password;
