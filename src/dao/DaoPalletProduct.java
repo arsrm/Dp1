@@ -22,7 +22,7 @@ public interface DaoPalletProduct {
     
     public Trademark GetTradamarkid(Integer idmark); 
             
-    public Product GetProduct(String nameproduct);
+    public Product GetProduct(Integer idmark, String nameproduct);
     
     public List<Product> GetProductList(Integer idmark);
     

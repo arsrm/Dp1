@@ -450,7 +450,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                idpallet=(Integer)modelo.getValueAt(i, 0);
                idmarca= (Integer)daoPalletProduct.GetTrademarkname((String)modelo.getValueAt(i,1)).getId_Trademark();
-               idproduct=(Integer)daoPalletProduct.GetProduct((String)modelo.getValueAt(i, 2)).getIdProduct();
+               idproduct=(Integer)daoPalletProduct.GetProduct(idmarca,(String)modelo.getValueAt(i, 2)).getIdProduct();
                numorden=(Integer)modelo.getValueAt(i, 3);
                listidpallet.add(idpallet);
                listidmarca.add(idmarca);

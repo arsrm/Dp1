@@ -154,7 +154,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
     }
 
     @Override
-    public Product GetProduct(String nameproduct) {
+    public Product GetProduct(Integer idmark, String nameproduct) {
         Product objmodel = null;
         String sql = "SELECT "
                 + "idProduct, "
@@ -169,10 +169,12 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "updated_at, "                                
                 + "Type_Condition_idType_Condition, "                                                
                 + "cod_ean13, "                                                                
-                + "Trademark_id_Trademark "                                                                                
+                + "Trademark_id_Trademark,"
+                + "time_expiration  "                                                                                
                // + "user_created, "                                                                                
                // + "user_updated "                                                                                
-                + "FROM product where name='" +nameproduct+"' ";
+                + "FROM product where name='" +nameproduct+"' "
+                + " and Trademark_id_Trademark="+idmark + " ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -194,6 +196,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                     objmodel.setTypeConditionWH(rs.getInt(11));
                     objmodel.setCodeEAN13(rs.getString(12));
                     objmodel.setTrademark(rs.getInt(13));
+                    objmodel.setTimeExpiration(rs.getInt(14));
                 }
 
             } catch (SQLException e) {

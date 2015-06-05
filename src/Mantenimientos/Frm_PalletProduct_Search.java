@@ -131,14 +131,15 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         else 
         {DaoPalletProduct dao=new DaoPalletProductImpl();
           cadWhere=" where Product_Trademark_id_Trademark= "+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark()+"  and " ;
-        }    
         if( cbo_product.getSelectedItem().toString().trim().equals(null)|| cbo_product.getSelectedItem().toString().trim().isEmpty())
         { cadWhere=cadWhere+ " (1=1) and " ;}    
         else 
-        {DaoPalletProduct dao=new DaoPalletProductImpl();
-          cadWhere=cadWhere+ " Product_idProduct="+ dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getIdProduct()+" and " ;
-          cadWhere= cadWhere+ " Product_Trademark_id_Trademark="+dao.GetProduct(cbo_product.getSelectedItem().toString().trim()).getTrademark() +" and "; 
-        }    
+         { 
+          cadWhere=cadWhere+ " Product_idProduct="+ dao.GetProduct(dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark(),cbo_product.getSelectedItem().toString().trim()).getIdProduct()+" and " ;
+          cadWhere= cadWhere+ " Product_Trademark_id_Trademark="+dao.GetTrademarkname(cbo_mark.getSelectedItem().toString().trim()).getId_Trademark() +" and "; 
+         }
+        }
+        
         if (cbo_status.getSelectedItem().toString().trim().equals(null) || cbo_status.getSelectedItem().toString().trim().isEmpty())
         { cadWhere=cadWhere +" (1=1) and "; }   
         else if (cbo_status.getSelectedItem().toString().trim().equals("Activo"))
@@ -453,7 +454,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                idpallet=(Integer)modelo.getValueAt(i, 0);
                idmarca= (Integer)daoPalletProduct.GetTrademarkname((String)modelo.getValueAt(i,1)).getId_Trademark();
-               idproduct=(Integer)daoPalletProduct.GetProduct((String)modelo.getValueAt(i, 2)).getIdProduct();
+               idproduct=(Integer)daoPalletProduct.GetProduct(idmarca, cbo_product.getSelectedItem().toString()).getIdProduct();
                idstatus=0; 
                if (((String)modelo.getValueAt(i, 3)).equals("Inactivo"))
                { idstatus=0; 

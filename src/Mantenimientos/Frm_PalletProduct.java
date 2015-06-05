@@ -49,7 +49,9 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
     Frm_PalletProduct_Search  ventprev = new Frm_PalletProduct_Search(); 
     Integer indpaso=0; 
     InternmentOrder objmodelinternamiento; 
-
+    Product modelproduct; 
+    
+    
     public void load_mark()
     {
        cbo_mark.removeAllItems();
@@ -330,6 +332,54 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
         }
       }   
     }       
+
+    public boolean validanumorden()
+    { boolean b=true; 
+
+      Integer numorden=0; 
+      
+      if ( (txt_ordintern.getText().toString().isEmpty() )|| (txt_ordintern.getText().equals(null) ) )
+      { b=false;}   
+      else 
+      {
+       try{
+        numorden=Integer.parseInt(txt_ordintern.getText()); 
+          
+          DaoInternmentOrder dao=new DaoInternmentOrderImpl();
+          objmodelinternamiento= dao.IntOrderGet(numorden);
+          if ( (objmodelinternamiento==null)||dao.IntOrderGet(numorden).getStatus()==0 )
+          {String message = "El numero de Orden de Internamiento no existe o está inactiva";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);   
+          b=false;
+          }
+      }catch(Exception e)
+      {   String message = "El numero de Orden debe ser Entero";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);
+          b=false;
+      }   
+    }
+    return b;      
+    }        
+    
+    public boolean validaprod()
+    {  String marca="";
+       String product="";
+     try  
+     { marca=cbo_mark.getSelectedItem().toString().trim();
+       product=cbo_product.getSelectedItem().toString().trim();
+       return true;
+     }
+     catch(Exception e)
+     { return false; 
+       }   
+    } 
+    
     private void cbo_markItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_markItemStateChanged
         String marca="";
         if (indpaso==1)
@@ -370,19 +420,36 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
         Integer idmarca;
         Integer idproduct;
         Integer idstatus; 
-        Date expirationDate = new Date(System.currentTimeMillis()); 
-        Integer idIntOrd=1; 
+        boolean valnumord; 
+        boolean valprod; 
         
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(expirationDate);
-        calendar.add(Calendar.DAY_OF_YEAR, 7);
-        expirationDate=(Date) calendar.getTime(); 
-        
+        Date expirationDate = new Date(System.currentTimeMillis()); // tendra la fecha de la orden de internamiento
+        Integer timexpiration=7;  //corresponde a la cantidad de dias en las que expira un producto
+        Integer idIntOrd; 
+    
+        valnumord=validanumorden();
+        if (valnumord)
+        {
+        valprod=validaprod(); //valida los campos productos
+
+        if (valprod)
+        {
+
         int nr =modelo.getRowCount(); 
 
         DaoPalletProduct daoPalletProduct =new DaoPalletProductImpl(); 
-        idmarca= (Integer)daoPalletProduct.GetTrademarkname(cbo_mark.getSelectedItem().toString()).getId_Trademark();
-        idproduct=(Integer)daoPalletProduct.GetProduct(cbo_product.getSelectedItem().toString()).getIdProduct();
+        idmarca= daoPalletProduct.GetTrademarkname(cbo_mark.getSelectedItem().toString()).getId_Trademark();
+        idproduct=daoPalletProduct.GetProduct(idmarca, cbo_product.getSelectedItem().toString()).getIdProduct();
+        idIntOrd= Integer.parseInt(txt_ordintern.getText().toString().trim());
+
+        timexpiration=daoPalletProduct.GetProduct(idmarca, cbo_product.getSelectedItem().toString().trim()).getTimeExpiration();
+        DaoInternmentOrder dao= new DaoInternmentOrderImpl();
+        expirationDate=dao.IntOrderGet(idIntOrd).getDate();
+        
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(expirationDate);
+        calendar.add(Calendar.DAY_OF_YEAR, timexpiration);
+        expirationDate=(Date) calendar.getTime(); 
         
         for (int i=0; i<nr ;i++)
         {
@@ -394,8 +461,7 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
                listidpallet.add(idpallet);
                } 
          }catch(Exception e)
-          { 
-         }  
+          { }  
         }   
         //dao.usersDel(ids);        
         String message = "¿Está seguro que desea asignar los pallets seleccionados al producto?";
@@ -406,7 +472,18 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
             daoPalletProduct.PalletProductInsMasive(listidpallet, idmarca, idproduct,expirationDate,idIntOrd);
         }
         load_tablefilter();    
-
+        }
+       else
+        {
+          String message = "Debe Ingresar un producto existente..";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);
+        }    
+        
+      }
+        
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
@@ -417,34 +494,13 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void txt_ordinternFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_ordinternFocusLost
-      Integer numorden=0; 
-      
-      if ( (txt_ordintern.getText().toString().isEmpty() )|| (txt_ordintern.getText().equals(null) ) )
-      { }   
-      else 
-      {
-       try{
-        numorden=Integer.parseInt(txt_ordintern.getText()); 
-          
-          DaoInternmentOrder dao=new DaoInternmentOrderImpl();
-          objmodelinternamiento= dao.IntOrderGet(numorden);
-          if (objmodelinternamiento==null)
-          {String message = "El numero de Orden de Internamiento no existe";
-          String title = "Información";
-          JFrame frame = new JFrame(" ");
-          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
-          JOptionPane.setDefaultLocale(null);   
-          }
-      }catch(Exception e)
-      {   String message = "El numero de Orden debe ser Entero";
-          String title = "Información";
-          JFrame frame = new JFrame(" ");
-          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
-          JOptionPane.setDefaultLocale(null);
-      }   
-      }
-      
-    System.out.println("Valido correctamente la orden de internamiento");  
+      boolean b=false;
+       b=validanumorden();
+       if (b)
+       {System.out.println("Valido correctamente la orden de internamiento");  
+       
+       }
+
     }//GEN-LAST:event_txt_ordinternFocusLost
 
     private void txt_ordinternActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_ordinternActionPerformed
