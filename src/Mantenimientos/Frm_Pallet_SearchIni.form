@@ -100,15 +100,10 @@
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <Component id="lbl_status_pallet" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="81" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" attributes="0">
-                                  <Component id="lbl_description" min="-2" pref="77" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="lbl_status_pallet" min="-2" max="-2" attributes="0"/>
+                              <Component id="lbl_description" min="-2" pref="77" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace min="-2" pref="73" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="txt_description" min="-2" pref="149" max="-2" attributes="0"/>
                               <Component id="cbo_pallet_state" alignment="0" min="-2" pref="150" max="-2" attributes="0"/>

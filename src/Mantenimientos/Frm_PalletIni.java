@@ -242,7 +242,7 @@ public class Frm_PalletIni extends javax.swing.JFrame {
          //objpalletini.setIdpallet(idpallet);
         try {  
         cantpallet=Integer.parseInt(txt_cant.getText().toString());
-        String message = "¿Está seguro de realizar el registro los nuevos "+cantpallet + " Pallet ?";
+        String message = "¿Está seguro de realizar el registro los nuevos "+cantpallet + " Pallet   ";
         String title = "Confirmar! ";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);

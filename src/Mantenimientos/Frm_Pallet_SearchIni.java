@@ -465,7 +465,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         if (description.equals(null) || description.length()==0)
         { description=" (1=1) and ";  }
         else 
-        { description=" description like '%"+description+ "'%  and ";}
+        { description=" description like '%"+description+ "%'  and ";}
         
         actividad=cbo_pallet_act.getSelectedItem().toString().trim();
         if (actividad.equals(null) || actividad.length()==0)
