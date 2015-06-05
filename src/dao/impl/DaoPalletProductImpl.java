@@ -225,7 +225,8 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "user_updated, "
                 + "expiration_date, "                
                 + "Internment_Order_idInternment_Order "                                
-                + "FROM pallet_by_product  " +CadenaWhere+" ";
+                + "FROM pallet_by_product  " +CadenaWhere+" "
+                + " order by Internment_Order_idInternment_Order, Product_Trademark_id_Trademark,Product_idProduct  ";
         Connection cn = db.getConnection();
         
         System.out.println("Query ejecutado " + sql); 

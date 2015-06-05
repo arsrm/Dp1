@@ -176,7 +176,8 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         }    
         model.addRow(new Object[]{list[i].getIdpallet(),
         objmarca.GetTradamarkid(list[i].getIdtrademark()).getName(),
-        objproduc.ProductsGet(list[i].getIdproduct()).getName(),status});
+        objproduc.ProductsGet(list[i].getIdproduct()).getName(),
+        list[i].getNuminterna(),status});
         }   
     }       
 
@@ -342,14 +343,14 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
 
             },
             new String [] {
-                "Id. Pallet", "Marca", "Producto", "Estado", "Seleccionar"
+                "Id. Pallet", "Marca", "Producto", "Num Intern", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -439,33 +440,37 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
         List<Integer> listidpallet=new  ArrayList<Integer>();
         List<Integer> listidmarca= new ArrayList<Integer>();
         List<Integer> listidproduct= new ArrayList<Integer>();
-        List<Integer>  listidstatus=new ArrayList<Integer>(); 
+        List<Integer>  listidstatus=new ArrayList<Integer>();
+        List<Integer> listnumorden= new ArrayList<Integer>();
         Integer idpallet;
         Integer idmarca;
         Integer idproduct;
         Integer idstatus; 
+        Integer numorden; 
         
         int nr =modelo.getRowCount(); 
         for (int i=0; i<nr ;i++){
             
          try {   
-         Object prueba =  modelo.getValueAt(i, 4);
+         Object prueba =  modelo.getValueAt(i, 5);
              if ((Boolean)prueba){
                 //Integer numm= (Integer)modelo.getValueAt(i, 8);
                idpallet=(Integer)modelo.getValueAt(i, 0);
                idmarca= (Integer)daoPalletProduct.GetTrademarkname((String)modelo.getValueAt(i,1)).getId_Trademark();
                idproduct=(Integer)daoPalletProduct.GetProduct(idmarca, cbo_product.getSelectedItem().toString()).getIdProduct();
+               numorden=(Integer)modelo.getValueAt(i, 3);
                idstatus=0; 
-               if (((String)modelo.getValueAt(i, 3)).equals("Inactivo"))
+               if (((String)modelo.getValueAt(i, 4)).equals("Inactivo"))
                { idstatus=0; 
                }   
-               if (((String)modelo.getValueAt(i, 3)).equals("Activo"))
+               if (((String)modelo.getValueAt(i, 4)).equals("Activo"))
                { idstatus=1; 
                }   
                listidpallet.add(idpallet);
                listidmarca.add(idmarca);
                listidproduct.add(idproduct);
                listidstatus.add(idstatus);
+               listnumorden.add(numorden);
                } 
          }catch(Exception e)
           { 
