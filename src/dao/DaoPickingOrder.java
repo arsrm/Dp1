@@ -9,6 +9,7 @@ public interface DaoPickingOrder {
     public List<PickingOrder> pickingOrderQry();
     
     public List<PickingOrder> pickingOrderQry_search(Date fi , Date ff);
+    public List<PickingOrder> pickingOrderQry_search(Integer numOrden );
     
     public String pickingOrderIns(PickingOrder pickingOrder);
     
