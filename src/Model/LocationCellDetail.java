@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 package Model;
 
@@ -10,10 +6,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- *
- * @author Luis Miguel
- */
+
 public class LocationCellDetail {
     private Integer idLocation_Cell_Detail;
     private String description;
@@ -23,44 +16,31 @@ public class LocationCellDetail {
     private Integer Location_Cell_Rack_Warehouse_idWarehouse;
     private Integer idDistribution_Center;            
 
-    /**
-     * @return the idLocation_Cell_Detail
-     */
+  
     public Integer getIdLocation_Cell_Detail() {
         return idLocation_Cell_Detail;
     }
 
-    /**
-     * @param idLocation_Cell_Detail the idLocation_Cell_Detail to set
-     */
+  
     public void setIdLocation_Cell_Detail(Integer idLocation_Cell_Detail) {
         this.idLocation_Cell_Detail = idLocation_Cell_Detail;
     }
 
-    /**
-     * @return the description
-     */
+   
     public String getDescription() {
         return description;
     }
 
-    /**
-     * @param description the description to set
-     */
+   
     public void setDescription(String description) {
         this.description = description;
     }
 
-    /**
-     * @return the availability
-     */
+   
     public Integer getAvailability() {
         return availability;
     }
 
-    /**
-     * @param availability the availability to set
-     */
     public void setAvailability(Integer availability) {
         this.availability = availability;
     }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package dao.impl;
 
 import Model.PickingOrder;
@@ -15,13 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- *
- * @author Luis Miguel
- */
 public class DaoPickingOrderImpl implements DaoPickingOrder {
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
     private final ConectaDb db;
@@ -31,14 +22,12 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
     }
     @Override
     public List<PickingOrder> pickingOrderQry() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         List<PickingOrder> list = null;
         String sql =  "SELECT idPicking_Order,"
                 + "Date,"
                 + "status,"
-                + "user_created,"
-                + "user_updated "
-                +"FROM  picking_order";
+                + "Request_Order_idRequest_Order "
+                +"FROM  Picking_Order";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -47,15 +36,11 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 ResultSet rs = ps.executeQuery();
                 list = new LinkedList<>();
                 while (rs.next()) {
-                    List<PickingOrderDetail> pickingDetail =  null;
                     PickingOrder po = new PickingOrder();
                     po.setIdPickingOrder(rs.getInt(1));
                     po.setDate(rs.getDate(2));
                     po.setStatus(rs.getInt(3));
-                    po.setUserCreated(rs.getInt(4));
-                    po.setUserUpdated(rs.getInt(5));
-                    pickingDetail = daoPickingOrderDetail.pickingOrderDetailQry(rs.getInt(1));
-                    po.setPickingOrderDetailList(pickingDetail);
+                    po.setIdRequest_Order(rs.getInt(4));
                     list.add(po);                    
                 }
 
@@ -72,9 +57,143 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
     
     }
 
+    @Override 
+    public List<PickingOrder> pickingOrderQry_search(Date fi , Date ff){
+     
+        List<PickingOrder> list = null;
+        String sql =null;
+        Integer flag = 0; 
+       if (fi != null && ff !=null ){
+         sql =  "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                + "from Picking_Order "
+                 + "where Date BETWEEEN ? AND ? ";
+         flag = 1; 
+       }
+       else if (fi != null && ff == null){
+         sql =  "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                 + "from Picking_Order "
+                + "where Date >=  ? ";
+         flag = 2; 
+       }
+       else if (fi == null && ff != null){
+       
+         sql =  "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                 + "from Picking_Order "
+                + "where Date <=  ? ";
+         flag = 3; 
+       }
+       else if (fi == null && ff == null){
+       sql =  "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                + " from Picking_Order";
+        
+       }
+       
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                if (flag == 1 ){
+                ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                ps.setDate(2,  new java.sql.Date(ff.getTime()));
+                }
+                else if (flag ==2 ){
+                ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                }
+                else if (flag ==3 ){
+                ps.setDate(1,  new java.sql.Date(ff.getTime()));
+                }
+                
+                ResultSet rs = ps.executeQuery();
+                
+                list = new LinkedList<>();
+                while (rs.next()) {
+                   PickingOrder order = new PickingOrder();
+                   order.setIdPickingOrder(rs.getInt(1));
+                   order.setDate(rs.getDate(2));
+                   order.setStatus(rs.getInt(3));
+                   order.setIdRequest_Order(rs.getInt(4));
+                   list.add(order);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
+    
+    }
     @Override
-    public List<PickingOrder> pickingOrderQry_search() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     public List<PickingOrder> pickingOrderQry_search(Integer numOrden ){
+        
+        List<PickingOrder> list = null;
+        Integer flag =0 ;
+        String sql = null;
+              if (numOrden !=null ){
+                sql=   "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                 + "from Picking_Order "
+                + "where Picking_Order =  ? ";
+                flag =1 ;
+              }
+              else if (numOrden ==null ){
+                sql=   "select idPicking_Order ,"
+                + "Date,"
+                + "status,"
+                + "Request_Order_idRequest_Order "
+                 + "from Picking_Order ";
+                flag = 2 ; 
+                
+              }
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                  if (flag ==1) 
+                  ps.setInt(1,numOrden);
+                 
+                ResultSet rs = ps.executeQuery();
+                
+                list = new LinkedList<>();
+                while (rs.next()) {
+                   PickingOrder order = new PickingOrder();
+                   order.setIdPickingOrder(rs.getInt(1));
+                   order.setDate(rs.getDate(2));
+                   order.setStatus(rs.getInt(3));
+                   order.setIdRequest_Order(rs.getInt(4));
+                   list.add(order);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
     }
 
     @Override
@@ -82,13 +201,12 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         
         String result = null;
-        String sql = "INSERT INTO picking_order("
+        String sql = "INSERT INTO Picking_Order("
                 + "idPicking_Order,"
                 + "Date,"
                 + "status,"
-                + "userCreated,"
-                + "userUpdated"
-                + ") VALUES(?,?,?,?,?)";
+                + "Request_Order_idRequest_Order"
+                + ") VALUES(?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -97,19 +215,9 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 ps.setInt(1, pickingOrder.getIdPickingOrder());
                 ps.setDate(2,  new java.sql.Date(pickingOrder.getDate().getTime()));
                 ps.setInt(3, pickingOrder.getStatus());
-                ps.setInt(4, pickingOrder.getUserCreated());
-                if(pickingOrder.getUserUpdated()==null){
-                    ps.setNull(5, java.sql.Types.NULL);
-                }else{
-                    ps.setInt(8, pickingOrder.getUserUpdated());
-                }
-                int ctos = ps.executeUpdate();
-                List<PickingOrderDetail> list = pickingOrder.getPickingOrderDetailList();
-                int sizeRequest = list.size();
+                ps.setInt(4, pickingOrder.getIdRequest_Order());
                 
-                for(int i=0;i<sizeRequest;i++){
-                    daoPickingOrderDetail.pickingOrderDetailIns(list.get(i));
-                }
+                int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
@@ -129,11 +237,11 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
     }
 
     @Override
-    public String pickingOrderDel(Integer idPickingOrder) {
+    public String pickingOrderDel(Integer idPickingOrder, Integer status) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Integer status;
+        
         String result = null;
-        String sql = "UPDATE picking_order SET "                
+        String sql = "UPDATE Picking_Order SET "                
                 + "status = ? "
                 + "WHERE idPicking_Order = ?";
 
@@ -141,23 +249,8 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-               
-                PickingOrder po = pickingOrderGet(idPickingOrder);
-                
-                if (po.getStatus()==0) {//inactivo
-                    status = 1;//activo
-                } else {//activo
-                   status = 0; 
-                }
-                
                 ps.setInt(1, status);
                 ps.setInt(2, idPickingOrder);
-                
-                List<PickingOrderDetail> list = po.getPickingOrderDetailList();
-                int size = list.size();
-                for(int i=0;i<size;i++){
-                        daoPickingOrderDetail.pickingOrderDetailDel(list.get(i).getIdPicking_Order_Detail(),idPickingOrder,status);
-                }
                 ps.executeUpdate();
             } catch (SQLException e) {
                 result = e.getMessage();
@@ -174,7 +267,30 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
 
     @Override
     public String pickingOrderUpd(PickingOrder pickingOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        String result = null;
+        String sql = "UPDATE Picking_Order SET "                
+                + "status = ? "
+                + "WHERE idPicking_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, pickingOrder.getStatus());
+                ps.setInt(2, pickingOrder.getIdPickingOrder());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
     }
 
     @Override
@@ -184,9 +300,8 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
          String sql =  "SELECT idPicking_Order,"
                 + "Date,"
                 + "status,"
-                + "user_created,"
-                + "user_updated "
-                + "FROM picking_order WHERE idPicking_Order = ?";
+                + "Request_Order_idRequest_Order "
+                + "FROM Picking_Order WHERE idPicking_Order = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -195,15 +310,12 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 ps.setInt(1, idpickingOrder);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                     List<PickingOrderDetail> pickingDetail =  null;
                     PickingOrder po = new PickingOrder();
                     po.setIdPickingOrder(rs.getInt(1));
                     po.setDate(rs.getDate(2));
                     po.setStatus(rs.getInt(3));
-                    po.setUserCreated(rs.getInt(4));
-                    po.setUserUpdated(rs.getInt(5));
-                    pickingDetail = daoPickingOrderDetail.pickingOrderDetailQry(rs.getInt(1));
-                    po.setPickingOrderDetailList(pickingDetail);
+                    po.setIdRequest_Order(rs.getInt(4));
+                    
                 }
 
             } catch (SQLException e) {

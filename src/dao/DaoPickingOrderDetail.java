@@ -11,12 +11,10 @@ public interface DaoPickingOrderDetail {
     
     public String pickingOrderDetailIns(PickingOrderDetail pickingOrderDetail);
     
-    public String pickingOrderDetailDel(Integer idPickingOrderDetail,Integer idPickingOrder);
-    
-    public void pickingOrderDetailsetStatus(Integer idPickingOrderDetail,Integer idPickingOrder,Integer status);
+    public String pickingOrderDetailDel(Integer idPickingOrderDetail,Integer idPickingOrder, Integer status);
     
     public PickingOrderDetail pickingOrderDetailGet(Integer idpickingOrderDetail);
     
-    public String pickingOrderDetailUpd(PickingOrderDetail pickingOrderDetail);
+    public List<PickingOrderDetail> pickingOrderDetailFind(Integer orderpallet , Integer numpallet , Integer codProd);
     
 }
