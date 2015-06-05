@@ -111,8 +111,7 @@ public class DaoPalletImpl implements DaoPallet{
         List<Warehouse> list = null;
         Warehouse model= new Warehouse();
         String sql = "select idWarehouse,description, status,created_at,updated_at,\n" +
-                    "Type_Condition_idType_Condition,Distribution_Center_idDistribution_Center,\n" +
-                    "user_created,user_updated\n" +
+                    "Type_Condition_idType_Condition,Distribution_Center_idDistribution_Center\n" +
                     " from warehouse \n" +
                     "where idWarehouse in (\n" +
                     "select distinct(Location_Cell_Rack_Warehouse_idWarehouse) from location_cell_detail \n" +
@@ -134,6 +133,7 @@ public class DaoPalletImpl implements DaoPallet{
                     model.setUpdate_at(rs.getTimestamp(5));
                     model.setType_Condition_WareHouse_idType_Condition_WareHouse(rs.getInt(6));
                     model.setDistribution_Center_idDistribution_Center(rs.getInt(7));
+                    
                     list.add(model);
                 }
             } catch (SQLException e) {

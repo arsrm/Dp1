@@ -73,8 +73,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.DetalleCeldaQry(Cadenacelda).get(i);
            cbo_locationcell_detail.addItem(list[i].toString());
         } 
-      //cbo_locationcell_detail.addItem(" ");
-      cbo_locationcell_detail.setSelectedIndex(0);
+      cbo_locationcell_detail.addItem(" ");
+      cbo_locationcell_detail.setSelectedIndex(cantreg);
         
     }        
 
@@ -87,8 +87,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.CeldaQry(cadrack).get(i);
            cbo_location_cell.addItem(list[i].toString());
         } 
-      //cbo_location_cell.addItem(" ");
-      cbo_location_cell.setSelectedIndex(0);
+      cbo_location_cell.addItem(" ");
+      cbo_location_cell.setSelectedIndex(cantreg);
     }       
     public void  loadrack_CD(String cadena)
     {
@@ -99,8 +99,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.RackQry(cadena).get(i);
            cbo_rack.addItem(list[i].getIdentifier());
         } 
-      //cbo_rack.addItem(" ");
-      cbo_rack.setSelectedIndex(0);
+      cbo_rack.addItem(" ");
+      cbo_rack.setSelectedIndex(cantreg);
     } 
     public void loadalmacen_CD(String CenterD)
     { 
@@ -111,8 +111,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         {  list[i]=objdao.WarehoseQry(CenterD).get(i);
            cbo_warehouse.addItem(list[i].getDescription());
         } 
-      //cbo_warehouse.addItem(" ");
-      cbo_warehouse.setSelectedIndex(0);
+      cbo_warehouse.addItem(" ");
+      cbo_warehouse.setSelectedIndex(cantreg);
     }       
     public void cargacentrodistribucion()
     {
@@ -123,8 +123,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
        {  list[i]=objdao.CDQry().get(i);
           cbo_center_distribution.addItem(list[i].getName());
        } 
-      //cbo_center_distribution.addItem(" ");
-      cbo_center_distribution.setSelectedIndex(0);
+      cbo_center_distribution.addItem(" ");
+      cbo_center_distribution.setSelectedIndex(cantreg);
     }        
     public void limpiacombos()
     { cbo_center_distribution.removeAllItems();
