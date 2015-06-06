@@ -6,9 +6,21 @@
 
 package Operaciones;
 
+import Model.PickingOrder;
+import Model.RequestOrder;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoPickingOrder;
+import dao.DaoRequestOrder;
+import dao.impl.DaoPickingOrderImpl;
+import dao.impl.DaoRequestOrderImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -16,6 +28,10 @@ import javax.swing.JOptionPane;
  */
 public class Frm_PickingOrder_Search extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    List<PickingOrder> pickingOrderList = new ArrayList<>();
+    DefaultTableModel model = new DefaultTableModel();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     /**
      * Creates new form Frm_VerOrdenesEntrega1
      */
@@ -23,12 +39,29 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         setTitle("ÓRDENES DE ENTREGA");
         menuaux = menu;
         initComponents();
+        model = (DefaultTableModel) table_orders.getModel();
+        TableColumn tc = table_orders.getColumnModel().getColumn(3);
+        tc.setHeaderRenderer(new SelectAllHeader(table_orders, 3));
+        initializeJPanelOrder();
     }
     
     public Frm_PickingOrder_Search(){
         
     }
+    
+    public void refreshGrid(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
 
+    public void initializeJPanelOrder(){
+            date_from.setEnabled(false);
+            date_to.setEnabled(false);
+            btn_searchDate.setEnabled(false);
+            cbox_selectOrder.setSelected(true);
+            cbox_selectDates.setSelected(false);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -43,16 +76,18 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         table_orders = new javax.swing.JTable();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
-        pnl_search = new javax.swing.JPanel();
-        lbl_date_to = new javax.swing.JLabel();
-        jdate_date_to = new com.toedter.calendar.JDateChooser();
-        lbl_date_from = new javax.swing.JLabel();
-        jdate_date_from = new com.toedter.calendar.JDateChooser();
-        lbl_client_filter = new javax.swing.JLabel();
-        txt_client_id = new javax.swing.JTextField();
-        txt_name_client = new javax.swing.JTextField();
-        btn_search_client = new javax.swing.JButton();
-        btn_search_order = new javax.swing.JButton();
+        pnl_order = new javax.swing.JPanel();
+        cbox_selectOrder = new javax.swing.JCheckBox();
+        lbl_order = new javax.swing.JLabel();
+        txt_num_order = new javax.swing.JTextField();
+        btn_searchOrder = new javax.swing.JButton();
+        pnl_date = new javax.swing.JPanel();
+        cbox_selectDates = new javax.swing.JCheckBox();
+        lbl_dateFrom = new javax.swing.JLabel();
+        date_from = new com.toedter.calendar.JDateChooser();
+        lbl_dateTo = new javax.swing.JLabel();
+        date_to = new com.toedter.calendar.JDateChooser();
+        btn_searchDate = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -89,7 +124,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table_orders);
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -110,7 +145,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             .addGroup(pnl_ordersLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
                         .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -126,73 +161,114 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
                     .addComponent(btn_cancel))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
-        pnl_search.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios Búsqueda"));
+        pnl_order.setBorder(javax.swing.BorderFactory.createTitledBorder("Orden de Pedido"));
 
-        lbl_date_to.setText("Fecha Pedido Hasta:");
-
-        lbl_date_from.setText("Fecha Pedido Desde:");
-
-        lbl_client_filter.setText("Cliente:");
-
-        txt_name_client.setEditable(false);
-
-        btn_search_client.setText("Buscar");
-
-        btn_search_order.setText("Buscar Órdenes de Despacho");
-        btn_search_order.addActionListener(new java.awt.event.ActionListener() {
+        cbox_selectOrder.setText("Seleccionar");
+        cbox_selectOrder.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_search_orderActionPerformed(evt);
+                cbox_selectOrderActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout pnl_searchLayout = new javax.swing.GroupLayout(pnl_search);
-        pnl_search.setLayout(pnl_searchLayout);
-        pnl_searchLayout.setHorizontalGroup(
-            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
-                .addContainerGap(153, Short.MAX_VALUE)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_date_from, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_client_filter, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnl_searchLayout.createSequentialGroup()
-                        .addComponent(jdate_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_date_to)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jdate_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_searchLayout.createSequentialGroup()
-                        .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(btn_search_client)
+        lbl_order.setText("Número de Orden de Pedido:");
+
+        btn_searchOrder.setText("Buscar");
+        btn_searchOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchOrderActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnl_orderLayout = new javax.swing.GroupLayout(pnl_order);
+        pnl_order.setLayout(pnl_orderLayout);
+        pnl_orderLayout.setHorizontalGroup(
+            pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_orderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_orderLayout.createSequentialGroup()
+                        .addComponent(lbl_order)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_name_client)))
-                .addGap(186, 186, 186))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btn_search_order))
+                        .addComponent(txt_num_order, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE))
+                    .addGroup(pnl_orderLayout.createSequentialGroup()
+                        .addComponent(cbox_selectOrder)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_orderLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_searchOrder)))
+                .addContainerGap())
         );
-        pnl_searchLayout.setVerticalGroup(
-            pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_searchLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_name_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_search_client)
-                    .addComponent(lbl_client_filter))
-                .addGap(18, 18, 18)
-                .addGroup(pnl_searchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jdate_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_date_to)
-                    .addComponent(lbl_date_from)
-                    .addComponent(jdate_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_search_order))
+        pnl_orderLayout.setVerticalGroup(
+            pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_orderLayout.createSequentialGroup()
+                .addComponent(cbox_selectOrder)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_order)
+                    .addComponent(txt_num_order, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_searchOrder)
+                .addContainerGap())
+        );
+
+        pnl_date.setBorder(javax.swing.BorderFactory.createTitledBorder("Fecha:"));
+
+        cbox_selectDates.setText("Seleccionar");
+        cbox_selectDates.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbox_selectDatesActionPerformed(evt);
+            }
+        });
+
+        lbl_dateFrom.setText("Fecha Desde:");
+
+        lbl_dateTo.setText("Fecha Hasta:");
+
+        btn_searchDate.setText("Buscar");
+        btn_searchDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchDateActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout pnl_dateLayout = new javax.swing.GroupLayout(pnl_date);
+        pnl_date.setLayout(pnl_dateLayout);
+        pnl_dateLayout.setHorizontalGroup(
+            pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_dateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_searchDate)
+                    .addGroup(pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnl_dateLayout.createSequentialGroup()
+                            .addComponent(lbl_dateFrom)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(lbl_dateTo)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(cbox_selectDates)))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        pnl_dateLayout.setVerticalGroup(
+            pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_dateLayout.createSequentialGroup()
+                .addGroup(pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnl_dateLayout.createSequentialGroup()
+                        .addComponent(cbox_selectDates)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_dateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_dateFrom)
+                            .addComponent(date_from, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_dateTo))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(btn_searchDate)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -201,15 +277,24 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(pnl_order, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addComponent(pnl_search, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_search, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(pnl_order, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 4, Short.MAX_VALUE)
+                        .addComponent(pnl_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnl_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -237,8 +322,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             int rowSel = table_orders.getSelectedRow();
             int colSel = table_orders.getSelectedColumn();
             if (colSel==0){
-              Frm_PickingOrder_Detail frm_dod = new Frm_PickingOrder_Detail(this);
-              
+              Frm_PickingOrder_Detail frm_dod = new Frm_PickingOrder_Detail(this,pickingOrderList.get(rowSel));
               frm_dod.setVisible(true);
               frm_dod.setLocationRelativeTo(null);
               this.setVisible(false);  
@@ -258,26 +342,129 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_deleteActionPerformed
 
-    private void btn_search_orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_orderActionPerformed
+    private void cbox_selectDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_selectDatesActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_search_orderActionPerformed
+        if(cbox_selectDates.isSelected()==true){
+            date_from.setEnabled(true);
+            date_to.setEnabled(true);
+            btn_searchDate.setEnabled(true);
+            txt_num_order.setEnabled(false);
+            btn_searchOrder.setEnabled(false);
+            cbox_selectOrder.setSelected(false);
+            
+        }
+    }//GEN-LAST:event_cbox_selectDatesActionPerformed
+
+    private void cbox_selectOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_selectOrderActionPerformed
+        // TODO add your handling code here:
+        if(cbox_selectOrder.isSelected()==true){
+            date_from.setEnabled(false);
+            date_to.setEnabled(false);
+            btn_searchDate.setEnabled(false);
+            txt_num_order.setEnabled(true);
+            btn_searchOrder.setEnabled(true);
+            cbox_selectDates.setSelected(false);
+        }
+    }//GEN-LAST:event_cbox_selectOrderActionPerformed
+
+    private void btn_searchOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchOrderActionPerformed
+        // TODO add your handling code here:
+        Object[] options = {"OK"};
+        String orderN =  txt_num_order.getText();
+        if(orderN == null || orderN.equals("")==true){      
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un número de orden de pedido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                 
+        }else{
+            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                    Integer orderNumb = Integer.parseInt(orderN);
+                    pickingOrderList = daoPickingOrder.pickingOrderQry_search(orderNumb);
+                    if(pickingOrderList == null ){
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    }else{
+                        if(pickingOrderList.size()==0){
+                                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+
+                        }else{
+                            int size = pickingOrderList.size();
+                            for(int i=0;i<size;i++){
+                                PickingOrder pO = pickingOrderList.get(i);
+                                int idRequest = pO.getIdRequest_Order();
+                                RequestOrder rO = daoRequestOrder.requestOrderGet(idRequest);
+                                String nameState = null;
+                                if(pO.getStatus()==1)
+                                    nameState = "Realizado";
+                                else if(pO.getStatus()==2)
+                                    nameState = "Pendiente";
+                                else
+                                    nameState = "Cancelado";
+
+                                Object[] fila = {pO.getIdPickingOrder(),rO.getClient().getName(),nameState,false};
+                                model.addRow(fila);
+                            }
+                        }
+                    }
+            } 
+            
+        }
+       
+    }//GEN-LAST:event_btn_searchOrderActionPerformed
+
+    private void btn_searchDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchDateActionPerformed
+        // TODO add your handling code here:
+        Object[] options = {"OK"};
+        Date dateFrom = date_from.getDate();
+        Date dateTo = date_to.getDate();
+       
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {  
+            pickingOrderList = daoPickingOrder.pickingOrderQry_search(dateFrom,dateTo);
+            if(pickingOrderList == null ){
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }else{
+                if(pickingOrderList.size()==0){
+                  int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]); 
+                }else{
+                    int size = pickingOrderList.size();
+                    for(int i=0;i<size;i++){
+                        PickingOrder pO = pickingOrderList.get(i);
+                        int idRequest = pO.getIdRequest_Order();
+                        RequestOrder rO = daoRequestOrder.requestOrderGet(idRequest);
+                        String nameState = null;
+                        if(pO.getStatus()==1)
+                            nameState = "Realizado";
+                        else if(pO.getStatus()==2)
+                            nameState = "Pendiente";
+                        else
+                            nameState = "Cancelado";
+
+                        Object[] fila = {pO.getIdPickingOrder(),rO.getClient().getName(),nameState,false};
+                        model.addRow(fila);
+                    }
+                }
+            }
+        } 
+        
+    }//GEN-LAST:event_btn_searchDateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_delete;
-    private javax.swing.JButton btn_search_client;
-    private javax.swing.JButton btn_search_order;
+    private javax.swing.JButton btn_searchDate;
+    private javax.swing.JButton btn_searchOrder;
+    private javax.swing.JCheckBox cbox_selectDates;
+    private javax.swing.JCheckBox cbox_selectOrder;
+    private com.toedter.calendar.JDateChooser date_from;
+    private com.toedter.calendar.JDateChooser date_to;
     private javax.swing.JScrollPane jScrollPane1;
-    private com.toedter.calendar.JDateChooser jdate_date_from;
-    private com.toedter.calendar.JDateChooser jdate_date_to;
-    private javax.swing.JLabel lbl_client_filter;
-    private javax.swing.JLabel lbl_date_from;
-    private javax.swing.JLabel lbl_date_to;
+    private javax.swing.JLabel lbl_dateFrom;
+    private javax.swing.JLabel lbl_dateTo;
+    private javax.swing.JLabel lbl_order;
+    private javax.swing.JPanel pnl_date;
+    private javax.swing.JPanel pnl_order;
     private javax.swing.JPanel pnl_orders;
-    private javax.swing.JPanel pnl_search;
     private javax.swing.JTable table_orders;
-    private javax.swing.JTextField txt_client_id;
-    private javax.swing.JTextField txt_name_client;
+    private javax.swing.JTextField txt_num_order;
     // End of variables declaration//GEN-END:variables
 }

@@ -197,43 +197,45 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
     }
 
     @Override
-    public String pickingOrderIns(PickingOrder pickingOrder) {
+    public Integer pickingOrderIns(PickingOrder pickingOrder) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        
-        String result = null;
-        String sql = "INSERT INTO Picking_Order("
-                + "idPicking_Order,"
+        Integer idGenerated = -1;
+        String sql = "INSERT INTO picking_order("
                 + "Date,"
                 + "status,"
                 + "Request_Order_idRequest_Order"
-                + ") VALUES(?,?,?,?)";
+                + ") VALUES(?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, pickingOrder.getIdPickingOrder());
-                ps.setDate(2,  new java.sql.Date(pickingOrder.getDate().getTime()));
-                ps.setInt(3, pickingOrder.getStatus());
-                ps.setInt(4, pickingOrder.getIdRequest_Order());
+                ps.setDate(1,  new java.sql.Date(pickingOrder.getDate().getTime()));
+                ps.setInt(2, pickingOrder.getStatus());
+                ps.setInt(3, pickingOrder.getIdRequest_Order());
                 
+               
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
+                
+                ResultSet rs = ps.getGeneratedKeys();
+                if(rs.next()){
+                    idGenerated = rs.getInt(1);
+                }
 
             } catch (SQLException e) {
-                result = e.getMessage();
+              idGenerated=-1;  
             } finally {
                 try {
                     cn.close();
                 } catch (SQLException e) {
-                    result = e.getMessage();
                 }
             }
         }
 
-        return result;
+        return idGenerated;
     }
 
     @Override

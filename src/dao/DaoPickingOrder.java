@@ -12,7 +12,7 @@ public interface DaoPickingOrder {
     
     public List<PickingOrder> pickingOrderQry_search(Integer numOrden );
     
-    public String pickingOrderIns(PickingOrder pickingOrder);
+    public Integer pickingOrderIns(PickingOrder pickingOrder);
     
     public String pickingOrderDel(Integer idPickingOrder,Integer status);
     

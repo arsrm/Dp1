@@ -349,7 +349,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                         //SE LEE LOS DATOS QUE CONTIENEN LA ORDEN
                         
                         codProd = Integer.parseInt(words_line[1]);
-                        cantidad = Integer.parseInt(words_line[2]);
+                        cantidad = Integer.parseInt(words_line[2]);//en pallets
                         Product prod = daoProducts.ProductsGet(codProd);
                         if(prod!=null){
                             RequestOrderDetail requestOrderDetail = new RequestOrderDetail();

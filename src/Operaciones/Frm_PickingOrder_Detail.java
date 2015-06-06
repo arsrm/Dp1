@@ -6,8 +6,19 @@
 
 package Operaciones;
 
+import Model.LocationCellDetail;
+import Model.Pallet;
+import Model.PickingOrder;
+import Model.PickingOrderDetail;
+import Model.RequestOrder;
+import dao.DaoPickingOrderDetail;
+import dao.DaoRequestOrder;
+import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoRequestOrderImpl;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -15,6 +26,10 @@ import javax.swing.JOptionPane;
  */
 public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     Frm_PickingOrder_Search frm_posAux= new Frm_PickingOrder_Search();
+    PickingOrder pickingOrderAux = new PickingOrder();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    DefaultTableModel model = new DefaultTableModel();
     /**
      * Creates new form Frm_verDetalleOrdenEntrega1
      */
@@ -23,6 +38,17 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         frm_posAux = frm_pos;
         initComponents();
     }
+    
+    public Frm_PickingOrder_Detail(Frm_PickingOrder_Search frm_pos, PickingOrder pickingOrder) {
+        setTitle("ÓRDEN DE ENTREGA");
+        frm_posAux = frm_pos;
+        initComponents();
+        pickingOrderAux = pickingOrder;
+        model = model = (DefaultTableModel) table_products.getModel();
+        fillData();
+        fillTable();
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -36,20 +62,14 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         pnl_general_info = new javax.swing.JPanel();
         lbl_num_order = new javax.swing.JLabel();
         txt_OrderNum = new javax.swing.JTextField();
-        lbl_client = new javax.swing.JLabel();
-        txt_ClientId = new javax.swing.JTextField();
-        txt_ClientName = new javax.swing.JTextField();
         lbl_deliver_date = new javax.swing.JLabel();
         lbl_status = new javax.swing.JLabel();
         cbo_status = new javax.swing.JComboBox();
-        lbl_address = new javax.swing.JLabel();
         lbl_reg_date = new javax.swing.JLabel();
         date_register = new com.toedter.calendar.JDateChooser();
         date_deliver = new com.toedter.calendar.JDateChooser();
-        txt_ClienteAddress = new javax.swing.JTextField();
-        lbl_grocer = new javax.swing.JLabel();
-        txt_GrocerId = new javax.swing.JTextField();
-        txt_GrocerName = new javax.swing.JTextField();
+        lbl_num_orderR = new javax.swing.JLabel();
+        txt_OrderNumR = new javax.swing.JTextField();
         pnl_products = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_products = new javax.swing.JTable();
@@ -67,34 +87,23 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
 
         pnl_general_info.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos Generales"));
 
-        lbl_num_order.setText("Número de Orden: ");
+        lbl_num_order.setText("Número de Orden Entrega: ");
         lbl_num_order.setToolTipText("");
 
         txt_OrderNum.setEditable(false);
-
-        lbl_client.setText("Cliente: ");
-
-        txt_ClientId.setEditable(false);
-
-        txt_ClientName.setEditable(false);
 
         lbl_deliver_date.setText("Fecha Entrega Estimada:");
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ACTIVO", "INACTIVO" }));
-
-        lbl_address.setText("Dirección:");
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "REALIZADO", "PENDIENTE", "CANCELADO" }));
 
         lbl_reg_date.setText("Fecha Registro:");
 
-        txt_ClienteAddress.setEditable(false);
+        lbl_num_orderR.setText("Número de Orden Pedido: ");
+        lbl_num_orderR.setToolTipText("");
 
-        lbl_grocer.setText("Almacenero:");
-
-        txt_GrocerId.setEditable(false);
-
-        txt_GrocerName.setEditable(false);
+        txt_OrderNumR.setEditable(false);
 
         javax.swing.GroupLayout pnl_general_infoLayout = new javax.swing.GroupLayout(pnl_general_info);
         pnl_general_info.setLayout(pnl_general_infoLayout);
@@ -103,38 +112,25 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             .addGroup(pnl_general_infoLayout.createSequentialGroup()
                 .addGap(120, 120, 120)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_client)
+                    .addComponent(lbl_reg_date)
+                    .addComponent(lbl_num_order)
+                    .addComponent(lbl_num_orderR))
+                .addGap(25, 25, 25)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_reg_date)
-                            .addComponent(lbl_address)
-                            .addComponent(lbl_grocer)
-                            .addComponent(lbl_num_order))
-                        .addGap(27, 27, 27)
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                        .addComponent(txt_ClientId, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_ClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(117, 117, 117)
-                                .addComponent(lbl_status)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(txt_ClienteAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addComponent(date_register, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37)
-                                .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(date_deliver, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addComponent(txt_GrocerId, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txt_GrocerName, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(130, Short.MAX_VALUE))
+                        .addComponent(date_register, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_OrderNumR, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                        .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99)
+                        .addComponent(lbl_status)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(cbo_status, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date_deliver, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_general_infoLayout.setVerticalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -146,35 +142,18 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lbl_status)))
-                .addGap(5, 5, 5)
-                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(lbl_client)
-                            .addComponent(txt_ClientId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_ClientName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txt_ClienteAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_address))
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(lbl_grocer)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(txt_GrocerId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_GrocerName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_reg_date, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(date_register, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbl_deliver_date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(date_deliver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_num_orderR)
+                            .addComponent(txt_OrderNumR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addComponent(lbl_reg_date))
+                    .addComponent(date_register, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date_deliver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         pnl_products.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
@@ -187,9 +166,17 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 {null, null, null, null, null}
             },
             new String [] {
-                "Código Producto", "Descripción", "Cantidad", "Ubicación", "Estado"
+                "EAN 128", "Descripción", "Ubicación", "Estado", "Seleccionar"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(table_products);
 
         btn_cancel.setText("Cancelar");
@@ -224,7 +211,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_cancel)
                 .addContainerGap())
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
         );
         pnl_productsLayout.setVerticalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,9 +239,9 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnl_general_info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_products, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -306,7 +293,32 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_confirmActionPerformed
 
-   
+    private void fillData(){
+        txt_OrderNum.setText(pickingOrderAux.getIdPickingOrder().toString());
+        txt_OrderNumR.setText(pickingOrderAux.getIdRequest_Order().toString());
+        date_register.setDate(pickingOrderAux.getDate());
+        Integer numOrder = pickingOrderAux.getIdRequest_Order();
+        RequestOrder rO = daoRequestOrder.requestOrderGet(numOrder);
+        date_deliver.setDate(rO.getDateline());
+        
+        
+    }
+    
+   private void fillTable(){
+       List<PickingOrderDetail> lpO = daoPickingOrderDetail.pickingOrderDetailQry(pickingOrderAux.getIdPickingOrder());
+       int size = lpO.size();
+       for(int i = 0;i<size;i++){
+            PickingOrderDetail poD = lpO.get(i);
+            //EAN 128 - DESCRIPCION (PRODUCTO) - UBICACION - ESTADO - SELECCIONAR
+            Integer idPallet_Product_Location = poD.getIdPallet_By_Product_By_Location_Cell_Detail();
+            Pallet pallet = new Pallet();
+            LocationCellDetail location = new LocationCellDetail();
+            //PENDIENTE EL LLENADO DE LA GRILLA
+            
+            //Object[] fila = {ro.getIdRequestOrder(),ro.getClient().getName(), nameState,false};
+            //model.addRow(fila);
+       }
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
@@ -316,21 +328,15 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser date_deliver;
     private com.toedter.calendar.JDateChooser date_register;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JLabel lbl_address;
-    private javax.swing.JLabel lbl_client;
     private javax.swing.JLabel lbl_deliver_date;
-    private javax.swing.JLabel lbl_grocer;
     private javax.swing.JLabel lbl_num_order;
+    private javax.swing.JLabel lbl_num_orderR;
     private javax.swing.JLabel lbl_reg_date;
     private javax.swing.JLabel lbl_status;
     private javax.swing.JPanel pnl_general_info;
     private javax.swing.JPanel pnl_products;
     private javax.swing.JTable table_products;
-    private javax.swing.JTextField txt_ClientId;
-    private javax.swing.JTextField txt_ClientName;
-    private javax.swing.JTextField txt_ClienteAddress;
-    private javax.swing.JTextField txt_GrocerId;
-    private javax.swing.JTextField txt_GrocerName;
     private javax.swing.JTextField txt_OrderNum;
+    private javax.swing.JTextField txt_OrderNumR;
     // End of variables declaration//GEN-END:variables
 }

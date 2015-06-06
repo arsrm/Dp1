@@ -45,10 +45,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
-                + "status,"
-                + "State_Request_Order_idStateRequest_Order,"
-                + "user_created,"
-                + "user_updated "
+                + "State_Request_Order_idStateRequest_Order "
                 +"FROM  request_order";
 
         Connection cn = db.getConnection();
@@ -68,11 +65,9 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                    
                     Client client = daoClient.clientGet(rs.getInt(4));
                     ro.setClient(client);
-                    ro.setStatus(rs.getInt(5));
                     DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
-                    ro.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(6)));
-                    ro.setUserCreated(rs.getInt(7));
-                    ro.setUserUpdated(rs.getInt(8));
+                    ro.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(5)));
+                   
                     ro.setRequestOrderDetailList(requestDetail);
                     list.add(ro);
                     
@@ -110,10 +105,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
-                + "status,"
-                + "State_Request_Order_idStateRequest_Order,"
-                + "user_created,"
-                + "user_updated "
+                + "State_Request_Order_idStateRequest_Order "
                 + "FROM request_order "
                 + "WHERE dateline >= ? "
                 + "AND dateline <= ? "
@@ -123,10 +115,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
-                + "status,"
-                + "State_Request_Order_idStateRequest_Order,"
-                + "user_created,"
-                + "user_updated "
+                + "State_Request_Order_idStateRequest_Order "
                 + "FROM request_order "
                 + "WHERE dateline >= ? "
                 + "AND dateline <= ? ";
@@ -165,11 +154,9 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                    
                     Client client = daoClient.clientGet(rs.getInt(4));
                     ro.setClient(client);
-                    ro.setStatus(rs.getInt(5));
                     DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
-                    ro.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(6)));
-                    ro.setUserCreated(rs.getInt(7));
-                    ro.setUserUpdated(rs.getInt(8));
+                    ro.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(5)));
+                    
                     ro.setRequestOrderDetailList(requestDetail);
                     requestOrders.add(ro);
                 }
@@ -196,11 +183,8 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
-                + "status,"
-                + "State_Request_Order_idStateRequest_Order,"
-                + "user_created,"
-                + "user_updated"
-                + ") VALUES(?,?,?,?,?,?,?,?)";
+                + "State_Request_Order_idStateRequest_Order"
+                + ") VALUES(?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -209,17 +193,11 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 ps.setInt(1, requestOrder.getIdRequestOrder());
                 ps.setDate(2,  new java.sql.Date(requestOrder.getDateArrive().getTime()));
                 ps.setDate(3, new java.sql.Date(requestOrder.getDateline().getTime()));
-                ps.setInt(5, requestOrder.getClient().getIdClient());                
-                ps.setInt(4, requestOrder.getStatus());
-                ps.setInt(6, requestOrder.getStateRequestOrder().getIdStateRequestOrder());
-                ps.setInt(7, requestOrder.getUserCreated());
-                if(requestOrder.getUserUpdated()==null){
-                    ps.setNull(8, java.sql.Types.NULL);
-                }else{
-                    ps.setInt(8, requestOrder.getUserUpdated());
-                }
+                ps.setInt(4, requestOrder.getClient().getIdClient()); 
+                ps.setInt(5, requestOrder.getStateRequestOrder().getIdStateRequestOrder());
+               
                              
-
+                
                 int ctos = ps.executeUpdate();
                 List<RequestOrderDetail> list = requestOrder.getRequestOrderDetailList();
                 int sizeRequest = list.size();
@@ -301,10 +279,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
-                + "status,"
-                + "State_Request_Order_idStateRequest_Order,"
-                + "user_created,"
-                + "user_updated "
+                + "State_Request_Order_idStateRequest_Order "
                 + "FROM request_order WHERE idRequest_Order = ?";
 
         Connection cn = db.getConnection();
@@ -323,11 +298,9 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                     DaoClient daoClient = new DaoClientImpl();
                     Client client = daoClient.clientGet(rs.getInt(4));
                     requestOrder.setClient(client);
-                    requestOrder.setStatus(rs.getInt(5));
                     DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
-                    requestOrder.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(6)));
-                    requestOrder.setUserCreated(rs.getInt(7));
-                    requestOrder.setUserUpdated(rs.getInt(8));
+                    requestOrder.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(5)));
+                    
                     requestOrder.setRequestOrderDetailList(requestDetail);
                 }
 
@@ -366,7 +339,6 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         DaoRequestOrderDetail daoDetail = new DaoRequestOrderDetailImpl();
         String result = null;
         String sql = "UPDATE request_order SET "
-                + "status = ? ,"
                 + "State_Request_Order_idStateRequest_Order = ? "
                 + "WHERE idRequest_Order = ?";
 
@@ -378,9 +350,8 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 RequestOrder ro = requestOrderGet(idRequest);
                
                 
-                ps.setInt(1, 0);//se cambia a cero el campo status
-                ps.setInt(2,3);
-                ps.setInt(3, idRequest);
+                ps.setInt(1,3);
+                ps.setInt(2, idRequest);
                 
                 List<RequestOrderDetail> list = ro.getRequestOrderDetailList();
                 int size = list.size();

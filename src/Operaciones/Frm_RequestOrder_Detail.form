@@ -52,7 +52,7 @@
               <Component id="pnl_general_info" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnl_products" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -84,7 +84,7 @@
                                       <Component id="lbl_address" min="-2" max="-2" attributes="0"/>
                                       <Component id="lbl_reg_date" min="-2" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace pref="213" max="32767" attributes="0"/>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
                                           <Component id="jdate_register_date" min="-2" pref="148" max="-2" attributes="0"/>
@@ -240,19 +240,23 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="0" attributes="0">
+              <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Component id="jScrollPane3" alignment="1" max="32767" attributes="0"/>
-                      <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="jScrollPane3" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
                           <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_generate_order" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Component id="lbl_declaimer" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -267,7 +271,8 @@
                       <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_generate_order" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
+                  <Component id="lbl_declaimer" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -287,9 +292,9 @@
                     <Column editable="false" title="N&#xb0; L&#xed;nea" type="java.lang.Object"/>
                     <Column editable="false" title="C&#xf3;digo Producto" type="java.lang.Object"/>
                     <Column editable="false" title="Descripci&#xf3;n" type="java.lang.Object"/>
-                    <Column editable="false" title="Cantidad Solicitado" type="java.lang.Object"/>
-                    <Column editable="false" title="Cantidad Disponible" type="java.lang.Object"/>
-                    <Column editable="true" title="Cantidad Entregada" type="java.lang.Object"/>
+                    <Column editable="false" title="Cantidad Solicitado (*)" type="java.lang.Object"/>
+                    <Column editable="false" title="Cantidad Disponible (*)" type="java.lang.Object"/>
+                    <Column editable="true" title="Cantidad Entregada (*)" type="java.lang.Object"/>
                     <Column editable="false" title="Estado" type="java.lang.Object"/>
                     <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
                   </Table>
@@ -368,6 +373,14 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_generate_orderActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lbl_declaimer">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Lucida Grande" size="9" style="3"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="(*) Cantidades dadas en Cantidad de Pallets"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>

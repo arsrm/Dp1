@@ -7,6 +7,7 @@
 package dao;
 
 import Model.DispatchOrder;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,15 +15,18 @@ import java.util.List;
  * @author Luis Miguel
  */
 public interface DaoDispatchOrder {
-     public List<DispatchOrder> dispatchOrderQry();
     
-    public List<DispatchOrder> dispatchOrderQry_search();
+    public List<DispatchOrder> dispatchOrderQry();
+    
+    public List<DispatchOrder> dispatchOrderQry_search(Integer id , Date dateFrom, Date dateTo, Integer index_status);
     
     public String dispatchOrderIns(DispatchOrder dispatchOrder);
     
-    public String dispatchOrderDel(List<String> ids);
+    public String dispatchOrdersDel(List<Integer> ids);
     
-    public DispatchOrder dispatchOrderGet(String iddispatchOrder);
+    public String dispatchOrderDel(Integer idDispatchOrder);
+    
+    public DispatchOrder dispatchOrderGet(Integer idispatchOrder);
     
     public String dispatchOrderUpd(DispatchOrder dispatchOrder);
     

@@ -14,8 +14,12 @@ import Model.Product;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import Model.Users;
+import dao.DaoPickingOrder;
+import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
+import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
 import java.awt.Component;
@@ -42,6 +46,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     Frm_RequestOrder_Search frm_rosAux = new Frm_RequestOrder_Search();
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     DaoRequestOrderDetail daoRequestOrderDetail = new DaoRequestOrderDetailImpl();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
     RequestOrder roAux = new RequestOrder();
     DefaultTableModel model = new DefaultTableModel();
     List<Integer> listRequestToDelete =  new ArrayList<>();
@@ -89,8 +95,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                     Integer[] list = new Integer[size+1];
                     int item = 0;
                     for(int j=0;j<size+1;j++){
-                        list[j]=item;
-                        item+=roD.getProduct().getQuantityBoxesPerPallet();
+                        list[j]=j;
                     }
                     quantities.add(list);
                 } catch (NullPointerException e) {
@@ -137,6 +142,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_generate_order = new javax.swing.JButton();
+        lbl_declaimer = new javax.swing.JLabel();
 
         jTextField1.setText("jTextField1");
 
@@ -193,7 +199,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lbl_address)
                                     .addComponent(lbl_reg_date))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
                                         .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -250,7 +256,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N° Línea", "Código Producto", "Descripción", "Cantidad Solicitado", "Cantidad Disponible", "Cantidad Entregada", "Estado", "Seleccionar"
+                "N° Línea", "Código Producto", "Descripción", "Cantidad Solicitado (*)", "Cantidad Disponible (*)", "Cantidad Entregada (*)", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
@@ -291,21 +297,27 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
             }
         });
 
+        lbl_declaimer.setFont(new java.awt.Font("Lucida Grande", 3, 9)); // NOI18N
+        lbl_declaimer.setText("(*) Cantidades dadas en Cantidad de Pallets");
+
         javax.swing.GroupLayout pnl_productsLayout = new javax.swing.GroupLayout(pnl_products);
         pnl_products.setLayout(pnl_productsLayout);
         pnl_productsLayout.setHorizontalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3)
                     .addGroup(pnl_productsLayout.createSequentialGroup()
                         .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_generate_order)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_cancel)))
-                .addContainerGap())
+                        .addComponent(btn_cancel)
+                        .addContainerGap())
+                    .addGroup(pnl_productsLayout.createSequentialGroup()
+                        .addComponent(lbl_declaimer)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         pnl_productsLayout.setVerticalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,7 +329,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                     .addComponent(btn_cancel)
                     .addComponent(btn_delete)
                     .addComponent(btn_generate_order))
-                .addContainerGap())
+                .addGap(17, 17, 17)
+                .addComponent(lbl_declaimer))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -338,7 +351,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 .addComponent(pnl_general_info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_products, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
@@ -418,8 +431,10 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
             else
                 status = "Activo";
             
+            int number_pallets = roD.getProduct().getFreeStock()/roD.getProduct().getQuantityBoxesPerPallet();
+            
             Object[] fila = {list.get(i).getIdRequest_Order_Detail(),roD.getProduct().getIdProduct().toString(),roD.getProduct().getName(),roD.getQuantity().toString(),
-                            roD.getProduct().getFreeStock().toString(),"",status,false};
+                            number_pallets,"",status,false};
             
             model.addRow(fila);
            
@@ -453,29 +468,30 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
             roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
         }
         //SE PROCEDE CON UN UPDATE
-        daoRequestOrder.requestOrderUpd(roAux);
+        //daoRequestOrder.requestOrderUpd(roAux);
         //TERCERO: buscar los pallets
         PickingOrder po = new PickingOrder();
         //seteamos datos principales
         po.setDate(new Date());
-        po.setStatus(1);
-        Users actualUser = new Users();
+        //1: REALIZADO 2:PENDIENTE 3:CANCELADO
+        po.setStatus(2);
+        po.setIdRequest_Order(roAux.getIdRequestOrder());
+        Integer idPicking = daoPickingOrder.pickingOrderIns(po);
+        System.out.println(idPicking);
         //SETEAMOS EL USUARIO ACTUAL;
-        po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
-        PickingOrderDetail poD = new PickingOrderDetail();
+        //po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
+      
         for(int i=0;i<size;i++){
             //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
-            int quantityDeliver = (int)table_products.getValueAt(i,5);
-            int quantityPerPallet = roAux.getRequestOrderDetailList().get(i).getProduct().getQuantityBoxesPerPallet();
-            int palletsNumberDemanding = quantityDeliver/quantityPerPallet;
+            int palletsNumberDemanding = (int)table_products.getValueAt(i,5);;
             int completed = 0;
             Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
-            while(completed<palletsNumberDemanding){
-                Pallet pallet = searchPallet(product);
-                //insertamos el pallet en el detalle de picking order
-                
-            }
+            List<PickingOrderDetail> listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDemanding, product.getIdProduct());
+            int sizeL= listpoD.size();
+            for(int j=0;j<sizeL;j++)
+                daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
         }
+        
     }//GEN-LAST:event_btn_generate_orderActionPerformed
 
     private Pallet searchPallet(Product product){
@@ -542,6 +558,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser jdate_register_date;
     private javax.swing.JLabel lbl_address;
     private javax.swing.JLabel lbl_client;
+    private javax.swing.JLabel lbl_declaimer;
     private javax.swing.JLabel lbl_deliver_date;
     private javax.swing.JLabel lbl_num_ord;
     private javax.swing.JLabel lbl_reg_date;

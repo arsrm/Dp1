@@ -8,6 +8,13 @@ package dao.impl;
 
 import Model.DispatchOrder;
 import dao.DaoDispatchOrder;
+import enlaceBD.ConectaDb;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -15,35 +22,275 @@ import java.util.List;
  * @author Luis Miguel
  */
 public class DaoDispatchOrderImpl implements DaoDispatchOrder{
-
-    @Override
-    public List<DispatchOrder> dispatchOrderQry() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private final ConectaDb db;
+    
+    public DaoDispatchOrderImpl() {
+        db = new ConectaDb();
     }
 
     @Override
-    public List<DispatchOrder> dispatchOrderQry_search() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<DispatchOrder> dispatchOrderQry() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         List<DispatchOrder> list = null;
+        String sql =  "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                +"FROM  dispatch_order";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    DispatchOrder dor = new DispatchOrder();
+                    dor.setIdDispatch_Order(rs.getInt(1));
+                    dor.setIdClient(rs.getInt(2));
+                    dor.setDepartureDate(rs.getDate(3));
+                    dor.setArrivalDate(rs.getDate(4));
+                    dor.setStatus(rs.getInt(5));
+                    dor.setIdPickingOrder(rs.getInt(6));
+                    list.add(dor);
+                    
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public List<DispatchOrder> dispatchOrderQry_search(Integer id, Date dateFrom, Date dateTo, Integer index_status) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = null;
+        int idStatus;
+        List<DispatchOrder> dispatchList = null;
+        if(dateFrom==null){
+            dateFrom = new Date();
+            dateFrom.setTime(0);
+        }
+        if(dateTo == null){
+            dateTo = new Date();
+        }
+        
+        if(id!=-1){
+            sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_order "
+                + "WHERE arrival_date >= ? "
+                + "AND arrival_date <= ? "
+                + "AND idClient = ? ";
+        }else{
+            sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_order "
+                + "WHERE arrival_date >= ? "
+                + "AND arrival_date <= ? ";
+        }
+
+        if(index_status == 0){ //es cualquiera de los dos tipos
+            sql+="";
+        }else if(index_status == 1){ //atendido
+            sql+= "AND status=1";
+        }else if(index_status==2){//pendiente
+            sql+= "AND status=2";
+        }else if(index_status==3){//cancelado
+            sql+= "AND status=3";
+        }
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+//                java.sql.Date dateIniSql = new java.sql.Date(dateIni.getTime());
+                ps.setDate(1, new java.sql.Date(dateFrom.getTime()));
+                ps.setDate(2, new java.sql.Date(dateTo.getTime()));
+                if(id!=-1)
+                    ps.setInt(3,id);
+
+                ResultSet rs = ps.executeQuery();
+
+                dispatchList = new LinkedList<>();
+                while (rs.next()) {
+                    DispatchOrder dor = new DispatchOrder();
+                    dor.setIdDispatch_Order(rs.getInt(1));
+                    dor.setIdClient(rs.getInt(2));
+                    dor.setDepartureDate(rs.getDate(3));
+                    dor.setArrivalDate(rs.getDate(4));
+                    dor.setStatus(rs.getInt(5));
+                    dor.setIdPickingOrder(rs.getInt(6));
+                    dispatchList.add(dor);
+                }
+
+            } catch (SQLException e) {
+                dispatchList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return dispatchList;
     }
 
     @Override
     public String dispatchOrderIns(DispatchOrder dispatchOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+      
+        String result = null;
+        String sql = "INSERT INTO dispatch_order("
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order"
+                + ") VALUES(?,?,?,?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(2,dispatchOrder.getIdClient());
+                ps.setDate(3,  new java.sql.Date(dispatchOrder.getDepartureDate().getTime()));
+                ps.setDate(4, new java.sql.Date(dispatchOrder.getArrivalDate().getTime()));
+                ps.setInt(5, dispatchOrder.getStatus());                
+                ps.setInt(6, dispatchOrder.getIdPickingOrder());
+
+                int ctos = ps.executeUpdate();
+                
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
-    public String dispatchOrderDel(List<String> ids) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String dispatchOrdersDel(List<Integer> ids) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         String result = null;
+        for (Integer id : ids) {
+            result = dispatchOrderDel(id);
+        }
+        return result;
     }
 
     @Override
-    public DispatchOrder dispatchOrderGet(String iddispatchOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String dispatchOrderDel(Integer idDispatchOrder) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Integer status;
+        String result = null;
+        String sql = "UPDATE dispatch_order SET "                
+                + "status = ? "
+                + "WHERE idDispatch_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+               
+                DispatchOrder dor = dispatchOrderGet(idDispatchOrder);
+                
+                if (dor.getStatus()==2) {//pendiente
+                    status = 3;//cancelada
+                } else {//cancelada
+                   status = 2; 
+                }
+                
+                ps.setInt(1, status);
+                ps.setInt(2, idDispatchOrder);
+            
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public DispatchOrder dispatchOrderGet(Integer idDispatchOrder) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         DispatchOrder dispatchOrder = null;
+          String sql =  "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_orderrequest_order WHERE idDispatch_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idDispatchOrder);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    dispatchOrder = new DispatchOrder();
+                    dispatchOrder.setIdDispatch_Order(idDispatchOrder);
+                    dispatchOrder.setIdClient(rs.getInt(2));
+                    dispatchOrder.setDepartureDate(rs.getDate(3));
+                    dispatchOrder.setArrivalDate(rs.getDate(4));
+                    dispatchOrder.setStatus(rs.getInt(5));
+                    dispatchOrder.setIdPickingOrder(rs.getInt(6));
+                }
+
+            } catch (SQLException e) {
+                dispatchOrder = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return dispatchOrder;
     }
 
     @Override
     public String dispatchOrderUpd(DispatchOrder dispatchOrder) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       
     }
+
+   
     
 }

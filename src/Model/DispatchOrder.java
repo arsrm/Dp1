@@ -8,6 +8,7 @@ package Model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
 
 
 /**
@@ -18,94 +19,13 @@ import java.sql.Timestamp;
 public class DispatchOrder implements Serializable {
     
     private Integer idDispatch_Order;
-    
-    private Timestamp departureDate;
-  
-    private Timestamp arrivalDate;
-    
+    private Integer idClient;
+    private Date departureDate;
+    private Date arrivalDate;
     private Integer status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Integer userCreated;
-    private Integer userUpdated;
-    private PickingOrder pickingOrder;
-    private Vehicle vehicle;
+    private Integer idPickingOrder;
 
     public DispatchOrder() {
-    }
-
-   
-
-    public Timestamp getDepartureDate() {
-        return departureDate;
-    }
-
-    public void setDepartureDate(Timestamp departureDate) {
-        this.departureDate = departureDate;
-    }
-
-    public Timestamp getArrivalDate() {
-        return arrivalDate;
-    }
-
-    public void setArrivalDate(Timestamp arrivalDate) {
-        this.arrivalDate = arrivalDate;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(Integer userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public Integer getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(Integer userUpdated) {
-        this.userUpdated = userUpdated;
-    }
-
-    public PickingOrder getPickingOrder() {
-        return pickingOrder;
-    }
-
-    public void setPickingOrder(PickingOrder pickingOrder) {
-        this.pickingOrder = pickingOrder;
-    }
-
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
     }
 
     /**
@@ -115,4 +35,84 @@ public class DispatchOrder implements Serializable {
         return idDispatch_Order;
     }
 
+    /**
+     * @param idDispatch_Order the idDispatch_Order to set
+     */
+    public void setIdDispatch_Order(Integer idDispatch_Order) {
+        this.idDispatch_Order = idDispatch_Order;
+    }
+
+    /**
+     * @return the departureDate
+     */
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    /**
+     * @param departureDate the departureDate to set
+     */
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    /**
+     * @return the arrivalDate
+     */
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    /**
+     * @param arrivalDate the arrivalDate to set
+     */
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    /**
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the idPickingOrder
+     */
+    public Integer getIdPickingOrder() {
+        return idPickingOrder;
+    }
+
+    /**
+     * @param idPickingOrder the idPickingOrder to set
+     */
+    public void setIdPickingOrder(Integer idPickingOrder) {
+        this.idPickingOrder = idPickingOrder;
+    }
+
+    /**
+     * @return the idClient
+     */
+    public Integer getIdClient() {
+        return idClient;
+    }
+
+    /**
+     * @param idClient the idClient to set
+     */
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
+    }
+
+   
+
+    
 }

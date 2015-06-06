@@ -522,12 +522,12 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         int size = dispatchListToAlg.size();
         List<Client> list = new ArrayList<>();
         Double totalWeight;
-        for(int i=0;i<size;i++){
+        /*for(int i=0;i<size;i++){
             DispatchOrder dOrder = dispatchListToAlg.get(i);
             int idClient = dOrder.getPickingOrder().getIdClient();
             Client client = daoClient.clientGet(idClient);
             totalWeight = 0.0;
-            List<PickingOrderDetail> poDList = dOrder.getPickingOrder().getPickingOrderDetailList();
+            //List<PickingOrderDetail> poDList = dOrder.getPickingOrder().getPickingOrderDetailList();
             int sizePod = poDList.size();
             for(int j=0;j<sizePod;j++){
                 PickingOrderDetail poD = poDList.get(i);
@@ -535,7 +535,8 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
             client.setTotalWeight(totalWeight);
             list.add(client);
-        }
+                    
+        }*/
         clientList = list;
  }
     
