@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -152,7 +153,7 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 + "status,"
                 + "Request_Order_idRequest_Order "
                  + "from Picking_Order "
-                + "where Picking_Order =  ? ";
+                + "where Request_Order_idRequest_Order =  ? ";
                 flag =1 ;
               }
               else if (numOrden ==null ){
@@ -209,7 +210,7 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
-                PreparedStatement ps = cn.prepareStatement(sql);
+                PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
                 ps.setDate(1,  new java.sql.Date(pickingOrder.getDate().getTime()));
                 ps.setInt(2, pickingOrder.getStatus());
                 ps.setInt(3, pickingOrder.getIdRequest_Order());
@@ -220,12 +221,19 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                     throw new SQLException("0 filas afectadas");
                 }
                 
+                //this is an error since the above is an error
+                System.out.println("HOLI 0");
                 ResultSet rs = ps.getGeneratedKeys();
-                if(rs.next()){
-                    idGenerated = rs.getInt(1);
-                }
+                System.out.println("HOLI");
+                rs.next();
+                System.out.println("HOLI 2");
+                idGenerated = rs.getInt(1);
+                System.out.println("HOLI 3");
+                
+               
 
             } catch (SQLException e) {
+                System.out.println("JEJE");
               idGenerated=-1;  
             } finally {
                 try {
@@ -312,11 +320,11 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 ps.setInt(1, idpickingOrder);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    PickingOrder po = new PickingOrder();
-                    po.setIdPickingOrder(rs.getInt(1));
-                    po.setDate(rs.getDate(2));
-                    po.setStatus(rs.getInt(3));
-                    po.setIdRequest_Order(rs.getInt(4));
+                    pickingOrder = new PickingOrder();
+                    pickingOrder.setIdPickingOrder(rs.getInt(1));
+                    pickingOrder.setDate(rs.getDate(2));
+                    pickingOrder.setStatus(rs.getInt(3));
+                    pickingOrder.setIdRequest_Order(rs.getInt(4));
                     
                 }
 

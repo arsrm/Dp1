@@ -275,6 +275,8 @@ public class DaoWHImpl implements DaoWH{
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, idTypeCondition);
+
+                
                 if(idWh!=0) ps.setInt(2, idWh);
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {

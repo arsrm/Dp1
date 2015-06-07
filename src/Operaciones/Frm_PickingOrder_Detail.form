@@ -194,13 +194,15 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="btn_confirm" min="-2" pref="174" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
-                  <Component id="btn_confirm" min="-2" pref="187" max="-2" attributes="0"/>
+                  <Component id="btn_generate_dispatch" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
-              <Component id="jScrollPane3" pref="828" max="32767" attributes="0"/>
+              <Component id="jScrollPane3" pref="860" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -212,6 +214,7 @@
                       <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_confirm" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_generate_dispatch" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
@@ -229,16 +232,40 @@
             <Component class="javax.swing.JTable" name="table_products">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="4">
+                  <Table columnCount="9" rowCount="0">
+                    <Column editable="false" title="N&#xfa;mero de Detalle" type="java.lang.Object"/>
                     <Column editable="false" title="EAN 128" type="java.lang.Object"/>
                     <Column editable="false" title="Descripci&#xf3;n" type="java.lang.Object"/>
-                    <Column editable="false" title="Ubicaci&#xf3;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Almac&#xe9;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Rack" type="java.lang.Object"/>
+                    <Column editable="false" title="Celda" type="java.lang.Object"/>
+                    <Column editable="true" title="Posici&#xf3;n" type="java.lang.Object"/>
                     <Column editable="false" title="Estado" type="java.lang.Object"/>
-                    <Column editable="false" title="Seleccionar" type="java.lang.Object"/>
+                    <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>
@@ -283,7 +310,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btn_delete">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Eliminar"/>
+            <Property name="text" type="java.lang.String" value="Cambiar Estado"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_deleteActionPerformed"/>
@@ -295,6 +322,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_confirmActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_generate_dispatch">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generar Orden de Despacho"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_generate_dispatchActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

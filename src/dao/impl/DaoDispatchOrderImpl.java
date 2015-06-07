@@ -151,6 +151,65 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
         }
         return dispatchList;
     }
+    
+    @Override
+    public List<DispatchOrder> dispatchOrderQry_search(Integer numDispatchOrder) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = null;
+        List<DispatchOrder> dispatchList = null;
+        
+        if(numDispatchOrder!=-1){
+            sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_order "
+                + "WHERE idDispatch_Order = ? ";
+        }else{
+            sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_order ";
+        }
+        
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                if(numDispatchOrder!=-1)
+                    ps.setInt(1, numDispatchOrder);
+                
+
+                ResultSet rs = ps.executeQuery();
+
+                dispatchList = new LinkedList<>();
+                while (rs.next()) {
+                    DispatchOrder dor = new DispatchOrder();
+                    dor.setIdDispatch_Order(rs.getInt(1));
+                    dor.setIdClient(rs.getInt(2));
+                    dor.setDepartureDate(rs.getDate(3));
+                    dor.setArrivalDate(rs.getDate(4));
+                    dor.setStatus(rs.getInt(5));
+                    dor.setIdPickingOrder(rs.getInt(6));
+                    dispatchList.add(dor);
+                }
+
+            } catch (SQLException e) {
+                dispatchList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return dispatchList;
+    }
 
     @Override
     public String dispatchOrderIns(DispatchOrder dispatchOrder) {
@@ -169,11 +228,11 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(2,dispatchOrder.getIdClient());
-                ps.setDate(3,  new java.sql.Date(dispatchOrder.getDepartureDate().getTime()));
-                ps.setDate(4, new java.sql.Date(dispatchOrder.getArrivalDate().getTime()));
-                ps.setInt(5, dispatchOrder.getStatus());                
-                ps.setInt(6, dispatchOrder.getIdPickingOrder());
+                ps.setInt(1,dispatchOrder.getIdClient());
+                ps.setDate(2,  new java.sql.Date(dispatchOrder.getDepartureDate().getTime()));
+                ps.setDate(3, new java.sql.Date(dispatchOrder.getArrivalDate().getTime()));
+                ps.setInt(4, dispatchOrder.getStatus());                
+                ps.setInt(5, dispatchOrder.getIdPickingOrder());
 
                 int ctos = ps.executeUpdate();
                 
@@ -218,10 +277,10 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-               
+                
                 DispatchOrder dor = dispatchOrderGet(idDispatchOrder);
                 
-                if (dor.getStatus()==2) {//pendiente
+                if (dor.getStatus()==2 || dor.getStatus()==1) {//pendiente
                     status = 3;//cancelada
                 } else {//cancelada
                    status = 2; 
@@ -254,7 +313,7 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "arrival_date,"
                 + "status,"
                 + "Picking_Order_idPicking_Order "
-                + "FROM dispatch_orderrequest_order WHERE idDispatch_Order = ?";
+                + "FROM dispatch_order WHERE idDispatch_Order = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {

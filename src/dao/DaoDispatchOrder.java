@@ -20,6 +20,8 @@ public interface DaoDispatchOrder {
     
     public List<DispatchOrder> dispatchOrderQry_search(Integer id , Date dateFrom, Date dateTo, Integer index_status);
     
+    public List<DispatchOrder> dispatchOrderQry_search(Integer numOrder);
+    
     public String dispatchOrderIns(DispatchOrder dispatchOrder);
     
     public String dispatchOrdersDel(List<Integer> ids);

@@ -24,7 +24,7 @@ public interface DaoRequestOrderDetail {
     
     public RequestOrderDetail requestOrderDetailGet(Integer idRequestOrderDetail, Integer idRequestOrder);
     
-    public String requestOrderDetailUpd(RequestOrderDetail requestOrder);
+    public String requestOrderDetailUpd(RequestOrderDetail requestOrderDetail);
     
     public String requestOrderDetailsDel(List<Integer> idOrderDetailList, Integer idRequestOrder);
 }

@@ -7,8 +7,10 @@
 package dao.impl;
 
 import Model.Product;
+import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import dao.DaoProducts;
+import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
@@ -41,10 +43,8 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
                 + "status,"
                 + "Request_Order_idRequest_Order,"
                 + "delivered,"
-                + "remaining,"
-                + "user_created,"
-                + "user_updated"
-                + ") VALUES(?,?,?,?,?,?,?,?,?)";
+                + "remaining "
+                + ") VALUES(?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -54,14 +54,10 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
                 ps.setInt(2, requestOrderDetail.getProduct().getIdProduct());
                 ps.setInt(3, requestOrderDetail.getQuantity());
                 ps.setInt(4, requestOrderDetail.getStatus());
-                ps.setInt(5, requestOrderDetail.getRequestOrder().getIdRequestOrder());
+                ps.setInt(5, requestOrderDetail.getRequestOrder());
                 ps.setInt(6, requestOrderDetail.getDelivered());
                 ps.setInt(7, requestOrderDetail.getRemaining());
-                ps.setInt(8, requestOrderDetail.getRequestOrder().getUserCreated());
-                if(requestOrderDetail.getRequestOrder().getUserUpdated()!=null)
-                    ps.setInt(9, requestOrderDetail.getRequestOrder().getUserUpdated());
-                else
-                    ps.setNull(9, java.sql.Types.NULL);
+                
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -169,8 +165,46 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
     }
 
     @Override
-    public String requestOrderDetailUpd(RequestOrderDetail requestOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String requestOrderDetailUpd(RequestOrderDetail requestOrderDetail) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "UPDATE  request_order_detail SET "
+                +" quantity=?, status = ? , delivered=?, remaining=? "
+                + "WHERE Request_Order_idRequest_Order=? AND idRequest_Order_Detail = ? ";
+        
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,requestOrderDetail.getQuantity());
+                ps.setInt(2,requestOrderDetail.getStatus());
+                ps.setInt(3,requestOrderDetail.getDelivered());
+                ps.setInt(4,requestOrderDetail.getRemaining());
+                ps.setInt(5,requestOrderDetail.getRequestOrder());
+                ps.setInt(6,requestOrderDetail.getIdRequest_Order_Detail());
+                
+                
+                int ctos = ps.executeUpdate();
+                
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+                
+              
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -204,6 +238,7 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
                     requestOrderDet.setProduct(product);
                     requestOrderDet.setQuantity(rs.getInt(3));
                     requestOrderDet.setStatus(rs.getInt(4));
+                    requestOrderDet.setRequestOrder(idOrder);
                     requestOrderDet.setDelivered(rs.getInt(6));
                     requestOrderDet.setRemaining(rs.getInt(7));
                     requestOrderDetail.add(requestOrderDet);

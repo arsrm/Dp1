@@ -6,19 +6,50 @@
 
 package Operaciones;
 
+import Model.DispatchOrder;
+import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.Pallet;
+import Model.PalletProduct;
+import Model.Pallet_Product_Location;
 import Model.PickingOrder;
 import Model.PickingOrderDetail;
+import Model.Product;
+import Model.Rack;
 import Model.RequestOrder;
+import Model.Warehouse;
+import dao.DaoDispatchOrder;
+import dao.DaoDistributionCenter;
+import dao.DaoLocationCell;
+import dao.DaoLocationCellDetail;
+import dao.DaoPalletProduct;
+import dao.DaoPallet_Product_Location;
+import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
+import dao.DaoProducts;
+import dao.DaoRack;
 import dao.DaoRequestOrder;
+import dao.DaoWH;
+import dao.impl.DaoDispatchOrderImpl;
+import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoPickingOrderImpl;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoRackImpl;
 import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoWHImpl;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -30,6 +61,18 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
     DefaultTableModel model = new DefaultTableModel();
+    List<Integer> listRequestToDelete =  new ArrayList<>();
+    List<Integer> listPickingToConfirm = new ArrayList<>();
+    DaoDispatchOrder daoDispatchOrder =  new DaoDispatchOrderImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
+    DaoLocationCell daoLocationCell = new DaoLocationCellImpl();
+    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
+    DaoWH daoWH = new DaoWHImpl();
+    DaoDistributionCenter daoDistribution = new DaoDistributionCenterImpl();
+    DaoRack daoRack = new DaoRackImpl();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     /**
      * Creates new form Frm_verDetalleOrdenEntrega1
      */
@@ -44,9 +87,19 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         frm_posAux = frm_pos;
         initComponents();
         pickingOrderAux = pickingOrder;
-        model = model = (DefaultTableModel) table_products.getModel();
+        TableColumn tc = table_products.getColumnModel().getColumn(8);
+        tc.setHeaderRenderer(new SelectAllHeader(table_products, 8));
+        model = (DefaultTableModel) table_products.getModel();
         fillData();
         fillTable();
+        if(pickingOrderAux.getStatus()==1 || pickingOrderAux.getStatus()==3){
+            btn_generate_dispatch.setEnabled(false);
+            btn_confirm.setEnabled(false);
+            btn_delete.setEnabled(false);
+            table_products.setEnabled(false);
+        }else{
+           verifyProducts();
+        }
     }
     
 
@@ -76,6 +129,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_confirm = new javax.swing.JButton();
+        btn_generate_dispatch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(850, 400));
@@ -160,18 +214,22 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
 
         table_products.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
-                "EAN 128", "Descripción", "Ubicación", "Estado", "Seleccionar"
+                "Número de Detalle", "EAN 128", "Descripción", "Almacén", "Rack", "Celda", "Posición", "Estado", "Seleccionar"
             }
         ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, true, false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -186,7 +244,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Cambiar Estado");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -200,18 +258,27 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             }
         });
 
+        btn_generate_dispatch.setText("Generar Orden de Despacho");
+        btn_generate_dispatch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_generate_dispatchActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_productsLayout = new javax.swing.GroupLayout(pnl_products);
         pnl_products.setLayout(pnl_productsLayout);
         pnl_productsLayout.setHorizontalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productsLayout.createSequentialGroup()
                 .addComponent(btn_delete)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_generate_dispatch)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_cancel)
                 .addContainerGap())
-            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 828, Short.MAX_VALUE)
+            .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 860, Short.MAX_VALUE)
         );
         pnl_productsLayout.setVerticalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,7 +288,8 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancel)
                     .addComponent(btn_delete)
-                    .addComponent(btn_confirm))
+                    .addComponent(btn_confirm)
+                    .addComponent(btn_generate_dispatch))
                 .addContainerGap())
         );
 
@@ -262,37 +330,134 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        // TODO add your handling code here:
-        Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha eliminado la orden de entrega con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
-                frm_posAux.setVisible(true);
-                frm_posAux.setLocationRelativeTo(null);
-                this.dispose();
+       Object[] options = {"OK"};
+        
+        if(ifNoColummnSelected()==false){
+            listRequestToDelete = new ArrayList<>();
+            for (int i = 0; i < table_products.getRowCount(); i++) {
+                if ((Boolean) table_products.getValueAt(i, 8)) {
+                    listRequestToDelete.add(Integer.parseInt(table_products.getValueAt(i, 0).toString()));
+
+                }
             }
             
-        } 
+            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                if(ok_option==JOptionPane.OK_OPTION){
+                    int size = listRequestToDelete.size();
+                    for(int z=0;z<size;z++){
+                        PickingOrderDetail detail = daoPickingOrderDetail.pickingOrderDetailGet(listRequestToDelete.get(z));
+                        if(detail.getStatus()==1 || detail.getStatus()==2)
+                            daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),3);
+                        else
+                            daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),2);
+                    }
+                    
+                }
+                refreshGrid();
+                fillTable();
+                verifyProducts();
+            }
+        }else{
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+   
+    
+    private boolean ifNoColummnSelected(){
+        int sizeRows =  table_products.getRowCount();
+        for(int i=0;i<sizeRows;i++){
+            boolean statusSelected = (Boolean)table_products.getValueAt(i, 8);
+            if(statusSelected == true)
+                return false;
+        }
+        return true;
+    }
+    
+    private void refreshGrid(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
+    
+    private boolean allUnable(){
+        int size = table_products.getRowCount();
+        for (int i=0;i<size;i++){
+            String status = table_products.getValueAt(i, 7).toString();
+            if(status.equals("Por Picar")==true || status.equals("Cancelado")==true )
+                return false;
+        }
+        return true;
+    }
+    
     private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
         // TODO add your handling code here:
+       Object[] options = {"OK"};
+       int ok_option;
+        if(ifNoColummnSelected()==false){
+            listPickingToConfirm = new ArrayList<>();
+            for (int i = 0; i < table_products.getRowCount(); i++) {
+                if ((Boolean) table_products.getValueAt(i, 8)) {
+                    listPickingToConfirm.add(Integer.parseInt(table_products.getValueAt(i, 0).toString()));
+
+                }
+            }
+            
+            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                int size = listPickingToConfirm.size();
+                for(int z=0;z<size;z++){
+                    PickingOrderDetail detail = daoPickingOrderDetail.pickingOrderDetailGet(listPickingToConfirm.get(z));
+                    daoPickingOrderDetail.pickingOrderDetailDel(listPickingToConfirm.get(z),detail.getPicking_Order_idPicking_Order(),1);
+                  }
+                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                refreshGrid();
+                fillTable();
+                verifyProducts();
+            }
+        }else{
+            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }
+    }//GEN-LAST:event_btn_confirmActionPerformed
+
+    
+    
+    private void btn_generate_dispatchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_dispatchActionPerformed
+        // TODO add your handling code here:
+        //*********************************
+        //VERIFICAR ACCESIBILIDAD Y MENSAJERIA
+        //**********************************
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-            
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"El picking ha finalizado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
-                frm_posAux.setVisible(true);
-                frm_posAux.setLocationRelativeTo(null);
-                this.dispose();
-            }
-            
-        } 
-    }//GEN-LAST:event_btn_confirmActionPerformed
+            DispatchOrder dispatchOrder = new DispatchOrder();
+            Date date = new Date();
+            dispatchOrder.setDepartureDate(date);
+            dispatchOrder.setArrivalDate(date);
+            dispatchOrder.setStatus(2);
+            RequestOrder ro = daoRequestOrder.requestOrderGet(pickingOrderAux.getIdRequest_Order());
+            dispatchOrder.setIdClient(ro.getClient().getIdClient());
+            dispatchOrder.setIdPickingOrder(pickingOrderAux.getIdPickingOrder());
+            daoDispatchOrder.dispatchOrderIns(dispatchOrder);
+            daoPickingOrder.pickingOrderDel(pickingOrderAux.getIdPickingOrder(), 1);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha generado la orden de despacho con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            frm_posAux.setVisible(true);
+            this.dispose();
+        }
+        
+        
+    }//GEN-LAST:event_btn_generate_dispatchActionPerformed
 
+    private void verifyProducts(){
+        boolean emptyRequest = allUnable();
+        if(emptyRequest == false){
+            btn_generate_dispatch.setEnabled(false);
+        }else{
+            btn_generate_dispatch.setEnabled(true);
+        }
+    }
+    
     private void fillData(){
         txt_OrderNum.setText(pickingOrderAux.getIdPickingOrder().toString());
         txt_OrderNumR.setText(pickingOrderAux.getIdRequest_Order().toString());
@@ -306,17 +471,45 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     
    private void fillTable(){
        List<PickingOrderDetail> lpO = daoPickingOrderDetail.pickingOrderDetailQry(pickingOrderAux.getIdPickingOrder());
+       
        int size = lpO.size();
        for(int i = 0;i<size;i++){
             PickingOrderDetail poD = lpO.get(i);
             //EAN 128 - DESCRIPCION (PRODUCTO) - UBICACION - ESTADO - SELECCIONAR
-            Integer idPallet_Product_Location = poD.getIdPallet_By_Product_By_Location_Cell_Detail();
-            Pallet pallet = new Pallet();
-            LocationCellDetail location = new LocationCellDetail();
-            //PENDIENTE EL LLENADO DE LA GRILLA
+            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(lpO.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+            List<PalletProduct> pp = daoPalletProduct.GetPalletProductList("WHERE Pallet_idPallet="+ppl.getPallet_By_Product_Pallet_idPallet());
+            int sizepp = pp.size();
+            String ean128 = null;
+            String desc = null;
+            for(int j=0;j<sizepp;j++){
+                ean128 = pp.get(j).getCod_ean128();
+                Product prod = daoProduct.ProductsGet(pp.get(j).getIdproduct());
+                desc = prod.getName();
+            }
             
-            //Object[] fila = {ro.getIdRequestOrder(),ro.getClient().getName(), nameState,false};
-            //model.addRow(fila);
+            Integer idLocationCellDetail = ppl.getLocation_Cell_Detail_idLocation_Cell_Detail();
+            
+            Integer idLocationCell = ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell();
+            Integer idDist = ppl.getLocation_Cell_Detail_idDistribution_Center();
+            Integer idWh = ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse();
+            Integer idRack = ppl.getLocation_Cell_Detail_Location_Cell_Rack_idRack();
+            Rack rack = daoRack.rackGet(idRack);
+            Warehouse wh = daoWH.whGet(idWh);
+            LocationCell location = daoLocationCell.LocationCellGet(idDist, idWh, idRack, idLocationCell);
+            System.out.println(location.getDescription());
+            LocationCellDetail cellDetail = daoLocationCellDetail.locationCellDetailQry(idLocationCellDetail,idLocationCell);
+            System.out.println(cellDetail.getDescription());
+            String nameState = null;
+            if(poD.getStatus()==1)
+                nameState = "Picado";
+            else if(poD.getStatus()==2)
+                nameState = "Por Picar";
+            else 
+                nameState = "Cancelado";
+            Object[] fila = {poD.getIdPicking_Order_Detail(),ean128,desc,wh.getDescription(),rack.getDescription(),location.getDescription(),
+                            cellDetail.getDescription(),nameState,false};
+
+             model.addRow(fila);
        }
    }
 
@@ -324,6 +517,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_confirm;
     private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_generate_dispatch;
     private javax.swing.JComboBox cbo_status;
     private com.toedter.calendar.JDateChooser date_deliver;
     private com.toedter.calendar.JDateChooser date_register;

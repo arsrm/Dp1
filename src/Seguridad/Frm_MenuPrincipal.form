@@ -183,14 +183,6 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_PickingOrderSearchActionPerformed"/>
                   </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="op_GenerateDispatchOrders">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Generar &#xd3;rdenes de Despacho"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_GenerateDispatchOrdersActionPerformed"/>
-                  </Events>
-                </MenuItem>
               </SubComponents>
             </Menu>
             <Menu class="javax.swing.JMenu" name="jMenu3">
@@ -412,9 +404,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="/Users/Alejandro/NetBeansProjects/Proyecto/trunk/Imagenes/fondop.jpg"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="       "/>
       </Properties>
       <Constraints>

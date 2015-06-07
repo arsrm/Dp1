@@ -198,4 +198,54 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
 
         return result;
     }
+
+    @Override
+    public LocationCellDetail locationCellDetailQry(Integer idLocationCellDetail, Integer idLocationCell) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        LocationCellDetail locCell = null;
+        String sql = "SELECT "
+                + "idLocation_Cell_Detail, "
+                + "description, "
+                + "availability, "
+                + "Location_Cell_idLocation_Cell, "
+                + "Location_Cell_Rack_idRack, "
+                + "Location_Cell_Rack_Warehouse_idWarehouse, "
+                + "idDistribution_Center "
+                + "FROM Location_Cell_Detail "
+                + "WHERE idLocation_Cell_Detail = ? AND "
+                + "Location_Cell_idLocation_Cell = ?;";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idLocationCellDetail);
+                ps.setInt(2,idLocationCell);
+
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    locCell = new LocationCellDetail();
+
+                    locCell.setIdLocation_Cell_Detail(rs.getInt(1));
+                    locCell.setDescription(rs.getString(2));
+                    locCell.setAvailability(rs.getInt(3));
+                    locCell.setLocation_Cell_idLocation_Cell(rs.getInt(4));
+                    locCell.setLocation_Cell_Rack_idRack(rs.getInt(5));
+                    locCell.setLocation_Cell_Rack_Warehouse_idWarehouse(rs.getInt(6));
+                    locCell.setIdDistribution_Center(rs.getInt(7));
+
+                }
+
+            } catch (SQLException e) {
+                locCell = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return locCell;
+    }
 }

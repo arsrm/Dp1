@@ -6,21 +6,92 @@
 
 package Operaciones;
 
+import Model.Client;
+import Model.PalletProduct;
+import Model.Pallet_Product_Location;
+import Model.PickingOrder;
+import Model.PickingOrderDetail;
+import Model.Product;
+import Model.RequestOrder;
+import dao.DaoClient;
+import dao.DaoPallet;
+import dao.DaoPalletProduct;
+import dao.DaoPallet_Product_Location;
+import dao.DaoProducts;
+import dao.DaoRequestOrder;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoPalletImpl;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoRequestOrderImpl;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Luis Miguel
  */
 public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
-    Frm_RequestOrder_Search frm_rosAux = new Frm_RequestOrder_Search();
+    Frm_RequestOrder_Detail frm_rodAux = new Frm_RequestOrder_Detail();
+    PickingOrder poAux = new PickingOrder();
+    DaoClient daoClient = new DaoClientImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    List<PickingOrderDetail> listAux =  new ArrayList<>();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    DaoPallet daoPallet = new DaoPalletImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
+    DefaultTableModel model = new DefaultTableModel();
     /**
      * Creates new form Frm_RequestOrder_Preview
      */
-    public Frm_RequestOrder_Preview(Frm_RequestOrder_Search frm_ros) {
-        frm_rosAux = frm_ros;
+    public Frm_RequestOrder_Preview(Frm_RequestOrder_Detail frm_rod) {
+        frm_rodAux = frm_rod;
         setTitle("ORDEN DE ENTREGA GENERADA");
         initComponents();
     }
+    
+    public Frm_RequestOrder_Preview(PickingOrder po, List<PickingOrderDetail> list) {
+        
+        setTitle("ORDEN DE ENTREGA GENERADA");
+        initComponents();
+        model = (DefaultTableModel) table_products.getModel();
+        poAux=po;
+        listAux=list;
+        fillData();
+    }
 
+    private void fillData(){
+        txt_request_order.setText(poAux.getIdRequest_Order().toString());
+        txt_picking_order.setText(poAux.getIdPickingOrder().toString());
+        RequestOrder ro = new RequestOrder();
+        ro = daoRequestOrder.requestOrderGet(poAux.getIdRequest_Order());
+        Client client = new Client();
+        if(ro!=null){   
+            client = ro.getClient();
+            txt_client_id.setText(client.getRuc());
+            txt_client_name.setText(client.getName());
+        }
+        fillTable();
+    }
+    
+    private void fillTable(){
+        int size = listAux.size();
+        for(int i=0;i<size;i++){
+            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listAux.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+            List<PalletProduct> pp = daoPalletProduct.GetPalletProductList("WHERE Pallet_idPallet="+ppl.getPallet_By_Product_Pallet_idPallet());
+            int sizepp = pp.size();
+            for(int j=0;j<sizepp;j++){
+                String ean128 = pp.get(j).getCod_ean128();
+                Product prod = daoProduct.ProductsGet(pp.get(j).getIdproduct());
+                Object[] fila = {ean128,prod.getName()};
+            
+                 model.addRow(fila);
+            }
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,7 +111,7 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
         txt_client_name = new javax.swing.JTextField();
         pnl_products = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_products = new javax.swing.JTable();
         btn_exit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -73,21 +144,19 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
             .addGroup(pnl_orderLayout.createSequentialGroup()
                 .addGap(164, 164, 164)
                 .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_request_order)
+                    .addComponent(lbl_picking)
+                    .addComponent(lbl_client))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_orderLayout.createSequentialGroup()
-                        .addComponent(lbl_client)
-                        .addGap(34, 34, 34)
-                        .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_client_id, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_orderLayout.createSequentialGroup()
-                        .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbl_request_order)
-                            .addComponent(lbl_picking))
-                        .addGap(34, 34, 34)
-                        .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_picking_order, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txt_request_order, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(207, Short.MAX_VALUE))
+                        .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(txt_picking_order, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE)
+                        .addComponent(txt_request_order, javax.swing.GroupLayout.Alignment.LEADING)))
+                .addContainerGap(243, Short.MAX_VALUE))
         );
         pnl_orderLayout.setVerticalGroup(
             pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -110,18 +179,23 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
 
         pnl_products.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_products.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Código Producto", "Unidad", "Descripción", "Cantidad Solicitada", "Cantidad Despachada", "Cantidad Pendiente"
+                "Código Pallet", "Descripción"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(table_products);
 
         javax.swing.GroupLayout pnl_productsLayout = new javax.swing.GroupLayout(pnl_products);
         pnl_products.setLayout(pnl_productsLayout);
@@ -177,13 +251,13 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
         // TODO add your handling code here:
-        frm_rosAux.setVisible(true);
+        frm_rodAux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_exitActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        frm_rosAux.setVisible(true);
+        frm_rodAux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -192,12 +266,12 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_exit;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lbl_client;
     private javax.swing.JLabel lbl_picking;
     private javax.swing.JLabel lbl_request_order;
     private javax.swing.JPanel pnl_order;
     private javax.swing.JPanel pnl_products;
+    private javax.swing.JTable table_products;
     private javax.swing.JTextField txt_client_id;
     private javax.swing.JTextField txt_client_name;
     private javax.swing.JTextField txt_picking_order;

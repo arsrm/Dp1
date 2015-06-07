@@ -13,15 +13,18 @@ import Model.PickingOrderDetail;
 import Model.Product;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
+import Model.StateRequestOrder;
 import Model.Users;
 import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
+import dao.DaoStateRequestOrder;
 import dao.impl.DaoPickingOrderDetailImpl;
 import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
 import java.awt.Component;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -48,6 +51,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     DaoRequestOrderDetail daoRequestOrderDetail = new DaoRequestOrderDetailImpl();
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
     RequestOrder roAux = new RequestOrder();
     DefaultTableModel model = new DefaultTableModel();
     List<Integer> listRequestToDelete =  new ArrayList<>();
@@ -63,10 +67,15 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         initComponents();
     }
     
+    public Frm_RequestOrder_Detail(){
+        
+    }
+    
     public Frm_RequestOrder_Detail(Frm_RequestOrder_Search frm_ros, Integer idRequestOrder) {
         setTitle("ORDEN DE PEDIDO");
         idRequest = idRequestOrder;
         roAux = daoRequestOrder.requestOrderGet(idRequest);
+        //System.out.println(roAux.getRequestOrderDetailList().get(0).getRequestOrder().getIdRequestOrder());
         frm_rosAux = frm_ros;
         initComponents();
         TableColumn tc = table_products.getColumnModel().getColumn(7);
@@ -421,7 +430,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     
     private void fillTable(){
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-YYYY");
-        List<RequestOrderDetail> list = roAux.getRequestOrderDetailList();
+        
+        List<RequestOrderDetail> list = daoRequestOrderDetail.requestOrderDetailQry(roAux.getIdRequestOrder());
         int size = list.size();
         for(int i=0;i<size;i++){
             RequestOrderDetail roD = list.get(i);
@@ -453,52 +463,66 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     
     private void btn_generate_orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_orderActionPerformed
         // TODO add your handling code here:
-        //MENSAJE DE "ESTA SEGURO":
-        //PRIMERO: se verifica que por producto, se este solicitando cantidades multiplos en los pallets
-        //NO ES NECESARIO PUESTO QUE LOS COMBOBOX ya lo estan validando
-        //SEGUNDO: leer los cantidades y los productos (actualizar estado del pedido)
-        int size = table_products.getRowCount();
-        for(int i=0;i<size;i++){
-            Integer delivered = (Integer)table_products.getValueAt(i, 5);
-            Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
-            System.out.println(delivered);
-            roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
-            roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
-            //y se ajusta la nueva cantidad solicitada con lo que falta
-            roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
-        }
-        //SE PROCEDE CON UN UPDATE
-        //daoRequestOrder.requestOrderUpd(roAux);
-        //TERCERO: buscar los pallets
-        PickingOrder po = new PickingOrder();
-        //seteamos datos principales
-        po.setDate(new Date());
-        //1: REALIZADO 2:PENDIENTE 3:CANCELADO
-        po.setStatus(2);
-        po.setIdRequest_Order(roAux.getIdRequestOrder());
-        Integer idPicking = daoPickingOrder.pickingOrderIns(po);
-        System.out.println(idPicking);
-        //SETEAMOS EL USUARIO ACTUAL;
-        //po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
-      
-        for(int i=0;i<size;i++){
-            //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
-            int palletsNumberDemanding = (int)table_products.getValueAt(i,5);;
-            int completed = 0;
-            Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
-            List<PickingOrderDetail> listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDemanding, product.getIdProduct());
-            int sizeL= listpoD.size();
-            for(int j=0;j<sizeL;j++)
-                daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
-        }
         
+        //*********************************
+        //VERIFICAR ACCESIBILIDAD Y MENSAJERIA
+        //**********************************
+        Object[] options = {"OK"};
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+        
+            int size = table_products.getRowCount();
+           
+            //TERCERO: buscar los pallets
+            PickingOrder po = new PickingOrder();
+            //seteamos datos principales
+            po.setDate(new Date());
+            //1: REALIZADO 2:PENDIENTE 3:CANCELADO
+            po.setStatus(2);
+            po.setIdRequest_Order(roAux.getIdRequestOrder());
+            Integer idPicking = daoPickingOrder.pickingOrderIns(po);
+            po.setIdPickingOrder(idPicking);
+
+            //SETEAMOS EL USUARIO ACTUAL;
+            //po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
+            Integer index = 1;
+            List<PickingOrderDetail> listpoD=null;
+            for(int i=0;i<size;i++){
+                //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
+                int palletsNumberDemanding = (int)table_products.getValueAt(i,5);
+                Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
+                //System.out.println(palletsNumberDemanding +" " + product.getIdProduct());
+                listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDemanding, product.getIdProduct());
+                if(listpoD != null){
+                    int sizeL= listpoD.size();
+                    for(int j=0;j<sizeL;j++){
+                        listpoD.get(j).setIdPicking_Order_Detail(index);
+                        daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
+                        index++;
+                    }
+                    Integer delivered = (Integer)table_products.getValueAt(i, 5);
+                    Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
+                    roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
+                    roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
+                    //y se ajusta la nueva cantidad solicitada con lo que falta
+                    roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+                }
+            }
+            //SE SETEA EN ESTADO ATENDIDO
+            StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
+            roAux.setStateRequestOrder(state);
+            //SE PROCEDE CON UN UPDATE
+            daoRequestOrder.requestOrderUpd(roAux);
+            if(JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
+                Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,listpoD);
+                frm_rop.setLocation(450,150);
+                frm_rop.setVisible(true);
+                frm_rop.setLocationRelativeTo(null);
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btn_generate_orderActionPerformed
 
-    private Pallet searchPallet(Product product){
-        Pallet pallet = null;
-        
-        return pallet;
-    }
     
     private boolean ifNoColummnSelected(){
         int sizeRows =  table_products.getRowCount();

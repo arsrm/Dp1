@@ -25,6 +25,7 @@ public class PalletProduct {
     Integer user_updated; 
     Date dateexpira; 
     Integer numinterna; 
+    String cod_ean128;
 
     public PalletProduct() {
     }
@@ -131,6 +132,20 @@ public class PalletProduct {
 
     public void setUser_updated(Integer user_updated) {
         this.user_updated = user_updated;
+    }
+
+    /**
+     * @return the cod_ean128
+     */
+    public String getCod_ean128() {
+        return cod_ean128;
+    }
+
+    /**
+     * @param cod_ean128 the cod_ean128 to set
+     */
+    public void setCod_ean128(String cod_ean128) {
+        this.cod_ean128 = cod_ean128;
     }
     
     

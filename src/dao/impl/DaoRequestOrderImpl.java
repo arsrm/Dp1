@@ -319,7 +319,44 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
 
     @Override
     public String requestOrderUpd(RequestOrder requestOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "UPDATE  request_order SET "
+                +"State_Request_Order_idStateRequest_Order = ?  "
+                + "WHERE idRequest_Order=? ";
+        
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,requestOrder.getStateRequestOrder().getIdStateRequestOrder());
+                ps.setInt(2,requestOrder.getIdRequestOrder());
+                
+                int ctos = ps.executeUpdate();
+                
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+                
+                List<RequestOrderDetail> list = requestOrder.getRequestOrderDetailList();
+                int size = list.size();
+                for(int i=0;i<size;i++){
+                    daoRequestOrderDetail.requestOrderDetailUpd(list.get(i));
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override

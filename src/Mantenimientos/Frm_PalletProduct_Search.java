@@ -68,6 +68,7 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
     }       
     public void load_product()
     {
+        Integer sizeCombo = 0;
         cbo_product.removeAllItems();
         DaoProducts objdao=new DaoProdImpl();
         Integer cantreg=objdao.ProductsQry().size();
@@ -77,10 +78,11 @@ public class Frm_PalletProduct_Search extends javax.swing.JFrame
           // Se agregan los status activos
            if(list[i].getStatus()==1)
            {cbo_product.addItem(list[i].getName());
+            sizeCombo++;
            }
        }   
        cbo_product.addItem(" ");
-       cbo_product.setSelectedIndex(cantreg);
+       cbo_product.setSelectedIndex(sizeCombo);
     }
   
     public void load_product(String marca)

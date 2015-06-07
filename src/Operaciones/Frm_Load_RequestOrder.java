@@ -277,15 +277,18 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     private void btn_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loadActionPerformed
         // TODO add your handling code here:
         //Al hacer click en cargar debe llevar todos los datos a objetos y cargarlos a la tabla no a la BD aun
+        btn_load.setEnabled(false);
         Object[] options = {"OK"};
         DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
         dispatchFileName = txt_LoadFile.getText();
         String words[] = dispatchFileName.split("\\.");
         if(dispatchFileName==null || dispatchFileName.length()==0){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un archivo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            btn_load.setEnabled(true);
         }
         else if(words[1].equals("csv")==false){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Formato de archivo incorrecto.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            btn_load.setEnabled(true);
         }
         else{
             //se lee el archivo
@@ -358,7 +361,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                             requestOrderDetail.setDelivered(0);
                             requestOrderDetail.setQuantity(cantidad);
                             requestOrderDetail.setRemaining(cantidad);
-                            requestOrderDetail.setRequestOrder(ro);
+                            requestOrderDetail.setRequestOrder(ro.getIdRequestOrder());
                             requestOrderDetail.setStatus(1);
                             requestOrderDetail.setUserCreated(userAux.getIdUser());
                             requestOrderDetail.setUserUpdated(null);

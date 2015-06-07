@@ -20,7 +20,6 @@ import Mantenimientos.Frm_User_Search;
 import Mantenimientos.Frm_Warehouse_Search;
 import Model.Log;
 import Model.Users;
-import Operaciones.Frm_DispatchOrder_Generator;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_IntermentOrder_Load;
 import Operaciones.Frm_InternmentOrder_Search;
@@ -66,7 +65,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             this.op_loadRequestOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_loadRequestOrders"));
             this.op_RequestOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_RequestOrderSearch"));
             this.op_PickingOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_PickingOrderSearch"));
-            this.op_GenerateDispatchOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_GenerateDispatchOrders"));
             this.op_DispatchOrderSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_DispatchOrderSearch"));
             this.op_RegisterReturn.setEnabled(daoUsers.accesswindow(idprofile,"op_RegisterReturn"));
             this.op_ReturnSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_ReturnSearch"));
@@ -148,7 +146,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_RequestOrderSearch = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         op_PickingOrderSearch = new javax.swing.JMenuItem();
-        op_GenerateDispatchOrders = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         op_DispatchOrderSearch = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -204,7 +201,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         getContentPane().add(lbl_name);
         lbl_name.setBounds(550, 50, 160, 20);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("/Users/Alejandro/NetBeansProjects/Proyecto/trunk/Imagenes/fondop.jpg")); // NOI18N
         jLabel1.setText("       ");
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, -30, 1280, 800);
@@ -348,14 +344,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu2.add(op_PickingOrderSearch);
-
-        op_GenerateDispatchOrders.setText("Generar Órdenes de Despacho");
-        op_GenerateDispatchOrders.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                op_GenerateDispatchOrdersActionPerformed(evt);
-            }
-        });
-        jMenu2.add(op_GenerateDispatchOrders);
 
         menu_operaciones.add(jMenu2);
 
@@ -603,14 +591,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_spo.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_PickingOrderSearchActionPerformed
 
-    private void op_GenerateDispatchOrdersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_GenerateDispatchOrdersActionPerformed
-        // TODO add your handling code here:
-        Frm_DispatchOrder_Generator frm_dog = new Frm_DispatchOrder_Generator(this);
-        frm_dog.setVisible(true);
-        frm_dog.setLocation(450, 150);
-        frm_dog.setLocationRelativeTo(null);
-    }//GEN-LAST:event_op_GenerateDispatchOrdersActionPerformed
-
     private void op_DispatchOrderSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_DispatchOrderSearchActionPerformed
         // TODO add your handling code here:
         Frm_DispatchOrder_Search frm_vod = new Frm_DispatchOrder_Search(this);
@@ -793,7 +773,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Centro_distribucion;
     private javax.swing.JMenuItem op_Cliente;
     private javax.swing.JMenuItem op_DispatchOrderSearch;
-    private javax.swing.JMenuItem op_GenerateDispatchOrders;
     private javax.swing.JMenuItem op_Guia_Transportista;
     private javax.swing.JMenuItem op_Location_Cell;
     private javax.swing.JMenuItem op_Pallet;

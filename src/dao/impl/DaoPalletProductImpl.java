@@ -216,6 +216,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         List<PalletProduct> list = null;
         String sql = "SELECT "
                 + "Pallet_idPallet, "
+                + "cod_ean128, "
                 + "Product_Trademark_id_Trademark, "
                 + "Product_idProduct, "
                 + "status, "
@@ -239,15 +240,16 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 while (rs.next()) {
                     PalletProduct objmodel = new PalletProduct();
                     objmodel.setIdpallet(rs.getInt(1));
-                    objmodel.setIdtrademark(rs.getInt(2));
-                    objmodel.setIdproduct(rs.getInt(3));
-                    objmodel.setStatus(rs.getInt(4));
-                    objmodel.setCreated_at(rs.getTimestamp(5));
-                    objmodel.setUpdated_at(rs.getTimestamp(6));
-                    objmodel.setUser_created(rs.getInt(7));
-                    objmodel.setUser_updated(rs.getInt(8));
-                    objmodel.setDateexpira(rs.getDate(9));
-                    objmodel.setNuminterna(rs.getInt(10));
+                    objmodel.setCod_ean128(rs.getString(2));
+                    objmodel.setIdtrademark(rs.getInt(3));
+                    objmodel.setIdproduct(rs.getInt(4));
+                    objmodel.setStatus(rs.getInt(5));
+                    objmodel.setCreated_at(rs.getTimestamp(6));
+                    objmodel.setUpdated_at(rs.getTimestamp(7));
+                    objmodel.setUser_created(rs.getInt(8));
+                    objmodel.setUser_updated(rs.getInt(9));
+                    objmodel.setDateexpira(rs.getDate(10));
+                    objmodel.setNuminterna(rs.getInt(11));
                     list.add(objmodel);
                 }
             } catch (SQLException e) {

@@ -27,7 +27,7 @@ public class RequestOrderDetail implements Serializable {
     private Integer remaining;
     private Integer userCreated;
     private Integer userUpdated;
-    private RequestOrder requestOrder;
+    private Integer requestOrder;
 
     public RequestOrderDetail() {
     }
@@ -105,11 +105,11 @@ public class RequestOrderDetail implements Serializable {
         this.product = product;
     }
 
-    public RequestOrder getRequestOrder() {
+    public Integer getRequestOrder() {
         return requestOrder;
     }
 
-    public void setRequestOrder(RequestOrder requestOrder) {
+    public void setRequestOrder(Integer requestOrder) {
         this.requestOrder = requestOrder;
     }
 
