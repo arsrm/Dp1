@@ -201,6 +201,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         getContentPane().add(lbl_name);
         lbl_name.setBounds(550, 50, 160, 20);
 
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/menu.png"))); // NOI18N
         jLabel1.setText("       ");
         getContentPane().add(jLabel1);
         jLabel1.setBounds(0, -30, 1280, 800);

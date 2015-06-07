@@ -149,7 +149,7 @@ public class Frm_Login extends javax.swing.JFrame {
         getContentPane().add(btn_cancel);
         btn_cancel.setBounds(382, 231, 98, 29);
 
-        lbl_log.setIcon(new javax.swing.ImageIcon("/Users/Alejandro/NetBeansProjects/Proyecto/trunk/Imagenes/login.jpg")); // NOI18N
+        lbl_log.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/log.jpg"))); // NOI18N
         lbl_log.setText("    ");
         getContentPane().add(lbl_log);
         lbl_log.setBounds(0, 0, 510, 270);
