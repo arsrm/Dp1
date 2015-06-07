@@ -498,7 +498,6 @@ public class Frm_PalletProduct extends javax.swing.JFrame {
        b=validanumorden();
        if (b)
        {System.out.println("Valido correctamente la orden de internamiento");  
-       
        }
 
     }//GEN-LAST:event_txt_ordinternFocusLost

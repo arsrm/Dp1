@@ -69,7 +69,6 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_state.addItem(" ");
       cbo_state.setSelectedIndex(2);        
     }        
-
     public void load_mark()
     { 
         cbo_mark.removeAllItems();
@@ -100,7 +99,6 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
        cbo_product.addItem(" ");
        cbo_product.setSelectedIndex(cantreg);
     }
-  
     public void load_product(String marca)
     {   Trademark objmodel=new Trademark();
         DaoPalletProduct daomark= new DaoPalletProductImpl();
@@ -120,7 +118,6 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
        cbo_product.setSelectedIndex(cantreg);
       
     }        
-  
     public void loadproduct_mark(String marca)    
     { if (marca.isEmpty())
       { load_product();}   
@@ -128,7 +125,6 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       { load_product(marca);  
        }
     }       
-    
     public void inicia_estado_pallet()
     { 
     }        
@@ -192,7 +188,6 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       cbo_location_cell.addItem(" ");
       cbo_location_cell.setSelectedIndex(cantreg);
     }       
-
     public void  loadceldadetalle(String Cadenacelda)//          
     { 
         DaoPallet objdao=new DaoPalletImpl();
@@ -213,12 +208,9 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
       indcentrodistribucion=1; 
       
      }       
-    public Frm_PalletLocation_Search()
+    public void inicia_formulario()
     {
-     }       
-    public Frm_PalletLocation_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Pallet");
-        menuaux = menu;
         indpaso=0; 
         initComponents();
         load_parameter();
@@ -226,7 +218,13 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
         load_mark();
         load_product();
         indpaso=1;         
-        
+    }        
+    public Frm_PalletLocation_Search()
+    {
+     }       
+    public Frm_PalletLocation_Search(Frm_MenuPrincipal menu) {
+        menuaux = menu;
+        inicia_formulario();
     }
     /**
      * This method is called from within the constructor to initialize the form.
