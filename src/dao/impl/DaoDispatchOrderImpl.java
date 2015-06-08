@@ -350,6 +350,57 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
        
     }
 
+    @Override
+    public List<DispatchOrder> dispatchOrderQry_search(Date departureDate) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String sql = null;
+        int idStatus;
+        List<DispatchOrder> dispatchList = null;
+        
+            sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order "
+                + "FROM dispatch_order "
+                + "WHERE departure_date = ? ";
+
+        
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+//                java.sql.Date dateIniSql = new java.sql.Date(dateIni.getTime());
+                ps.setDate(1, new java.sql.Date(departureDate.getTime()));
+                
+                ResultSet rs = ps.executeQuery();
+
+                dispatchList = new LinkedList<>();
+                while (rs.next()) {
+                    DispatchOrder dor = new DispatchOrder();
+                    dor.setIdDispatch_Order(rs.getInt(1));
+                    dor.setIdClient(rs.getInt(2));
+                    dor.setDepartureDate(rs.getDate(3));
+                    dor.setArrivalDate(rs.getDate(4));
+                    dor.setStatus(rs.getInt(5));
+                    dor.setIdPickingOrder(rs.getInt(6));
+                    dispatchList.add(dor);
+                }
+
+            } catch (SQLException e) {
+                dispatchList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return dispatchList;
+    }
+    
+
    
     
 }

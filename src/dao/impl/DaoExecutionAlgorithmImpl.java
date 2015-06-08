@@ -14,6 +14,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -49,10 +50,12 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
                 ps.setInt(4, execution.getVehicles_number());
                 
                 
+                
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
+               
 
             } catch (SQLException e) {
                 result = e.getMessage();

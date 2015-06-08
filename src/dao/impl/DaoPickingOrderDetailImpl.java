@@ -134,7 +134,7 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
     @Override
     public PickingOrderDetail pickingOrderDetailGet(Integer idpickingOrderDetail){
        
-           PickingOrderDetail pickingOrder = null;
+         PickingOrderDetail pickingOrder = null;
          String sql =  "SELECT idPicking_Order_Detail,"
                 + "status,"
                 + " Picking_Order_idPicking_Order,"

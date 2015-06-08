@@ -222,13 +222,10 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 }
                 
                 //this is an error since the above is an error
-                System.out.println("HOLI 0");
+               
                 ResultSet rs = ps.getGeneratedKeys();
-                System.out.println("HOLI");
                 rs.next();
-                System.out.println("HOLI 2");
                 idGenerated = rs.getInt(1);
-                System.out.println("HOLI 3");
                 
                
 

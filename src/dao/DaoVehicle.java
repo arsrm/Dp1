@@ -17,6 +17,8 @@ public interface DaoVehicle {
     
     public List<Vehicle> vehicleQry();
     
+    public List<Vehicle> vehicleQry(Integer limit);
+    
     public Vehicle vehicleGet(Integer idvehicle);
     
     public String vehicleUpd(Vehicle vehicle);

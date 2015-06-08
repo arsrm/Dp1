@@ -7,6 +7,7 @@
 package Model;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -88,7 +89,6 @@ public class ExecutionAlgorithm {
     public void setVehicles_number(Integer vehicles_number) {
         this.vehicles_number = vehicles_number;
     }
-    
     
     
     

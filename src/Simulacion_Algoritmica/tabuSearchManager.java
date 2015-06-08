@@ -39,9 +39,10 @@ public class tabuSearchManager {
     }
     
     public tabuSearchManager(List<Vehicle> vecList,List<Client> cliList,Integer stop){
-        this.vehicleList = vehicleList;
+        this.vehicleList = vecList;
         this.clientList = cliList;
         this.stoppingCriterion = stop;
+        this.distances = getDistancesMatrix();
     }
     
     
@@ -198,6 +199,12 @@ public class tabuSearchManager {
                     } 
                 }
             }
+            for(int i=0;i<sizeClient;i++){
+                System.out.println("");
+                for(int j=0;j<sizeClient;j++){
+                    System.out.print(distances[i][j]+" ");
+                }
+            }
             return distances;
     }
     
@@ -206,7 +213,6 @@ public class tabuSearchManager {
         pero luego se crea moviendo la primera solucion como el 2do el mejor, 3ero el mejor,etc
         */
         ArrayList<Integer> firstSolution = generateFirstBestSolution(0);
-        
         int sizeFirstSolution = firstSolution.size();
         double initialCost = calculateFunctionCost(firstSolution);
         int clientsNumb = clientList.size()-1;
@@ -370,8 +376,12 @@ public class tabuSearchManager {
     public double calculateCostPerArist(int pivot, int next,int posVecList,double freeCapacity ){
         double cost = 0;
         Vehicle v =  vehicleList.get(posVecList);
+        System.out.println("pivot "+pivot);
+        System.out.println("next "+next);
+        System.out.println("posVech "+posVecList);
         double factor1 = (v.getDispatchNumber()*1.0)/(clientList.get(next).getPriority()*1.0);
         double factor2 = (double)(1.1-(v.getAvailableCapacity()/v.getCapacity()));
+        System.out.println("PASO AQUI");
         cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
         return cost;
     }
@@ -458,6 +468,7 @@ public class tabuSearchManager {
         initialSolution = generateInitialSolution();
         
         actualSolution = initialSolution;
+        showRoute(actualSolution);
         //Realizar el bucle de parada:
         int index = 0;
         for(int i=0;i<stoppingCriterion;i++){
@@ -731,7 +742,7 @@ public class tabuSearchManager {
                 int indexEnd = getClientIndex(solution.get(i+1));
                 factor1 = (v.getDispatchNumber()*1.0)/(clientList.get(indexEnd).getPriority()*1.0);
                 factor2 = (double)(1.1-(v.getAvailableCapacity()/v.getCapacity()));
-                cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2)/1000.0);
+                cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2));
             }else {
                 int indexInit = getClientIndex(solution.get(i));
                 int indexEnd = getClientIndex(solution.get(i+1));
@@ -744,7 +755,7 @@ public class tabuSearchManager {
                     factor1 = (v.getDispatchNumber()*1.0)/(1.0);
                 }
                 factor2 = (double)(1.1- (v.getAvailableCapacity()/v.getCapacity()));
-                cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2)/1000.0);
+                cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2));
             }
         }
         return Math.round(cost*100)/100;

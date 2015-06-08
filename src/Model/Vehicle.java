@@ -21,17 +21,11 @@ public class Vehicle implements Serializable {
     public String license_plate;
     public String name;    
     private Double capacity;
-    private Integer dispatchNumber;
-    private Integer status;
-    private Timestamp createdAt;
-    private Timestamp updatedUp;
-    private Integer userCreated;
-    private Integer userUpdated;
     private Driver driver;
     private VehicleState vehicleState;
-    private List<DispatchOrder> dispatchOrderList;
     private List<Integer> route;
     private Double availableCapacity;
+    private Integer dispatchNumber;
 
     public Vehicle() {
     }
@@ -43,54 +37,6 @@ public class Vehicle implements Serializable {
 
     public void setCapacity(Double capacity) {
         this.capacity = capacity;
-    }
-
-    public Integer getDispatchNumber() {
-        return dispatchNumber;
-    }
-
-    public void setDispatchNumber(Integer dispatchNumber) {
-        this.dispatchNumber = dispatchNumber;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedUp() {
-        return updatedUp;
-    }
-
-    public void setUpdatedUp(Timestamp updatedUp) {
-        this.updatedUp = updatedUp;
-    }
-
-    public Integer getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(Integer userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public Integer getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(Integer userUpdated) {
-        this.userUpdated = userUpdated;
     }
 
     public Driver getDriver() {
@@ -109,13 +55,7 @@ public class Vehicle implements Serializable {
         this.vehicleState = vehicleState;
     }
 
-    public List<DispatchOrder> getDispatchOrderList() {
-        return dispatchOrderList;
-    }
-
-    public void setDispatchOrderList(List<DispatchOrder> dispatchOrderList) {
-        this.dispatchOrderList = dispatchOrderList;
-    }
+  
 
     /**
      * @return the idVehicle
@@ -185,6 +125,20 @@ public class Vehicle implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the dispatchNumber
+     */
+    public Integer getDispatchNumber() {
+        return dispatchNumber;
+    }
+
+    /**
+     * @param dispatchNumber the dispatchNumber to set
+     */
+    public void setDispatchNumber(Integer dispatchNumber) {
+        this.dispatchNumber = dispatchNumber;
     }
 
 }
