@@ -57,6 +57,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     InternmentOrder internmentOrder = null;
     DefaultTableModel modelo = new DefaultTableModel();
     SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+
     List<InternmentOrderDetail> intOrderDetListMassive = null;
     List<InternmentOrderDetail> intOrderDetListManual = null;
     Integer lineIntOrdDetailManual = 1;
@@ -127,7 +128,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             }
         });
 
-        btn_manual_load.setText("Cargar Orden de Internamiento");
+        btn_manual_load.setText("Generar Orden de Internamiento");
         btn_manual_load.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_manual_loadActionPerformed(evt);
@@ -230,7 +231,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             }
         });
 
-        btn_massive_load.setText("Cargar Orden de Internamiento");
+        btn_massive_load.setText("Generar Orden de Internamiento");
         btn_massive_load.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_massive_loadActionPerformed(evt);
@@ -419,7 +420,9 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         txt_route.setEnabled(false);
         btn_searchFile.setEnabled(false);
         btn_massive_load.setEnabled(false);
-        Date date = new Date();
+        Date dateOrder = new Date();
+        if(jDate_dateOrder.getDate()!=null)
+            dateOrder = jDate_dateOrder.getDate();
         InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
         Product prodLine = new Product();
         if (internmentOrder == null) {
@@ -428,7 +431,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
             btn_manual_load.setEnabled(true);
             internmentOrder = new InternmentOrder();
             internmentOrder.setIdInternmentOrder(Integer.parseInt(txt_idOrderInt.getText()));
-            internmentOrder.setDate(jDate_dateOrder.getDate());
+            internmentOrder.setDate(dateOrder);
             internmentOrder.setStatus(1);
             intOrderDetListManual = new ArrayList<>();
         }
@@ -446,58 +449,71 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_addProductActionPerformed
 
     private void btn_manual_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_manual_loadActionPerformed
-        internmentOrder.setInternmentOrderDetail(intOrderDetListManual);
-        btn_saveOrder.setEnabled(true);
+
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            internmentOrder.setInternmentOrderDetail(intOrderDetListManual);
+            btn_saveOrder.setEnabled(true);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha generado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        }
     }//GEN-LAST:event_btn_manual_loadActionPerformed
 
     private void btn_massive_loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_massive_loadActionPerformed
-        Integer nroLineTxtFile = 0, idIntOrderTxt;
-        String line = null, dateTxt;
 
-        File file = new File(directory);
-        BufferedReader reader = null;
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            Integer nroLineTxtFile = 0, idIntOrderTxt;
+            String line = null, dateTxt;
 
-        try {
-            internmentOrder = new InternmentOrder();
-            reader = new BufferedReader(new FileReader(file));
-            idIntOrderTxt = Integer.parseInt(reader.readLine().split(",")[1]);
-            dateTxt = reader.readLine().split(",")[1];
-            reader.readLine();
-            reader.readLine();
-            internmentOrder.setIdInternmentOrder(idIntOrderTxt);
+            File file = new File(directory);
+            BufferedReader reader = null;
 
-            internmentOrder.setDate(formatDate.parse(dateTxt));
-            intOrderDetListMassive = new ArrayList<>();
-            while ((line = reader.readLine()) != null) {
-                InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
-                String[] lineArray = line.split(",");
-                Product prodline = new Product();
-                prodline = daoProducts.ProductsGet(Integer.parseInt(lineArray[1]));
-                intOrdDetail.setIdInternmentOrderDetail(Integer.parseInt(lineArray[0]));
-                intOrdDetail.setProduct(prodline);
-                intOrdDetail.setQuantityPallets(Integer.parseInt(lineArray[2]));
-                intOrdDetail.setStatus(1);
-                intOrderDetListMassive.add(intOrdDetail);
-            }
-            internmentOrder.setInternmentOrderDetail(intOrderDetListMassive);
-            internmentOrder.setStatus(1);
-            initilizeTable();
-            btn_saveOrder.setEnabled(true);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException ex) {
-            Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                internmentOrder = new InternmentOrder();
+                reader = new BufferedReader(new FileReader(file));
+                idIntOrderTxt = Integer.parseInt(reader.readLine().split(",")[1]);
+                dateTxt = reader.readLine().split(",")[1];
+                reader.readLine();
+                reader.readLine();
+                internmentOrder.setIdInternmentOrder(idIntOrderTxt);
+
+                internmentOrder.setDate(formatDate.parse(dateTxt));
+                intOrderDetListMassive = new ArrayList<>();
+                while ((line = reader.readLine()) != null) {
+                    InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
+                    String[] lineArray = line.split(",");
+                    Product prodline = new Product();
+                    prodline = daoProducts.ProductsGet(Integer.parseInt(lineArray[1]));
+                    intOrdDetail.setIdInternmentOrderDetail(Integer.parseInt(lineArray[0]));
+                    intOrdDetail.setProduct(prodline);
+                    intOrdDetail.setQuantityPallets(Integer.parseInt(lineArray[2]));
+                    intOrdDetail.setStatus(1);
+                    intOrderDetListMassive.add(intOrdDetail);
+                }
+                internmentOrder.setInternmentOrderDetail(intOrderDetListMassive);
+                internmentOrder.setStatus(1);
+                initilizeTable();
+                btn_saveOrder.setEnabled(true);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ParseException ex) {
+                Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha generado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         }
+
     }//GEN-LAST:event_btn_massive_loadActionPerformed
 
     private void btn_saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveOrderActionPerformed
@@ -523,7 +539,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 freePalletList = daoPalletProduct.GetPalletByStatus(2, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
                 daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
                         internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct(),
-                        cal.getTime(), internmentOrder.getIdInternmentOrder());                
+                        cal.getTime(), internmentOrder.getIdInternmentOrder());
                 for (int j = 0; j < freePalletList.size(); j++) {
                     daoPalletIni.PalletsIniUpdStatus(freePalletList, 1);//1 Estado no disponible
                 }

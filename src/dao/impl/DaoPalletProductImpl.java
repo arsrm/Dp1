@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao.impl;
 
 import Model.LocationCell;
@@ -15,26 +14,34 @@ import Model.Rack;
 import Model.Trademark;
 import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
+import dao.DaoProducts;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author gzavala
  */
-public class DaoPalletProductImpl implements DaoPalletProduct{
+public class DaoPalletProductImpl implements DaoPalletProduct {
 
     private ConectaDb db;
+    DaoProducts daoProd = new DaoProdImpl();
+    SimpleDateFormat formatDateEan = new SimpleDateFormat("yyMMdd");
 
     public DaoPalletProductImpl() {
         db = new ConectaDb();
-    }    
+    }
 
     @Override
     public Trademark GetTrademarkname(String namemark) {
@@ -42,7 +49,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         String sql = "SELECT "
                 + "id_Trademark, "
                 + "name "
-                + "FROM trademark where name='" + namemark +"' ";
+                + "FROM trademark where name='" + namemark + "' ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -74,7 +81,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         String sql = "SELECT "
                 + "id_Trademark, "
                 + "name "
-                + "FROM trademark where id_Trademark=" + idmark +" ";
+                + "FROM trademark where id_Trademark=" + idmark + " ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -110,17 +117,17 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "physical_stock, "
                 + "free_stock, "
                 + "status, "
-                + "created_at, "                
-                + "updated_at, "                                
-                + "Type_Condition_idType_Condition, "                                                
-                + "cod_ean13, "                                                                
-                + "Trademark_id_Trademark "                                                                                
-               // + "user_created, "                                                                                
-               // + "user_updated "                                                                                
-                + "FROM product where Trademark_id_Trademark=" +idmark+" ";
+                + "created_at, "
+                + "updated_at, "
+                + "Type_Condition_idType_Condition, "
+                + "cod_ean13, "
+                + "Trademark_id_Trademark "
+                // + "user_created, "                                                                                
+                // + "user_updated "                                                                                
+                + "FROM product where Trademark_id_Trademark=" + idmark + " ";
         Connection cn = db.getConnection();
-        
-        System.out.println("Query ejecutado " + sql); 
+
+        System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -168,16 +175,16 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "physical_stock, "
                 + "free_stock, "
                 + "status, "
-                + "created_at, "                
-                + "updated_at, "                                
-                + "Type_Condition_idType_Condition, "                                                
-                + "cod_ean13, "                                                                
+                + "created_at, "
+                + "updated_at, "
+                + "Type_Condition_idType_Condition, "
+                + "cod_ean13, "
                 + "Trademark_id_Trademark,"
-                + "time_expiration  "                                                                                
-               // + "user_created, "                                                                                
-               // + "user_updated "                                                                                
-                + "FROM product where name='" +nameproduct+"' "
-                + " and Trademark_id_Trademark="+idmark + " ";
+                + "time_expiration  "
+                // + "user_created, "                                                                                
+                // + "user_updated "                                                                                
+                + "FROM product where name='" + nameproduct + "' "
+                + " and Trademark_id_Trademark=" + idmark + " ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -227,13 +234,13 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "updated_at, "
                 + "user_created, "
                 + "user_updated, "
-                + "expiration_date, "                
-                + "Internment_Order_idInternment_Order "                                
-                + "FROM pallet_by_product  " +CadenaWhere+" "
+                + "expiration_date, "
+                + "Internment_Order_idInternment_Order "
+                + "FROM pallet_by_product  " + CadenaWhere + " "
                 + " order by Internment_Order_idInternment_Order, Product_Trademark_id_Trademark,Product_idProduct  ";
         Connection cn = db.getConnection();
-        
-        System.out.println("Query ejecutado " + sql); 
+
+        System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -268,36 +275,36 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
     }
 
     @Override
-    public String PalletProductDelMasive(List<Integer> listidpallet, List<Integer> listidmark, List<Integer> listidproduct,List<Integer> lististatus) {
+    public String PalletProductDelMasive(List<Integer> listidpallet, List<Integer> listidmark, List<Integer> listidproduct, List<Integer> lististatus) {
 
-        int sizelist= listidpallet.size();
+        int sizelist = listidpallet.size();
         String result = null;
         String sql = "UPDATE  pallet_by_product SET "
                 + "status=? "
                 + "WHERE Pallet_idPallet=? "
                 + " and Product_Trademark_id_Trademark=? "
-                + " and Product_idProduct=? " ;
+                + " and Product_idProduct=? ";
         Connection cn = db.getConnection();
-        PalletIni objmodelpalletini=new PalletIni();
-        DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
-        int idpallet; 
-        int idmarca; 
-        int idproduct; 
-        int idstatus; 
+        PalletIni objmodelpalletini = new PalletIni();
+        DaoPalletIni objdaopalletini = new DaoPalletIniImpl();
+        int idpallet;
+        int idmarca;
+        int idproduct;
+        int idstatus;
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                for (int x = 0 ; x<sizelist ;x ++) {
-                    idpallet= listidpallet.get(x);
-                    idmarca=listidmark.get(x);
-                    idproduct=listidproduct.get(x);
-                    idstatus=lististatus.get(x);
-                    ps.setInt(1,1-idstatus);
-                    ps.setInt(2,idpallet);
-                    ps.setInt(3,idmarca);
-                    ps.setInt(4,idproduct);
-                    objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
-                    objmodelpalletini.setStatuspallet(idstatus+1);
+                for (int x = 0; x < sizelist; x++) {
+                    idpallet = listidpallet.get(x);
+                    idmarca = listidmark.get(x);
+                    idproduct = listidproduct.get(x);
+                    idstatus = lististatus.get(x);
+                    ps.setInt(1, 1 - idstatus);
+                    ps.setInt(2, idpallet);
+                    ps.setInt(3, idmarca);
+                    ps.setInt(4, idproduct);
+                    objmodelpalletini = objdaopalletini.PalletIniGet(idpallet);
+                    objmodelpalletini.setStatuspallet(idstatus + 1);
                     objdaopalletini.PalletIniUpd(objmodelpalletini);
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
@@ -315,33 +322,53 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
             }
         }
         return result;
-    
+
     }
 
     @Override
-    public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct, Date expirationDate,Integer idIntOrd) {
-        int sizelist= listidpallet.size();
+    public String PalletProductInsMasive(List<Integer> listidpallet, Integer idmarca, Integer idproduct, Date expirationDate, Integer idIntOrd) {
+        int sizelist = listidpallet.size();
         String result = null;
-        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,expiration_date,Internment_Order_idInternment_Order,status) "
-                + " values(?,?,?,?,?,1) ";
+        String ean128 = null;
+        String pesoPallet = "";
+        String day="",month="",year="";
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(expirationDate);
+        if(cal.get(Calendar.DAY_OF_MONTH)<10) day = "0"+cal.get(Calendar.DAY_OF_MONTH);
+        else day = ""+cal.get(Calendar.DAY_OF_MONTH);
+        if(cal.get(Calendar.MONTH)<10) month = "0"+cal.get(Calendar.MONTH);
+        else month = ""+cal.get(Calendar.MONTH);
+        year = ""+cal.get(Calendar.YEAR)%100;
+        String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,expiration_date,Internment_Order_idInternment_Order,status,cod_ean128) "
+                + " values(?,?,?,?,?,1,?) ";
         Connection cn = db.getConnection();
-        PalletIni objmodelpalletini=new PalletIni();
-        DaoPalletIni objdaopalletini= new DaoPalletIniImpl();
-        int idpallet; 
+        PalletIni objmodelpalletini = new PalletIni();
+        DaoPalletIni objdaopalletini = new DaoPalletIniImpl();
+        int idpallet;
+        Product prod = daoProd.ProductsGet(idproduct);
+        Integer cantProdPall = (prod.getQuantityBoxesPerPallet() * prod.getWeightPerBox());
+        int longCant = cantProdPall.toString().length();
+        for (int i = 0; i < 6 - longCant; i++) {
+            pesoPallet += "0";
+        }
+        pesoPallet += cantProdPall.toString();
+        ean128 = "(01)" + prod.getCodeEAN13() + "(12)" + year + month + day 
+                + "(3100)" + pesoPallet + "(37)" + prod.getQuantityBoxesPerPallet();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                for (int x = 0 ; x<sizelist ;x ++) {
-                    idpallet= listidpallet.get(x);
-                    ps.setInt(1,idpallet);
-                    ps.setInt(2,idmarca);
-                    ps.setInt(3,idproduct);
+                for (int x = 0; x < sizelist; x++) {
+                    idpallet = listidpallet.get(x);
+                    ps.setInt(1, idpallet);
+                    ps.setInt(2, idmarca);
+                    ps.setInt(3, idproduct);
                     //ps.setDate(4, new java.sql.Date(expirationDate.getTime()));
                     ps.setDate(4, new java.sql.Date(expirationDate.getTime()));
                     ps.setInt(5, idIntOrd);
+                    ps.setString(6, ean128);
                     //Se actualiza el pallet como no disponible
-                    objmodelpalletini=objdaopalletini.PalletIniGet(idpallet);
-                    objmodelpalletini.setStatuspallet(1); 
+                    objmodelpalletini = objdaopalletini.PalletIniGet(idpallet);
+                    objmodelpalletini.setStatuspallet(1);
                     objdaopalletini.PalletIniUpd(objmodelpalletini);
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
@@ -381,8 +408,10 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 palletList = new LinkedList<>();
                 while (rs.next()) {
                     palletList.add(rs.getInt(1));
-                    cantPal +=1;
-                    if(cantPal == cantPallets) break;
+                    cantPal += 1;
+                    if (cantPal == cantPallets) {
+                        break;
+                    }
                 }
 
             } catch (SQLException e) {
@@ -405,7 +434,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
                 + "Pallet_idPallet "
                 + "FROM Pallet_By_Product "
                 + "WHERE Internment_Order_idInternment_Order = ? "
-                +"AND Product_idProduct = ?";
+                + "AND Product_idProduct = ?";
 
         Connection cn = db.getConnection();
         if (cn != null) {

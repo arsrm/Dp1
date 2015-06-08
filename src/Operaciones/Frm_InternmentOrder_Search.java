@@ -33,7 +33,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     DaoInternmentOrder daoIntOrder = new DaoInternmentOrderImpl();
     List<InternmentOrder> intOrderList = new ArrayList<InternmentOrder>();
     List<Integer> idIntOrderDeleteList = new ArrayList<>();
-    List<Integer> idIntOrderInternList = new ArrayList<>();
+    List<Integer> idIntOrderInternList;
 
     public Frm_InternmentOrder_Search(Frm_MenuPrincipal menu) {
         menu_padre = menu;
@@ -274,7 +274,6 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 idIntOrderDeleteList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
             }
         }
-        
 
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
@@ -321,19 +320,28 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_InternActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InternActionPerformed
-        for (int i = 0; i < tbl_order.getRowCount(); i++) {
-            if ((Boolean) tbl_order.getValueAt(i, 3)) {
-                idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
-            }
-        }
-
-        Object[] options = {"OK"};
+        int option;
+        Boolean op_Intern = true;
+        idIntOrderInternList = new ArrayList<>();
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            daoIntOrder.IntOrdersIntern(idIntOrderInternList);
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                initializeTable();
+            Object[] options = {"OK"};
+            for (int i = 0; i < tbl_order.getRowCount(); i++) {
+                if ((Boolean) tbl_order.getValueAt(i, 3)) {
+                    if (tbl_order.getValueAt(i, 2).toString().equals("Internado")) {
+                        option = JOptionPane.showOptionDialog(new JFrame(), "Solo se puede internar órdenes con estado Pendiente.", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        op_Intern = false;
+                    } else {
+                        idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
+                    }
+                }
+            }
+            if (op_Intern) {
+                daoIntOrder.IntOrdersIntern(idIntOrderInternList);
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
+                    initializeTable();
+                }
             }
         }
     }//GEN-LAST:event_btn_InternActionPerformed
@@ -346,9 +354,19 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         try {
             for (int i = 0; i < intOrderList.size(); i++) {
                 if (intOrderList.get(i).getStatus() == 1) {
-                    status = "Activo";
+                    status = "Pendiente";
                 } else {
                     status = "Inactivo";
+                }
+                switch (intOrderList.get(i).getStatus()) {
+                    case 1:
+                        status = "Pendiente";
+                        break;
+                    case 2:
+                        status = "Internado";
+                        break;
+                    case 0:
+                        status = "Inactivo";
                 }
                 Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
                     intOrderList.get(i).getDate(), status, false};

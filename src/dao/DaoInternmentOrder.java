@@ -35,4 +35,6 @@ public interface DaoInternmentOrder {
     public List<InternmentOrder> IntOrderSearch(Integer idIntOrder, Date dateIni, Date dateEnd);
     
     public String IntOrdersIntern(List<Integer> ids);
+    
+    public void IntOrdUpdStatus(Integer intOrd, Integer status);
 }

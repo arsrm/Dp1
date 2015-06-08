@@ -454,7 +454,7 @@ public class DaoProdImpl implements DaoProducts {
                     ps.setInt(1, product.getPhysicalStock() - cantPallets * product.getQuantityBoxesPerPallet());
                     ps.setInt(2, product.getFreeStock()+ cantPallets * product.getQuantityBoxesPerPallet());
                 }
-                ps.setInt(2, idProduct);
+                ps.setInt(3, idProduct);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 result = e.getMessage();

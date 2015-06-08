@@ -272,6 +272,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         String result = null;
         for (Integer id : ids) {
             result = IntOrderIntern(id);
+            IntOrdUpdStatus(id, 2);
         }
         return result;
     }
@@ -423,5 +424,30 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             }
         }
         return result;
+    }
+    
+    public void IntOrdUpdStatus(Integer intOrd, Integer status){
+    String sql = "UPDATE Internment_Order SET "                
+                + "status=? "
+                + "WHERE idInternment_Order = ? ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                
+                PreparedStatement ps = cn.prepareStatement(sql);                   
+                ps.setInt(1, status);
+                ps.setInt(2, intOrd);
+                ps.executeUpdate();
+                
+            } catch (SQLException e) {
+                e.getMessage();
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
     }
 }
