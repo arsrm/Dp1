@@ -5,9 +5,12 @@
  */
 
 package dao;
+import Model.LocationCell;
+import Model.LocationCellDetail;
 import Model.PalletIni;
 import Model.PalletProduct;
 import Model.Product;
+import Model.Rack;
 import Model.Trademark;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +24,12 @@ public interface DaoPalletProduct {
     public Trademark GetTrademarkname(String namemark); 
     
     public Trademark GetTradamarkid(Integer idmark); 
+    
+    public Rack GetRackid(Integer idCD, Integer idware, Integer idrack);
+            
+    public LocationCell GetLocationCellId(Integer idCD,Integer idware, Integer idrack, Integer idcelda );
+
+    public LocationCellDetail GetLocationCellDetailId(Integer idCD,Integer idware, Integer idrack, Integer idcelda,Integer idceldadet );
             
     public Product GetProduct(Integer idmark, String nameproduct);
     

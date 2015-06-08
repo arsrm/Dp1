@@ -6,9 +6,12 @@
 
 package dao.impl;
 
+import Model.LocationCell;
+import Model.LocationCellDetail;
 import Model.PalletIni;
 import Model.PalletProduct;
 import Model.Product;
+import Model.Rack;
 import Model.Trademark;
 import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
@@ -542,6 +545,157 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
             }
         }
         return list;
+    }
+
+    @Override
+    public Rack GetRackid(Integer idCD, Integer idware, Integer idrack) {
+        Rack rack = null;
+        String sql = "SELECT "
+                + "idRack, "
+                + "identifier, "
+                + "description, "
+                + "length, "
+                + "width, "
+                + "floor_numbers, "
+                + "height_per_floor, "
+                + "resistance_weigth_per_floor, "
+                + "column_number, "
+                + "status, "
+                + "Warehouse_idWarehouse, "
+                + "Warehouse_Distribution_Center_idDistribution_Center "
+                + "FROM Rack WHERE idRack ="+idrack+ " "
+                + " and Warehouse_idWarehouse="+idware+ " " 
+                + " and Warehouse_Distribution_Center_idDistribution_Center="+idCD+ " "; 
+        
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    rack = new Rack();
+                    rack.setIdRack(rs.getInt(1));
+                    rack.setIdentifier(rs.getString(2));
+                    rack.setDescription(rs.getString(3));
+                    rack.setLength(rs.getDouble(4));
+                    rack.setWidth(rs.getDouble(5));
+                    rack.setFloor_numbers(rs.getInt(6));
+                    rack.setHeight_per_floor(rs.getInt(7));
+                    rack.setResistance_weigth_per_floor(rs.getInt(8));
+                    rack.setColumn_number(rs.getInt(9));
+                    rack.setStatus(rs.getInt(10));
+                    rack.setWarehouse_idWarehouse(rs.getInt(11));
+                    rack.setWarehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
+                }
+            } catch (SQLException e) {
+                rack = null;
+                System.out.println("Error "+ e.getMessage());
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return rack;
+    }
+
+    @Override
+    public LocationCell GetLocationCellId(Integer idCD, Integer idware, Integer idrack, Integer idcelda) {
+        LocationCell celda = null;
+        String sql = "select idLocation_Cell, \n" +
+                    " description,\n" +
+                    " width,\n" +
+                    " length,\n" +
+                    " height,\n" +
+                    " row_cell,\n" +
+                    " column_cell,\n" +
+                    " status,\n" +
+                    " Location_State_idLocation_State,\n" +
+                    " Rack_idRack,\n" +
+                    " Rack_Warehouse_idWarehouse,\n" +
+                    " Rack_Warehouse_Distribution_Center_idDistribution_Center \n" +
+                    " from location_cell\n" +
+                    " where  Rack_Warehouse_Distribution_Center_idDistribution_Center=" +idCD+" \n"+ 
+                    " and Rack_Warehouse_idWarehouse="+ idware + " \n" +
+                    " and Rack_idRack="+idrack  + " \n" +
+                    " and idLocation_Cell="+ idcelda+" "; 
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try { PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    celda = new LocationCell();
+                    celda.setIdLocation_Cell(rs.getInt(1));
+                    celda.setDescription(rs.getString(2));
+                    celda.setWidth(rs.getDouble(3));
+                    celda.setLength(rs.getDouble(4));
+                    celda.setHeight(rs.getInt(5));
+                    celda.setRow_Cell(rs.getInt(6));
+                    celda.setColumn_Cell(rs.getInt(7));
+                    celda.setStatus(rs.getInt(8));
+                    celda.setLocation_State_idLocation_State(rs.getInt(9));
+                    celda.setRack_idRack(rs.getInt(10));
+                    celda.setRack_Warehouse_idWarehouse(rs.getInt(11));
+                    celda.setRack_Warehouse_Distribution_Center_idDistribution_Center(rs.getInt(12));
+                }
+            } catch (SQLException e) {
+                celda = null;
+                System.out.println("Error "+ e.getMessage());
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return celda;
+    }
+
+    @Override
+    public LocationCellDetail GetLocationCellDetailId(Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet) {
+        LocationCellDetail celda = null;
+        String sql ="select idLocation_Cell_Detail,\n" +
+                    " description,\n" +
+                    " availability,\n" +
+                    " Location_Cell_idLocation_Cell,\n" +
+                    " Location_Cell_Rack_idRack,\n" +
+                    " Location_Cell_Rack_Warehouse_idWarehouse,\n" +
+                    " idDistribution_Center \n" +
+                    " from location_cell_detail\n" +
+                    " where idDistribution_Center="+idCD +" \n" +
+                    " and Location_Cell_Rack_Warehouse_idWarehouse="+idware+ " \n" +
+                    " and Location_Cell_Rack_idRack="+idrack + " \n" +
+                    " and Location_Cell_idLocation_Cell="+idcelda + " \n" +
+                    " and idLocation_Cell_Detail="+idceldadet+" "; 
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try { PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    celda = new LocationCellDetail();
+                    celda.setIdLocation_Cell_Detail(rs.getInt(1));
+                    celda.setDescription(rs.getString(2));
+                    celda.setAvailability(rs.getInt(3));
+                    celda.setLocation_Cell_idLocation_Cell(rs.getInt(4));
+                    celda.setLocation_Cell_Rack_idRack(rs.getInt(5));
+                    celda.setLocation_Cell_Rack_Warehouse_idWarehouse(rs.getInt(6));
+                    celda.setIdDistribution_Center(rs.getInt(7));
+                    
+                }
+            } catch (SQLException e) {
+                celda = null;
+                System.out.println("Error "+ e.getMessage());
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return celda;
     }
     
 }

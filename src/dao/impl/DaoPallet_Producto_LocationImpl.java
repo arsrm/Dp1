@@ -120,7 +120,7 @@ public class DaoPallet_Producto_LocationImpl implements DaoPallet_Product_Locati
         int sizelist= ids.size();
         String result = null;
         String sql = "UPDATE Pallet_By_Product_By_Location_Cell_Detail  SET "
-                + "status= '0' "
+                + "status= 0 "
                 + "WHERE idPallet_By_Product_By_Location_Cell_Detail=?";
 
         Connection cn = db.getConnection();
@@ -257,6 +257,55 @@ public class DaoPallet_Producto_LocationImpl implements DaoPallet_Product_Locati
         }
 
         return result;
+    }
+
+    @Override
+    public List<Pallet_Product_Location> GetPallet_Product_LocationWhere(String Cadwhere) {
+       List<Pallet_Product_Location> list = null;
+        String sql =  "select idPallet_By_Product_By_Location_Cell_Detail,"
+                + "Pallet_By_Product_Pallet_idPallet,"
+                + "Pallet_By_Product_Product_Trademark_id_Trademark,"
+                + "Pallet_By_Product_Product_idProduct,"
+                + "Location_Cell_Detail_idLocation_Cell_Detail,"
+                + " Location_Cell_Detail_Location_Cell_idLocation_Cell,"
+                + "Location_Cell_Detail_Location_Cell_Rack_idRack,"
+                + "Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse,"
+                + "Location_Cell_Detail_idDistribution_Center,status "
+                +"From Pallet_By_Product_By_Location_Cell_Detail  where " + Cadwhere ;
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                System.out.println("Cadena Ejecutada: " + sql);
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    Pallet_Product_Location c = new Pallet_Product_Location();
+                    c.setIdPallet_By_Product_By_Location_Cell_Detail(rs.getInt(1));
+                    c.setPallet_By_Product_Pallet_idPallet(rs.getInt(2));
+                    c.setPallet_By_Product_Product_Trademark_id_Trademark(rs.getInt(3));
+                    c.setPallet_By_Product_Product_idProduct(rs.getInt(4));
+                    c.setLocation_Cell_Detail_idLocation_Cell_Detail(rs.getInt(5));
+                    c.setLocation_Cell_Detail_Location_Cell_idLocation_Cell(rs.getInt(6));
+                    c.setLocation_Cell_Detail_Location_Cell_Rack_idRack(rs.getInt(7));
+                    c.setLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse(rs.getInt(8));
+                    c.setLocation_Cell_Detail_idDistribution_Center(rs.getInt(9));
+                    c.setStatus(rs.getInt(10));
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+                System.out.println("Error: "+ e.getMessage());
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
     
     

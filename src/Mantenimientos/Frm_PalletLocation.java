@@ -478,6 +478,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         ventprev.setVisible(true);
+        ventprev.load_table_filter();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void cbo_rackItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_rackItemStateChanged
