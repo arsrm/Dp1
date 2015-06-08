@@ -430,5 +430,118 @@ public class DaoPalletProductImpl implements DaoPalletProduct{
         return palletList;
     }
     
+    @Override
+    public Product GetProductId(Integer idmark, Integer idproduct) {
+        Product objmodel = null;
+        String sql = "SELECT "
+                + "idProduct, "
+                + "name, "
+                + "quantity_per_box, "
+                + "weight_per_box, "
+                + "quantity_boxes_per_pallet, "
+                + "physical_stock, "
+                + "free_stock, "
+                + "status, "
+                + "created_at, "                
+                + "updated_at, "                                
+                + "Type_Condition_idType_Condition, "                                                
+                + "cod_ean13, "                                                                
+                + "Trademark_id_Trademark,"
+                + "time_expiration  "                                                                                
+               // + "user_created, "                                                                                
+               // + "user_updated "                                                                                
+                + "FROM product where idProduct=" +idproduct+" "
+                + " and Trademark_id_Trademark="+idmark + " ";
+         
+          System.out.println("Cadena de ejecución"+ sql);
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel = new Product();
+                    objmodel.setIdProduct(rs.getInt(1));
+                    objmodel.setName(rs.getString(2));
+                    objmodel.setQuantityPerBox(rs.getInt(3));
+                    objmodel.setWeightPerBox(rs.getInt(4));
+                    objmodel.setQuantityBoxesPerPallet(rs.getInt(5));
+                    objmodel.setPhysicalStock(rs.getInt(6));
+                    objmodel.setFreeStock(rs.getInt(7));
+                    objmodel.setStatus(rs.getInt(8));
+                    objmodel.setCreated_at(rs.getTimestamp(9));
+                    objmodel.setUpdate_at(rs.getTimestamp(10));
+                    objmodel.setTypeConditionWH(rs.getInt(11));
+                    objmodel.setCodeEAN13(rs.getString(12));
+                    objmodel.setTrademark(rs.getInt(13));
+                    objmodel.setTimeExpiration(rs.getInt(14));
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error es : "+ e.getMessage());
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public List<PalletProduct> GetPalletProductList2(String CadenaWhere) {
+        List<PalletProduct> list = null;
+        String sql = "SELECT "
+                + " Pallet_idPallet, "
+                + " Product_Trademark_id_Trademark, "
+                + " Product_idProduct, "
+                + " status, "
+                + " created_at, "
+                + " updated_at, "
+                + " user_created, "
+                + " user_updated, "
+                + " expiration_date, "                
+                + " Internment_Order_idInternment_Order "                                
+                + " FROM pallet_by_product  " +CadenaWhere+" "
+                + "  and not (Pallet_idPallet+''+Product_Trademark_id_Trademark+''+Product_idProduct)"
+                + "  in ( select distinct(Pallet_By_Product_Pallet_idPallet+''+Pallet_By_Product_Product_Trademark_id_Trademark+''+Pallet_By_Product_Product_idProduct)"
+                + "  from pallet_by_product_by_location_cell_detail   )";
+                
+        Connection cn = db.getConnection();
+        
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    PalletProduct objmodel = new PalletProduct();
+                    objmodel.setIdpallet(rs.getInt(1));
+                    objmodel.setIdtrademark(rs.getInt(2));
+                    objmodel.setIdproduct(rs.getInt(3));
+                    objmodel.setStatus(rs.getInt(4));
+                    objmodel.setCreated_at(rs.getTimestamp(5));
+                    objmodel.setUpdated_at(rs.getTimestamp(6));
+                    objmodel.setUser_created(rs.getInt(7));
+                    objmodel.setUser_updated(rs.getInt(8));
+                    objmodel.setDateexpira(rs.getDate(9));
+                    objmodel.setNuminterna(rs.getInt(10));
+                    list.add(objmodel);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
     
 }

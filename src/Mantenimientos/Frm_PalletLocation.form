@@ -252,7 +252,7 @@
                 <Column editable="false" title="IdPallet" type="java.lang.Object"/>
                 <Column editable="false" title="Marca" type="java.lang.Object"/>
                 <Column editable="false" title="Producto" type="java.lang.Object"/>
-                <Column editable="true" title="Num Internamiento" type="java.lang.Object"/>
+                <Column editable="false" title="Num Internamiento" type="java.lang.Object"/>
                 <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
               </Table>
             </Property>

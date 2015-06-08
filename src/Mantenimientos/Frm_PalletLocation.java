@@ -53,12 +53,73 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     Integer indpaso=0; 
     DaoDistributionCenter daoDC=new  DaoDistributionCenterImpl(); 
     DaoPallet daoPallet = new DaoPalletImpl();
+    DaoPalletProduct daoPalletProduct= new DaoPalletProductImpl();
     String CadenaCD="";    
     String Cadenawarehouse="";
     String Cadenarack="";
     String Cadenacelda="";
     String Cadenadetallecelda="";
-
+    String CboCD="";
+    String Cboware="";
+    String Cborack="";
+    String Cbocelda="";
+    String Cboceldadet="";
+    
+    
+    public void llenatabla(String CadenaWhere)
+    { 
+      DaoPalletProduct objdao=new DaoPalletProductImpl();
+      //obtiene los productos por pallet que no se encuentran asociados en una ubicacion
+      Integer cantreg=objdao.GetPalletProductList2(CadenaWhere).size();
+      PalletProduct[] list=new PalletProduct[cantreg];
+      DefaultTableModel model= (DefaultTableModel)tbl_palletlocation.getModel(); 
+      DaoPalletProduct objmarca=new DaoPalletProductImpl();
+      DaoProducts objproduc= new DaoProdImpl();
+      for (int i=0; i<cantreg; i++)
+      { list[i]=objdao.GetPalletProductList2(CadenaWhere).get(i);
+        model.addRow(new Object[]{list[i].getIdpallet(),
+        objmarca.GetTradamarkid(list[i].getIdtrademark()).getName(),
+        objmarca.GetProductId( list[i].getIdtrademark(),list[i].getIdproduct()).getName(),
+        list[i].getNuminterna()});
+      }     
+    }       
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_palletlocation.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+     }        
+    public void load_tablefilter()
+    { String Cadenawhere="  where status=1 ";
+       limpiatabla();
+       llenatabla(Cadenawhere);
+    }
+    public void  loadceldadetalle(String Cadenacelda)//          
+    { 
+        DaoPallet objdao=new DaoPalletImpl();
+        Integer cantreg=objdao.DetalleCeldaQry(Cadenacelda).size();
+        String[] list=new String[cantreg];
+       for (int i=0; i<cantreg; i++)
+        {  list[i]=objdao.DetalleCeldaQry(Cadenacelda).get(i);
+           cbo_locationcell_detail.addItem(list[i].toString());
+        } 
+      //cbo_locationcell_detail.addItem(" ");
+      cbo_locationcell_detail.setSelectedIndex(0);
+    }        
+    public void  loadcelda(String cadrack) //     
+    {
+        DaoPallet objdao=new DaoPalletImpl();
+        Integer cantreg=objdao.CeldaQry(cadrack).size();
+        String[] list=new String[cantreg];
+       for (int i=0; i<cantreg; i++)
+        {  list[i]=objdao.CeldaQry(cadrack).get(i);
+           cbo_location_cell.addItem(list[i].toString());
+        } 
+      cbo_location_cell.setSelectedIndex(0);
+    }       
     public void  loadrack_CD(String cadena) //
     {   DaoPallet objdao=new DaoPalletImpl();
         Integer cantreg=objdao.RackQry(cadena).size();
@@ -79,7 +140,6 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
            cbo_warehouse.addItem(list[i].getDescription());
         } 
       //cbo_warehouse.addItem(" ");
-       System.out.println("Paso por el carga Warehouse");
        cbo_warehouse.setSelectedIndex(0);
     }       
     public void limpiacombos()//
@@ -97,8 +157,8 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
        {  list[i]=objdao.CDQry().get(i);
           cbo_center_distribution.addItem(list[i].getName());
        } 
-       //cbo_center_distribution.addItem("");
-       cbo_center_distribution.setSelectedIndex(cantreg);
+       cbo_center_distribution.addItem("");
+       cbo_center_distribution.setSelectedIndex(0);
        indsig=cantreg; 
     }        
     public void load_parameter() //
@@ -119,6 +179,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         if (indsig>0)
         { 
          indpaso=1;         
+         btn_save.setEnabled(false);
         }    
         else
         { 
@@ -293,7 +354,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, true, true
+                false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -348,16 +409,94 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+       DefaultTableModel modelo = (DefaultTableModel)tbl_palletlocation.getModel();
+        List<Integer> listidpallet=new  ArrayList<Integer>();
+        List<Integer> listidmarca= new ArrayList<Integer>();
+        List<Integer> listidproduct= new ArrayList<Integer>();
+        List<Integer> listnumorden= new ArrayList<Integer>();
+        Integer idpallet;
+        Integer idmarca;
+        Integer idproduct;
+        Integer numorden; 
+        Integer cantreg=0; 
+        Integer idcd=0; 
+        Integer idware=0; 
+        Integer idrack=0; 
+        Integer idcelda=0; 
+        Integer idceldadet=0; 
         
+        int nr =modelo.getRowCount(); 
+        for (int i=0; i<nr ;i++){
+         try {   
+         Object prueba =  modelo.getValueAt(i, 4);
+             if ((Boolean)prueba)
+             {
+               idpallet=(Integer)modelo.getValueAt(i, 0);
+               idmarca= daoPalletProduct.GetTrademarkname(modelo.getValueAt(i,1).toString().trim()).getId_Trademark();
+               idproduct=daoPalletProduct.GetProduct(idmarca, modelo.getValueAt(i,2).toString().trim()).getIdProduct();
+               numorden=(Integer)modelo.getValueAt(i, 3);
+               listidpallet.add(idpallet);
+               listidmarca.add(idmarca);
+               listidproduct.add(idproduct);
+               listnumorden.add(numorden);
+               cantreg=cantreg+1; 
+              } 
+         }catch(Exception e)
+          { }  
+        }   
+        if ((cantreg>1) ||(cantreg==0))           
+        {
+          String message = "Solo se debe seleccionar un pallet por producto..por favor Validar...!!";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);               
+        }
+        else 
+        {
+        String message = "¿Está seguro que desea agregar el pallet con el producto a la celda indicada?";
+        String title = "Confirmación";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) 
+          { 
+            idpallet=listidpallet.get(0);
+            idmarca=listidmarca.get(0);
+            idproduct=listidproduct.get(0);
+            numorden=listnumorden.get(0);
+            idcd=daoDC.distribution_centerGet(cbo_center_distribution.getSelectedItem().toString().trim()).getIdDistribution_Center(); 
+            idware=daoPallet.GetIdwarehouse(idcd, cbo_warehouse.getSelectedItem().toString().trim()); 
+            idrack=daoPallet.GetIdRack(idcd, idware, cbo_rack.getSelectedItem().toString().trim()); 
+            idcelda=daoPallet.GetIdCelda(idcd, idware, idrack, cbo_location_cell.getSelectedItem().toString().trim()); 
+            idceldadet=daoPallet.GetIdCeldaDetail(idcd, idware, idrack, idcelda, cbo_locationcell_detail.getSelectedItem().toString().trim()); 
+            daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idcd, idware, idrack, idcelda, idceldadet);
+            load_tablefilter();   
+          }
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
-
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         this.dispose();
         ventprev.setVisible(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void cbo_rackItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_rackItemStateChanged
-
+    if (indsig>0)
+    {
+      if (indrack==1)
+      { try {      
+          if (cbo_rack.getSelectedItem().toString().trim().equals(null) || cbo_rack.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenarack= Cadenawarehouse+" and (1=1) ";}
+         else 
+         { Cadenarack= Cadenawarehouse+ " and Location_Cell_Rack_idRack="+ daoPallet.Rackid(cbo_rack.getSelectedItem().toString().trim()).getIdRack() +"  ";
+          }    
+      } catch(Exception e)
+       {  } 
+       indcelda=1; 
+       cbo_location_cell.removeAllItems();
+       loadcelda(Cadenarack);      
+      }
+     }   
     }//GEN-LAST:event_cbo_rackItemStateChanged
 
     private void cbo_warehouseItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_warehouseItemStateChanged
@@ -365,24 +504,19 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     { 
       if (indalmacen==1)
       { try {      
-
           if (cbo_warehouse.getSelectedItem().toString().trim().equals(null) || cbo_warehouse.getSelectedItem().toString().trim().isEmpty())    
          { Cadenawarehouse=CadenaCD+ " and (1=1) ";}
          else 
          { Cadenawarehouse= CadenaCD+ " and idDistribution_Center="+ daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getDistribution_Center_idDistribution_Center()+"  ";
            Cadenawarehouse= Cadenawarehouse+ "  and Location_Cell_Rack_Warehouse_idWarehouse="+daoPallet.Warehousename(cbo_warehouse.getSelectedItem().toString().trim()).getIdWarehouse() +"";
           }    
-       
       } catch(Exception e)
        {  } 
        indrack=1; 
        cbo_rack.removeAllItems();
        loadrack_CD(Cadenawarehouse);      
-      
       }
-
     }
-        
     }//GEN-LAST:event_cbo_warehouseItemStateChanged
 
     private void cbo_center_distributionItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_center_distributionItemStateChanged
@@ -410,10 +544,43 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_locationcell_detailActionPerformed
 
     private void cbo_location_cellItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_location_cellItemStateChanged
-
+    if (indsig>0)
+    {
+      if (indcelda==1)
+      { try {      
+          if (cbo_location_cell.getSelectedItem().toString().trim().equals(null) || cbo_location_cell.getSelectedItem().toString().trim().isEmpty())    
+         { Cadenacelda= Cadenarack+" and (1=1) ";}
+         else 
+         { Cadenacelda= Cadenarack+ " and Location_Cell_idLocation_Cell="+ daoPallet.LocationCellid(cbo_location_cell.getSelectedItem().toString().trim()).getIdLocation_Cell()  +"  ";
+          }    
+      } catch(Exception e)
+       {  } 
+       inddetallecelda=1; 
+       cbo_locationcell_detail.removeAllItems();
+       loadceldadetalle(Cadenacelda);      
+      }
+    }
+        
     }//GEN-LAST:event_cbo_location_cellItemStateChanged
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+     String CboCD="";
+     String Cboware="";
+     String Cborack="";
+     String Cbocelda="";
+     String Cboceldadet="";
+     if (cbo_center_distribution.getSelectedItem().toString().trim().length()==0)
+     {
+        String message = "Debe seleccionar Un Centro de distribución..por favor Validar...!!";
+        String title = "Información";
+        JFrame frame = new JFrame(" ");
+        JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+        JOptionPane.setDefaultLocale(null);               
+     }  
+     else 
+     {load_tablefilter();
+      btn_save.setEnabled(true);
+     }       
     }//GEN-LAST:event_btn_searchActionPerformed
 
     /**

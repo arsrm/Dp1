@@ -24,9 +24,13 @@ public interface DaoPalletProduct {
             
     public Product GetProduct(Integer idmark, String nameproduct);
     
+    public Product GetProductId(Integer idmark, Integer idproduct);
+
     public List<Product> GetProductList(Integer idmark);
     
     public List<PalletProduct> GetPalletProductList(String CadenaWhere); 
+
+    public List<PalletProduct> GetPalletProductList2(String CadenaWhere); 
     
     public String PalletProductDelMasive(List<Integer> idpallet, List<Integer> idmark, List<Integer> idproduct,List<Integer> idstatus );    
    
