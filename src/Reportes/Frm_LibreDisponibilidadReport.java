@@ -27,7 +27,7 @@ import tool.Validate;
  *
  * @author Kari
  */
-public class Frm_StockReport extends javax.swing.JFrame {
+public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
 
     Integer idAlmacen = 0;
     String idEan = null;
@@ -46,19 +46,20 @@ public class Frm_StockReport extends javax.swing.JFrame {
     public Integer idP;
     public Date dateI;
     public Date dateF;
+    Date dateIniSearch = null;
 
     /**
      * Creates new form Frm_KardexReport
      */
-    public Frm_StockReport() {
+    public Frm_LibreDisponibilidadReport() {
         initComponents();
     }
 
-    public Frm_StockReport(Frm_MenuPrincipal menu) {
+    public Frm_LibreDisponibilidadReport(Frm_MenuPrincipal menu) {
 
         menuaux = menu;
         initComponents();
-        //modelo = (DefaultTableModel) tbl_Kardex.getModel();
+       dateIniSearch = new Date();
         trademarkList = daoTrademark.TrademarkQry();
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
@@ -79,20 +80,12 @@ public class Frm_StockReport extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
-        tbl_Wh = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txt_Name = new javax.swing.JTextField();
-        btn_Wh = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txt_idProduct = new javax.swing.JTextField();
         btn_Product = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cbo_trademark = new javax.swing.JComboBox();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel5 = new javax.swing.JLabel();
-        date_End = new com.toedter.calendar.JDateChooser();
         btn_Export = new javax.swing.JButton();
         btn_Cancel = new javax.swing.JButton();
         btn_Report = new javax.swing.JButton();
@@ -126,53 +119,6 @@ public class Frm_StockReport extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        tbl_Wh.setBorder(javax.swing.BorderFactory.createTitledBorder("Almacen"));
-
-        jLabel2.setText("Id:");
-
-        txt_Name.setEnabled(false);
-        txt_Name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_NameActionPerformed(evt);
-            }
-        });
-
-        btn_Wh.setText("Buscar");
-        btn_Wh.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_WhActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout tbl_WhLayout = new javax.swing.GroupLayout(tbl_Wh);
-        tbl_Wh.setLayout(tbl_WhLayout);
-        tbl_WhLayout.setHorizontalGroup(
-            tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tbl_WhLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(tbl_WhLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(tbl_WhLayout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(71, 71, 71)
-                        .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_Wh)))
-                .addContainerGap())
-        );
-        tbl_WhLayout.setVerticalGroup(
-            tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tbl_WhLayout.createSequentialGroup()
-                .addGroup(tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Wh)
-                    .addComponent(jLabel2)
-                    .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1))
-        );
-
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Producto"));
 
         jLabel3.setText("EAN 13:");
@@ -201,15 +147,14 @@ public class Frm_StockReport extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addGap(51, 51, 51)
+                .addGap(40, 40, 40)
                 .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 426, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(77, 77, 77)
                 .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82)
-                .addComponent(btn_Product)
-                .addContainerGap())
+                .addGap(92, 92, 92)
+                .addComponent(btn_Product))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,31 +166,6 @@ public class Frm_StockReport extends javax.swing.JFrame {
                     .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 9, Short.MAX_VALUE))
-        );
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Fecha"));
-
-        jLabel5.setText("Fecha Fin:");
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addGap(38, 38, 38)
-                .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(12, 12, 12))
         );
 
         btn_Export.setText("Exportar");
@@ -273,59 +193,41 @@ public class Frm_StockReport extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(tbl_Wh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_Report)
-                        .addGap(353, 353, 353)
+                        .addGap(355, 355, 355)
                         .addComponent(btn_Export)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_Cancel))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 392, Short.MAX_VALUE)
+                        .addComponent(btn_Cancel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(tbl_Wh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Cancel)
+                    .addComponent(btn_Report)
                     .addComponent(btn_Export)
-                    .addComponent(btn_Report))
-                .addGap(39, 39, 39))
+                    .addComponent(btn_Cancel))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_NameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_NameActionPerformed
-
     private void btn_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductActionPerformed
 
-        Frm_SearchProductStock frm_SearchProductStock = new Frm_SearchProductStock(this, idtrademark);
-        frm_SearchProductStock.setVisible(true);
-        frm_SearchProductStock.setLocationRelativeTo(null);
+        Frm_SearchProductLibreDisponibilidad frm_SearchProductLibreDisponibilidad = new Frm_SearchProductLibreDisponibilidad(this, idtrademark);
+        frm_SearchProductLibreDisponibilidad.setVisible(true);
+        frm_SearchProductLibreDisponibilidad.setLocationRelativeTo(null);
         this.setVisible(false);
     }//GEN-LAST:event_btn_ProductActionPerformed
-
-    private void btn_WhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_WhActionPerformed
-
-        Frm_SearchWhStock frm_SearchWhStock = new Frm_SearchWhStock(this);
-        frm_SearchWhStock.setVisible(true);
-        frm_SearchWhStock.setLocationRelativeTo(null);
-        this.setVisible(false);
-    }//GEN-LAST:event_btn_WhActionPerformed
 
     private void btn_CancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelActionPerformed
 
@@ -346,60 +248,19 @@ public class Frm_StockReport extends javax.swing.JFrame {
     private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
 
         Prueba reporte = new Prueba();
-     
-        Date dateEndSearch = null;
-        
-        if(txt_Name.getText().length() == 0 && txt_idProduct.getText().length()==0 && date_End.getDate()==null)
-        {
+
+        if (txt_idProduct.getText().length() != 0 ) {
           
-            reporte.mostrarReporteStockSinFiltro();
+           idP = producto.getIdProduct();
+           reporte.mostrarReporteLibreDispConFiltro(idP);
+        }
+        if (txt_idProduct.getText().length() == 0 ) {
+          
+           dateIniSearch=new Date();
+           reporte.mostrarReporteLibreDispSinFiltro( );
         }
         
-        if(txt_Name.getText().length() != 0 && txt_idProduct.getText().length()==0 && date_End.getDate()==null)
-        {
-            idAl = Integer.parseInt(txt_Name.getText());
-            reporte.mostrarReporteStockXAlamacen(idAl);
-        }
-        if(txt_Name.getText().length() == 0 && txt_idProduct.getText().length()!=0 && date_End.getDate()==null)
-        {
-            idP = producto.getIdProduct();
-            reporte.mostrarReporteStockXProducto(idP);
-        }
-        if(txt_Name.getText().length() == 0 && txt_idProduct.getText().length()==0 && date_End.getDate()!=null)
-        {
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXFecha(dateEndSearch);
-        }
-        if(txt_Name.getText().length() != 0 && txt_idProduct.getText().length()!=0 && date_End.getDate()==null){
-            
-            
-            idAl = Integer.parseInt(txt_Name.getText());
-            idP = producto.getIdProduct();
-            dateEndSearch = new Date();
-            
-            reporte.mostrarReporteStockXAlmacenYProducto(idAl,idP);
 
-            
-        }
-        if(txt_Name.getText().length() != 0 && txt_idProduct.getText().length()==0 && date_End.getDate()!=null){
-            idAl = Integer.parseInt(txt_Name.getText());
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXAlmacenYFecha(idAl,dateEndSearch);
-        }
-        
-        if(txt_Name.getText().length() == 0 && txt_idProduct.getText().length()!=0 && date_End.getDate()!=null){
-            idP = producto.getIdProduct();
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXProductoYFecha(idP,dateEndSearch);
-        }
-
-        if(txt_Name.getText().length() != 0 && txt_idProduct.getText().length()!=0 && date_End.getDate()!=null){
-            idAl = Integer.parseInt(txt_Name.getText());
-            idP = producto.getIdProduct();
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockConFiltro(idAl,idP,dateEndSearch);
-        }
-        
     }//GEN-LAST:event_btn_ReportActionPerformed
 
     private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
@@ -412,11 +273,7 @@ public class Frm_StockReport extends javax.swing.JFrame {
         idAlmacen = id;
     }
 
-    public void setTextIdWh() {
-
-        txt_Name.setText(idAlmacen.toString());
-    }
-
+ 
     public void setProduct(Product p) {
 
         producto = p;
@@ -436,22 +293,14 @@ public class Frm_StockReport extends javax.swing.JFrame {
     private javax.swing.JButton btn_Export;
     private javax.swing.JButton btn_Product;
     private javax.swing.JButton btn_Report;
-    private javax.swing.JButton btn_Wh;
     private javax.swing.JComboBox cbo_trademark;
-    private com.toedter.calendar.JDateChooser date_End;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JPanel tbl_Wh;
-    private javax.swing.JTextField txt_Name;
     private javax.swing.JTextField txt_idProduct;
     // End of variables declaration//GEN-END:variables
 

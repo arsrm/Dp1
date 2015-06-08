@@ -123,4 +123,211 @@ public class Prueba {
             Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    
+    public void mostrarReporteStockSinFiltro() {
+        try {
+
+//            HashMap JasperParameter = new HashMap();  
+//            Map parameters = new HashMap();
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockSinFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockConFiltro(Integer idAl,Integer idP,Date dateEndSearch){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idAl);
+            parameters.put("idP", idP);
+            parameters.put("dateStock", dateEndSearch);
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockConFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXAlamacen(Integer idAl){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idAl);
+            
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxAlmacen.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXProducto(Integer idP){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idP",idP);
+            
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxProducto.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXFecha(Date dateEndSearch){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("dateStock",dateEndSearch);
+            
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxFecha.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXAlmacenYProducto(Integer idAl,Integer idP){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idAl);
+            parameters.put("idP", idP);
+            
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxAP.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXAlmacenYFecha(Integer idAl,Date dateEndSearch){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idAl);
+            parameters.put("dateStock",dateEndSearch);
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxAF.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteStockXProductoYFecha(Integer idP,Date dateEndSearch){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idP",idP);
+            parameters.put("dateStock",dateEndSearch);
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportStockxPF.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteLibreDispSinFiltro( ) {
+        try {
+
+//            HashMap JasperParameter = new HashMap();  
+//            Map parameters = new HashMap();
+            JasperReport reporte = JasperCompileManager.compileReport("reportLibreDispSinFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteLibreDispConFiltro(Integer idP){
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idP",idP);
+            
+           
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportLibreDispConFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Stock");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

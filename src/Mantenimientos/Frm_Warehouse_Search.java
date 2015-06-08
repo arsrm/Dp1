@@ -287,7 +287,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
         if(txt_IdWh.getText().length()!=0)
             idWhSearch=Integer.parseInt(txt_IdWh.getText().toString());
         else idWhSearch=0;
-        if(cbo_type_condition.getSelectedItem()!=null){
+       
             if(cbo_type_condition.getSelectedItem()!=null){
             for(int i=0; i<typeConditionList.size(); i++)
                 if(cbo_type_condition.getSelectedItem().equals(typeConditionList.get(i).getDescription()))
@@ -296,7 +296,7 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
             else{
                 idTypeConditionSearch=null;
             }
-        }
+        
         whList=daoWH.whSearch(idWhSearch, idTypeConditionSearch);
         
         modelo.getDataVector().removeAllElements();

@@ -7,9 +7,6 @@ import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletIni;
 import Mantenimientos.Frm_PalletLocation;
 import Mantenimientos.Frm_PalletLocation;
-import Reportes.Frm_InternmentReport;
-//gzavala-inicio 24/05 23:45
-
 import Mantenimientos.Frm_PalletLocation_Search;
 import Mantenimientos.Frm_PalletProduct;
 import Mantenimientos.Frm_PalletProduct_Search;
@@ -28,9 +25,12 @@ import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
+import Reportes.Frm_DiferenciaInventarioReport;
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_KardexReport;
+import Reportes.Frm_LibreDisponibilidadReport;
+import Reportes.Frm_StockReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
 import dao.DaoLog;
@@ -442,6 +442,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_reportes.add(op_Reporte_Despacho);
 
         op_Reporte_diferencia_Inventario.setText("Reporte de diferencia de Inventario");
+        op_Reporte_diferencia_Inventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Reporte_diferencia_InventarioActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Reporte_diferencia_Inventario);
 
         op_Reporte_Kardex_segun_fecha.setText("Reporte de Kardex segun fecha");
@@ -461,6 +466,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         menu_reportes.add(op_Reporte_Stock_fecha);
 
         op_Reporte_Libre_disponibilidad.setText("Reporte de Libre disponibilidad");
+        op_Reporte_Libre_disponibilidad.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                op_Reporte_Libre_disponibilidadActionPerformed(evt);
+            }
+        });
         menu_reportes.add(op_Reporte_Libre_disponibilidad);
 
         menu_principal.add(menu_reportes);
@@ -499,7 +509,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_PersonalActionPerformed
 
     private void op_Reporte_Stock_fechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_Stock_fechaActionPerformed
-        // TODO add your handling code here:
+         Frm_StockReport frm_Stock = new Frm_StockReport(this);
+        frm_Stock.setVisible(true);
+        frm_Stock.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Reporte_Stock_fechaActionPerformed
 
     private void op_ProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_ProductoActionPerformed
@@ -742,6 +754,18 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_location_cell_search.setVisible(true);        
         frm_location_cell_search.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Location_CellActionPerformed
+
+    private void op_Reporte_Libre_disponibilidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_Libre_disponibilidadActionPerformed
+        Frm_LibreDisponibilidadReport frm_LibreDisponibilidadReport = new Frm_LibreDisponibilidadReport(this);
+        frm_LibreDisponibilidadReport.setVisible(true);
+        frm_LibreDisponibilidadReport.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_Reporte_Libre_disponibilidadActionPerformed
+
+    private void op_Reporte_diferencia_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_diferencia_InventarioActionPerformed
+        Frm_DiferenciaInventarioReport frm_DiferenciaInventarioReport = new Frm_DiferenciaInventarioReport(this);
+        frm_DiferenciaInventarioReport.setVisible(true);
+        frm_DiferenciaInventarioReport.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_Reporte_diferencia_InventarioActionPerformed
 //gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments
