@@ -726,5 +726,72 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         }
         return celda;
     }
+   
+    @Override
+    public String PalletProductLocationDelMasive(List<Integer> listidpallet, List<Integer> listidmarca, List<Integer> listidproduct, List<Integer> listidCD, List<Integer> listware, List<Integer> listrack, List<Integer> listcelda, List<Integer> listceldadet, List<Integer> listidstatus) {
+        int sizelist= listidpallet.size();
+        String result = null;
+        String sql = "UPDATE  pallet_by_product_by_location_cell_detail SET "
+                + " status=? "
+                + " WHERE Pallet_By_Product_Pallet_idPallet=? "
+                + " and Pallet_By_Product_Product_Trademark_id_Trademark=? "
+                + " and Pallet_By_Product_Product_idProduct=? " 
+                + " and Location_Cell_Detail_idDistribution_Center=? " 
+                + " and Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse=? " 
+                + " and Location_Cell_Detail_Location_Cell_Rack_idRack=? " 
+                + " and Location_Cell_Detail_Location_Cell_idLocation_Cell=? " 
+                + " and Location_Cell_Detail_idLocation_Cell_Detail=? " ;
+        
+        Connection cn = db.getConnection();
+        Integer idpallet;
+        Integer idmarca;
+        Integer idproduct;
+        Integer idCD; 
+        Integer idware; 
+        Integer idrack; 
+        Integer idcelda; 
+        Integer idceldadet; 
+        Integer idstatus=0; 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                for (int x = 0 ; x<sizelist ;x ++) {
+                    idpallet=listidpallet.get(x);
+                    idmarca=listidmarca.get(x);
+                    idproduct=listidproduct.get(x);
+                    idCD=listidCD.get(x);
+                    idware=listware.get(x);
+                    idrack=listrack.get(x);
+                    idcelda=listcelda.get(x);
+                    idceldadet=listceldadet.get(x);
+                    idstatus=listidstatus.get(x);
+                    ps.setInt(1,1-idstatus);
+                    ps.setInt(2,idpallet);
+                    ps.setInt(3,idmarca);
+                    ps.setInt(4,idproduct);
+                    ps.setInt(5,idCD);
+                    ps.setInt(6,idware);
+                    ps.setInt(7,idrack);
+                    ps.setInt(8,idcelda);
+                    ps.setInt(9,idceldadet);
+                    int ctos = ps.executeUpdate();
+                    if (ctos == 0) {
+                        throw new SQLException("ID: no existe");
+                    }
+                }
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+
+    
     
 }

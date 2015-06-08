@@ -43,6 +43,8 @@ public interface DaoPalletProduct {
     
     public String PalletProductDelMasive(List<Integer> idpallet, List<Integer> idmark, List<Integer> idproduct,List<Integer> idstatus );    
    
+    public String PalletProductLocationDelMasive(List<Integer> listidpallet, List<Integer> listidmarca, List<Integer> listidproduct,List<Integer> listidCD,List<Integer> listware,List<Integer>listrack,List<Integer>listcelda,List<Integer>listceldadet,List<Integer>listidstatus );    
+
     public String PalletProductInsMasive(List<Integer>listidpallet, Integer idmarca, Integer idproduct,Date expirationDate,Integer idIntOrd);
     
     public List<Integer> GetPalletByStatus(Integer status, Integer cantPallets);
