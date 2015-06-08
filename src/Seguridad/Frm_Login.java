@@ -152,7 +152,7 @@ public class Frm_Login extends javax.swing.JFrame {
         lbl_log.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/log.jpg"))); // NOI18N
         lbl_log.setText("    ");
         getContentPane().add(lbl_log);
-        lbl_log.setBounds(0, 0, 510, 270);
+        lbl_log.setBounds(0, 0, 510, 290);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

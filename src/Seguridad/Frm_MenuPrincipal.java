@@ -189,22 +189,22 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         });
         getContentPane().setLayout(null);
 
-        lbl_welcome.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_welcome.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lbl_welcome.setForeground(new java.awt.Color(255, 255, 255));
         lbl_welcome.setText("Bienvenido:");
         getContentPane().add(lbl_welcome);
-        lbl_welcome.setBounds(440, 50, 92, 20);
+        lbl_welcome.setBounds(10, 670, 150, 30);
 
-        lbl_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        lbl_name.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lbl_name.setForeground(new java.awt.Color(255, 255, 255));
         lbl_name.setText("Nombre");
         getContentPane().add(lbl_name);
-        lbl_name.setBounds(550, 50, 160, 20);
+        lbl_name.setBounds(160, 670, 250, 30);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/menu.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/wms.png"))); // NOI18N
         jLabel1.setText("       ");
         getContentPane().add(jLabel1);
-        jLabel1.setBounds(0, -30, 1280, 800);
+        jLabel1.setBounds(0, 0, 1320, 840);
 
         menu_mantenimientos.setText("Mantenimientos");
 
