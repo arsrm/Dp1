@@ -99,6 +99,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Buscar Orden"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_searchActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_DispatchOrder">
         </Component>
@@ -153,14 +156,14 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="table_products">
+            <Component class="javax.swing.JTable" name="tbl_products">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="4">
-                    <Column editable="true" title="C&#xf3;digo Pallet" type="java.lang.Object"/>
-                    <Column editable="true" title="Descripci&#xf3;n" type="java.lang.Object"/>
-                    <Column editable="true" title="Cantidad" type="java.lang.Object"/>
-                    <Column editable="true" title="Estado" type="java.lang.Object"/>
+                  <Table columnCount="5" rowCount="0">
+                    <Column editable="false" title="C&#xf3;digo Pallet" type="java.lang.Object"/>
+                    <Column editable="false" title="Descripci&#xf3;n" type="java.lang.Object"/>
+                    <Column editable="false" title="Cantidad" type="java.lang.Object"/>
+                    <Column editable="false" title="Estado" type="java.lang.Object"/>
                     <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
                   </Table>
                 </Property>
@@ -242,7 +245,7 @@
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="txt_ClientAddress1" max="32767" attributes="0"/>
+                          <Component id="txt_vehicle_license_plate" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                           <Component id="lbl_dispatcher" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
@@ -265,16 +268,10 @@
                               </Group>
                           </Group>
                           <EmptySpace pref="13" max="32767" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="lbl_deliver_date" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="lbl_status" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="lbl_deliver_date" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jDate_DeliverDate" alignment="0" min="-2" pref="115" max="-2" attributes="0"/>
-                              <Component id="cbo_status" alignment="0" min="-2" pref="135" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="jDate_DeliverDate" min="-2" pref="115" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -286,8 +283,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="txt_OrderNum" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lbl_status" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="cbo_status" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_order_num" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -305,7 +300,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lbl_dispatcher" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_vehicle" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_ClientAddress1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_vehicle_license_plate" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_id_dispatcher" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_name_dispatcher" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -358,21 +353,6 @@
             <Property name="text" type="java.lang.String" value="Fecha Entrega Estimada:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_status">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Estado:"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="cbo_status">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="2">
-                <StringItem index="0" value="ACTIVO"/>
-                <StringItem index="1" value="INACTIVO"/>
-              </StringArray>
-            </Property>
-          </Properties>
-        </Component>
         <Component class="javax.swing.JLabel" name="lbl_address">
           <Properties>
             <Property name="text" type="java.lang.String" value="Direcci&#xf3;n:"/>
@@ -412,7 +392,7 @@
             <Property name="text" type="java.lang.String" value="Veh&#xed;culo:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_ClientAddress1">
+        <Component class="javax.swing.JTextField" name="txt_vehicle_license_plate">
           <Properties>
             <Property name="editable" type="boolean" value="false"/>
           </Properties>

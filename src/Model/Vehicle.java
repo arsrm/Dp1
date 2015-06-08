@@ -18,6 +18,8 @@ import java.util.List;
 
 public class Vehicle implements Serializable {
     private Integer idVehicle;
+    public String license_plate;
+    public String name;    
     private Double capacity;
     private Integer dispatchNumber;
     private Integer status;
@@ -155,6 +157,34 @@ public class Vehicle implements Serializable {
      */
     public void setAvailableCapacity(Double availableCapacity) {
         this.availableCapacity = availableCapacity;
+    }
+
+    /**
+     * @return the license_plate
+     */
+    public String getLicense_plate() {
+        return license_plate;
+    }
+
+    /**
+     * @param license_plate the license_plate to set
+     */
+    public void setLicense_plate(String license_plate) {
+        this.license_plate = license_plate;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

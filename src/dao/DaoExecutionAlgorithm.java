@@ -7,6 +7,7 @@
 package dao;
 
 import Model.ExecutionAlgorithm;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,4 +21,6 @@ public interface DaoExecutionAlgorithm {
     public List<ExecutionAlgorithm> executionAlgorithmQry();
     
     public ExecutionAlgorithm executionAlgorithmGet(Integer idExecutionExecution);
+    
+    public List<ExecutionAlgorithm> executionAlgorithmQry(Date date);
 }

@@ -6,9 +6,41 @@
 
 package Operaciones;
 
+import Model.Client;
+import Model.DispatchOrder;
+import Model.Driver;
+import Model.ExecutionAlgorithm;
+import Model.ExecutionAlgorithmDetail;
+import Model.Pallet_Product_Location;
+import Model.PickingOrderDetail;
+import Model.Product;
+import Model.Vehicle;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoClient;
+import dao.DaoDispatchOrder;
+import dao.DaoDriver;
+import dao.DaoExecutionAlgorithm;
+import dao.DaoExecutionAlgorithmDetail;
+import dao.DaoPallet_Product_Location;
+import dao.DaoPickingOrderDetail;
+import dao.DaoProducts;
+import dao.DaoVehicle;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoDispatchOrderImpl;
+import dao.impl.DaoDriverImpl;
+import dao.impl.DaoExecutionAlgorithmDetailImpl;
+import dao.impl.DaoExecutionAlgorithmImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
+import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoVehicleImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,12 +48,43 @@ import javax.swing.JOptionPane;
  */
 public class Frm_ReturnProducts extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    
+    DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
+    List<DispatchOrder> dispatchOrderList = null;
+    DispatchOrder dispatchOrder = null;
+    
+    DaoClient daoClient = new DaoClientImpl();
+    Client client = null;
+    
+    DaoExecutionAlgorithm daoExecutionAlgorithm = new DaoExecutionAlgorithmImpl();
+    List<ExecutionAlgorithm> executionAlgorithmList = null;
+    ExecutionAlgorithm executionAlgorithm = null;
+    
+    DaoExecutionAlgorithmDetail daoExecutionAlgorithmDetail = new DaoExecutionAlgorithmDetailImpl();
+    List<ExecutionAlgorithmDetail> executionAlgorithmDetailList = null;
+    ExecutionAlgorithmDetail executionAlgorithmDetail = null;
+    
+    DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    List<PickingOrderDetail> pickingOrderDetailList = null;
+    
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    List<Pallet_Product_Location> palletProductLocationList = null;
+    
+    DaoProducts daoProduct = new DaoProdImpl();
+    List<Product> productList = null;
+    
+    DaoVehicle daoVehicle = new DaoVehicleImpl();
+    Vehicle vehicle = new Vehicle();
+    
+    DefaultTableModel modelo;
     /**
      * Creates new form Frm_ReturnProducts
      */
     public Frm_ReturnProducts(Frm_MenuPrincipal menu) {
-        setTitle("DEVOLUCIÓN DE PRODUCTOS");
+        setTitle("Devolución de Productos");
         menuaux = menu;
+        
+        dispatchOrderList = daoDispatchOrder.dispatchOrderQry();
         initComponents();
     }
 
@@ -40,7 +103,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_DispatchOrder = new javax.swing.JTextField();
         pnl_products = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        table_products = new javax.swing.JTable();
+        tbl_products = new javax.swing.JTable();
         btn_cancel = new javax.swing.JButton();
         btn_return = new javax.swing.JButton();
         pnl_general_info = new javax.swing.JPanel();
@@ -50,8 +113,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_ClientId = new javax.swing.JTextField();
         txt_ClientName = new javax.swing.JTextField();
         lbl_deliver_date = new javax.swing.JLabel();
-        lbl_status = new javax.swing.JLabel();
-        cbo_status = new javax.swing.JComboBox();
         lbl_address = new javax.swing.JLabel();
         lbl_reg_date = new javax.swing.JLabel();
         jDate_RegisterDate = new com.toedter.calendar.JDateChooser();
@@ -61,7 +122,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_name_dispatcher = new javax.swing.JTextField();
         txt_id_dispatcher = new javax.swing.JTextField();
         lbl_vehicle = new javax.swing.JLabel();
-        txt_ClientAddress1 = new javax.swing.JTextField();
+        txt_vehicle_license_plate = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -75,6 +136,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         jLabel1.setText("Número de Orden de Despacho:");
 
         btn_search.setText("Buscar Orden");
+        btn_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_searchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_search_criteriaLayout = new javax.swing.GroupLayout(pnl_search_criteria);
         pnl_search_criteria.setLayout(pnl_search_criteriaLayout);
@@ -102,12 +168,9 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
         pnl_products.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
 
-        table_products.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_products.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+
             },
             new String [] {
                 "Código Pallet", "Descripción", "Cantidad", "Estado", "Seleccionar"
@@ -116,12 +179,19 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane3.setViewportView(table_products);
+        jScrollPane3.setViewportView(tbl_products);
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -183,10 +253,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
         lbl_deliver_date.setText("Fecha Entrega Estimada:");
 
-        lbl_status.setText("Estado:");
-
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ACTIVO", "INACTIVO" }));
-
         lbl_address.setText("Dirección:");
 
         lbl_reg_date.setText("Fecha Registro:");
@@ -201,7 +267,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
         lbl_vehicle.setText("Vehículo:");
 
-        txt_ClientAddress1.setEditable(false);
+        txt_vehicle_license_plate.setEditable(false);
 
         javax.swing.GroupLayout pnl_general_infoLayout = new javax.swing.GroupLayout(pnl_general_info);
         pnl_general_info.setLayout(pnl_general_infoLayout);
@@ -218,7 +284,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addComponent(txt_ClientAddress1)
+                        .addComponent(txt_vehicle_license_plate)
                         .addGap(49, 49, 49)
                         .addComponent(lbl_dispatcher)
                         .addGap(30, 30, 30)
@@ -237,14 +303,10 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                                 .addComponent(txt_ClientAddress)
                                 .addComponent(txt_OrderNum, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_deliver_date)
-                            .addComponent(lbl_status))
+                        .addComponent(lbl_deliver_date)
                         .addGap(16, 16, 16)
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(42, 42, 42))))
+                        .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(62, 62, 62))))
         );
         pnl_general_infoLayout.setVerticalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,8 +314,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_status)
-                    .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_order_num))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -268,7 +328,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_dispatcher)
                     .addComponent(lbl_vehicle)
-                    .addComponent(txt_ClientAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_vehicle_license_plate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_id_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_name_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6)
@@ -322,6 +382,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
     private void btn_returnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_returnActionPerformed
         // TODO add your handling code here:
+        for (int i=0; i < tbl_products.getRowCount(); i++){
+            if ((Boolean) tbl_products.getValueAt(i, 4)) {
+                //idRackDelete = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
+            }
+        }
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
@@ -335,13 +400,110 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_OrderNumActionPerformed
 
+    private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
+        // TODO add your handling code here:
+        int idDispatchOrder, idPickingOrder,idExecutionAlgorithm,idPalletProductLocation,idProduct;
+        int idVehicle;
+        double functionValue;
+        Date dispatchDate;
+        idDispatchOrder = Integer.parseInt(txt_DispatchOrder.getText());
+        dispatchOrder = daoDispatchOrder.dispatchOrderGet(idDispatchOrder);
+        
+        if (dispatchOrder != null) {
+            idPickingOrder = dispatchOrder.getIdPickingOrder();
+            dispatchDate = dispatchOrder.getDepartureDate();
+            client = daoClient.clientGet(dispatchOrder.getIdClient());
+
+            //buscar lista de ExecutionAlgorithm por date para sacar todas las ejecuciones del dia
+            executionAlgorithmList = daoExecutionAlgorithm.executionAlgorithmQry(dispatchDate);
+            //buscar el idExecutionAlgorithm del ExecutionAlgorithm con mejor function_value        
+            if (executionAlgorithmList != null) {
+                functionValue = executionAlgorithmList.get(0).getFunction_value();
+                executionAlgorithm = executionAlgorithmList.get(0);
+                idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
+                for (int i = 0; i < executionAlgorithmList.size(); i++) {
+                    if (executionAlgorithmList.get(i).getFunction_value() < functionValue) {
+                        functionValue = executionAlgorithmList.get(i).getFunction_value();
+                        executionAlgorithm = executionAlgorithmList.get(i);
+                        idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
+                    }
+                }
+                //buscar en Execution_Detail con el idDispatchOrder, idPickingOrder y idExecutionAlgorithm info del vehiculo        
+                executionAlgorithmDetail = daoExecutionAlgorithmDetail.executionAlgorithmGet(idExecutionAlgorithm, idDispatchOrder, idPickingOrder);
+                if (executionAlgorithmDetail!=null){
+                    idVehicle = executionAlgorithmDetail.getVehicle_idVehicle();
+                    vehicle = daoVehicle.vehicleGet(idVehicle);
+                    fillGeneralData();
+                }
+                //busco el detalle de los productos asociado al PickingOrder
+                pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
+                palletProductLocationList = new LinkedList<>();
+                productList = new LinkedList<>();
+                for (int j = 0; j < pickingOrderDetailList.size(); j++) {
+                    Pallet_Product_Location palletProductLocation = new Pallet_Product_Location();
+                    Product product = new Product();
+                    idPalletProductLocation = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
+                    idProduct = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
+                    palletProductLocation = daoPalletProductLocation.daoPallet_Product_LocationGet(idPalletProductLocation);
+                    product = daoProduct.ProductsGet(idProduct);
+                    palletProductLocationList.add(palletProductLocation);
+                    productList.add(product);
+                }
+                initializeTable();
+            }else{                
+                JOptionPane.showMessageDialog(null,"No se puede retornar. La orden de despacho no ha sido entregada", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null,"No existe la orden de despacho buscada", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }                                       
+        
+    }//GEN-LAST:event_btn_searchActionPerformed
+    
+    public void fillGeneralData(){
+        txt_ClientId.setText(client.getIdClient().toString().trim());
+        txt_ClientName.setText(client.getName().trim());
+        txt_ClientAddress.setText(client.getAddress().trim());
+        
+        txt_vehicle_license_plate.setText(vehicle.getLicense_plate().trim());
+        txt_id_dispatcher.setText(vehicle.getDriver().getIdDriver().toString().trim());
+        txt_name_dispatcher.setText(vehicle.getDriver().getName().trim());
+        
+        jDate_RegisterDate.setDate(dispatchOrder.getDepartureDate());
+        jDate_DeliverDate.setDate(dispatchOrder.getArrivalDate());
+    }
+    
+    public void initializeTable(){
+        String status= null;
+        if(modelo!=null){
+            modelo.getDataVector().removeAllElements();
+            modelo.fireTableDataChanged();
+        }
+        try {
+            for (int i = 0; i < pickingOrderDetailList.size(); i++) {
+                
+                if (pickingOrderDetailList.get(i).getStatus()==0) status = "Inactivo";
+                else status = "Activo";
+
+                Object newRow[] = {
+                    palletProductLocationList.get(i).getPallet_By_Product_Pallet_idPallet(),
+                    productList.get(i).getName(),
+                    1,
+                    status,
+                    false
+                };
+                modelo.addRow(newRow);
+            }
+        } catch (Exception e) {
+        }
+    }
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_return;
     private javax.swing.JButton btn_search;
-    private javax.swing.JComboBox cbo_status;
     private com.toedter.calendar.JDateChooser jDate_DeliverDate;
     private com.toedter.calendar.JDateChooser jDate_RegisterDate;
     private javax.swing.JLabel jLabel1;
@@ -352,19 +514,18 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_dispatcher;
     private javax.swing.JLabel lbl_order_num;
     private javax.swing.JLabel lbl_reg_date;
-    private javax.swing.JLabel lbl_status;
     private javax.swing.JLabel lbl_vehicle;
     private javax.swing.JPanel pnl_general_info;
     private javax.swing.JPanel pnl_products;
     private javax.swing.JPanel pnl_search_criteria;
-    private javax.swing.JTable table_products;
+    private javax.swing.JTable tbl_products;
     private javax.swing.JTextField txt_ClientAddress;
-    private javax.swing.JTextField txt_ClientAddress1;
     private javax.swing.JTextField txt_ClientId;
     private javax.swing.JTextField txt_ClientName;
     private javax.swing.JTextField txt_DispatchOrder;
     private javax.swing.JTextField txt_OrderNum;
     private javax.swing.JTextField txt_id_dispatcher;
     private javax.swing.JTextField txt_name_dispatcher;
+    private javax.swing.JTextField txt_vehicle_license_plate;
     // End of variables declaration//GEN-END:variables
 }

@@ -38,6 +38,8 @@ public class DaoVehicleImpl implements DaoVehicle {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         List<Vehicle> list = null;
         String sql =  "SELECT idVehicle,"
+                + "license_plate,"
+                + "name,"
                 + "capacity,"
                 + "dispatch_number,"
                 + "status,"
@@ -56,14 +58,17 @@ public class DaoVehicleImpl implements DaoVehicle {
                 while (rs.next()) {
                     Vehicle ve = new Vehicle();
                     ve.setIdVehicle(rs.getInt(1));
-                    ve.setCapacity(rs.getDouble(2));
-                    ve.setDispatchNumber(rs.getInt(3));
-                    ve.setStatus(rs.getInt(4));
-                    VehicleState veState = daoVehicleState.vehicleStateGet(rs.getInt(5));
+                    ve.setLicense_plate(rs.getString(2));
+                    ve.setName(rs.getString(3));
+                    ve.setCapacity(rs.getDouble(4));
+                    ve.setDispatchNumber(rs.getInt(5));
+                    ve.setStatus(rs.getInt(6));
+                    VehicleState veState = daoVehicleState.vehicleStateGet(rs.getInt(7));
                     ve.setVehicleState(veState);
-                    Driver driver = daoDriver.driverGet(rs.getInt(6));
-                    ve.setUserCreated(rs.getInt(7));
-                    ve.setUserUpdated(rs.getInt(8));
+                    Driver driver = daoDriver.driverGet(rs.getInt(8));
+                    ve.setDriver(driver);
+                    ve.setUserCreated(rs.getInt(9));
+                    ve.setUserUpdated(rs.getInt(10));
                     list.add(ve);
                 }
 
@@ -87,6 +92,8 @@ public class DaoVehicleImpl implements DaoVehicle {
         Vehicle vehicle = null;
         //List<RequestOrder> requestOrderDetailList = null;
           String sql =  "SELECT idVehicle,"
+                + "license_plate,"
+                + "name,"
                 + "capacity,"
                 + "dispatch_number,"
                 + "status,"
@@ -105,14 +112,17 @@ public class DaoVehicleImpl implements DaoVehicle {
                 if (rs.next()) {
                     vehicle = new Vehicle();
                     vehicle.setIdVehicle(idvehicle);
-                    vehicle.setCapacity(rs.getDouble(2));
-                    vehicle.setDispatchNumber(rs.getInt(3));
-                    vehicle.setStatus(rs.getInt(4));
-                    VehicleState veState = daoVehicleState.vehicleStateGet(rs.getInt(5));
+                    vehicle.setLicense_plate(rs.getString(2));
+                    vehicle.setName(rs.getString(3));
+                    vehicle.setCapacity(rs.getDouble(4));
+                    vehicle.setDispatchNumber(rs.getInt(5));
+                    vehicle.setStatus(rs.getInt(6));
+                    VehicleState veState = daoVehicleState.vehicleStateGet(rs.getInt(7));
                     vehicle.setVehicleState(veState);
-                    Driver driver = daoDriver.driverGet(rs.getInt(6));
-                    vehicle.setUserCreated(rs.getInt(7));
-                    vehicle.setUserUpdated(rs.getInt(8));
+                    Driver driver = daoDriver.driverGet(rs.getInt(8));
+                    vehicle.setDriver(driver);
+                    vehicle.setUserCreated(rs.getInt(9));
+                    vehicle.setUserUpdated(rs.getInt(10));
                     
                 }
 

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -139,6 +140,49 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
 
         return execute;
     
+    }
+
+    @Override
+    public List<ExecutionAlgorithm> executionAlgorithmQry(Date date) {
+        
+        List<ExecutionAlgorithm> list = null;
+        String sql =  "SELECT "
+                + "idExecutionAlgorithm, "
+                + "date, "
+                + "status, "
+                + "function_value, "
+                + "vehicles_number "
+                + "FROM Execution_Algorithm "
+                + "WHERE date = ?; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setDate(1, (java.sql.Date) date);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    ExecutionAlgorithm execute = new ExecutionAlgorithm();
+                    execute.setIdExecutionAlgorithm(rs.getInt(1));
+                    execute.setDate(rs.getDate(2));
+                    execute.setStatus(rs.getInt(3));
+                    execute.setFunction_value(rs.getDouble(4));
+                    execute.setVehicles_number(rs.getInt(5));
+                    list.add(execute);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
     
     
