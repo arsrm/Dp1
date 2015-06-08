@@ -491,30 +491,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             fillTable();
         }
         
-         boolean correctData = true;
-        if(correctData ==true){
-            //se realiza el trabajo de seleccionar todos los despachos
-            dispatchOrderListForAlgorithm = new ArrayList<>();
-            int size = dispatchOrderList.size();
-            for(int i=0;i<size;i++){
-                if((Boolean)table_dispatch_orders.getValueAt(i,3)==false)
-                    dispatchOrderListForAlgorithm.add(dispatchOrderList.get(i));
-            }
-            //tenemos la lista de despachos
-            //debemos transformarlo en lista de clientes
-            clientList = new ArrayList<>();
-            setCDtoClientList();
-            setDispatchToClient(dispatchOrderListForAlgorithm);
-            //ya tenemos la lista de vehiculos
-            //ya tenemos la lista de clientes
-            //se realiza la busqueda tabu
-            tSManager = new tabuSearchManager(vehicleList,clientList,(Integer)spn_number_iterations.getValue());
-            //tSManager.getDistancesMatrix();
-            runAlgorithm();
-            //se procede a asignar
-            //LLENAR DATA
-            
-        }
     }//GEN-LAST:event_btn_search_ordersActionPerformed
 
     private void btn_generate_routesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_routesActionPerformed
