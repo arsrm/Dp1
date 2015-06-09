@@ -319,7 +319,7 @@
                 <Column editable="false" title="Celda" type="java.lang.Object"/>
                 <Column editable="false" title="Detalle Celda" type="java.lang.Object"/>
                 <Column editable="false" title="Estado Actividad" type="java.lang.Object"/>
-                <Column editable="false" title="Seleccionar" type="java.lang.Boolean"/>
+                <Column editable="true" title="Seleccionar" type="java.lang.Boolean"/>
               </Table>
             </Property>
             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
