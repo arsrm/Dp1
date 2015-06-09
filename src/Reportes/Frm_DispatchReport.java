@@ -63,6 +63,40 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     }        
 
     
+    public boolean validanumpicking()
+    { boolean b=true; 
+      Integer cantreg=0; 
+      Integer numorden=0; 
+      
+      if ( (txt_numpicking.getText().toString().isEmpty() )|| (txt_numpicking.getText().equals(null) ) )
+      { b=false;}   
+      else 
+      {
+       try{
+        numorden=Integer.parseInt(txt_numpicking.getText()); 
+          DaoPalletProduct dao=new DaoPalletProductImpl();
+          cantreg=dao.GetCantNumord(numorden);
+          if ( cantreg==0 )
+          {String message = "El numero de Orden de Picking no existe o está inactiva";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);   
+          b=false;
+          }
+      }catch(Exception e)
+      {   String message = "El numero de Orden Picking debe ser Entero";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);
+          b=false;
+      }   
+    }
+    return b;      
+    }        
+    
+    
     public Frm_DispatchReport(Frm_MenuPrincipal menu) {
         
         setTitle("Reporte Orden de despacho");
@@ -118,17 +152,28 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
         jLabel9.setText("Número de Picking:");
 
+        txt_numpicking.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_numpickingFocusLost(evt);
+            }
+        });
+
         tbl_Dispatch.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "ID Pallet", "ID Producto", "Nombre Producto", "Cantidad"
+                "Orden Despach", "Cliente", "Num Picking", "Fecha llegada", "Fecha salida"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(tbl_Dispatch);
 
         btn_GenerarReporte.setText("Generar Reporte");
@@ -274,6 +319,17 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         Prueba pru = new Prueba();
         pru.mostrarReporte();
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
+
+    private void txt_numpickingFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numpickingFocusLost
+    //txt_numpicking
+        // TODO add your handling code here:
+        boolean b=false;
+        b=validanumpicking();
+        if (b)
+        {System.out.println("Valido correctamente la orden de internamiento");
+        }
+
+    }//GEN-LAST:event_txt_numpickingFocusLost
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);
