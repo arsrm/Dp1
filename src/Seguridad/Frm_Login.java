@@ -47,7 +47,7 @@ public class Frm_Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 0, 102));
-        setMinimumSize(new java.awt.Dimension(507, 290));
+        setMinimumSize(new java.awt.Dimension(507, 300));
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 formKeyPressed(evt);
