@@ -292,7 +292,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="op_Reporte_Internamiento">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Reporte de Internamiento"/>
+                <Property name="text" type="java.lang.String" value="Reporte Log"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Reporte_InternamientoActionPerformed"/>
@@ -312,14 +312,6 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Reporte_DespachoActionPerformed"/>
-              </Events>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="op_Reporte_diferencia_Inventario">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Reporte de diferencia de Inventario"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="op_Reporte_diferencia_InventarioActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="op_Reporte_Kardex_segun_fecha">

@@ -189,7 +189,10 @@ public class Frm_SearchProductStock extends javax.swing.JFrame {
         String trademark = null;
         String status = null;
         List<Product> list = new ArrayList<Product>();
-        list = daoProducts.ProductsQryByTrademark(idTrademark);
+        if(idTrademark!=null)
+             list = daoProducts.ProductsQryByTrademark(idTrademark);
+        if(idTrademark==null)
+            list=daoProducts.ProductsQry();
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         try {

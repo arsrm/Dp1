@@ -25,15 +25,11 @@ import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
-
-
-
-//import Reportes.Frm_DiferenciaInventarioReport;
-
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_KardexReport;
 import Reportes.Frm_LibreDisponibilidadReport;
+import Reportes.Frm_LogReport;
 import Reportes.Frm_StockReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
@@ -78,7 +74,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             this.op_Reporte_Internamiento.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Internamiento"));
             this.op_Guia_Transportista.setEnabled(daoUsers.accesswindow(idprofile,"op_Guia_Transportista"));
             this.op_Reporte_Despacho.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Despacho"));
-            this.op_Reporte_diferencia_Inventario.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_diferencia_Inventario"));
+//            this.op_Reporte_diferencia_Inventario.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_diferencia_Inventario"));
             this.op_Reporte_Kardex_segun_fecha.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Kardex_segun_fecha"));
             this.op_Reporte_Stock_fecha.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Stock_fecha"));
             this.op_Reporte_Libre_disponibilidad.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Libre_disponibilidad"));
@@ -167,7 +163,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_Reporte_Internamiento = new javax.swing.JMenuItem();
         op_Guia_Transportista = new javax.swing.JMenuItem();
         op_Reporte_Despacho = new javax.swing.JMenuItem();
-        op_Reporte_diferencia_Inventario = new javax.swing.JMenuItem();
         op_Reporte_Kardex_segun_fecha = new javax.swing.JMenuItem();
         op_Reporte_Stock_fecha = new javax.swing.JMenuItem();
         op_Reporte_Libre_disponibilidad = new javax.swing.JMenuItem();
@@ -448,7 +443,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
         menu_reportes.setText("Reportes");
 
-        op_Reporte_Internamiento.setText("Reporte de Internamiento");
+        op_Reporte_Internamiento.setText("Reporte Log");
         op_Reporte_Internamiento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 op_Reporte_InternamientoActionPerformed(evt);
@@ -471,14 +466,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             }
         });
         menu_reportes.add(op_Reporte_Despacho);
-
-        op_Reporte_diferencia_Inventario.setText("Reporte de diferencia de Inventario");
-        op_Reporte_diferencia_Inventario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                op_Reporte_diferencia_InventarioActionPerformed(evt);
-            }
-        });
-        menu_reportes.add(op_Reporte_diferencia_Inventario);
 
         op_Reporte_Kardex_segun_fecha.setText("Reporte de Kardex segun fecha");
         op_Reporte_Kardex_segun_fecha.addActionListener(new java.awt.event.ActionListener() {
@@ -718,9 +705,11 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_Reporte_DespachoActionPerformed
 
     private void op_Reporte_InternamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_InternamientoActionPerformed
-        Frm_InternmentReport frm_InternmentReport=new Frm_InternmentReport(this);
-        frm_InternmentReport.setVisible(true);
-        frm_InternmentReport.setLocationRelativeTo(null);
+
+        Frm_LogReport frm_LogReport = new Frm_LogReport(this);
+        frm_LogReport.setVisible(true);
+        frm_LogReport.setLocationRelativeTo(null);
+
     }//GEN-LAST:event_op_Reporte_InternamientoActionPerformed
 
     private void op_Guia_TransportistaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Guia_TransportistaActionPerformed
@@ -790,12 +779,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_LibreDisponibilidadReport.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Reporte_Libre_disponibilidadActionPerformed
 
-    private void op_Reporte_diferencia_InventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Reporte_diferencia_InventarioActionPerformed
-//        Frm_DiferenciaInventarioReport frm_DiferenciaInventarioReport = new Frm_DiferenciaInventarioReport(this);
-//        frm_DiferenciaInventarioReport.setVisible(true);
-//        frm_DiferenciaInventarioReport.setLocationRelativeTo(null);
-    }//GEN-LAST:event_op_Reporte_diferencia_InventarioActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem4ActionPerformed
@@ -855,7 +838,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Reporte_Kardex_segun_fecha;
     private javax.swing.JMenuItem op_Reporte_Libre_disponibilidad;
     private javax.swing.JMenuItem op_Reporte_Stock_fecha;
-    private javax.swing.JMenuItem op_Reporte_diferencia_Inventario;
     private javax.swing.JMenuItem op_RequestOrderSearch;
     private javax.swing.JMenuItem op_ReturnSearch;
     private javax.swing.JMenuItem op_generator_simulation;

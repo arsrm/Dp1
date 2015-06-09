@@ -61,6 +61,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         initComponents();
         modelo = (DefaultTableModel) tbl_Kardex.getModel();
         trademarkList = daoTrademark.TrademarkQry();
+        cbo_trademark.addItem("Todos");
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
         }
@@ -419,13 +420,28 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CancelActionPerformed
 
     private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
+//        if (cbo_trademark.getSelectedItem() != null) {
+//            for (int i = 0; i < trademarkList.size(); i++) {
+//                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+//                    idtrademark = trademarkList.get(i).getId_Trademark();
+//                }
+//            }
+//        }
+        
         if (cbo_trademark.getSelectedItem() != null) {
-            for (int i = 0; i < trademarkList.size(); i++) {
-                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
-                    idtrademark = trademarkList.get(i).getId_Trademark();
+            if (cbo_trademark.getSelectedItem() != "Todos") {
+                for (int i = 0; i < trademarkList.size(); i++) {
+                    if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                        idtrademark = trademarkList.get(i).getId_Trademark();
+                    }
                 }
             }
+            else{
+                idtrademark=null;
+            }
+          
         }
+        
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
     private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
@@ -475,6 +491,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 //        if (txt_EAN.getText().length() != 0) {
 //            idProduct = producto.getIdProduct();
 //        }
+        
         if (date_Ini.getDate() != null) {
             dateIniSearch = date_Ini.getDate();
         } else {
@@ -486,7 +503,10 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         } else {
             dateEndSearch = new Date();
         }
-
+        if (dateEndSearch.before(dateIniSearch)) {
+                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+        }
+        else{
         
         if (idProduct == null && idAlmacen == null) {
             
@@ -504,6 +524,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         }
         if (idProduct != null && idAlmacen != null) {
             reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateIniSearch, dateEndSearch);
+        }
         }
     }//GEN-LAST:event_btn_ReportActionPerformed
 
@@ -576,6 +597,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private void initializeTable() {
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
+        
+        
         try {
             for (int i = 0; i < movementList.size(); i++) {
                 Integer entrada = 0;

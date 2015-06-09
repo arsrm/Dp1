@@ -76,7 +76,7 @@
                       <Component id="btn_Report" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="355" max="-2" attributes="0"/>
                       <Component id="btn_Export" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="392" max="32767" attributes="0"/>
+                      <EmptySpace pref="402" max="32767" attributes="0"/>
                       <Component id="btn_Cancel" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -180,7 +180,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btn_Export">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Exportar"/>
+        <Property name="text" type="java.lang.String" value="Limpiar"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_ExportActionPerformed"/>

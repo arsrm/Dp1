@@ -61,6 +61,7 @@ public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
         initComponents();
        dateIniSearch = new Date();
         trademarkList = daoTrademark.TrademarkQry();
+        cbo_trademark.addItem("Todos");
         for (int i = 0; i < trademarkList.size(); i++) {
             cbo_trademark.addItem(trademarkList.get(i).getName());
         }
@@ -168,7 +169,7 @@ public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
                 .addGap(0, 9, Short.MAX_VALUE))
         );
 
-        btn_Export.setText("Exportar");
+        btn_Export.setText("Limpiar");
         btn_Export.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_ExportActionPerformed(evt);
@@ -201,7 +202,7 @@ public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
                         .addComponent(btn_Report)
                         .addGap(355, 355, 355)
                         .addComponent(btn_Export)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 392, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 402, Short.MAX_VALUE)
                         .addComponent(btn_Cancel)))
                 .addContainerGap())
         );
@@ -236,12 +237,26 @@ public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CancelActionPerformed
 
     private void cbo_trademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_trademarkActionPerformed
+//        if (cbo_trademark.getSelectedItem() != null) {
+//            for (int i = 0; i < trademarkList.size(); i++) {
+//                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+//                    idtrademark = trademarkList.get(i).getId_Trademark();
+//                }
+//            }
+//        }
+        
         if (cbo_trademark.getSelectedItem() != null) {
-            for (int i = 0; i < trademarkList.size(); i++) {
-                if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
-                    idtrademark = trademarkList.get(i).getId_Trademark();
+            if (cbo_trademark.getSelectedItem() != "Todos") {
+                for (int i = 0; i < trademarkList.size(); i++) {
+                    if (cbo_trademark.getSelectedItem().equals(trademarkList.get(i).getName())) {
+                        idtrademark = trademarkList.get(i).getId_Trademark();
+                    }
                 }
             }
+            else{
+                idtrademark=null;
+            }
+          
         }
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
@@ -264,8 +279,9 @@ public class Frm_LibreDisponibilidadReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ReportActionPerformed
 
     private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
-        Prueba exportar = new Prueba();
-        exportar.exportarReporte();
+//        Prueba exportar = new Prueba();
+//        exportar.exportarReporte();
+        txt_idProduct.setText(null);
     }//GEN-LAST:event_btn_ExportActionPerformed
 
     public void setIdWh(Integer id) {

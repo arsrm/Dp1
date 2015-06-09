@@ -371,4 +371,26 @@ public class Prueba {
             Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public void mostrarReporteLog(String dI, String dF) {
+   
+    try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+
+            parameters.put("fechaI", dI);
+            parameters.put("fechaF", dF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportL.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte Log");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }
