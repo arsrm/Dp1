@@ -11,6 +11,7 @@ import Model.PalletIni;
 import Model.PalletProduct;
 import Model.Product;
 import Model.Rack;
+import Model.DispatchOrder;
 import Model.Trademark;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +30,8 @@ public interface DaoPalletProduct {
 
     public Integer GetCantNumord(Integer numorden);
     
+    public Integer GetCantNumpicking(Integer numpicking);
+    
     public LocationCell GetLocationCellId(Integer idCD,Integer idware, Integer idrack, Integer idcelda );
 
     public LocationCellDetail GetLocationCellDetailId(Integer idCD,Integer idware, Integer idrack, Integer idcelda,Integer idceldadet );
@@ -41,6 +44,8 @@ public interface DaoPalletProduct {
     
     public List<PalletProduct> GetPalletProductList(String CadenaWhere); 
 
+    public List<DispatchOrder> GetDispatchOrderList(String CadenaWhere); 
+    
     public List<PalletProduct> GetPalletProductList2(String CadenaWhere); 
     
     public String PalletProductDelMasive(List<Integer> idpallet, List<Integer> idmark, List<Integer> idproduct,List<Integer> idstatus );    

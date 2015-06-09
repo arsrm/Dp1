@@ -8,12 +8,20 @@ package Reportes;
 
 import JasperReports.Prueba;
 import Seguridad.Frm_MenuPrincipal;
-import java.awt.event.ActionEvent;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
-import javax.swing.JFrame;
 import dao.DaoPalletProduct;
+import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletProductImpl;
+import java.awt.event.ActionEvent;
+import java.util.Calendar;
+import java.util.Date;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import Model.DispatchOrder;
+import dao.DaoClient;
+import dao.impl.DaoClientImpl;
+
 
 /**
  *
@@ -62,20 +70,19 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     return b;      
     }        
 
-    
     public boolean validanumpicking()
     { boolean b=true; 
       Integer cantreg=0; 
-      Integer numorden=0; 
+      Integer numpicking=0; 
       
       if ( (txt_numpicking.getText().toString().isEmpty() )|| (txt_numpicking.getText().equals(null) ) )
       { b=false;}   
       else 
       {
        try{
-        numorden=Integer.parseInt(txt_numpicking.getText()); 
+        numpicking=Integer.parseInt(txt_numpicking.getText()); 
           DaoPalletProduct dao=new DaoPalletProductImpl();
-          cantreg=dao.GetCantNumord(numorden);
+          cantreg=dao.GetCantNumpicking(numpicking);
           if ( cantreg==0 )
           {String message = "El numero de Orden de Picking no existe o está inactiva";
           String title = "Información";
@@ -96,6 +103,126 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     return b;      
     }        
     
+    public String obtiene_where()
+    { 
+      String Cadenawhere="";
+      Integer numorden=0; 
+      Integer numpick=0; 
+      String cliente="";
+       Integer anho1; 
+       Integer anho2; 
+       Integer mes1; 
+       Integer mes2; 
+       Integer dia1; 
+       Integer dia2;
+       Integer fechainicial=0; 
+       Integer fechafinal=0 ; 
+       String datefecini=""; 
+       String datefecfin=""; 
+      
+       
+      if ( txt_NumOrden.getText().toString().isEmpty() || (txt_NumOrden.getText().equals(null) ) ) 
+        { Cadenawhere=Cadenawhere+ " where (1=1)  and "; }     
+      else   
+        {numorden=Integer.parseInt(txt_NumOrden.getText().toString());
+         Cadenawhere=Cadenawhere+ "   where idDispatch_Order= "+numorden + "  and ";
+        }
+
+      if ( txt_numpicking.getText().toString().isEmpty() || (txt_numpicking.getText().equals(null) ) ) 
+        { Cadenawhere=Cadenawhere+ "  (1=1)  and "; }     
+      else   
+      { numpick=Integer.parseInt(txt_numpicking.getText().toString());
+        Cadenawhere=Cadenawhere+ "  idDispatch_Order= "+numorden + "  and ";      
+      }
+      
+      if ( txt_client.getText().toString().isEmpty() || (txt_client.getText().equals(null) ) ) 
+        { Cadenawhere=Cadenawhere+ "  (1=1)  and "; }     
+      else
+      {   cliente=txt_client.getText().toString();
+          Cadenawhere=Cadenawhere+ "  idClient in (select idClient from client where upper(name) like '%"+cliente.toUpperCase()+"%'  )  and ";       
+      }
+
+        try 
+        {
+          String formato = jDate_in.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           Date date1 = jDate_in.getDate();
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho1=jDate_in.getCalendar().get(Calendar.YEAR);
+           mes1=jDate_in.getCalendar().get(Calendar.MONTH)+1;
+           dia1=jDate_in.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechainicial=anho1*10000+mes1*100+dia1;
+           datefecini=fechainicial.toString();
+        } 
+        catch (Exception e)   
+        { if   (datefecini.length()>0 )
+          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Registro Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
+        }
+
+       try 
+        {  String formato = jDate_out.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho2=jDate_out.getCalendar().get(Calendar.YEAR);
+           mes2=jDate_out.getCalendar().get(Calendar.MONTH)+1;
+           dia2=jDate_out.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechafinal=anho2*10000+mes2*100+dia2;
+           datefecfin=fechafinal.toString();            
+        } 
+        catch (Exception e)   
+        {  if (datefecfin.length()>0)
+            {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Entrega Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
+        }
+
+        try
+        {
+        if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
+          {JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Registro", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); }   
+        }
+        catch(Exception e)
+        { }    
+
+        if (fechainicial>0)
+        {Cadenawhere=Cadenawhere+ " (year(departure_date)*10000 +month(departure_date)*100  +day(departure_date) ) >= " +fechainicial +" and " ; 
+        }
+        else
+        {Cadenawhere=Cadenawhere+ " (1=1) and ";
+        }    
+        if (fechafinal>0)        
+        {Cadenawhere=Cadenawhere+"  (year(arrival_date)*10000 +month(arrival_date)*100  +day(arrival_date) ) <= " +fechafinal +" " ; }
+        else
+        {Cadenawhere=Cadenawhere+ " (1=1) ";
+        }   
+      
+      return Cadenawhere;
+     }      
+    
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+     }        
+    
+    public void filtra_tabla(String cadenawhere)
+    {  limpiatabla();
+       DaoPalletProduct objdao= new DaoPalletProductImpl();
+       Integer cantreg= objdao.GetDispatchOrderList(cadenawhere).size();
+       DispatchOrder[] list=new DispatchOrder[cantreg] ;  
+       DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel();     
+       DaoClient daocliente= new DaoClientImpl();
+        for (int i=0; i<cantreg; i++)
+         {  list[i]=objdao.GetDispatchOrderList(cadenawhere).get(i);
+             model.addRow(new Object[]{list[i].getIdDispatch_Order(), daocliente.clientGet(list[i].getIdClient()).getName() ,list[i].getIdPickingOrder(),list[i].getDepartureDate(),list[i].getArrivalDate()} );           
+         }   
+       
+       
+     }       
     
     public Frm_DispatchReport(Frm_MenuPrincipal menu) {
         
@@ -198,6 +325,11 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         });
 
         btn_filtrar.setText("Filtrar");
+        btn_filtrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_filtrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_DispatchReportLayout = new javax.swing.GroupLayout(pnl_DispatchReport);
         pnl_DispatchReport.setLayout(pnl_DispatchReportLayout);
@@ -223,21 +355,18 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                        .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(68, 68, 68)
                                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                                .addComponent(jLabel2)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(jDate_out, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
-                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(txt_NumOrden)
+                                            .addComponent(jDate_in, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
+                                        .addGap(68, 68, 68)
+                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txt_numpicking)
+                                            .addComponent(jDate_out, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))))
+                            .addComponent(jLabel1)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btn_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(56, Short.MAX_VALUE))
@@ -259,9 +388,9 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel2))
+                            .addComponent(jLabel2)
+                            .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(49, 49, 49)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
@@ -330,6 +459,12 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_txt_numpickingFocusLost
+
+    private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
+    String cadenawhere="";
+    cadenawhere=obtiene_where();
+    filtra_tabla(cadenawhere);
+    }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);

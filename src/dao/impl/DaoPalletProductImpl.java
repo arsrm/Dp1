@@ -5,6 +5,7 @@
  */
 package dao.impl;
 
+import Model.DispatchOrder;
 import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.PalletIni;
@@ -820,6 +821,71 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
             }
         }
         return objmodel;
+    }
+
+    @Override
+    public Integer GetCantNumpicking(Integer numpicking) {
+        Integer objmodel = 0;
+        String sql = " select * from picking_order " +
+                      " where idPicking_Order="+numpicking+" and status=1";
+         
+      //    System.out.println("Cadena de ejecución"+ sql);
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error es : "+ e.getMessage());
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
+
+    @Override
+    public List<DispatchOrder> GetDispatchOrderList(String CadenaWhere) {
+        List<DispatchOrder> list = null;
+        String sql = " select idDispatch_Order, idClient,departure_date,arrival_date,status,"
+                + " Picking_Order_idPicking_Order  from dispatch_order  "+CadenaWhere+ "  ";
+                
+        Connection cn = db.getConnection();
+        System.out.println("Query ejecutado " + sql); 
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                //System.out.println("Ejecuto select a pallet_state");
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    DispatchOrder objmodel = new DispatchOrder();
+                    objmodel.setIdDispatch_Order(rs.getInt(1));
+                    objmodel.setIdClient(rs.getInt(2));
+                    objmodel.setDepartureDate(rs.getDate(3));
+                    objmodel.setArrivalDate(rs.getDate(4));
+                    objmodel.setStatus(rs.getInt(5));
+                    objmodel.setIdPickingOrder(rs.getInt(6));
+                    list.add(objmodel);
+                }
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
     
 }
