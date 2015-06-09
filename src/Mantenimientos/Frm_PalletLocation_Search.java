@@ -281,9 +281,11 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
          daoPalletProduct.GetLocationCellId(idCD, idware, idrack, idcelda).getDescription(),
          daoPalletProduct.GetLocationCellDetailId(idCD, idware, idrack, idcelda, idceldadet).getDescription(),
          cadstatus});
-      
       }     
-
+      if (cantreg>0)
+      {  btn_delete.setEnabled(true);
+       }   
+      
     }       
     
     public String armacadena_where()
@@ -303,6 +305,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     public Frm_PalletLocation_Search(Frm_MenuPrincipal menu) {
         menuaux = menu;
         inicia_formulario();
+        btn_delete.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
