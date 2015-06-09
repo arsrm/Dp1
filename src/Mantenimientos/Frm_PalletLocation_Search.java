@@ -42,6 +42,7 @@ import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import dao.impl.DaoWHImpl;
 import java.util.*;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -69,6 +70,16 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     String Cadenarack="";
     String Cadenacelda="";
     String Cadenadetallecelda="";
+
+    public void limpiatabla()
+    {
+        DefaultTableModel model= (DefaultTableModel)tbl_pallet_detail.getModel(); 
+        Integer cantreg=0; 
+        cantreg=model.getRowCount();
+        for(int i=0; i<cantreg; i++)       
+        { model.removeRow(cantreg-i-1);
+        }   
+     }        
 
     public void load_state()
     {
@@ -282,6 +293,7 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     public void  load_table_filter()
     { String cadenawhere="";
       cadenawhere=armacadena_where(); 
+      limpiatabla();
       load_table(cadenawhere);
       
      }       
@@ -591,6 +603,66 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
+    //tbl_pallet_detail 
+       DefaultTableModel modelo = (DefaultTableModel)tbl_pallet_detail.getModel();
+        List<Integer> listidpallet=new  ArrayList<Integer>();
+        List<Integer> listidmarca= new ArrayList<Integer>();
+        List<Integer> listidproduct= new ArrayList<Integer>();
+        List<Integer> listidCD= new ArrayList<Integer>();
+        List<Integer> listware= new ArrayList<Integer>();
+        List<Integer> listrack= new ArrayList<Integer>();
+        List<Integer> listcelda= new ArrayList<Integer>();
+        List<Integer> listceldadet= new ArrayList<Integer>();
+        List<Integer>  listidstatus=new ArrayList<Integer>();
+        Integer idpallet;
+        Integer idmarca;
+        Integer idproduct;
+        Integer idCD; 
+        Integer idware; 
+        Integer idrack; 
+        Integer idcelda; 
+        Integer idceldadet; 
+        Integer idstatus=0; 
+        String status="";
+        int nr =modelo.getRowCount(); 
+        for (int i=0; i<nr ;i++){
+         try {   
+         Object prueba =  modelo.getValueAt(i, 8);
+             if ((Boolean)prueba)
+             { idpallet=(Integer)modelo.getValueAt(i, 0);
+               idmarca= daoPalletProduct.GetTrademarkname(modelo.getValueAt(i, 1).toString().trim()).getId_Trademark();
+               idproduct=daoPalletProduct.GetProduct(idmarca, modelo.getValueAt(i, 2).toString().trim()).getIdProduct();
+               idCD=daoPallet.Warehousename(modelo.getValueAt(i, 3).toString().trim()).getDistribution_Center_idDistribution_Center();
+               idware=daoPallet.Warehousename(modelo.getValueAt(i, 3).toString().trim()).getIdWarehouse();
+               idrack=daoPallet.GetIdRack(idCD, idware, modelo.getValueAt(i, 4).toString().trim());
+               idcelda=daoPallet.GetIdCelda(idCD, idware, idrack, modelo.getValueAt(i, 5).toString().trim());
+               idceldadet=daoPallet.GetIdCeldaDetail(idCD, idware, idrack, idcelda, modelo.getValueAt(i, 6).toString().trim());
+               status=modelo.getValueAt(i, 7).toString().trim();
+               if (status.equals("Activo"))
+               {  idstatus=1;}
+               if (status.equals("Inactivo"))
+               {  idstatus=0;}
+                listidpallet.add(idpallet);
+                listidmarca.add(idmarca);
+                listidproduct.add(idproduct);
+                listidCD.add(idCD);
+                listware.add(idware);
+                listrack.add(idrack);
+                listcelda.add(idcelda);
+                listceldadet.add(idceldadet);
+                listidstatus.add(idstatus);
+             } 
+         }catch(Exception e)
+          {  }  
+        }   
+        String message = "¿Está seguro que desea cambiar de estado a los registros seleccionados?";
+        String title = "Confirmación";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+            daoPalletProduct.PalletProductLocationDelMasive(listidpallet, listidmarca, listidproduct, listidCD,listware,listrack,listcelda,listceldadet,listidstatus);
+        }
+        load_table_filter(); 
         
     }//GEN-LAST:event_btn_deleteActionPerformed
 
