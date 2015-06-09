@@ -289,8 +289,54 @@ public class Frm_PalletLocation_Search extends javax.swing.JFrame {
     }       
     
     public String armacadena_where()
-    { return "  (1=1) " ; 
-     }       
+    { 
+      String cadCD="";
+      String cadWARE="";
+      String cadRACK="";
+      String cadCELDA="";
+      String cadCELDADET="";
+      String cadMARK="";
+      String cadPROD="";
+      String CADENAWHERE="";
+      
+      cadCD=cbo_center_distribution.getSelectedItem().toString().trim();
+      cadWARE=cbo_warehouse.getSelectedItem().toString().trim();
+      cadRACK=cbo_rack.getSelectedItem().toString().trim();
+      cadCELDA=cbo_location_cell.getSelectedItem().toString().trim();
+      cadCELDADET=cbo_locationcell_detail.getSelectedItem().toString().trim();
+      cadMARK=cbo_mark.getSelectedItem().toString().trim();
+      cadPROD=cbo_product.getSelectedItem().toString().trim();
+      
+      CADENAWHERE=CADENAWHERE+"Location_Cell_Detail_idDistribution_Center in" + 
+                " (select idDistribution_Center from distribution_center " +
+                "where name like '%"+ cadCD + "%')  and  " ;
+      
+      CADENAWHERE=CADENAWHERE+ " Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse in " +
+                " (select idWarehouse from warehouse " +
+                "  where description like '%"+cadWARE +"%') and ";
+
+      CADENAWHERE=CADENAWHERE+" Location_Cell_Detail_Location_Cell_Rack_idRack in " +
+                " (select idRack from rack " +
+                "  where identifier like '%"+cadRACK+"%')  and";          
+      
+      CADENAWHERE=CADENAWHERE+" Location_Cell_Detail_Location_Cell_idLocation_Cell in " +
+                " (select idLocation_Cell from location_cell " +
+                "  where description like '%"+cadCELDA+"%') and";
+      
+      CADENAWHERE=CADENAWHERE+" Location_Cell_Detail_idLocation_Cell_Detail in  " +
+                "  (select idLocation_Cell_Detail from location_cell_detail  " +
+                "  where description like '%"+ cadCELDADET+"%') and ";              
+      
+      CADENAWHERE=CADENAWHERE+" Pallet_By_Product_Product_Trademark_id_Trademark in " +
+                "  (select id_Trademark from trademark " +
+                "  where name like '%"+cadMARK+"%') and ";     
+      
+      CADENAWHERE=CADENAWHERE+"	Pallet_By_Product_Product_idProduct in  " +
+                "  (select idProduct from product " +
+                "  where name like '%"+cadPROD+"%')";
+              
+      return CADENAWHERE ; 
+    }       
     
     public void  load_table_filter()
     { String cadenawhere="";

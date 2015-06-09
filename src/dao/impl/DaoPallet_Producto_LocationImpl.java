@@ -278,7 +278,7 @@ public class DaoPallet_Producto_LocationImpl implements DaoPallet_Product_Locati
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
-                //System.out.println("Cadena Ejecutada: " + sql);
+                System.out.println("Cadena Ejecutada: " + sql);
                 list = new LinkedList<>();
                 while (rs.next()) {
                     Pallet_Product_Location c = new Pallet_Product_Location();
