@@ -106,7 +106,8 @@ public class DaoLogImpl implements DaoLog {
                 while (rs.next()) {
                     LogSystem c = new LogSystem();
                     c.setIdLog_security(rs.getInt(1));
-                    c.setDate(rs.getString(2));
+                
+                    c.setDate(rs.getDate(2));
                     c.setAction(rs.getString(3));
                     c.setUser_idUser(rs.getString(4));
                     c.setClasss(rs.getString(5));
