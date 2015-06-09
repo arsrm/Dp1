@@ -732,14 +732,12 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private void op_loadIntermentOrderActionPerformed(java.awt.event.ActionEvent evt) {
         Frm_IntermentOrder_Load frm_prodIntLoad = new Frm_IntermentOrder_Load(this);
         frm_prodIntLoad.setVisible(true);
-        frm_prodIntLoad.setLocation(300,100);
         frm_prodIntLoad.setLocationRelativeTo(null);
     }
     
     private void op_searchInternmentOrderActionPerformed(java.awt.event.ActionEvent evt) {
         Frm_InternmentOrder_Search frm_prodIntSearch = new Frm_InternmentOrder_Search(this);
         frm_prodIntSearch.setVisible(true);
-        frm_prodIntSearch.setLocation(300,100);
         frm_prodIntSearch.setLocationRelativeTo(null);
     }
     

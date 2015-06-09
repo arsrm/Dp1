@@ -291,9 +291,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder, intOrdDetail.getProduct().getIdProduct());
         Integer cantPalletsIngresados = 0;
         Integer cantFreeLocCells = freeLocCellList.size();
-        int lastFreeLocCell;
+        int lastFreeLocCell=0;
         for (int i = 0; i < palletProduList.size(); i++) {
-            lastFreeLocCell = 0;
             for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                 LocationCell locCell = daoLocCell.LocationCellGet(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
@@ -311,12 +310,12 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
                     mov.setIdWh(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                     mov.setStock_inicial(intOrdDetail.getProduct().getPhysicalStock());
-                    mov.setStock_final(intOrdDetail.getProduct().getPhysicalStock() + intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getQuantityPallets());
+                    mov.setStock_final(intOrdDetail.getProduct().getPhysicalStock() + intOrdDetail.getProduct().getQuantityBoxesPerPallet());
                     mov.setType_Movement_id(1);
                     mov.setType_Movement_idSubtype(1);
                     daoKardex.MovementIns(mov);
                     cantPalletsIngresados++;
-                    lastFreeLocCell = j;
+                    lastFreeLocCell = j+1;
                     break;
                 }
             }

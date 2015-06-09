@@ -98,8 +98,9 @@ public class DaoProdImpl implements DaoProducts {
                 + "status,"
                 + "Type_Condition_idType_Condition,"
                 + "cod_ean13,"
-                + "Trademark_id_Trademark"
-                + ") VALUES(?,?,?,?,?,?,?,?,?,?)";
+                + "Trademark_id_Trademark,"
+                +"time_expiration"
+                + ") VALUES(?,?,?,?,?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -115,6 +116,7 @@ public class DaoProdImpl implements DaoProducts {
                 ps.setInt(8, p.getTypeConditionWH());
                 ps.setString(9, p.getCodeEAN13());
                 ps.setInt(10, p.getTrademark());
+                ps.setInt(11,p.getTimeExpiration());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -530,6 +532,36 @@ public class DaoProdImpl implements DaoProducts {
         }
 
         return false;
+    }
+
+    @Override
+    public Integer ProductsGetMaxID() {
+        Integer maxIdProduct=0;
+        String sql = "SELECT "
+                + "MAX(idProduct)"
+                + "FROM Product ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    maxIdProduct = rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxIdProduct = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return maxIdProduct;
     }
 
 }

@@ -57,10 +57,17 @@ public class Frm_IntermentOrder_Detail extends javax.swing.JFrame {
         txt_dateOrder.setText(intOrder.getDate().toString());
         txt_dateOrder.setEnabled(false);
         if (intOrder.getStatus() == 1) {
-            status = "Activo";
-        } else {
-            status = "Inactivo";
+            status = "Pendiente";
         }
+        if (intOrder.getStatus() == 2) {
+            status = "Internado";
+            tbl_orderDetail.setEnabled(false);
+        }
+        if (intOrder.getStatus() == 0) {
+            status = "Inactivo";
+            tbl_orderDetail.setEnabled(false);
+        }
+        
         txt_state.setText(status);
         initializeTable();
     }

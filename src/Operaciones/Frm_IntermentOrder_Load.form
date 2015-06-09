@@ -156,6 +156,7 @@
         </Component>
         <Component class="javax.swing.JTextField" name="txt_idProduct">
           <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_idProductFocusGained"/>
             <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_idProductFocusLost"/>
           </Events>
         </Component>
@@ -189,6 +190,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_idOrderInt">
+          <Events>
+            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txt_idOrderIntFocusLost"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -208,6 +212,9 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="jDate_dateOrder">
+          <Events>
+            <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="jDate_dateOrderFocusGained"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

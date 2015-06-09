@@ -5,12 +5,15 @@
  */
 package Mantenimientos;
 
+import Model.Log;
 import Model.Product;
 import Model.Trademark;
 import Model.Type_Condition_WareHouse;
+import dao.DaoLog;
 import dao.DaoProducts;
 import dao.DaoTrademark;
 import dao.DaoTypeConditionWH;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import dao.impl.DaoTypeConditionWHImpl;
@@ -398,8 +401,11 @@ public class Frm_Product extends javax.swing.JFrame {
             Object[] options = {"OK"};
             if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                     "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
                 if (product == null) { //Guardar nuevo producto
                     product = new Product();
+                    product.setIdProduct(daoProducts.ProductsGetMaxID()+1);
                     product.setName(txt_name.getText());
                     product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
                     product.setWeightPerBox(Integer.parseInt(txt_weightPerBox.getText()));
@@ -412,6 +418,8 @@ public class Frm_Product extends javax.swing.JFrame {
                     product.setCodeEAN13(txt_codEan13.getText());
                     product.setTimeExpiration(Integer.parseInt(txt_timeExpiration.getText()));
                     daoProducts.ProductsIns(product);
+                    
+                    daoLog.clientIns("Se ha ingresado un nuevo Producto al sistema con ID " + product.getIdProduct().toString(), Frm_Product.class.toString(), logSI.getIduser());
                 } else {
                     product.setName(txt_name.getText());
                     product.setQuantityPerBox(Integer.parseInt(txt_quatityPerBox.getText()));
@@ -421,6 +429,7 @@ public class Frm_Product extends javax.swing.JFrame {
                     product.setTimeExpiration(Integer.parseInt(txt_timeExpiration.getText()));
 
                     daoProducts.ProductsUpd(product);
+                    daoLog.clientIns("Se ha actualizado un Producto en el sistema con ID " + product.getIdProduct().toString(), Frm_Product.class.toString(), logSI.getIduser());
                 }
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado el producto con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (ok_option == JOptionPane.OK_OPTION) {
@@ -428,6 +437,8 @@ public class Frm_Product extends javax.swing.JFrame {
                     menu_padre.setLocationRelativeTo(null);
                     menu_padre.initilizeTable();
                     this.dispose();
+
+                    
                 }
             }
         }

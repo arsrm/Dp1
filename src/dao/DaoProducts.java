@@ -28,7 +28,7 @@ public interface DaoProducts {
 
 //    public List<Object[]> usersCbo();    
 //    
-//    public Integer ProductsGetMaxID ();
+    public Integer ProductsGetMaxID ();
 //    
     public List<Product> ProductsSearch(String EAN13, String name, Trademark trademark);
     
