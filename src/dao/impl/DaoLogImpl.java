@@ -1,6 +1,7 @@
 package dao.impl;
 
 import Model.Log;
+import Model.LogSystem;
 import dao.DaoLog;
 import enlaceBD.ConectaDb;
 import java.net.InetAddress;
@@ -9,8 +10,11 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.List;
 
 public class DaoLogImpl implements DaoLog {
 
@@ -87,4 +91,40 @@ public class DaoLogImpl implements DaoLog {
         return result;
     }
 
+    public List<LogSystem> clientQry(){
+        List<LogSystem> list = null;
+        String sql =  "select idLog_security,date,action,User_idUser,class,ip,mac_address "
+                +"From  Log_Security";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    LogSystem c = new LogSystem();
+                    c.setIdLog_security(rs.getInt(1));
+                    c.setDate(rs.getDate(2));
+                    c.setAction(rs.getString(3));
+                    c.setUser_idUser(rs.getString(4));
+                    c.setClasss(rs.getString(5));
+                    c.setIp(rs.getString(6));
+                    c.setMac_address(rs.getString(7));
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+    
 }
