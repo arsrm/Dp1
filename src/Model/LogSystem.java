@@ -16,11 +16,11 @@ public class LogSystem {
         this.idLog_security = idLog_security;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -64,7 +64,7 @@ public class LogSystem {
         this.mac_address = mac_address;
     }
     private Integer idLog_security;
-    private Date date;
+    private String date;
     private String action;
     private String User_idUser;
     private String classs;
