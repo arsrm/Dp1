@@ -10,6 +10,10 @@ import JasperReports.Prueba;
 import Seguridad.Frm_MenuPrincipal;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.JFrame;
+import dao.DaoPalletProduct;
+import dao.impl.DaoPalletProductImpl;
 
 /**
  *
@@ -23,6 +27,41 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     String fileExport;
+    
+    
+    public boolean validanumorden()
+    { boolean b=true; 
+      Integer cantreg=0; 
+      Integer numorden=0; 
+      
+      if ( (txt_NumOrden.getText().toString().isEmpty() )|| (txt_NumOrden.getText().equals(null) ) )
+      { b=false;}   
+      else 
+      {
+       try{
+        numorden=Integer.parseInt(txt_NumOrden.getText()); 
+          DaoPalletProduct dao=new DaoPalletProductImpl();
+          cantreg=dao.GetCantNumord(numorden);
+          if ( cantreg==0 )
+          {String message = "El numero de Orden de Internamiento no existe o está inactiva";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);   
+          b=false;
+          }
+      }catch(Exception e)
+      {   String message = "El numero de Orden debe ser Entero";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);
+          b=false;
+      }   
+    }
+    return b;      
+    }        
+
     
     public Frm_DispatchReport(Frm_MenuPrincipal menu) {
         
@@ -46,23 +85,18 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         jDate_in = new com.toedter.calendar.JDateChooser();
         jLabel2 = new javax.swing.JLabel();
         jDate_out = new com.toedter.calendar.JDateChooser();
-        btn_GenerarReporte = new javax.swing.JToggleButton();
-        btn_Export = new javax.swing.JToggleButton();
         jLabel3 = new javax.swing.JLabel();
         txt_client = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txt_NumOrden = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        cbo_Status = new javax.swing.JComboBox();
-        jLabel7 = new javax.swing.JLabel();
-        txt_Direction = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        txt_Vehicle = new javax.swing.JTextField();
-        btn_Cancelar = new javax.swing.JToggleButton();
+        jLabel9 = new javax.swing.JLabel();
+        txt_numpicking = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_Dispatch = new javax.swing.JTable();
+        btn_GenerarReporte = new javax.swing.JToggleButton();
+        btn_Export = new javax.swing.JToggleButton();
+        btn_Cancelar = new javax.swing.JToggleButton();
+        btn_filtrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -71,6 +105,31 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         jLabel1.setText("Fecha de Registro");
 
         jLabel2.setText("Fecha Entrega Estimada ");
+
+        jLabel3.setText("Cliente:");
+
+        jLabel4.setText("Número de Orden:");
+
+        txt_NumOrden.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txt_NumOrdenFocusLost(evt);
+            }
+        });
+
+        jLabel9.setText("Número de Picking:");
+
+        tbl_Dispatch.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID Pallet", "ID Producto", "Nombre Producto", "Cantidad"
+            }
+        ));
+        jScrollPane1.setViewportView(tbl_Dispatch);
 
         btn_GenerarReporte.setText("Generar Reporte");
         btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
@@ -86,31 +145,6 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("ID Cliente:");
-
-        jLabel4.setText("Número de Orden:");
-
-        jLabel5.setText("Estado:");
-
-        jLabel6.setText("Transportista:");
-
-        cbo_Status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ACTIVO" }));
-        cbo_Status.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbo_StatusActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Direccion:");
-
-        txt_Direction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_DirectionActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("Vehículo:");
-
         btn_Cancelar.setText("Cancelar");
         btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,58 +152,50 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             }
         });
 
+        btn_filtrar.setText("Filtrar");
+
         javax.swing.GroupLayout pnl_DispatchReportLayout = new javax.swing.GroupLayout(pnl_DispatchReport);
         pnl_DispatchReport.setLayout(pnl_DispatchReportLayout);
         pnl_DispatchReportLayout.setHorizontalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                        .addGap(181, 181, 181)
+                        .addComponent(btn_GenerarReporte)
+                        .addGap(72, 72, 72)
+                        .addComponent(btn_Export, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addComponent(btn_Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_DispatchReportLayout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(18, 18, 18)
                                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                        .addGap(2, 2, 2)
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_Direction, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(46, 46, 46)
-                                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
-                                            .addComponent(jLabel5))
-                                        .addGap(140, 140, 140)
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txt_Vehicle, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(cbo_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addGap(64, 64, 64)
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(btn_Export)
-                                            .addComponent(jDate_out, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel7)
-                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addGap(105, 105, 105)
-                        .addComponent(btn_GenerarReporte))
-                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_DispatchReportLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_Cancelar)
-                .addGap(150, 150, 150))
+                                        .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(68, 68, 68)
+                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                                                .addComponent(jLabel2)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jDate_out, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(56, Short.MAX_VALUE))
         );
         pnl_DispatchReportLayout.setVerticalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,103 +203,77 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addComponent(cbo_Status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7)
-                    .addComponent(txt_Direction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(19, 19, 19)
-                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel8)
-                    .addComponent(txt_Vehicle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                    .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jDate_out, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel1))
+                            .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                .addGap(56, 56, 56)
-                                .addComponent(btn_GenerarReporte))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_DispatchReportLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btn_Export)
-                                .addGap(8, 8, 8))))
+                        .addGap(49, 49, 49)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btn_GenerarReporte)
+                            .addComponent(btn_Export)
+                            .addComponent(btn_Cancelar)
+                            .addComponent(btn_filtrar)))
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jDate_in, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(29, 29, 29)
-                .addComponent(btn_Cancelar))
+                        .addComponent(jDate_out, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
-
-        tbl_Dispatch.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "ID Pallet", "ID Producto", "Nombre Producto", "Cantidad"
-            }
-        ));
-        jScrollPane1.setViewportView(tbl_Dispatch);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(138, Short.MAX_VALUE))
-            .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 317, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
-        Prueba pru = new Prueba();
-        pru.mostrarReporte();
-    }//GEN-LAST:event_btn_GenerarReporteActionPerformed
-
-    private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
-        Prueba pru = new Prueba();
-        pru.exportarReporte();
-    }//GEN-LAST:event_btn_ExportActionPerformed
 
     private void btn_CancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CancelarActionPerformed
         this.dispose();
         menuaux.setVisible(true);
     }//GEN-LAST:event_btn_CancelarActionPerformed
 
-    private void cbo_StatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_StatusActionPerformed
+    private void txt_NumOrdenFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_NumOrdenFocusLost
         // TODO add your handling code here:
-    }//GEN-LAST:event_cbo_StatusActionPerformed
+        //txt_NumOrden
+        boolean b=false;
+        b=validanumorden();
+        if (b)
+        {System.out.println("Valido correctamente la orden de internamiento");
+        }
 
-    private void txt_DirectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_DirectionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_DirectionActionPerformed
+    }//GEN-LAST:event_txt_NumOrdenFocusLost
+
+    private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
+        Prueba pru = new Prueba();
+        pru.exportarReporte();
+    }//GEN-LAST:event_btn_ExportActionPerformed
+
+    private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
+        Prueba pru = new Prueba();
+        pru.mostrarReporte();
+    }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);
@@ -290,24 +290,19 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     private javax.swing.JToggleButton btn_Cancelar;
     private javax.swing.JToggleButton btn_Export;
     private javax.swing.JToggleButton btn_GenerarReporte;
-    private javax.swing.JComboBox cbo_Status;
+    private javax.swing.JButton btn_filtrar;
     private com.toedter.calendar.JDateChooser jDate_in;
     private com.toedter.calendar.JDateChooser jDate_out;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel pnl_DispatchReport;
     private javax.swing.JTable tbl_Dispatch;
-    private javax.swing.JTextField txt_Direction;
     private javax.swing.JTextField txt_NumOrden;
-    private javax.swing.JTextField txt_Vehicle;
     private javax.swing.JTextField txt_client;
+    private javax.swing.JTextField txt_numpicking;
     // End of variables declaration//GEN-END:variables
 }

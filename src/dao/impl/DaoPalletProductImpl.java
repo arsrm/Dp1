@@ -792,6 +792,34 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         return result;
     }
 
-    
+    @Override
+    public Integer GetCantNumord(Integer numorden) {
+        Integer objmodel = 0;
+        String sql = " select count(1) from dispatch_order  " +
+                     " where idDispatch_Order="+numorden+" " +
+                      " and status=1";
+         
+      //    System.out.println("Cadena de ejecución"+ sql);
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error es : "+ e.getMessage());
+                objmodel = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
     
 }

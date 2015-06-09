@@ -26,7 +26,9 @@ public interface DaoPalletProduct {
     public Trademark GetTradamarkid(Integer idmark); 
     
     public Rack GetRackid(Integer idCD, Integer idware, Integer idrack);
-            
+
+    public Integer GetCantNumord(Integer numorden);
+    
     public LocationCell GetLocationCellId(Integer idCD,Integer idware, Integer idrack, Integer idcelda );
 
     public LocationCellDetail GetLocationCellDetailId(Integer idCD,Integer idware, Integer idrack, Integer idcelda,Integer idceldadet );
