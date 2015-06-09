@@ -110,9 +110,50 @@ public class Prueba {
         }
     }
     
-
+    public void mostrarReporteKardexXProducto(Integer idProduct, Date dateI, Date dateF) {
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            
+            parameters.put("idP", idProduct);
+            parameters.put("fechaI", dateI);
+            parameters.put("fechaF", dateF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportKardexXProducto.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Kardex");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteKardexXAlmacen(Integer idAlmacen, Date dateI, Date dateF) {
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("idW",idAlmacen);
+            parameters.put("fechaI", dateI);
+            parameters.put("fechaF", dateF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportKardexXAlmacen.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Kardex");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
         
-    public void exportarReporteKardex() {
+    public void exportarReporteKardexXProducto() {
         try {
 
             JasperReport reporte = JasperCompileManager.compileReport("kardexReport.jrxml");

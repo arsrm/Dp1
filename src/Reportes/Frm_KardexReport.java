@@ -102,6 +102,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         tbl_Kardex = new javax.swing.JTable();
         btn_Report = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -207,9 +208,9 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel3)
-                .addGap(51, 51, 51)
-                .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 426, Short.MAX_VALUE)
+                .addGap(50, 50, 50)
+                .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(77, 77, 77)
                 .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,30 +307,39 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Limpiar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(tbl_Wh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(13, 13, 13)
-                                .addComponent(btn_Kardex)
-                                .addGap(246, 246, 246)
-                                .addComponent(btn_Report)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btn_Export)
-                                .addGap(113, 113, 113)
-                                .addComponent(btn_Cancel))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(btn_Kardex)
+                        .addGap(185, 185, 185)
+                        .addComponent(btn_Report)
+                        .addGap(154, 154, 154)
+                        .addComponent(btn_Export)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addGap(127, 127, 127)
+                        .addComponent(btn_Cancel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -343,13 +353,14 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 53, Short.MAX_VALUE)
+                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Cancel)
-                    .addComponent(btn_Export)
                     .addComponent(btn_Kardex)
-                    .addComponent(btn_Report))
-                .addGap(39, 39, 39))
+                    .addComponent(btn_Report)
+                    .addComponent(btn_Export)
+                    .addComponent(jButton1)
+                    .addComponent(btn_Cancel))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -458,12 +469,12 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 //                reporte.mostrarReporteKardexConFiltro(idAl, idP, dateIniSearch, dateEndSearch);
 //            }
 //        }
-        if (txt_idWh.getText().length() != 0) {
-            idAlmacen = Integer.parseInt(txt_idWh.getText());
-        }
-        if (txt_EAN.getText().length() != 0) {
-            idProduct = producto.getIdProduct();
-        }
+//        if (txt_idWh.getText().length() != 0) {
+//            idAlmacen = Integer.parseInt(txt_idWh.getText());
+//        }
+//        if (txt_EAN.getText().length() != 0) {
+//            idProduct = producto.getIdProduct();
+//        }
         if (date_Ini.getDate() != null) {
             dateIniSearch = date_Ini.getDate();
         } else {
@@ -476,17 +487,23 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             dateEndSearch = new Date();
         }
 
+        
         if (idProduct == null && idAlmacen == null) {
-            reporte.mostrarReporteKardexSinFiltro(dateI, dateF);
+            
+            
+            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
         }
         if (idProduct != null && idAlmacen == null) {
+            
+            reporte.mostrarReporteKardexXProducto(idProduct,dateIniSearch, dateEndSearch);
 
         }
         if (idProduct == null && idAlmacen != null) {
 
+            reporte.mostrarReporteKardexXAlmacen(idAlmacen,dateIniSearch, dateEndSearch);
         }
         if (idProduct != null && idAlmacen != null) {
-            reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateI, dateF);
+            reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateIniSearch, dateEndSearch);
         }
     }//GEN-LAST:event_btn_ReportActionPerformed
 
@@ -494,6 +511,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         Prueba exportar = new Prueba();
         exportar.exportarReporte();
     }//GEN-LAST:event_btn_ExportActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        txt_idWh.setText(null);
+        txt_EAN.setText(null);
+        date_Ini.setDate(null);
+        date_End.setDate(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     public void setIdWh(Integer id) {
 
@@ -529,6 +553,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_trademark;
     private com.toedter.calendar.JDateChooser date_End;
     private com.toedter.calendar.JDateChooser date_Ini;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
