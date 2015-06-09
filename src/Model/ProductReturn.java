@@ -19,75 +19,11 @@ public class ProductReturn implements Serializable {
     private Integer idProduct_Return;
     private Integer quantity;
     private Integer status;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
-    private Integer userCreated;
-    private Integer userUpdated;
-    private MotiveReturn motiveReturnidMotiveReturn;
-    private PickingOrderDetail pickingOrderDetail;
-
-    public ProductReturn() {
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Timestamp getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Timestamp createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Timestamp getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Timestamp updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Integer getUserCreated() {
-        return userCreated;
-    }
-
-    public void setUserCreated(Integer userCreated) {
-        this.userCreated = userCreated;
-    }
-
-    public Integer getUserUpdated() {
-        return userUpdated;
-    }
-
-    public void setUserUpdated(Integer userUpdated) {
-        this.userUpdated = userUpdated;
-    }
-
-    public MotiveReturn getMotiveReturnidMotiveReturn() {
-        return motiveReturnidMotiveReturn;
-    }
-
-    public void setMotiveReturnidMotiveReturn(MotiveReturn motiveReturnidMotiveReturn) {
-        this.motiveReturnidMotiveReturn = motiveReturnidMotiveReturn;
-    }
-
-    public PickingOrderDetail getPickingOrderDetail() {
-        return pickingOrderDetail;
-    }
-
-    public void setPickingOrderDetail(PickingOrderDetail pickingOrderDetail) {
-        this.pickingOrderDetail = pickingOrderDetail;
-    }
+    private Integer idDispatch_Order; 
+    private Integer Motive_Return_idMotive_Return;
+    private Integer Picking_Order_Detail_idPicking_Order_Detail;
+    private Integer Picking_Order_Detail_Picking_Order_idPicking_Order;
+    private Integer Picking_Order_Detail_Product_idProduct;
 
     /**
      * @return the idProduct_Return
@@ -103,5 +39,102 @@ public class ProductReturn implements Serializable {
         this.idProduct_Return = idProduct_Return;
     }
 
+    /**
+     * @return the quantity
+     */
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    /**
+     * @return the status
+     */
+    public Integer getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    /**
+     * @return the Motive_Return_idMotive_Return
+     */
+    public Integer getMotive_Return_idMotive_Return() {
+        return Motive_Return_idMotive_Return;
+    }
+
+    /**
+     * @param Motive_Return_idMotive_Return the Motive_Return_idMotive_Return to set
+     */
+    public void setMotive_Return_idMotive_Return(Integer Motive_Return_idMotive_Return) {
+        this.Motive_Return_idMotive_Return = Motive_Return_idMotive_Return;
+    }
+
+    /**
+     * @return the Picking_Order_Detail_idPicking_Order_Detail
+     */
+    public Integer getPicking_Order_Detail_idPicking_Order_Detail() {
+        return Picking_Order_Detail_idPicking_Order_Detail;
+    }
+
+    /**
+     * @param Picking_Order_Detail_idPicking_Order_Detail the Picking_Order_Detail_idPicking_Order_Detail to set
+     */
+    public void setPicking_Order_Detail_idPicking_Order_Detail(Integer Picking_Order_Detail_idPicking_Order_Detail) {
+        this.Picking_Order_Detail_idPicking_Order_Detail = Picking_Order_Detail_idPicking_Order_Detail;
+    }
+
+    /**
+     * @return the Picking_Order_Detail_Picking_Order_idPicking_Order
+     */
+    public Integer getPicking_Order_Detail_Picking_Order_idPicking_Order() {
+        return Picking_Order_Detail_Picking_Order_idPicking_Order;
+    }
+
+    /**
+     * @param Picking_Order_Detail_Picking_Order_idPicking_Order the Picking_Order_Detail_Picking_Order_idPicking_Order to set
+     */
+    public void setPicking_Order_Detail_Picking_Order_idPicking_Order(Integer Picking_Order_Detail_Picking_Order_idPicking_Order) {
+        this.Picking_Order_Detail_Picking_Order_idPicking_Order = Picking_Order_Detail_Picking_Order_idPicking_Order;
+    }
+
+    /**
+     * @return the Picking_Order_Detail_Product_idProduct
+     */
+    public Integer getPicking_Order_Detail_Product_idProduct() {
+        return Picking_Order_Detail_Product_idProduct;
+    }
+
+    /**
+     * @param Picking_Order_Detail_Product_idProduct the Picking_Order_Detail_Product_idProduct to set
+     */
+    public void setPicking_Order_Detail_Product_idProduct(Integer Picking_Order_Detail_Product_idProduct) {
+        this.Picking_Order_Detail_Product_idProduct = Picking_Order_Detail_Product_idProduct;
+    }
+
+    /**
+     * @return the idDispatch_Order
+     */
+    public Integer getIdDispatch_Order() {
+        return idDispatch_Order;
+    }
+
+    /**
+     * @param idDispatch_Order the idDispatch_Order to set
+     */
+    public void setIdDispatch_Order(Integer idDispatch_Order) {
+        this.idDispatch_Order = idDispatch_Order;
+    }
     
 }
