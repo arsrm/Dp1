@@ -38,7 +38,6 @@ public interface DaoPallet {
     public String PalletLocationIns(Integer idpallet,Integer idmarca,Integer  idproduct,Integer  numorden,Integer idCD,
             Integer idware,Integer idrack, Integer idcelda,Integer idceldadet);     
     
-            
     public String PalletDel(Pallet pallet ); 
     
     public String PalletUpd(Pallet pallet);
@@ -60,5 +59,7 @@ public interface DaoPallet {
     public Integer GetIdCelda(Integer idCD, Integer idware, Integer idrackm,  String celda); 
     
     public Integer GetIdCeldaDetail(Integer idCD, Integer idware, Integer idrackm,  Integer idcelda, String celdadetail);
+
+    public Integer ValidaCelda(Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet);
     
 }

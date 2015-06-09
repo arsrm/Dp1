@@ -458,6 +458,7 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
         String title = "Confirmación";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
+        
         if (reply == JOptionPane.YES_OPTION) 
           { 
             idpallet=listidpallet.get(0);
@@ -469,8 +470,22 @@ public class Frm_PalletLocation extends javax.swing.JFrame {
             idrack=daoPallet.GetIdRack(idcd, idware, cbo_rack.getSelectedItem().toString().trim()); 
             idcelda=daoPallet.GetIdCelda(idcd, idware, idrack, cbo_location_cell.getSelectedItem().toString().trim()); 
             idceldadet=daoPallet.GetIdCeldaDetail(idcd, idware, idrack, idcelda, cbo_locationcell_detail.getSelectedItem().toString().trim()); 
-            daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idcd, idware, idrack, idcelda, idceldadet);
+            Integer cantregistro=0; 
+            
+            cantregistro=daoPallet.ValidaCelda(idcd, idware, idrack, idcelda, idceldadet);
+            
+            if (cantregistro<=0)
+            {daoPallet.PalletLocationIns(idpallet, idmarca, idproduct, numorden, idcd, idware, idrack, idcelda, idceldadet);}
+            else
+            { message = "La Celda Seleccionada ya se encuentra ocupada..por favor seleccione otra Celda!!";
+              title = "Información";
+              JFrame frame = new JFrame(" ");
+              JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+              JOptionPane.setDefaultLocale(null);               
+            }    
             load_tablefilter();   
+            
+            
           }
         }
     }//GEN-LAST:event_btn_saveActionPerformed

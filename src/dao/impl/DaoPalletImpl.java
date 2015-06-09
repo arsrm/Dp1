@@ -621,4 +621,35 @@ public class DaoPalletImpl implements DaoPallet{
         }
         return objmodel;
     }
+
+    @Override
+    public Integer ValidaCelda(Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet) {
+        Integer objmodel = 0;
+        String sql = "select count(1) from pallet_by_product_by_location_cell_detail\n" +
+                    " where Location_Cell_Detail_idDistribution_Center=" + idCD+" "+ 
+                    " and Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse="+idware+" " +
+                    " and Location_Cell_Detail_Location_Cell_Rack_idRack=" +idrack+" " +
+                    " and Location_Cell_Detail_Location_Cell_idLocation_Cell=" +idcelda+ " "+ 
+                    " and Location_Cell_Detail_idLocation_Cell_Detail=" +idceldadet+ " ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    objmodel=rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error de ejecución:" + e.getMessage());
+                objmodel = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return objmodel;
+    }
 }
