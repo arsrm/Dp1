@@ -72,7 +72,7 @@ public class DaoPalletImpl implements DaoPallet{
                       "(select distinct(idDistribution_Center) from location_cell_detail)" ;
         Connection cn = db.getConnection();
         
-        System.out.println("Query ejecutado " + sql); 
+        //System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -118,7 +118,7 @@ public class DaoPalletImpl implements DaoPallet{
                     "where  " +CentroCD+ " )" ;
         Connection cn = db.getConnection();
         
-        System.out.println("Query ejecutado " + sql); 
+       // System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -200,7 +200,7 @@ public class DaoPalletImpl implements DaoPallet{
                       "where idRack in \n" +
                       "(select distinct(Location_Cell_Rack_idRack) from location_cell_detail where " + cadena +")" ;
         Connection cn = db.getConnection();
-        System.out.println("Query ejecutado " + sql); 
+        //System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -307,7 +307,7 @@ public class DaoPalletImpl implements DaoPallet{
                     "where  " +cadrack+ " )" ;
         Connection cn = db.getConnection();
         
-        System.out.println("Query ejecutado " + sql); 
+        //System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -432,8 +432,8 @@ public class DaoPalletImpl implements DaoPallet{
                     "where " +Cadenacelda+ " " ;
         Connection cn = db.getConnection();
         
-        System.out.println("Query para Detalle Celda : " + sql);   
-        System.out.println("Query ejecutado " + sql); 
+      //  System.out.println("Query para Detalle Celda : " + sql);   
+      //  System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -479,7 +479,7 @@ public class DaoPalletImpl implements DaoPallet{
                 ps.setInt(8, idCD);                                                                
                 ps.setInt(9, 1);                                                                                
                 
-                System.out.println("idpallet= "+idpallet+" idmarca=  "+idmarca+" idproduct=  "+idproduct+" idceldadet=  "+idceldadet+" idecelda=  "+idcelda+" idrack=  "+idrack+" idware=  "+idware+" idCD = "+idCD);
+              //  System.out.println("idpallet= "+idpallet+" idmarca=  "+idmarca+" idproduct=  "+idproduct+" idceldadet=  "+idceldadet+" idecelda=  "+idcelda+" idrack=  "+idrack+" idware=  "+idware+" idCD = "+idCD);
                 ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");

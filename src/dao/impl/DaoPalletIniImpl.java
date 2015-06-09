@@ -45,7 +45,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
                 + estadopallet + " " + datefecini + " " + datefecfin + " ";
         Connection cn = db.getConnection();
 
-        System.out.println("Query ejecutado " + sql);
+      //  System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -297,7 +297,7 @@ public class DaoPalletIniImpl implements DaoPalletIni {
                 + "FROM pallet";
         Connection cn = db.getConnection();
 
-        System.out.println("Query ejecutado " + sql);
+       // System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);

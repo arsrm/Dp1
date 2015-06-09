@@ -127,7 +127,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + "FROM product where Trademark_id_Trademark=" + idmark + " ";
         Connection cn = db.getConnection();
 
-        System.out.println("Query ejecutado " + sql);
+      //  System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -485,7 +485,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + "FROM product where idProduct=" +idproduct+" "
                 + " and Trademark_id_Trademark="+idmark + " ";
          
-          System.out.println("Cadena de ejecución"+ sql);
+      //    System.out.println("Cadena de ejecución"+ sql);
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -543,7 +543,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 
         Connection cn = db.getConnection();
         
-        System.out.println("Query ejecutado " + sql); 
+     //   System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
