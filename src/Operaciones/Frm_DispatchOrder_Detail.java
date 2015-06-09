@@ -147,10 +147,15 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         lbl_status.setText("Estado:");
 
         cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "REALIZADO", "PENDIENTE", "CANCELADO" }));
+        cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");
 
         lbl_reg_date.setText("Fecha Registro:");
+
+        jDate_RegisterDate.setEnabled(false);
+
+        jDate_DeliverDate.setEnabled(false);
 
         txt_ClientAddress.setEditable(false);
 

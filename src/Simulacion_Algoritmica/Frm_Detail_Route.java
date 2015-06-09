@@ -6,17 +6,55 @@
 
 package Simulacion_Algoritmica;
 
+import Model.Client;
+import Model.DispatchOrder;
+import Model.PickingOrder;
+import Model.Vehicle;
+import dao.DaoClient;
+import dao.DaoPickingOrder;
+import dao.DaoRequestOrder;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoPickingOrderImpl;
+import dao.impl.DaoRequestOrderImpl;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Luis Miguel
  */
 public class Frm_Detail_Route extends javax.swing.JFrame {
-
+    Frm_Detail_Algorithm frm_daAux;
+    String routeAux;
+    List<DispatchOrder> listDOAux = new ArrayList<>();
+    DaoClient daoClient = new DaoClientImpl();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DefaultTableModel model = new DefaultTableModel();
+    Vehicle vehicleAux = new Vehicle();
     /**
      * Creates new form Frm_Detail_Route
      */
     public Frm_Detail_Route() {
         initComponents();
+    }
+    
+    public Frm_Detail_Route(Frm_Detail_Algorithm frm_da, String route, List<DispatchOrder> listDO, Vehicle veh) {
+        frm_daAux = frm_da;
+        routeAux = route;
+        listDOAux = listDO;
+        vehicleAux = veh;
+        initComponents();
+        txt_plate.setText(vehicleAux.getLicense_plate());
+        txt_name_driver.setText(vehicleAux.getDriver().getName());
+        model = (DefaultTableModel) table_dispatch.getModel();
+        showClients();
     }
 
     /**
@@ -31,13 +69,19 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txt_plate = new javax.swing.JTextField();
+        txt_name_driver = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_dispatch = new javax.swing.JTable();
+        btn_Show = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ruta:"));
 
@@ -45,9 +89,9 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
 
         jLabel2.setText("Transportista:");
 
-        jTextField1.setEditable(false);
+        txt_plate.setEditable(false);
 
-        jTextField2.setEditable(false);
+        txt_name_driver.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -56,12 +100,12 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(7, 7, 7)
-                .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(txt_plate, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_name_driver, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -69,17 +113,18 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jTextField2)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txt_name_driver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabel1)
-                        .addComponent(jLabel2)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txt_plate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Despachos:"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_dispatch.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -87,7 +132,14 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
                 "Orden de Ruta", "Número de Despacho", "Cliente", "Fecha De Entrega"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table_dispatch);
+
+        btn_Show.setText("Mostrar Ruta");
+        btn_Show.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_ShowActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -95,7 +147,11 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 433, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_Show)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -103,6 +159,8 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btn_Show)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -123,23 +181,68 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-   
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        frm_daAux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btn_ShowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ShowActionPerformed
+        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            List<String> routes = new ArrayList<>();
+            routes.add(routeAux);
+            Frm_Show_Route_Solution fsrs = new Frm_Show_Route_Solution(this,routes);
+            fsrs.setLocation(400, 150);
+            fsrs.setVisible(true);
+            this.setVisible(false);
+        }catch (IOException ex) {
+            Logger.getLogger(Frm_Algorithmic_Simulator.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btn_ShowActionPerformed
+
+    private void showClients(){
+        String[] idClients = routeAux.split("-");
+        int size = idClients.length;
+        int order = 1;
+        for(int i=1;i<size-1;i++){
+            Client client = daoClient.clientGet(Integer.parseInt(idClients[i]));
+            int idDO = -1;
+            int sizeD = listDOAux.size();
+            int pos = -1;
+            for(int j=0;j<sizeD;j++){
+                if(client.getIdClient()==listDOAux.get(j).getIdClient()){
+                    pos = j;
+                    break;
+                }
+            }
+            if(pos!=-1)
+                idDO = listDOAux.get(pos).getIdDispatch_Order();
+            Object[] fila = {order,idDO,client.getName(),listDOAux.get(pos).getDepartureDate()};
+            model.addRow(fila);
+            order++;
+                
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Show;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable table_dispatch;
+    private javax.swing.JTextField txt_name_driver;
+    private javax.swing.JTextField txt_plate;
     // End of variables declaration//GEN-END:variables
 }

@@ -6,13 +6,18 @@
 
 package Operaciones;
 
+import Model.Pallet_Product_Location;
 import Model.PickingOrder;
 import Model.PickingOrderDetail;
 import Model.RequestOrder;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoLocationCellDetail;
+import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
+import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
 import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderImpl;
@@ -24,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
+import static tool.Validate.validarEntero;
 
 /**
  *
@@ -37,6 +43,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     List<Integer> pickingToDelete = new ArrayList<>();
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
     /**
      * Creates new form Frm_VerOrdenesEntrega1
      */
@@ -350,50 +357,51 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
             pickingToDelete = new ArrayList<>();
             for (int i = 0; i < table_orders.getRowCount(); i++) {
                 if ((Boolean) table_orders.getValueAt(i, 3)) {
-                    pickingToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
+                    if(table_orders.getValueAt(i, 2).equals("Realizado")==false)
+                        pickingToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
+                    else
+                        ok_option = JOptionPane.showOptionDialog(new JFrame(),"Orden N° "+(int)table_orders.getValueAt(i, 0)+" ya fue atendida. No se puede cancelar.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
 
                 }
             }
-            
-            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                if(ok_option==JOptionPane.OK_OPTION){
-                    int size = pickingToDelete.size();
-                    for(int z=0;z<size;z++){
-                        PickingOrder po = daoPickingOrder.pickingOrderGet(pickingToDelete.get(z));
-                        List<PickingOrderDetail> poL = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
-                        if(po.getStatus()==1 || po.getStatus()==2){
-                            daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),3);
-                            if(poL!=null){
-                                int sizeL = poL.size();
-                                for(int j=0;j<sizeL;j++){
-                                    daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),po.getIdPickingOrder() ,3);
+            if(pickingToDelete.size()!=0){
+                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    if(ok_option==JOptionPane.OK_OPTION){
+                        int size = pickingToDelete.size();
+                        for(int z=0;z<size;z++){
+                            PickingOrder po = daoPickingOrder.pickingOrderGet(pickingToDelete.get(z));
+                            List<PickingOrderDetail> poL = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
+                            if(po.getStatus()==1 || po.getStatus()==2){ //atendido o pendiente lo llevamos al almacen
+                                daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),3);
+                                if(poL!=null){
+                                    int sizeL = poL.size();
+                                    for(int j=0;j<sizeL;j++){
+                                        daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),po.getIdPickingOrder() ,3);
+                                        Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                                        daoPalletProductLocation.daoPallet_Product_LocationActivate(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                                    }
                                 }
-                            }
-                            
-                        }else{
-                            daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),2);
-                            if(poL!=null){
-                                int sizeL = poL.size();
-                                for(int j=0;j<sizeL;j++){
-                                    daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),po.getIdPickingOrder() ,2);
+
+                            }else{
+                                daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),2);
+                                if(poL!=null){
+                                    int sizeL = poL.size();
+                                    for(int j=0;j<sizeL;j++){ //lo sacamos del location cell provisionalmente
+                                        daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),po.getIdPickingOrder() ,2);
+                                        Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                                        daoPalletProductLocation.daoPallet_Product_LocationDel(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                                    }
                                 }
                             }
                         }
+
                     }
-                    
+                    refreshGrid();
                 }
-                refreshGrid();
-                 String orderN =  txt_num_order.getText();
-                if(orderN == null || orderN.equals("")==true){ 
-                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                }else{
-                    Integer orderNumb = Integer.parseInt(orderN);
-                    pickingOrderList = daoPickingOrder.pickingOrderQry_search(orderNumb);
-                }
-                
-                fillTable();
+            }else{
+                ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se realizaron los cambios.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             }
         }else{
             ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -453,7 +461,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un número de orden de pedido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                  
         }else{
-            
+                if(validarEntero(orderN)){
                     Integer orderNumb = Integer.parseInt(orderN);
                     pickingOrderList = daoPickingOrder.pickingOrderQry_search(orderNumb);
                     if(pickingOrderList == null ){
@@ -481,8 +489,9 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                             }
                         }
                     }
-            
-            
+                }else{
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Formato de número de orden no válido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                }
         }
        
     }//GEN-LAST:event_btn_searchOrderActionPerformed
@@ -494,8 +503,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         Date dateFrom = date_from.getDate();
         Date dateTo = date_to.getDate();
        
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {  
+       
             pickingOrderList = daoPickingOrder.pickingOrderQry_search(dateFrom,dateTo);
             if(pickingOrderList == null ){
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -521,7 +529,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                     }
                 }
             }
-        } 
+        
         
     }//GEN-LAST:event_btn_searchDateActionPerformed
 

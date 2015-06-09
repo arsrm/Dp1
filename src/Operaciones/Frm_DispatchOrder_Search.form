@@ -75,6 +75,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="btn_Delete" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
+                          <Component id="btn_GenerateRoute" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_Cancel" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                       </Group>
@@ -90,6 +92,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_Delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_Cancel" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_GenerateRoute" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
@@ -168,6 +171,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_CancelActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_GenerateRoute">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Generar Rutas"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_GenerateRouteActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

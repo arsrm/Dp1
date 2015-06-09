@@ -28,6 +28,8 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
+import static tool.Validate.validarEntero;
+import static tool.Validate.validarRazonSocial;
 
 /**
  *
@@ -320,18 +322,25 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             listRequestToDelete =  new ArrayList<>();
              for (int i = 0; i < table_orders.getRowCount(); i++) {
                 if ((Boolean) table_orders.getValueAt(i, 3)) {
-                    listRequestToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
+                    if(table_orders.getValueAt(i,2).equals("Atendido")==false)
+                        listRequestToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
+                    else{
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Pedido N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    }
                 }
             }
-           
-            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                daoRequest.requestsDel(listRequestToDelete);
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han cambiado los estados de los pedidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                refreshGrid();
-                searchFilter();
-                fillTable();
+            if(listRequestToDelete.size()!=0){
+                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                    daoRequest.requestsDel(listRequestToDelete);
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han cambiado los estados de los pedidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    refreshGrid();
+                    searchFilter();
+                    fillTable();
 
+                }
+            }else{
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se realizaron cambios.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
             }
         }else{
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -347,14 +356,17 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
              txt_client_name.setText("");
         }else{
             String ruc = txt_id_client.getText();
-            
-            client = daoClient.clientGet(ruc);
-            if(client!=null)
-                txt_client_name.setText(client.getName());
-            else{
-               ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontró cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                txt_client_name.setText("");
-            }    
+            if(validarRazonSocial(ruc)==true){
+                client = daoClient.clientGet(ruc);
+                if(client!=null)
+                    txt_client_name.setText(client.getName());
+                else{
+                   ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontró cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    txt_client_name.setText("");
+                }   
+            }else{
+                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un tipo de ruc valido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }
         }
             
     }//GEN-LAST:event_btn_client_searchActionPerformed

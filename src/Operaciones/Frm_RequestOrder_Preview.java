@@ -79,6 +79,7 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
     
     private void fillTable(){
         int size = listAux.size();
+        System.out.println("SASDg: "+size);
         for(int i=0;i<size;i++){
             Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listAux.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
             List<PalletProduct> pp = daoPalletProduct.GetPalletProductList("WHERE Pallet_idPallet="+ppl.getPallet_By_Product_Pallet_idPallet());
@@ -87,7 +88,6 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
                 String ean128 = pp.get(j).getCod_ean128();
                 Product prod = daoProduct.ProductsGet(pp.get(j).getIdproduct());
                 Object[] fila = {ean128,prod.getName()};
-            
                  model.addRow(fila);
             }
         }
@@ -114,7 +114,7 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
         table_products = new javax.swing.JTable();
         btn_exit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
@@ -251,13 +251,11 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
         // TODO add your handling code here:
-        frm_rodAux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_exitActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        frm_rodAux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 

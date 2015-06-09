@@ -27,4 +27,6 @@ public interface DaoRequestOrderDetail {
     public String requestOrderDetailUpd(RequestOrderDetail requestOrderDetail);
     
     public String requestOrderDetailsDel(List<Integer> idOrderDetailList, Integer idRequestOrder);
+    
+    public Integer getAvailablePallets(Integer codProd);
 }

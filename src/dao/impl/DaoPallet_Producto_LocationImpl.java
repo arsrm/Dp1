@@ -307,8 +307,78 @@ public class DaoPallet_Producto_LocationImpl implements DaoPallet_Product_Locati
         }
         return list;
     }
+
+    @Override
+    public String daoPallet_Product_LocationDel(Integer idPallet_Product_Location, Integer idPallet) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        String result = null;
+        String sql = "UPDATE Pallet_By_Product_By_Location_Cell_Detail  SET "
+                + "status= 0 "
+                + "WHERE idPallet_By_Product_By_Location_Cell_Detail=? AND Pallet_By_Product_Pallet_idPallet=?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,idPallet_Product_Location);
+                ps.setInt(2,idPallet);
+                
+                
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
     
-    
+    @Override
+    public String daoPallet_Product_LocationActivate(Integer idPallet_Product_Location, Integer idPallet) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        String result = null;
+        String sql = "UPDATE Pallet_By_Product_By_Location_Cell_Detail  SET "
+                + "status= 1 "
+                + "WHERE idPallet_By_Product_By_Location_Cell_Detail=? AND Pallet_By_Product_Pallet_idPallet=?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,idPallet_Product_Location);
+                ps.setInt(2,idPallet);
+                
+                
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
 
     
 }

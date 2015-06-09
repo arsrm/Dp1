@@ -151,8 +151,13 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         lbl_status.setText("Estado:");
 
         cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "REALIZADO", "PENDIENTE", "CANCELADO" }));
+        cbo_status.setEnabled(false);
 
         lbl_reg_date.setText("Fecha Registro:");
+
+        date_register.setEnabled(false);
+
+        date_deliver.setEnabled(false);
 
         lbl_num_orderR.setText("Número de Orden Pedido: ");
         lbl_num_orderR.setToolTipText("");
@@ -348,10 +353,16 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     int size = listRequestToDelete.size();
                     for(int z=0;z<size;z++){
                         PickingOrderDetail detail = daoPickingOrderDetail.pickingOrderDetailGet(listRequestToDelete.get(z));
-                        if(detail.getStatus()==1 || detail.getStatus()==2)
+                        if(detail.getStatus()==1 || detail.getStatus()==2){//lo dejamos de nuevo en su sitio
                             daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),3);
-                        else
+                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
+                            daoPalletProductLocation.daoPallet_Product_LocationActivate(detail.getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                        }else{
                             daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),2);
+                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
+                            //lo sacamos del location cell
+                            daoPalletProductLocation.daoPallet_Product_LocationDel(detail.getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                        }   
                     }
                     
                 }
@@ -410,7 +421,9 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 for(int z=0;z<size;z++){
                     PickingOrderDetail detail = daoPickingOrderDetail.pickingOrderDetailGet(listPickingToConfirm.get(z));
                     daoPickingOrderDetail.pickingOrderDetailDel(listPickingToConfirm.get(z),detail.getPicking_Order_idPicking_Order(),1);
-                  }
+                    Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
+                    daoPalletProductLocation.daoPallet_Product_LocationDel(detail.getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                }
                 ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                 refreshGrid();
                 fillTable();
@@ -465,6 +478,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         Integer numOrder = pickingOrderAux.getIdRequest_Order();
         RequestOrder rO = daoRequestOrder.requestOrderGet(numOrder);
         date_deliver.setDate(rO.getDateline());
+        cbo_status.setSelectedIndex(pickingOrderAux.getStatus());
         
         
     }

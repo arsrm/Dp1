@@ -273,4 +273,47 @@ public class DaoRequestOrderDetailImpl implements DaoRequestOrderDetail {
         return result;
     }
     
+    @Override
+    public Integer getAvailablePallets(Integer codProd){
+        
+        Integer count = 0;
+        String sql = null;
+                sql=   "select distinct count(*) as count "+
+                       "from pallet_by_product_by_location_cell_detail ppl, pallet_by_product pp"
+                        +" where Pallet_By_Product_Product_idProduct = ? "
+                        +" and  ppl.status='1' and ppl.Pallet_By_Product_Pallet_idPallet=pp.Pallet_idPallet "
+                        +" order by expiration_date asc";
+                        
+                        
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                 
+                  ps.setInt(1,codProd);
+                  System.out.println(sql);
+                ResultSet rs = ps.executeQuery();
+                
+               
+                while (rs.next()) {
+                    
+                   count = rs.getInt("count");
+                   
+                   
+                }
+
+            } catch (SQLException e) {
+                count = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return count;
+    
+    }
+    
 }

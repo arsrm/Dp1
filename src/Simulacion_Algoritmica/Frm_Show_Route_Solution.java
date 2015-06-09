@@ -50,7 +50,9 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     List<String> listPerSol;
     DaoClient daoClient = new DaoClientImpl();
     DaoDistributionCenter daoDB = new DaoDistributionCenterImpl();
+    Frm_Detail_Route frm_drAux = new Frm_Detail_Route();
     Integer flag = 0;
+    Integer flagWindow = 0;
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
             String routes = null;
@@ -136,7 +138,20 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         printMap();
         
         showRoute(solutionsPerList.get(0));
+        flagWindow = 0;
         
+    }
+    
+    public Frm_Show_Route_Solution(Frm_Detail_Route frm_dr,List<String> solutionsPerList) throws IOException {
+        frm_drAux=frm_dr;
+        setTitle("VISUALIZACIÓN DE LA RUTA");
+        initComponents();
+        listPerSol = solutionsPerList;
+        initializeCombo();
+        printMap();
+        
+        showRoute(solutionsPerList.get(0));
+        flagWindow = 1;
     }
     
     private void initializeCombo(){
@@ -255,8 +270,13 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
 
     private void brn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_brn_exitActionPerformed
         // TODO add your handling code here:
-        frm_asAux.setVisible(true);
-        this.dispose();
+        if(flagWindow==0){
+            frm_asAux.setVisible(true);
+            this.dispose();
+        }else{
+            frm_drAux.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_brn_exitActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

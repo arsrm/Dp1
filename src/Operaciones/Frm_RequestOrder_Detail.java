@@ -8,6 +8,7 @@ package Operaciones;
 
 import Model.LocationCellDetail;
 import Model.Pallet;
+import Model.Pallet_Product_Location;
 import Model.PickingOrder;
 import Model.PickingOrderDetail;
 import Model.Product;
@@ -15,11 +16,15 @@ import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import Model.StateRequestOrder;
 import Model.Users;
+import dao.DaoPalletProduct;
+import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
 import dao.DaoStateRequestOrder;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
 import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
@@ -39,7 +44,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 import javax.swing.text.TableView.TableCell;
+import tool.Convierte;
+import static tool.Convierte.aInteger;
 import tool.SelectAllHeader;
+import tool.Validate;
 
 /**
  *
@@ -52,11 +60,14 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
     DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
     RequestOrder roAux = new RequestOrder();
     DefaultTableModel model = new DefaultTableModel();
     List<Integer> listRequestToDelete =  new ArrayList<>();
     Integer idRequest;
     Boolean validateRequest = true;
+    Validate valida = new Validate();
     
     /**
      * Creates new form Frm_VerDetalleOrdenPedido1
@@ -75,32 +86,36 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         setTitle("ORDEN DE PEDIDO");
         idRequest = idRequestOrder;
         roAux = daoRequestOrder.requestOrderGet(idRequest);
-        //System.out.println(roAux.getRequestOrderDetailList().get(0).getRequestOrder().getIdRequestOrder());
         frm_rosAux = frm_ros;
         initComponents();
-        TableColumn tc = table_products.getColumnModel().getColumn(7);
-        tc.setHeaderRenderer(new SelectAllHeader(table_products, 7));
+        TableColumn tc = table_products.getColumnModel().getColumn(8);
+        tc.setHeaderRenderer(new SelectAllHeader(table_products, 8));
         model = (DefaultTableModel) table_products.getModel();
         fillData();
-        if(roAux.getStateRequestOrder().getIdStateRequestOrder()==3){//si esta cancelado
+        if(roAux.getStateRequestOrder().getIdStateRequestOrder()==3 || roAux.getStateRequestOrder().getIdStateRequestOrder()==1){//si esta cancelado o atendido
             btn_delete.setEnabled(false);
             btn_generate_order.setEnabled(false);
-        }
-        verifyProducts();
+            
+        }else
+            verifyProducts();
         putComboInTable();
     }
-
+    
+    
     private void putComboInTable(){
-        TableColumn tC = table_products.getColumnModel().getColumn(5);
+        TableColumn tC = table_products.getColumnModel().getColumn(6);
         List<RequestOrderDetail> rodList = roAux.getRequestOrderDetailList();
         int sizeRows = table_products.getRowCount();
         List<Integer[]> quantities = new ArrayList<>();
         for(int i=0;i<sizeRows;i++){
-            TableCellEditor tce = table_products.getCellEditor(i, 5);
+            TableCellEditor tce = table_products.getCellEditor(i, 6);
             JComboBox comboBox = new JComboBox();
                 try {
                     RequestOrderDetail roD = rodList.get(i);
-                    int size = roD.getProduct().getFreeStock()/roD.getProduct().getQuantityBoxesPerPallet();
+                    int size = daoRequestOrderDetail.getAvailablePallets(roD.getProduct().getIdProduct());
+                    int palletsRequested = Integer.parseInt(table_products.getValueAt(i,4).toString());
+                    if(size>palletsRequested)
+                        size = palletsRequested;
                     Integer[] list = new Integer[size+1];
                     int item = 0;
                     for(int j=0;j<size+1;j++){
@@ -116,7 +131,6 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 
         tC.setCellEditor(new MyComboEditor(quantities));
         }
-    
         
         
     
@@ -265,14 +279,14 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N° Línea", "Código Producto", "Descripción", "Cantidad Solicitado (*)", "Cantidad Disponible (*)", "Cantidad Entregada (*)", "Estado", "Seleccionar"
+                "N° Línea", "Código Producto", "Descripción", "Cantidad Solicitado (*)", "Cantidad Pendiente", "Cantidad Disponible (*)", "Cantidad Entregada (*)", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true, false, true
+                false, false, false, false, true, false, true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -401,7 +415,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         if(ifNoColummnSelected()==false){
             listRequestToDelete = new ArrayList<>();
             for (int i = 0; i < table_products.getRowCount(); i++) {
-                if ((Boolean) table_products.getValueAt(i, 7)) {
+                if ((Boolean) table_products.getValueAt(i, 8)) {
                     listRequestToDelete.add(Integer.parseInt(table_products.getValueAt(i, 0).toString()));
 
                 }
@@ -441,10 +455,10 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
             else
                 status = "Activo";
             
-            int number_pallets = roD.getProduct().getFreeStock()/roD.getProduct().getQuantityBoxesPerPallet();
+            int number_pallets = daoRequestOrderDetail.getAvailablePallets(roD.getProduct().getIdProduct());
             
             Object[] fila = {list.get(i).getIdRequest_Order_Detail(),roD.getProduct().getIdProduct().toString(),roD.getProduct().getName(),roD.getQuantity().toString(),
-                            number_pallets,"",status,false};
+                            roD.getRemaining(),number_pallets,"",status,false};
             
             model.addRow(fila);
            
@@ -468,66 +482,92 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         //VERIFICAR ACCESIBILIDAD Y MENSAJERIA
         //**********************************
         Object[] options = {"OK"};
+        int ok_option;
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
         
-            int size = table_products.getRowCount();
-           
-            //TERCERO: buscar los pallets
-            PickingOrder po = new PickingOrder();
-            //seteamos datos principales
-            po.setDate(new Date());
-            //1: REALIZADO 2:PENDIENTE 3:CANCELADO
-            po.setStatus(2);
-            po.setIdRequest_Order(roAux.getIdRequestOrder());
-            Integer idPicking = daoPickingOrder.pickingOrderIns(po);
-            po.setIdPickingOrder(idPicking);
-
-            //SETEAMOS EL USUARIO ACTUAL;
-            //po.setUserCreated(actualUser.getIdUser());//---PENDIENTE LA BUSQUEDA DEL USUARIO
-            Integer index = 1;
-            List<PickingOrderDetail> listpoD=null;
-            for(int i=0;i<size;i++){
-                //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
-                int palletsNumberDemanding = (int)table_products.getValueAt(i,5);
-                Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
-                //System.out.println(palletsNumberDemanding +" " + product.getIdProduct());
-                listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDemanding, product.getIdProduct());
-                if(listpoD != null){
-                    int sizeL= listpoD.size();
-                    for(int j=0;j<sizeL;j++){
-                        listpoD.get(j).setIdPicking_Order_Detail(index);
-                        daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
-                        index++;
+            boolean correctData = validateData();
+            if(correctData == true){
+                int size = table_products.getRowCount();
+                //TERCERO: buscar los pallets
+                PickingOrder po = new PickingOrder();
+                //seteamos datos principales
+                po.setDate(new Date());
+                //1: REALIZADO 2:PENDIENTE 3:CANCELADO
+                po.setStatus(2);
+                po.setIdRequest_Order(roAux.getIdRequestOrder());
+                Integer idPicking = daoPickingOrder.pickingOrderIns(po);
+                po.setIdPickingOrder(idPicking);
+                Integer index = 1;
+                List<PickingOrderDetail> listpoD=null;
+                boolean requestCompleted =true;
+                List<PickingOrderDetail> poList = new ArrayList<>();
+                for(int i=0;i<size;i++){
+                    //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
+                    Integer palletsNumberDelivered = (Integer)table_products.getValueAt(i,6);
+                    Integer palletsNumberRequested = Integer.parseInt(table_products.getValueAt(i,4).toString());
+                    if(palletsNumberDelivered <palletsNumberRequested){ //si entrega menos de lo que tienes--ya es parcial
+                        requestCompleted = false;
+                        System.out.println("ENTRO AQUI");
                     }
-                    Integer delivered = (Integer)table_products.getValueAt(i, 5);
-                    Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
-                    roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
-                    roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
-                    //y se ajusta la nueva cantidad solicitada con lo que falta
-                    roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+                    Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
+                    //System.out.println(palletsNumberDemanding +" " + product.getIdProduct());
+                    listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDelivered, product.getIdProduct());
+                    
+                    if(listpoD != null){
+                        int sizeL= listpoD.size();
+                        for(int j=0;j<sizeL;j++){
+                            daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
+                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                            poList.add(listpoD.get(j));
+                            daoPalletProductLocation.daoPallet_Product_LocationDel(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                            index++;
+                        }
+                        Integer delivered = (Integer)table_products.getValueAt(i, 6);
+                        Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
+                        roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
+                        roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
+                        //y se ajusta la nueva cantidad solicitada con lo que falta
+                        //roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+                    }
                 }
-            }
-            //SE SETEA EN ESTADO ATENDIDO
-            StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
-            roAux.setStateRequestOrder(state);
-            //SE PROCEDE CON UN UPDATE
-            daoRequestOrder.requestOrderUpd(roAux);
-            if(JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
-                Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,listpoD);
-                frm_rop.setLocation(450,150);
-                frm_rop.setVisible(true);
-                frm_rop.setLocationRelativeTo(null);
-                this.dispose();
-            }
+                //SE SETEA EN ESTADO ATENDIDO o PENDIENTE AUN
+                StateRequestOrder state = new StateRequestOrder();
+                if(requestCompleted == true)
+                     state = daoStateRequestOrder.stateRequestOrderGet(1);
+                else
+                    state = daoStateRequestOrder.stateRequestOrderGet(2);
+                roAux.setStateRequestOrder(state);
+                //SE PROCEDE CON UN UPDATE
+                daoRequestOrder.requestOrderUpd(roAux);
+                if(JOptionPane.showOptionDialog(new JFrame(),"Orden de picking registrada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
+                    Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,poList);
+                    frm_rop.setLocation(450,150);
+                    frm_rop.setVisible(true);
+                    frm_rop.setLocationRelativeTo(null);
+                    this.dispose();
+                }
+            }else
+                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Debe completar esta columna por completo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
     }//GEN-LAST:event_btn_generate_orderActionPerformed
 
+    private boolean validateData(){
+        int sizeRows =  table_products.getRowCount();
+        for(int i=0;i<sizeRows;i++){
+            if(aInteger(table_products.getValueAt(i,6).toString())==null){
+               System.out.println(i);
+                return false; 
+            }
+               
+        }
+        return true;
+    }
     
     private boolean ifNoColummnSelected(){
         int sizeRows =  table_products.getRowCount();
         for(int i=0;i<sizeRows;i++){
-            boolean statusSelected = (Boolean)table_products.getValueAt(i, 7);
+            boolean statusSelected = (Boolean)table_products.getValueAt(i, 8);
             if(statusSelected == true)
                 return false;
         }
@@ -538,7 +578,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         List<RequestOrderDetail> roD = roAux.getRequestOrderDetailList();
         int size = roD.size();
         for (int i=0;i<size;i++){
-            String status = table_products.getValueAt(i, 6).toString();
+            String status = table_products.getValueAt(i, 7).toString();
             if(status.equals("Activo")==true)
                 return false;
         }
@@ -552,6 +592,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 public MyComboEditor(List<Integer[]> values){
                         super(new JComboBox());
                         this.values = values;
+                        
                 }
                 
                 public Component getTableCellEditorComponent(JTable table, Object value,

@@ -70,20 +70,18 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
        
         String result = null;
         String sql = "INSERT INTO Picking_Order_Detail("
-                + "idPicking_Order_Detail,"
                 + "status,"
                 + "Picking_Order_idPicking_Order,"
                 + "idPallet_By_Product_By_Location_Cell_Detail"
-                + ") VALUES(?,?,?,?)";
+                + ") VALUES(?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, pickingOrderDetail.getIdPicking_Order_Detail() );
-                ps.setInt(2,pickingOrderDetail.getStatus());
-                ps.setInt(3, pickingOrderDetail.getPicking_Order_idPicking_Order());
-                ps.setInt(4, pickingOrderDetail.getIdPallet_By_Product_By_Location_Cell_Detail());
+                ps.setInt(1,pickingOrderDetail.getStatus());
+                ps.setInt(2, pickingOrderDetail.getPicking_Order_idPicking_Order());
+                ps.setInt(3, pickingOrderDetail.getIdPallet_By_Product_By_Location_Cell_Detail());
                 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
@@ -169,12 +167,12 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
         return pickingOrder;
     }
     
-     @Override
+    @Override
     public List<PickingOrderDetail> pickingOrderDetailFind(Integer pickingOrder , Integer numpallet , Integer codProd){
         
         List<PickingOrderDetail> list = null;
         String sql = null;
-                sql=    "select  Pallet_By_Product.status 'Estado',"
+                sql=    "select distinct Pallet_By_Product.status 'Estado',"
                         + "expiration_date,idPallet_By_Product_By_Location_Cell_Detail,"
                         + "Pallet_By_Product_Product_idProduct "
                         + "from pallet_by_product_by_location_cell_detail"

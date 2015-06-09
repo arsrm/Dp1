@@ -32,9 +32,9 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
 
     
     @Override
-    public String executionAlgorithmIns(ExecutionAlgorithm execution) {
+    public Integer executionAlgorithmIns(ExecutionAlgorithm execution) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        String result = null;
+        Integer idGenerated = -1;
         String sql = "INSERT INTO execution_algorithm("
                 +"date,status,function_value,vehicles_number"
                 + ") VALUES(?,?,?,?)";
@@ -42,7 +42,7 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
-                PreparedStatement ps = cn.prepareStatement(sql);
+                PreparedStatement ps = cn.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS);
               
                 ps.setDate(1, new java.sql.Date(execution.getDate().getTime()));
                 ps.setInt(2,execution.getStatus() );
@@ -56,19 +56,22 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
                     throw new SQLException("0 filas afectadas");
                 }
                
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                idGenerated = rs.getInt(1);
 
             } catch (SQLException e) {
-                result = e.getMessage();
+                idGenerated = 1;
             } finally {
                 try {
                     cn.close();
                 } catch (SQLException e) {
-                    result = e.getMessage();
+                    idGenerated = 1;
                 }
             }
         }
 
-        return result;
+        return idGenerated;
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.List;
  */
 public interface DaoExecutionAlgorithm {
     
-    public String executionAlgorithmIns(ExecutionAlgorithm execution);
+    public Integer executionAlgorithmIns(ExecutionAlgorithm execution);
     
     public List<ExecutionAlgorithm> executionAlgorithmQry();
     

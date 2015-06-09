@@ -6,12 +6,40 @@
 
 package Simulacion_Algoritmica;
 
+import Model.Client;
+import Model.DispatchOrder;
+import Model.ExecutionAlgorithm;
+import Model.ExecutionDetail;
+import Model.Vehicle;
+import dao.DaoClient;
+import dao.DaoExecutionAlgorithm;
+import dao.DaoVehicle;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoExecutionAlgorithmImpl;
+import dao.impl.DaoVehicleImpl;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Luis Miguel
  */
 public class Frm_Detail_Algorithm extends javax.swing.JFrame {
-
+    Frm_Algorithmic_Simulator frm_fasAux;
+    List<String>listPerSolutionAux = new ArrayList<>();
+    DefaultTableModel model = new DefaultTableModel();
+    tabuSearchManager tabuManager;
+    DaoClient daoClient = new DaoClientImpl();
+    List<Vehicle> vehList = new ArrayList<>();
+    List<Client> cliList = new ArrayList<>();
+    List<DispatchOrder> dispatchListAux = new ArrayList<>();
+    Double tabuCost;
+    DaoExecutionAlgorithm daoExe = new DaoExecutionAlgorithmImpl();
+    DaoVehicle daoVehicle = new DaoVehicleImpl();
     /**
      * Creates new form Frm_Detail_Algorithm
      */
@@ -19,6 +47,66 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         initComponents();
     }
 
+    public Frm_Detail_Algorithm(Frm_Algorithmic_Simulator frm_fas,List<String>listPerSolution, tabuSearchManager tsManager, List<DispatchOrder> dispatchList,Double cost ){
+        frm_fasAux = frm_fas;
+        listPerSolutionAux = listPerSolution;
+        tabuCost = cost;
+        initComponents();
+        tabuManager = tsManager;
+        vehList = tsManager.getVehicleList();
+        cliList = tsManager.getClientList();
+        dispatchListAux = dispatchList;
+        model = (DefaultTableModel) table_vehicles.getModel();
+        fillTable();
+        
+    }
+    
+    private void fillTable(){
+        int size = listPerSolutionAux.size();
+        for(int i = 0;i<size;i++){
+            double distance = calculateDistance(listPerSolutionAux.get(i));
+            double totalWeight = calculateWeight(listPerSolutionAux.get(i));
+            Object[] fila = {vehList.get(i).getLicense_plate(),distance,totalWeight};
+            model.addRow(fila);
+        }
+        
+    }
+    
+    private double calculateDistance(String route){
+        double distance = 0.0;
+        String[] clientsId = route.split("-");
+        int sizeId = clientsId.length;
+        double distanceMatrix[][] = tabuManager.getDistances();
+        
+        for(int i=0;i<sizeId-1;i++){
+            int indexIni = Integer.parseInt(clientsId[i]);
+            int indexEnd = Integer.parseInt(clientsId[i+1]);
+            distance+=distanceMatrix[indexIni][indexEnd];
+        }
+        return distance;
+    }
+    
+    private double calculateWeight(String route){
+        double totalweight = 0.0;
+        String[] clientsId = route.split("-");
+        int sizeId = clientsId.length;
+        int sizeClient = cliList.size();
+        System.out.println("SIZE: "+sizeClient);
+        for(int i=1;i<sizeId-1;i++){
+            Client cli = new Client();
+            
+            for(int j=0;j<sizeClient;j++){
+                if(cliList.get(j).getIdClient()==Integer.parseInt(clientsId[i])){
+                    cli = cliList.get(j);
+                    break;
+                }
+            }
+            totalweight+=cli.getTotalWeight();
+        }
+        return totalweight;
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -30,39 +118,35 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txt_num_exe = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_vehicles = new javax.swing.JTable();
+        btn_Save = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ejecución"));
 
         jLabel1.setText("Número de Ejecución:");
 
-        jTextField1.setEditable(false);
-
-        jLabel2.setText("Número de Vuelta:");
-
-        jTextField2.setEditable(false);
+        txt_num_exe.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(20, 20, 20))
+                .addComponent(txt_num_exe, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -70,15 +154,13 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_num_exe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle Ejecución"));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_vehicles.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -86,7 +168,12 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 "Número de Vehículo", "Kilometros Recorridos", "Peso Total Despachado"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        table_vehicles.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                table_vehiclesMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(table_vehicles);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -101,8 +188,15 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 9, Short.MAX_VALUE))
         );
+
+        btn_Save.setText("Guardar Ejecución");
+        btn_Save.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_SaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -114,27 +208,79 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_Save)
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_Save)
+                .addGap(5, 5, 5))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void table_vehiclesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_vehiclesMouseClicked
+        // TODO add your handling code here:
+        if(evt.getSource()==table_vehicles){
+            int rowSel = table_vehicles.getSelectedRow();
+            int colSel = table_vehicles.getSelectedColumn();
+            if (colSel==0){
+              Frm_Detail_Route frm_srs;
+              frm_srs = new Frm_Detail_Route(this,listPerSolutionAux.get(rowSel),dispatchListAux,vehList.get(rowSel));
+              frm_srs.setLocationRelativeTo(null);  
+              frm_srs.setVisible(true);
+                this.setVisible(false);
+              
+            }
+        }
+    }//GEN-LAST:event_table_vehiclesMouseClicked
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        frm_fasAux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosing
+
+    private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
+        // TODO add your handling code here:
+        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            ExecutionAlgorithm exe = new ExecutionAlgorithm();
+            Date now = new Date();
+            exe.setDate(now);
+            exe.setFunction_value(tabuCost);
+            exe.setStatus(1);
+            exe.setVehicles_number(vehList.size());
+            Integer id = daoExe.executionAlgorithmIns(exe);
+            //insertamos el detalle
+            int sizeV = vehList.size();
+            for(int i=0;i<sizeV;i++){
+                ExecutionDetail exeD = new ExecutionDetail();
+                exeD.setIdVehicle(vehList.get(i).getIdVehicle());
+                exeD.setIdExecutionAlgorithm(id);
+                exeD.setIdDriver(vehList.get(i).getDriver().getIdDriver());
+                
+                
+            }
+        }
+    }//GEN-LAST:event_btn_SaveActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Save;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable table_vehicles;
+    private javax.swing.JTextField txt_num_exe;
     // End of variables declaration//GEN-END:variables
 }

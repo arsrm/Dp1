@@ -24,8 +24,15 @@ import java.util.logging.Logger;
  */
 public class tabuSearchManager {
     
-    private static List<Vehicle> vehicleList = new ArrayList<>(); //--> LISTA DE CAMIONES
-    private static List<Client> clientList = new ArrayList<>(); //---> LISTA DE CLIENTES
+    private  List<Vehicle> vehicleList = new ArrayList<>(); //--> LISTA DE CAMIONES
+    private  List<Client> clientList = new ArrayList<>(); //---> LISTA DE CLIENTES
+
+    /**
+     * @param aVehicleList the vehicleList to set
+     */
+    public  void setVehicleList(List<Vehicle> aVehicleList) {
+        vehicleList = aVehicleList;
+    }
     private ArrayList<Integer> initialSolution = new ArrayList<>();//---> SOLUCION INICIAL
     private double [][] distances;//---> MATRIZ DE COSTO (DE PUNTO A PUNTO)
     private int stoppingCriterion;//---> CRITERIO DE PARADA
@@ -173,7 +180,7 @@ public class tabuSearchManager {
     }
     
     public double[][] getDistancesMatrix(){
-        int sizeClient = clientList.size();
+        int sizeClient = getClientList().size();
         double[][]distances =  new double[sizeClient][sizeClient];
         double[][]costs = new double[sizeClient][sizeClient];
         Client client1=null;
@@ -186,8 +193,8 @@ public class tabuSearchManager {
                         costs[i][j]=0;
                     }
                     else{
-                        client1 = clientList.get(i);//cliente i
-                        client2 = clientList.get(j);//cliente j
+                        client1 = getClientList().get(i);//cliente i
+                        client2 = getClientList().get(j);//cliente j
                         //extraemos las coordenadas
                         int client1x = client1.getPos_x();
                         int client1y = client1.getPos_y();
@@ -199,10 +206,34 @@ public class tabuSearchManager {
                     } 
                 }
             }
+            return distances;
+    }
+    
+    public double[][] getDistancesMatrixPerRoute(List<Client> list){
+        int sizeClient = list.size();
+        double[][]distances =  new double[sizeClient][sizeClient];
+        double[][]costs = new double[sizeClient][sizeClient];
+        Client client1=null;
+        Client client2=null;
+        
             for(int i=0;i<sizeClient;i++){
-                System.out.println("");
                 for(int j=0;j<sizeClient;j++){
-                    System.out.print(distances[i][j]+" ");
+                    if(i==j){
+                        distances[i][j]=0;
+                        costs[i][j]=0;
+                    }
+                    else{
+                        client1 = list.get(i);//cliente i
+                        client2 = list.get(j);//cliente j
+                        //extraemos las coordenadas
+                        int client1x = client1.getPos_x();
+                        int client1y = client1.getPos_y();
+                        int client2x = client2.getPos_x();
+                        int client2y = client2.getPos_y();
+                        //calculamos la distancia
+                        double distance = (double)Math.round(Math.pow(Math.pow(client1x-client2x,2)+Math.pow(client1y-client2y,2),0.5)*100)/100;
+                        distances[i][j]= distance;
+                    } 
                 }
             }
             return distances;
@@ -215,7 +246,7 @@ public class tabuSearchManager {
         ArrayList<Integer> firstSolution = generateFirstBestSolution(0);
         int sizeFirstSolution = firstSolution.size();
         double initialCost = calculateFunctionCost(firstSolution);
-        int clientsNumb = clientList.size()-1;
+        int clientsNumb = getClientList().size()-1;
         int maxSizeSolution = clientsNumb+clientsNumb+1;
         Integer[][] solutions = new Integer[clientsNumb][maxSizeSolution];
         //poner todas las soluciones de nuevo en estado de orden en no atendida a excepcion del primer cliente.
@@ -227,8 +258,8 @@ public class tabuSearchManager {
             for(int j=0;j<sizeFirstSolution;j++){
                 if(j>0){
                     int index = getClientIndex(solutions[0][j]);
-                    if(clientList.get(index).getIdClient()!=0){
-                        clientList.get(index).setRequestState(0);
+                    if(getClientList().get(index).getIdClient()!=0){
+                        getClientList().get(index).setRequestState(0);
                     }
                 }
             }
@@ -244,8 +275,8 @@ public class tabuSearchManager {
                 if(j>0){
                     if(solutions[i][j]!=null){
                         int index = getClientIndex(solutions[i][j]);
-                        if(clientList.get(index).getIdClient()!=0){
-                            clientList.get(index).setRequestState(0);
+                        if(getClientList().get(index).getIdClient()!=0){
+                            getClientList().get(index).setRequestState(0);
                         }
                     }
                 }
@@ -292,10 +323,10 @@ public class tabuSearchManager {
     }
     
     public int countNoClientsAttended(){
-        int size = clientList.size();
+        int size = getClientList().size();
         int count = 0;
         for(int i=0;i<size;i++){
-            if(clientList.get(i).getRequestState()==0)
+            if(getClientList().get(i).getRequestState()==0)
                 count++;
         }
         return count;
@@ -303,8 +334,8 @@ public class tabuSearchManager {
     
     public ArrayList<Integer> generateFirstBestSolution(int position){
         ArrayList<Integer> initialSol = new ArrayList<>();
-        int sizeVehicules = vehicleList.size();
-        int sizeClients = clientList.size();
+        int sizeVehicules = getVehicleList().size();
+        int sizeClients = getClientList().size();
         boolean allClientsServed = false;
         double usedCapacity;
         double freeCapacity;
@@ -319,13 +350,13 @@ public class tabuSearchManager {
             pivot = 0;
             usedCapacity = 0;
             actualRouteCost =0;
-            freeCapacity = vehicleList.get(i).getCapacity();
-            vehicleList.get(i).setAvailableCapacity(freeCapacity);
+            freeCapacity = getVehicleList().get(i).getCapacity();
+            getVehicleList().get(i).setAvailableCapacity(freeCapacity);
             allClientsServed = verifyClientsServed();
-            vehicleList.get(i).setRoute(new ArrayList<Integer>());
+            getVehicleList().get(i).setRoute(new ArrayList<Integer>());
             if(allClientsServed==false){//si todos los clientes aun no son atendidos, este vehiculo se activa
                initialSol.add(0);//iniciamos con el CD
-               vehicleList.get(i).getRoute().add(0);
+                getVehicleList().get(i).getRoute().add(0);
               //pivote 0 indica el punto de partida que es el CD
                for(int j=0;j<sizeClients;j++){//buscamos al siguiente cliente próximo
                     if(firstTime ==true){//si es el primer cliente
@@ -343,22 +374,22 @@ public class tabuSearchManager {
                         if(nextClientIndex!=-1){
                             actualRouteCost += calculateCostPerArist( pivot, nextClientIndex, i, freeCapacity );
                             //para ponerlo en el camion verificamos que si hay capacidad para poner el pedido
-                            if(clientList.get(nextClientIndex).getTotalWeight()<=freeCapacity){//si hay espacio, lo inserto
+                            if(getClientList().get(nextClientIndex).getTotalWeight()<=freeCapacity){//si hay espacio, lo inserto
                                 //como se puede adicionar tambien se debe evitar el problema de la mariposa
                                 if(pivot!=0){//no voy a verificar este problema si es que aun me encuentro en el CD
-                                    double freeCapacityAux = vehicleList.get(i).getCapacity();
-                                    freeCapacityAux-=clientList.get(nextClientIndex).getTotalWeight();
+                                    double freeCapacityAux = getVehicleList().get(i).getCapacity();
+                                    freeCapacityAux-=getClientList().get(nextClientIndex).getTotalWeight();
                                     double routeCostDirect = calculateCostPerArist( 0, nextClientIndex, i, freeCapacityAux );
                                     if(actualRouteCost>routeCostDirect){//si me resulta ir mejor con un nuevo vehiculo
                                       break;  
                                     }
                                 }
-                                initialSol.add(clientList.get(nextClientIndex).getIdClient());//lo añado a la lista                        
-                                usedCapacity = clientList.get(nextClientIndex).getTotalWeight();//capacidad usada
+                                initialSol.add(getClientList().get(nextClientIndex).getIdClient());//lo añado a la lista                        
+                                usedCapacity = getClientList().get(nextClientIndex).getTotalWeight();//capacidad usada
                                 freeCapacity -= usedCapacity;//capacidad actual libre/disponible
-                                vehicleList.get(i).setAvailableCapacity(freeCapacity);
-                                clientList.get(nextClientIndex).setRequestState(1);//ya fue atendido
-                                vehicleList.get(i).getRoute().add(clientList.get(nextClientIndex).getIdClient());
+                                getVehicleList().get(i).setAvailableCapacity(freeCapacity);
+                                getClientList().get(nextClientIndex).setRequestState(1);//ya fue atendido
+                                getVehicleList().get(i).getRoute().add(getClientList().get(nextClientIndex).getIdClient());
                                 pivot = nextClientIndex;//es el nuevo punto para seguir avanzando
                             }else{ //si es mayor que la capacidad disponible, no se puede poner
                                 break;
@@ -375,11 +406,11 @@ public class tabuSearchManager {
     
     public double calculateCostPerArist(int pivot, int next,int posVecList,double freeCapacity ){
         double cost = 0;
-        Vehicle v =  vehicleList.get(posVecList);
+        Vehicle v =  getVehicleList().get(posVecList);
         System.out.println("pivot "+pivot);
         System.out.println("next "+next);
         System.out.println("posVech "+posVecList);
-        double factor1 = (v.getDispatchNumber()*1.0)/(clientList.get(next).getPriority()*1.0);
+        double factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(next).getPriority()*1.0);
         double factor2 = (double)(1.1-(v.getAvailableCapacity()/v.getCapacity()));
         System.out.println("PASO AQUI");
         cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
@@ -392,7 +423,7 @@ public class tabuSearchManager {
         //si position=1 --> 2do mejor
         //si position=2 --> 3er mejor
         //asi sucesivamente
-        int sizeClients = clientList.size();
+        int sizeClients = getClientList().size();
         int bestIndex=-1;
         boolean firstTime = true;
         double[] costRoutes = new double[sizeClients];
@@ -400,7 +431,7 @@ public class tabuSearchManager {
             if(i==0)
                 costRoutes[i]=0;
             else
-               costRoutes[i]= (Double)((vehicleList.get(veh).getDispatchNumber()/clientList.get(i).getPriority())*(distances[pivot][i]/1000.00)*(1.1-(vehicleList.get(veh).getAvailableCapacity()/vehicleList.get(veh).getCapacity()))); 
+               costRoutes[i]= (Double)((getVehicleList().get(veh).getDispatchNumber()/getClientList().get(i).getPriority())*(distances[pivot][i]/1000.00)*(1.1-(getVehicleList().get(veh).getAvailableCapacity()/getVehicleList().get(veh).getCapacity()))); 
         }
         int[] costIndexes = new int[sizeClients];
         int aux;
@@ -427,9 +458,9 @@ public class tabuSearchManager {
     } 
     
     public boolean verifyClientsServed(){
-        int sizeClients = clientList.size();
+        int sizeClients = getClientList().size();
         for(int i=1;i<sizeClients;i++){//no se cuenta el CD
-            if(clientList.get(i).getRequestState()==0)//si el cliente no fue atendido, quiere decir que no todos fueron atendidos
+            if(getClientList().get(i).getRequestState()==0)//si el cliente no fue atendido, quiere decir que no todos fueron atendidos
                 return false;//no todos fueron atendidos
         }
         return true; //todos fueron atendidos
@@ -437,20 +468,20 @@ public class tabuSearchManager {
     
     public int searchBestNextClient(int pivot, int veh){
         //BUSCA EL MEJOR CLIENTE, A PARTIR DEL CLIENT PIVOTE (CLIENTE DE PARTIDA)
-        int sizeClients = clientList.size();
+        int sizeClients = getClientList().size();
         int bestIndex=-1;
         boolean firstTime = true;
         for(int i=0;i<sizeClients;i++){
             if(i!=pivot && i!=0){//para que no se cuente asi mismo;
-                if(clientList.get(i).getRequestState()!=1){
+                if(getClientList().get(i).getRequestState()!=1){
                     if(firstTime==true){//elegimos el primer mejor posible para luego hacer las comparaciones
                         bestIndex = i;
                         firstTime = false;
                     }else{
                         double actualCost = 0;
                         double bestIndexCost = 0;
-                        actualCost =(vehicleList.get(veh).getDispatchNumber()/clientList.get(i).getPriority())*(distances[pivot][i]/1000.00)*(1.1-(vehicleList.get(veh).getAvailableCapacity()/vehicleList.get(veh).getCapacity()));
-                        bestIndexCost =(vehicleList.get(veh).getDispatchNumber()/clientList.get(bestIndex).getPriority())*(distances[pivot][bestIndex]/1000.00)*(1.1-(vehicleList.get(veh).getAvailableCapacity()/vehicleList.get(veh).getCapacity()));
+                        actualCost =(getVehicleList().get(veh).getDispatchNumber()/getClientList().get(i).getPriority())*(distances[pivot][i]/1000.00)*(1.1-(getVehicleList().get(veh).getAvailableCapacity()/getVehicleList().get(veh).getCapacity()));
+                        bestIndexCost =(getVehicleList().get(veh).getDispatchNumber()/getClientList().get(bestIndex).getPriority())*(distances[pivot][bestIndex]/1000.00)*(1.1-(getVehicleList().get(veh).getAvailableCapacity()/getVehicleList().get(veh).getCapacity()));
                         if(actualCost<bestIndexCost){//si es mejor el costo (osea menor) lo elegimos
                             bestIndex = i;
                         }
@@ -512,11 +543,11 @@ public class tabuSearchManager {
         for(int i=0;i<size;i++){
             if(solution.get(i)==0 && i!=size-1){
                 vehIndex++;
-                vehicleList.get(vehIndex).setRoute(new ArrayList<Integer>());
-                vehicleList.get(vehIndex).getRoute().add(0);
+                getVehicleList().get(vehIndex).setRoute(new ArrayList<Integer>());
+                getVehicleList().get(vehIndex).getRoute().add(0);
             }else{
                 if(solution.get(i)!=0)
-                vehicleList.get(vehIndex).getRoute().add(solution.get(i));
+                getVehicleList().get(vehIndex).getRoute().add(solution.get(i));
             }
         }
     }
@@ -549,7 +580,7 @@ public class tabuSearchManager {
         int numberNeighbors = neighbors.size();
         int sizeTL = tabuList.size();
         int indexNewNeighbors = 0;
-        int maxSize = clientList.size()*2-1;
+        int maxSize = getClientList().size()*2-1;
         ArrayList<Integer> neighborSolution=null;
         ArrayList<solutionElement> reducedNeighbor = new ArrayList<>();
         if(sizeTL!=0){
@@ -672,7 +703,7 @@ public class tabuSearchManager {
         int size = solution.size();
         boolean firstTime = true;
         double cost = 0;
-        double capacity = vehicleList.get(0).getCapacity();
+        double capacity = getVehicleList().get(0).getCapacity();
         for(int i=0;i<size;i++){
             if(firstTime==true){
                 firstTime =false;
@@ -736,21 +767,21 @@ public class tabuSearchManager {
            //si es primer vehiculo 
             if(solution.get(i)==0){//primer vehiculo
                 indexVec++;
-                v = vehicleList.get(indexVec);
+                v = getVehicleList().get(indexVec);
                 freeCapacity=v.getCapacity();
                 int indexInit = getClientIndex(solution.get(i));
                 int indexEnd = getClientIndex(solution.get(i+1));
-                factor1 = (v.getDispatchNumber()*1.0)/(clientList.get(indexEnd).getPriority()*1.0);
+                factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(indexEnd).getPriority()*1.0);
                 factor2 = (double)(1.1-(v.getAvailableCapacity()/v.getCapacity()));
                 cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2));
             }else {
                 int indexInit = getClientIndex(solution.get(i));
                 int indexEnd = getClientIndex(solution.get(i+1));
-                if(clientList.get(indexEnd).getIdClient()!=0){//si no es el regreso
+                if(getClientList().get(indexEnd).getIdClient()!=0){//si no es el regreso
                     //EN BASE A LOS DESPACHO SE CALCULA EL PESO TOTAL
                     //SE CREA EN LA BASE CUANDO SE EJECUTA LA SIMULACION LEYENDO LOS DESPACHOS
                     //freeCapacity-=clientList.get(indexInit).getTotalWeight();
-                    factor1 = (v.getDispatchNumber()*1.0)/(clientList.get(indexEnd).getPriority()*1.0);
+                    factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(indexEnd).getPriority()*1.0);
                 }else{
                     factor1 = (v.getDispatchNumber()*1.0)/(1.0);
                 }
@@ -762,9 +793,9 @@ public class tabuSearchManager {
     }
    
     public int getClientIndex(int id){
-        int sizeClient = clientList.size();
+        int sizeClient = getClientList().size();
         for(int i=0;i<sizeClient;i++){
-            if(clientList.get(i).getIdClient()==id)
+            if(getClientList().get(i).getIdClient()==id)
                 return i;
         }
         return -1;
@@ -824,17 +855,17 @@ public class tabuSearchManager {
         ArrayList<Client> clientListAux = new ArrayList<>();
         for(int i=0;i<sizeSol;i++){
             int index = getClientIndex(solution.get(i));            
-            if(clientList.get(index).getIdClient()!=0){
-                clientList.get(index).setRequestState(1);
+            if(getClientList().get(index).getIdClient()!=0){
+                getClientList().get(index).setRequestState(1);
                 count++;
             }
         }
-        int sizeClients = clientList.size();
+        int sizeClients = getClientList().size();
         for(int i=0;i<sizeClients;i++){
-            if(clientList.get(i).getRequestState()==0)
-                clientListAux.add(clientList.get(i));
+            if(getClientList().get(i).getRequestState()==0)
+                clientListAux.add(getClientList().get(i));
         }
-        clientList = clientListAux;
+        setClientList(clientListAux);
         System.out.println("TOTAL "+count);
     }
     
@@ -874,7 +905,7 @@ public class tabuSearchManager {
     }
 
     public void setVehiculeList(List<Vehicle> vehiculeList) {
-        this.vehicleList = vehicleList;
+        this.setVehicleList(getVehicleList());
     }
 
     public Client queryByClienteId(int id){
@@ -918,11 +949,11 @@ public class tabuSearchManager {
     
     public void showNoAttendedClients(){        
         /*FUNCION QUE MUESTRA QUE CLIENTES NO FUERON ATENDIDOS*/
-        int sizeClient = clientList.size();
+        int sizeClient = getClientList().size();
         for(int i=0;i<sizeClient;i++){
-            if(clientList.get(i).getRequestState()==0){
+            if(getClientList().get(i).getRequestState()==0){
                 //p.println("CLIENTE "+clientList.get(i).getName()+" NO ATENDIDO");
-                System.out.println("CLIENTE "+clientList.get(i).getName()+" NO ATENDIDO");                
+                System.out.println("CLIENTE "+getClientList().get(i).getName()+" NO ATENDIDO");                
             }
         }
     }

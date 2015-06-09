@@ -156,6 +156,7 @@
                 <StringItem index="3" value="CANCELADO"/>
               </StringArray>
             </Property>
+            <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_reg_date">
@@ -164,8 +165,14 @@
           </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="date_register">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="com.toedter.calendar.JDateChooser" name="date_deliver">
+          <Properties>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lbl_num_orderR">
           <Properties>

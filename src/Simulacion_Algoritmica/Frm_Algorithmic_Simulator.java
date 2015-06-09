@@ -8,6 +8,7 @@ package Simulacion_Algoritmica;
 
 import Model.Client;
 import Model.DispatchOrder;
+import Model.Distribution_Center;
 import Model.Pallet;
 import Model.PalletProduct;
 import Model.Pallet_Product_Location;
@@ -16,12 +17,12 @@ import Model.PickingOrderDetail;
 import Model.Product;
 import Model.RequestOrder;
 import Model.Vehicle;
-import Model.Distribution_Center;
 import Operaciones.Frm_DispatchOrder_Detail;
+import Operaciones.Frm_DispatchOrder_Search;
 import Seguridad.Frm_MenuPrincipal;
-import dao.DaoDistributionCenter;
 import dao.DaoClient;
 import dao.DaoDispatchOrder;
+import dao.DaoDistributionCenter;
 import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
@@ -30,8 +31,8 @@ import dao.DaoProducts;
 import dao.DaoRequestOrder;
 import dao.DaoVehicle;
 import dao.impl.DaoClientImpl;
-import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoDispatchOrderImpl;
+import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
@@ -79,10 +80,10 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     ArrayList<Integer> solution;
     ArrayList<String> solutionPerVehicle;
     DaoProducts daoProduct = new DaoProdImpl();
-    List<List<Integer>> listSolutions = new ArrayList<>();
-    List<List<String>> listPerSolutions = new ArrayList<>();
+    List<Integer> listSolutions = new ArrayList<>();
+    List<String> listPerSolutions = new ArrayList<>();
     List<Double> totalFunctionCost = new ArrayList<>();
-    
+    Double tabuCost;
     //****MAS DAO****//
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
@@ -90,6 +91,10 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
     DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
     DaoDistributionCenter daoCD = new DaoDistributionCenterImpl();
+    Frm_DispatchOrder_Search frm_dosAux = new Frm_DispatchOrder_Search();
+    List<Integer> listIdDispatch = new ArrayList<>();
+    int flag;
+    
     /**
      * Creates new form Frm_algorithmic_simulator
      */
@@ -107,7 +112,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
           maximumValueVehicle = vehicleList.size();
         btn_loadVehicles.setEnabled(false);
         model = (DefaultTableModel) table_dispatch_orders.getModel();
-        model_results =(DefaultTableModel) table_results.getModel();
         ChangeListener listener = new ChangeListener() {
         public void stateChanged(ChangeEvent e) {
                 if((Integer)spn_number_vehicles.getValue()==0 || (Integer)spn_number_vehicles.getValue()>maximumValueVehicle)
@@ -117,11 +121,45 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
           };
         spn_number_vehicles.addChangeListener(listener);
+        btn_generate_routes.setEnabled(false);
+        flag = 0;
     }
 
     public Frm_Algorithmic_Simulator(){
         
     }
+    
+    public Frm_Algorithmic_Simulator(Frm_DispatchOrder_Search frm_dos, List<Integer> listDispatchToGenerate) {
+        setTitle("SIMULACIÓN ALGORÍTMICA");
+        frm_dosAux = frm_dos;
+        initComponents();
+        fillActualData();
+        listSolutions = new ArrayList<>();
+        listPerSolutions =  new ArrayList<>();
+        TableColumn tc = table_dispatch_orders.getColumnModel().getColumn(3);
+        tc.setHeaderRenderer(new SelectAllHeader(table_dispatch_orders, 3));
+        vehicleList = daoVehicle.vehicleQry();
+        if(vehicleList!=null)
+          maximumValueVehicle = vehicleList.size();
+        btn_loadVehicles.setEnabled(false);
+        model = (DefaultTableModel) table_dispatch_orders.getModel();
+        ChangeListener listener = new ChangeListener() {
+        public void stateChanged(ChangeEvent e) {
+                if((Integer)spn_number_vehicles.getValue()==0 || (Integer)spn_number_vehicles.getValue()>maximumValueVehicle)
+                    btn_loadVehicles.setEnabled(false);
+                else
+                    btn_loadVehicles.setEnabled(true);
+            }
+          };
+        spn_number_vehicles.addChangeListener(listener);
+        btn_generate_routes.setEnabled(false);
+        jdate_dispatch_date.setEnabled(false);
+        btn_search_orders.setEnabled(false);
+        listIdDispatch = listDispatchToGenerate;
+        fillTableDispatch();
+        flag = 1;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -146,9 +184,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         table_dispatch_orders = new javax.swing.JTable();
         btn_generate_routes = new javax.swing.JButton();
         test = new javax.swing.JButton();
-        pnl_results = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        table_results = new javax.swing.JTable();
+        btn_Clean = new javax.swing.JButton();
         btn_exit = new javax.swing.JButton();
         lbl_declaimer = new javax.swing.JLabel();
 
@@ -292,6 +328,13 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
         });
 
+        btn_Clean.setText("Limpiar");
+        btn_Clean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CleanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_dispatch_ordersLayout = new javax.swing.GroupLayout(pnl_dispatch_orders);
         pnl_dispatch_orders.setLayout(pnl_dispatch_ordersLayout);
         pnl_dispatch_ordersLayout.setHorizontalGroup(
@@ -301,7 +344,8 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 .addGroup(pnl_dispatch_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 685, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_dispatch_ordersLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_Clean)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(test)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_generate_routes)))
@@ -314,49 +358,8 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_dispatch_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_generate_routes)
-                    .addComponent(test))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pnl_results.setBorder(javax.swing.BorderFactory.createTitledBorder("Resultados"));
-
-        table_results.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Número de Simulación", "Valor de Función Objetivo", "Seleccionar"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        table_results.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        table_results.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_resultsMouseClicked(evt);
-            }
-        });
-        jScrollPane2.setViewportView(table_results);
-
-        javax.swing.GroupLayout pnl_resultsLayout = new javax.swing.GroupLayout(pnl_results);
-        pnl_results.setLayout(pnl_resultsLayout);
-        pnl_resultsLayout.setHorizontalGroup(
-            pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_resultsLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane2)
-                .addContainerGap())
-        );
-        pnl_resultsLayout.setVerticalGroup(
-            pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pnl_resultsLayout.createSequentialGroup()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(test)
+                    .addComponent(btn_Clean))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -379,7 +382,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(pnl_results, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(pnl_dispatch_orders, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                                 .addComponent(pnl_generalParameters, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -401,9 +403,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                     .addComponent(pnl_dispatch_criteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnl_dispatch_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnl_results, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_exit)
                     .addComponent(lbl_declaimer))
@@ -415,37 +415,47 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
 
     private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
         // TODO add your handling code here:
-        menuaux.setVisible(true);
-        this.dispose();
+        if(flag == 0){
+            menuaux.setVisible(true);
+            this.dispose();
+        }else{
+            frm_dosAux.setVisible(true);
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_btn_exitActionPerformed
 
+    private void fillTableDispatch(){
+        int size = listIdDispatch.size();
+        List<DispatchOrder> list = new ArrayList<>();
+        for(int i=0;i<size;i++){
+            DispatchOrder dor = daoDispatchOrder.dispatchOrderGet(listIdDispatch.get(i));
+            list.add(dor);
+            PickingOrder po = daoPickingOrder.pickingOrderGet(dor.getIdPickingOrder());
+                RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
+                String nameState = null;
+                if(dor.getStatus()==1)
+                    nameState = "REALIZADO";
+                else if(dor.getStatus()==2)
+                    nameState = "POR ENTREGAR";
+                else 
+                    nameState = "CANCELADO";
+                Object[] fila = {dor.getIdDispatch_Order(),ro.getClient().getName(), nameState,false};
+                model.addRow(fila);
+        }
+        dispatchOrderList = list;
+    }
+    
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        menuaux.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_formWindowClosing
-
-    private void table_resultsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_resultsMouseClicked
-        // TODO add your handling code here:
-        if(evt.getSource()==table_results){
-            int rowSel = table_results.getSelectedRow();
-            int colSel = table_results.getSelectedColumn();
-            if (colSel==0){
-              Frm_Show_Route_Solution frm_srs;
-                try {
-                    frm_srs = new Frm_Show_Route_Solution(this,listPerSolutions.get(rowSel));
-                    //frm_srs.setLocation(450,150);
-                    frm_srs.setExtendedState(JFrame.MAXIMIZED_BOTH);
-                    frm_srs.setVisible(true);                      
-                    //frm_srs.setLocationRelativeTo(null);
-              this.setVisible(false);  
-                } catch (IOException ex) {
-                    Logger.getLogger(Frm_Algorithmic_Simulator.class.getName()).log(Level.SEVERE, null, ex);
-                }
-              
-            }
+        if(flag == 0){
+            menuaux.setVisible(true);
+            this.dispose();
+        }else{
+            frm_dosAux.setVisible(true);
+            this.dispose();
         }
-    }//GEN-LAST:event_table_resultsMouseClicked
+    }//GEN-LAST:event_formWindowClosing
 
     private void btn_loadVehiclesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_loadVehiclesActionPerformed
         // TODO add your handling code here:
@@ -467,7 +477,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                         ok_option = JOptionPane.showOptionDialog(new JFrame(),"Cantidad no posible de solicitar, se cargó la cantidad total que cuenta el Centro de Distribución.\nTotal cargado: "+vehicleList.size()+" vehículos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                     else
                         ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se cargaron los vehiculos con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                        
+                    btn_generate_routes.setEnabled(true);
                 }
             }    
         }
@@ -482,13 +492,22 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     private void btn_search_ordersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_ordersActionPerformed
         // TODO add your handling code here:
         Date requestDate = jdate_dispatch_date.getDate();
-        
+        int ok_option;
         if(requestDate==null){
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese fecha válida.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+             ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese fecha válida.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }else{
             //BUSQUEDA DESPACHOS
             dispatchOrderList = daoDispatchOrder.dispatchOrderQry_search(requestDate);
-            fillTable();
+            if(dispatchOrderList == null)
+                 ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            else{
+                if(dispatchOrderList.size()==0)
+                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                else{
+                    fillTable();
+                    btn_generate_routes.setEnabled(true);
+                }
+            }
         }
         
     }//GEN-LAST:event_btn_search_ordersActionPerformed
@@ -509,14 +528,21 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             clientList = new ArrayList<>();
             setCDtoClientList();
             setDispatchToClient(dispatchOrderListForAlgorithm);
+            
             //ya tenemos la lista de vehiculos
             //ya tenemos la lista de clientes
             //se realiza la busqueda tabu
             tSManager = new tabuSearchManager(vehicleList,clientList,(Integer)spn_number_iterations.getValue());
-            //tSManager.getDistancesMatrix();
             runAlgorithm();
+            
             //se procede a asignar
             //LLENAR DATA
+             System.out.println("AJDHASJDHASDHASJK:"+tSManager.getClientList().size());
+            Frm_Detail_Algorithm frm_srs;
+            frm_srs = new Frm_Detail_Algorithm(this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost);
+            frm_srs.setLocationRelativeTo(null);
+            frm_srs.setVisible(true);
+            this.setVisible(false);
             
         }
     }//GEN-LAST:event_btn_generate_routesActionPerformed
@@ -550,34 +576,28 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             Logger.getLogger(Frm_Algorithmic_Simulator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_testActionPerformed
+
+    private void btn_CleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CleanActionPerformed
+        // TODO add your handling code here:
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+        btn_generate_routes.setEnabled(false);
+    }//GEN-LAST:event_btn_CleanActionPerformed
     
     private void runAlgorithm(){
-        int countClients = 2;
-        while(countClients>1){
+       
             ArrayList<Integer> tabuSolution = tSManager.OptimizeTSearch();   
             int size = tabuSolution.size();
-            for(int i=0;i<size;i++)
-                System.out.println(tabuSolution.get(i)+" ");
-           
-            listSolutions.add(tabuSolution);
-            double tabuCost = tSManager.calculateFunctionCost(tabuSolution);
-            tSManager.updateClients(tabuSolution);
-            countClients = tSManager.countNoClientsAttended();
-            System.out.println(countClients);
+            listSolutions = tabuSolution;
+            tabuCost = tSManager.calculateFunctionCost(tabuSolution);
+            //tSManager.updateClients(tabuSolution);
             List<String> solutionPerVehicle = tSManager.generateRoutes(tabuSolution);
-            listPerSolutions.add(solutionPerVehicle);
+            listPerSolutions = solutionPerVehicle;
             totalFunctionCost.add(tabuCost);
-            //cleanTable();
-            refreshGrid();
-        }
-    }
-    
-    private void refreshGrid(){
-        int size = table_results.getRowCount();
-            Object[] fila = {size,totalFunctionCost.get(0).toString(), false};
-            model_results.addRow(fila);
         
     }
+    
+    
     
     private void cleanTable(){
         model_results.getDataVector().removeAllElements();
@@ -598,10 +618,11 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             List<PickingOrderDetail> poDList = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
             int sizePod = poDList.size();
             for(int j=0;j<sizePod;j++){
-                PickingOrderDetail poD = poDList.get(i);
+                PickingOrderDetail poD = poDList.get(j);
                 totalWeight += getTotalWeight(poD);
             }
             client.setTotalWeight(totalWeight);
+            System.out.println(totalWeight);
             clientList.add(client);
                     
         }
@@ -665,12 +686,12 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_Clean;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_generate_routes;
     private javax.swing.JButton btn_loadVehicles;
     private javax.swing.JButton btn_search_orders;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private com.toedter.calendar.JDateChooser jdate_dispatch_date;
     private javax.swing.JLabel lbl_declaimer;
     private javax.swing.JLabel lbl_dispatch_date;
@@ -679,11 +700,9 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_dispatch_criteria;
     private javax.swing.JPanel pnl_dispatch_orders;
     private javax.swing.JPanel pnl_generalParameters;
-    private javax.swing.JPanel pnl_results;
     private javax.swing.JSpinner spn_number_iterations;
     private javax.swing.JSpinner spn_number_vehicles;
     private javax.swing.JTable table_dispatch_orders;
-    private javax.swing.JTable table_results;
     private javax.swing.JButton test;
     // End of variables declaration//GEN-END:variables
 }

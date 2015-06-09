@@ -230,7 +230,6 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                
 
             } catch (SQLException e) {
-                System.out.println("JEJE");
               idGenerated=-1;  
             } finally {
                 try {
