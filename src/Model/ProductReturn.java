@@ -19,7 +19,9 @@ public class ProductReturn implements Serializable {
     private Integer idProduct_Return;
     private Integer quantity;
     private Integer status;
-    private Integer idDispatch_Order; 
+    private Integer idDispatch_Order;
+    public Integer idClient;
+    public Date return_date;
     private Integer Motive_Return_idMotive_Return;
     private Integer Picking_Order_Detail_idPicking_Order_Detail;
     private Integer Picking_Order_Detail_Picking_Order_idPicking_Order;
@@ -135,6 +137,34 @@ public class ProductReturn implements Serializable {
      */
     public void setIdDispatch_Order(Integer idDispatch_Order) {
         this.idDispatch_Order = idDispatch_Order;
+    }
+
+    /**
+     * @return the idClient
+     */
+    public Integer getIdClient() {
+        return idClient;
+    }
+
+    /**
+     * @param idClient the idClient to set
+     */
+    public void setIdClient(Integer idClient) {
+        this.idClient = idClient;
+    }
+
+    /**
+     * @return the return_date
+     */
+    public Date getReturn_date() {
+        return return_date;
+    }
+
+    /**
+     * @param return_date the return_date to set
+     */
+    public void setReturn_date(Date return_date) {
+        this.return_date = return_date;
     }
     
 }

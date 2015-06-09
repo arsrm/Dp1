@@ -52,7 +52,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     
     DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
-    List<DispatchOrder> dispatchOrderList = null;
     DispatchOrder dispatchOrder = null;
     
     DaoClient daoClient = new DaoClientImpl();
@@ -93,9 +92,8 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         setTitle("Devolución de Productos");
         menuaux = menu;
         
-        dispatchOrderList = daoDispatchOrder.dispatchOrderQry();
-        blockObjects();
         initComponents();
+        blockObjects();
     }
 
     /**
@@ -262,11 +260,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         lbl_order_num.setToolTipText("");
 
         txt_OrderNum.setEditable(false);
-        txt_OrderNum.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_OrderNumActionPerformed(evt);
-            }
-        });
 
         lbl_client.setText("Cliente: ");
 
@@ -356,10 +349,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                            .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(lbl_vehicle)
-                                .addComponent(txt_id_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(txt_name_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txt_id_dispatcher, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(lbl_vehicle)
+                                    .addComponent(txt_name_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGap(6, 6, 6))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
                             .addComponent(txt_vehicle_license_plate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,7 +432,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        // TODO add your handling code here:
         menuaux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
@@ -461,6 +454,8 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     productReturn.setQuantity(1);
                     productReturn.setStatus(0);
                     productReturn.setIdDispatch_Order(idDispatchDetail);
+                    productReturn.setIdClient(client.getIdClient());
+                    productReturn.setReturn_date(jDate_return_date.getDate());
                     productReturn.setMotive_Return_idMotive_Return(1);
                     productReturn.setPicking_Order_Detail_idPicking_Order_Detail(idPickingOrderDetail);;
                     productReturn.setPicking_Order_Detail_Picking_Order_idPicking_Order(idPickingOrder);
@@ -469,7 +464,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     
                     //guardo la entrada por devolucion y salida por devolucion del producto
                     movementIn = new Movement();
-                    movementIn.setDate(jDate_DeliverDate.getDate());
+                    movementIn.setDate(jDate_return_date.getDate());
                     movementIn.setType_Movement_id(1);
                     movementIn.setType_Movement_idSubtype(2);
                     initialStock = productList.get(i).getPhysicalStock();
@@ -481,7 +476,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     daoKardex.MovementIns(movementIn);
                     
                     movementOut = new Movement();
-                    movementOut.setDate(jDate_DeliverDate.getDate());
+                    movementOut.setDate(jDate_return_date.getDate());
                     movementOut.setType_Movement_id(2);
                     movementOut.setType_Movement_idSubtype(2);
                     initialStock = productList.get(i).getPhysicalStock();
@@ -503,12 +498,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_returnActionPerformed
 
-    private void txt_OrderNumActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_OrderNumActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txt_OrderNumActionPerformed
-
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
-        // TODO add your handling code here:
         int idDispatchOrder, idPickingOrder,idExecutionAlgorithm,idPalletProductLocation,idProduct;
         int idVehicle;
         double functionValue;
@@ -569,7 +559,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
     
     public void fillGeneralData(){
-        txt_ClientId.setText(client.getIdClient().toString().trim());
+        txt_ClientId.setText(client.getRuc().toString().trim());
         txt_ClientName.setText(client.getName().trim());
         txt_ClientAddress.setText(client.getAddress().trim());
         
@@ -583,6 +573,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     
     public void initializeTable(){
         String status= null;
+        modelo = (DefaultTableModel) tbl_products.getModel();
         if(modelo!=null){
             modelo.getDataVector().removeAllElements();
             modelo.fireTableDataChanged();
@@ -609,7 +600,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         }
     }
     
-    public void blockObjects(){
+    public void blockObjects(){        
         txt_ClientId.setEnabled(false);
         txt_ClientName.setEnabled(false);
         txt_ClientAddress.setEnabled(false);
@@ -619,7 +610,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_name_dispatcher.setEnabled(false);
         
         jDate_RegisterDate.setEnabled(false);
-        jDate_DeliverDate.setEnabled(false);
+        jDate_DeliverDate.setEnabled(false);        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

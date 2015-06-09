@@ -6,9 +6,24 @@
 
 package Operaciones;
 
+import Model.Client;
+import Model.DispatchOrder;
+import Model.Product;
+import Model.ProductReturn;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoClient;
+import dao.DaoDispatchOrder;
+import dao.DaoProductReturn;
+import dao.DaoProducts;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoDispatchOrderImpl;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoProductReturnImpl;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -19,6 +34,23 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
     /**
      * Creates new form Frm_ReturnProducts_Search
      */
+    DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
+    List<DispatchOrder> dispatchOrderList = null;
+    DispatchOrder dispatchOrder = null;
+    
+    DaoProductReturn daoProductReturn = new DaoProductReturnImpl();
+    List<ProductReturn> productReturnList = null;
+    ProductReturn productReturn = null;
+    
+    DaoClient daoClient = new DaoClientImpl();
+    Client client = null;
+    
+    DaoProducts daoProduct = new DaoProdImpl();
+    Product product = null;
+    int idClient=-1;
+    
+    DefaultTableModel modelo;
+    
     public Frm_ReturnProducts_Search(Frm_MenuPrincipal menu) {
         setTitle("DEVOLUCIONES DE PRODUCTOS");
         menuaux = menu;
@@ -39,9 +71,8 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
 
         pnl_returns = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        table_returns = new javax.swing.JTable();
+        tbl_returns = new javax.swing.JTable();
         btn_cancel = new javax.swing.JButton();
-        btn_delete = new javax.swing.JButton();
         pnl_search_criteria = new javax.swing.JPanel();
         lbl_date_to = new javax.swing.JLabel();
         jdate_request_date_to = new com.toedter.calendar.JDateChooser();
@@ -57,43 +88,33 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
 
         pnl_returns.setBorder(javax.swing.BorderFactory.createTitledBorder("Devoluciones"));
 
-        table_returns.setModel(new javax.swing.table.DefaultTableModel(
+        tbl_returns.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Número de Devolucón", "Número de Despacho", "Fecha de Registro", "Fecha de Devolución", "Estado", "Seleccionar"
+                "Número de Despacho", "Cliente", "Producto", "Cantidad", "Fecha de Devolución", "Estado"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        table_returns.addMouseListener(new java.awt.event.MouseAdapter() {
+        tbl_returns.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                table_returnsMouseClicked(evt);
+                tbl_returnsMouseClicked(evt);
             }
         });
-        jScrollPane3.setViewportView(table_returns);
+        jScrollPane3.setViewportView(tbl_returns);
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cancelActionPerformed(evt);
-            }
-        });
-
-        btn_delete.setText("Eliminar");
-        btn_delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_deleteActionPerformed(evt);
             }
         });
 
@@ -106,8 +127,7 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
                 .addGroup(pnl_returnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 802, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_returnsLayout.createSequentialGroup()
-                        .addComponent(btn_delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_cancel)))
                 .addContainerGap())
         );
@@ -115,11 +135,9 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
             pnl_returnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_returnsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addGroup(pnl_returnsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_cancel)
-                    .addComponent(btn_delete))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_cancel)
                 .addContainerGap())
         );
 
@@ -134,6 +152,11 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
         txt_client_name.setEditable(false);
 
         btn_client_search.setText("Buscar");
+        btn_client_search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_client_searchActionPerformed(evt);
+            }
+        });
 
         btn_search.setText("Buscar Devoluciones");
         btn_search.addActionListener(new java.awt.event.ActionListener() {
@@ -146,34 +169,36 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
         pnl_search_criteria.setLayout(pnl_search_criteriaLayout);
         pnl_search_criteriaLayout.setHorizontalGroup(
             pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addContainerGap(96, Short.MAX_VALUE)
+            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lbl_date_from, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbl_client, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
-                        .addComponent(jdate_request_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_date_to)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
+                        .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lbl_date_from, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbl_client, javax.swing.GroupLayout.Alignment.TRAILING))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
-                        .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(14, 14, 14)
-                        .addComponent(btn_client_search)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txt_client_name)))
-                .addGap(186, 186, 186))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(btn_search))
+                        .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                                .addComponent(jdate_request_date_from, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(77, 77, 77)
+                                .addComponent(lbl_date_to)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnl_search_criteriaLayout.createSequentialGroup()
+                                .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btn_client_search)
+                                .addGap(18, 18, 18)
+                                .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
+                        .addComponent(btn_search)
+                        .addContainerGap())))
         );
         pnl_search_criteriaLayout.setVerticalGroup(
             pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_search_criteriaLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(19, Short.MAX_VALUE)
                 .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,7 +210,7 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
                     .addComponent(lbl_date_to)
                     .addComponent(lbl_date_from)
                     .addComponent(jdate_request_date_to, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(17, 17, 17)
                 .addComponent(btn_search))
         );
 
@@ -219,22 +244,11 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
-    private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
+    private void tbl_returnsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_returnsMouseClicked
         // TODO add your handling code here:
-        Object[] options = {"OK"};
-        if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han eliminado las devoluciones con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-
-        }
-    }//GEN-LAST:event_btn_deleteActionPerformed
-
-    private void table_returnsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_returnsMouseClicked
-        // TODO add your handling code here:
-        if(evt.getSource()==table_returns){
-            int rowSel = table_returns.getSelectedRow();
-            int colSel = table_returns.getSelectedColumn();
+        if(evt.getSource()==tbl_returns){
+            int rowSel = tbl_returns.getSelectedRow();
+            int colSel = tbl_returns.getSelectedColumn();
             if (colSel==0){
               Frm_ReturnProducts_Detail frm_rpd = new Frm_ReturnProducts_Detail(this);
               frm_rpd.setLocation(450,150);
@@ -243,17 +257,65 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
               this.setVisible(false);  
             }
         }
-    }//GEN-LAST:event_table_returnsMouseClicked
+    }//GEN-LAST:event_tbl_returnsMouseClicked
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
-        // TODO add your handling code here:
+        Date dateFrom,dateTo;
+        
+        if ( jdate_request_date_from.getDate()!=null && jdate_request_date_to.getDate()!=null ){
+            dateFrom = jdate_request_date_from.getDate();
+            dateTo = jdate_request_date_to.getDate();            
+            productReturnList = daoProductReturn.productReturnQry(idClient, dateFrom, dateTo, 1);
+            initializeTable();
+        }
+        
     }//GEN-LAST:event_btn_searchActionPerformed
 
+    private void btn_client_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_client_searchActionPerformed
+        
+        client = daoClient.clientGet(txt_id_client.getText().trim());
+        if (client!=null){
+            txt_client_name.setText(client.getName().trim());
+            idClient = client.getIdClient();
+        }else{
+            JOptionPane.showMessageDialog(null,"No existe el cliente con el RUC buscado", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }
+    }//GEN-LAST:event_btn_client_searchActionPerformed
+    
+    public void initializeTable(){
+        String status= null;
+        modelo = (DefaultTableModel) tbl_returns.getModel();
+        if(modelo!=null){
+            modelo.getDataVector().removeAllElements();
+            modelo.fireTableDataChanged();
+        }
+        try {
+            for (int i = 0; i < productReturnList.size(); i++) {
+                
+                if (productReturnList.get(i).getStatus()==0) status = "Inactivo";
+                else status = "Activo";
+                
+                client = daoClient.clientGet(productReturnList.get(i).getIdClient());
+                product = daoProduct.ProductsGet(productReturnList.get(i).getPicking_Order_Detail_Product_idProduct());
+                
+                Object newRow[] = {
+                    productReturnList.get(i).getIdDispatch_Order(),                    
+                    client.getName(),
+                    product.getName(),
+                    productReturnList.get(i).getQuantity(),
+                    productReturnList.get(i).getReturn_date(),
+                    productReturnList.get(i).getStatus()
+                };
+                modelo.addRow(newRow);
+            }
+        } catch (Exception e) {
+        }
+    }
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_client_search;
-    private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_search;
     private javax.swing.JScrollPane jScrollPane3;
     private com.toedter.calendar.JDateChooser jdate_request_date_from;
@@ -263,7 +325,7 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_date_to;
     private javax.swing.JPanel pnl_returns;
     private javax.swing.JPanel pnl_search_criteria;
-    private javax.swing.JTable table_returns;
+    private javax.swing.JTable tbl_returns;
     private javax.swing.JTextField txt_client_name;
     private javax.swing.JTextField txt_id_client;
     // End of variables declaration//GEN-END:variables

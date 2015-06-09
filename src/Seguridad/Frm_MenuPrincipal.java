@@ -60,6 +60,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             this.op_Almacenes.setEnabled(daoUsers.accesswindow(idprofile,"op_Almacenes"));
             this.op_Racks.setEnabled(daoUsers.accesswindow(idprofile,"op_Racks"));
             this.op_Pallet.setEnabled(daoUsers.accesswindow(idprofile,"op_Pallet"));
+            this.op_Pallet_Product.setEnabled(daoUsers.accesswindow(idprofile,"op_Pallet_Product"));
+            this.op_PalletProduct_Location.setEnabled(daoUsers.accesswindow(idprofile,"op_PalletProduct_Location"));
+            this.op_Location_Cell.setEnabled(daoUsers.accesswindow(idprofile,"op_Location_Cell"));
             this.op_loadIntermentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_loadIntermentOrder"));
             this.op_searchInternmentOrder.setEnabled(daoUsers.accesswindow(idprofile,"op_searchInternmentOrder"));
             this.op_loadRequestOrders.setEnabled(daoUsers.accesswindow(idprofile,"op_loadRequestOrders"));

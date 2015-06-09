@@ -6,7 +6,9 @@
 
 package dao;
 
+import Model.DispatchOrder;
 import Model.ProductReturn;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,6 +18,8 @@ import java.util.List;
 public interface DaoProductReturn {
     
     public List<ProductReturn> productReturnQry();
+    
+    public List<ProductReturn> productReturnQry(Integer idClient, Date dateFrom, Date dateTo, Integer status);
     
     public List<ProductReturn> productReturnQry_search(String dni , String name);
     
@@ -27,5 +31,5 @@ public interface DaoProductReturn {
     
     public String productReturnUpd(ProductReturn productReturn);
     
-    
+    public List<DispatchOrder> dispatchOrderInDevolution(Integer idClient, Date dateFrom, Date dateTo, Integer status);
 }
