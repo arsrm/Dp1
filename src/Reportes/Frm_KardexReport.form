@@ -143,7 +143,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="71" max="-2" attributes="0"/>
-                          <Component id="txt_Name" min="-2" pref="103" max="-2" attributes="0"/>
+                          <Component id="txt_idWh" min="-2" pref="103" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_Wh" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -158,7 +158,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_Wh" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_Name" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_idWh" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -174,12 +174,12 @@
             <Property name="text" type="java.lang.String" value="Id:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_Name">
+        <Component class="javax.swing.JTextField" name="txt_idWh">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_NameActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_idWhActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_Wh">
@@ -208,7 +208,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
-                  <Component id="txt_idProduct" min="-2" pref="103" max="-2" attributes="0"/>
+                  <Component id="txt_EAN" min="-2" pref="103" max="-2" attributes="0"/>
                   <EmptySpace pref="426" max="32767" attributes="0"/>
                   <Component id="jLabel6" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
@@ -226,7 +226,7 @@
                       <Component id="btn_Product" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="cbo_trademark" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txt_idProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_EAN" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="3" min="-2" pref="14" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="0" pref="9" max="32767" attributes="0"/>
@@ -240,7 +240,7 @@
             <Property name="text" type="java.lang.String" value="EAN 13:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="txt_idProduct">
+        <Component class="javax.swing.JTextField" name="txt_EAN">
           <Properties>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>

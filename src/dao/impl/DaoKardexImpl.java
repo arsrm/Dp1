@@ -30,50 +30,88 @@ public class DaoKardexImpl implements DaoKardex {
 
     @Override
     public List<Movement> MovementSearch(Integer idProduct, Integer idwh, Date dateIni, Date dateEnd) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
         String sql = null;
         List<Movement> movimientos = null;
 
-        sql = "SELECT "
-                + "idMovement,"
-                + "date,"
-                + "Type_Movement_idType_Movement, "
-                + "Type_Movement_idSubtype, "
-                + "stock_initial, "
-                + "stock_final "
-                + "FROM Movement "
-                + "WHERE date >= ? "
-                + "AND date <= ? "
-                + "AND Warehouse_idWarehouse=? "
-                + "AND Product_idProduct = ?";
-        
-//         SELECT idMovement, date, Type_Movement_idType_Movement,  Type_Movement_idSubtype,  stock_initial, 
-//                 stock_final  FROM Movement  WHERE date >= ? AND date <= ? AND Warehouse_idWarehouse=?AND 
-//                         Product_idProduct = ?;
-      
+        if (idProduct == null && idwh == null) {
             sql = "SELECT "
                     + "idMovement,"
                     + "date,"
                     + "Type_Movement_idType_Movement, "
-                    +"Type_Movement_idSubtype, "
-                    +"stock_initial, "
-                    +"stock_final "
+                    + "Type_Movement_idSubtype, "
+                    + "stock_initial, "
+                    + "stock_final, "
+                    + "Product_idProduct, "
+                    + "Warehouse_idWarehouse "
+                    + "FROM Movement "
+                    + "WHERE date >= ? "
+                    + "AND date <= ?";
+        }
+        if (idProduct != null && idwh == null) {
+            sql = "SELECT "
+                    + "idMovement,"
+                    + "date,"
+                    + "Type_Movement_idType_Movement, "
+                    + "Type_Movement_idSubtype, "
+                    + "stock_initial, "
+                    + "stock_final, "
+                    + "Product_idProduct, "
+                    + "Warehouse_idWarehouse "                    
                     + "FROM Movement "
                     + "WHERE date >= ? "
                     + "AND date <= ? "
-                    + "AND Warehouse_idWarehouse=? "
-                    + "AND Product_idProduct = ?";
-        
+                    + "AND Product_idProduct = ? ";
+
+        }
+        if (idProduct == null && idwh != null) {
+            sql = "SELECT "
+                    + "idMovement,"
+                    + "date,"
+                    + "Type_Movement_idType_Movement, "
+                    + "Type_Movement_idSubtype, "
+                    + "stock_initial, "
+                    + "stock_final, "
+                    + "Product_idProduct, "
+                    + "Warehouse_idWarehouse "                    
+                    + "FROM Movement "
+                    + "WHERE date >= ? "
+                    + "AND date <= ? "
+                    + "AND Warehouse_idWarehouse = ?";
+        }
+        if (idProduct != null && idwh != null) {
+            sql = "SELECT "
+                    + "idMovement,"
+                    + "date,"
+                    + "Type_Movement_idType_Movement, "
+                    + "Type_Movement_idSubtype, "
+                    + "stock_initial, "
+                    + "stock_final, "
+                    + "Product_idProduct,4487 "
+                    + "Warehouse_idWarehouse "                    
+                    + "FROM Movement "
+                    + "WHERE date >= ? "
+                    + "AND date <= ? "
+                    + "AND Product_idProduct = ? "
+                    + "AND Warehouse_idWarehouse = ?";
+        }
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-//                java.sql.Date dateIniSql = new java.sql.Date(dateIni.getTime());
                 ps.setDate(1, new java.sql.Date(dateIni.getTime()));
                 ps.setDate(2, new java.sql.Date(dateEnd.getTime()));
-                ps.setInt(3, idwh);
-                ps.setInt(4, idProduct);
+                if (idProduct != null && idwh == null) {
+                    ps.setInt(3, idProduct);
+                }
+                if (idProduct == null && idwh != null) {
+                    ps.setInt(3, idwh);
+                }
+                if (idProduct != null && idwh != null) {
+                    ps.setInt(3, idProduct);
+                    ps.setInt(4, idwh);
+                }
 
                 ResultSet rs = ps.executeQuery();
 
@@ -87,8 +125,8 @@ public class DaoKardexImpl implements DaoKardex {
                     mov.setType_Movement_idSubtype(rs.getInt(4));
                     mov.setStock_inicial(rs.getInt(5));
                     mov.setStock_final(rs.getInt(6));
-                    mov.setIdProduct(idProduct);
-                    mov.setIdWh(idwh);
+                    mov.setIdProduct(rs.getInt(7));
+                    mov.setIdWh(rs.getInt(8));
                     movimientos.add(mov);
                 }
 
@@ -175,7 +213,7 @@ public class DaoKardexImpl implements DaoKardex {
                 movimientos = new LinkedList<>();
                 while (rs.next()) {
                     Movement m = new Movement();
-                    
+
                     m.setIdMovement(rs.getInt(1));
                     m.setDate(rs.getDate(2));
                     m.setType_Movement_id(rs.getInt(3));
@@ -184,8 +222,6 @@ public class DaoKardexImpl implements DaoKardex {
                     m.setStock_final(rs.getInt(6));
                     m.setIdProduct(rs.getInt(7));
                     m.setIdWh(rs.getInt(8));
-                    
-                   
 
                     movimientos.add(m);
                 }
@@ -203,6 +239,4 @@ public class DaoKardexImpl implements DaoKardex {
         return movimientos;
     }
 
-    
-    
 }

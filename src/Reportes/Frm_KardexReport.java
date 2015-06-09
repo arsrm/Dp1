@@ -29,7 +29,8 @@ import tool.Validate;
  */
 public class Frm_KardexReport extends javax.swing.JFrame {
 
-    Integer idAlmacen = 0;
+    Integer idAlmacen = null;
+    Integer idProduct = null;
     String idEan = null;
     Product producto = new Product();
     Integer idtrademark = 0;
@@ -82,11 +83,11 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         tbl_Wh = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txt_Name = new javax.swing.JTextField();
+        txt_idWh = new javax.swing.JTextField();
         btn_Wh = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        txt_idProduct = new javax.swing.JTextField();
+        txt_EAN = new javax.swing.JTextField();
         btn_Product = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         cbo_trademark = new javax.swing.JComboBox();
@@ -135,10 +136,10 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         jLabel2.setText("Id:");
 
-        txt_Name.setEnabled(false);
-        txt_Name.addActionListener(new java.awt.event.ActionListener() {
+        txt_idWh.setEnabled(false);
+        txt_idWh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txt_NameActionPerformed(evt);
+                txt_idWhActionPerformed(evt);
             }
         });
 
@@ -162,7 +163,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                     .addGroup(tbl_WhLayout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(71, 71, 71)
-                        .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txt_idWh, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_Wh)))
                 .addContainerGap())
@@ -173,7 +174,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addGroup(tbl_WhLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Wh)
                     .addComponent(jLabel2)
-                    .addComponent(txt_Name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_idWh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1))
         );
@@ -182,7 +183,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         jLabel3.setText("EAN 13:");
 
-        txt_idProduct.setEnabled(false);
+        txt_EAN.setEnabled(false);
 
         btn_Product.setText("Buscar");
         btn_Product.addActionListener(new java.awt.event.ActionListener() {
@@ -207,7 +208,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addGap(51, 51, 51)
-                .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 426, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addGap(77, 77, 77)
@@ -223,7 +224,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                     .addComponent(btn_Product)
                     .addComponent(cbo_trademark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
-                    .addComponent(txt_idProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_EAN, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 9, Short.MAX_VALUE))
         );
@@ -354,41 +355,34 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txt_NameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_NameActionPerformed
+    private void txt_idWhActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_idWhActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txt_NameActionPerformed
+    }//GEN-LAST:event_txt_idWhActionPerformed
 
     private void btn_KardexActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_KardexActionPerformed
         Date dateIniSearch = null;
         Date dateEndSearch = null;
         Movement movimiento = new Movement();
-        int idp;
 
-        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() == null && date_End.getDate() == null) {
-            productList = daoProducts.ProductsQry();
-            movementList = daoKardex.ProductsQry();
-
-            initializeTable();
-        } else {
-            if (date_Ini.getDate() != null) {
-                dateIniSearch = date_Ini.getDate();
-            } else {
-                dateIniSearch = new Date();
-                dateIniSearch.setTime(0);
-            }
-            if (date_End.getDate() != null) {
-                dateEndSearch = date_End.getDate();
-            } else {
-                dateEndSearch = new Date();
-            }
-
-            if (dateEndSearch.before(dateIniSearch)) {
-                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
-            }
-            movementList = daoKardex.MovementSearch(producto.getIdProduct(), idAlmacen, dateIniSearch, dateEndSearch);
-            initializeTable();
+        if (txt_idWh.getText().length() != 0) {
+            idAlmacen = Integer.parseInt(txt_idWh.getText());
         }
-
+        if (txt_EAN.getText().length() != 0) {
+            idProduct = producto.getIdProduct();
+        }
+        if (date_Ini.getDate() != null) {
+            dateIniSearch = date_Ini.getDate();
+        } else {
+            dateIniSearch = new Date();
+            dateIniSearch.setTime(0);
+        }
+        if (date_End.getDate() != null) {
+            dateEndSearch = date_End.getDate();
+        } else {
+            dateEndSearch = new Date();
+        }
+        movementList = daoKardex.MovementSearch(idProduct, idAlmacen, dateIniSearch, dateEndSearch);
+        initializeTable();
     }//GEN-LAST:event_btn_KardexActionPerformed
 
     private void btn_ProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ProductActionPerformed
@@ -430,42 +424,70 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
         Prueba reporte = new Prueba();
 
-        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() == null && date_End.getDate() == null) {
-
+//        if (txt_idWh.getText().length() == 0 && txt_EAN.getText().length() == 0 && date_Ini.getDate() == null && date_End.getDate() == null) {
+//
+//            dateIniSearch = new Date();
+//            dateIniSearch.setTime(0);
+//            dateEndSearch = new Date();
+//
+//            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+//        } else {
+//            if (txt_idWh.getText().length() == 0 && txt_EAN.getText().length() == 0 && date_Ini.getDate() != null || date_End.getDate() != null) {
+//                dateIniSearch = date_Ini.getDate();
+//                dateEndSearch = date_End.getDate();
+//                reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+//            } else {
+//                idAl = Integer.parseInt(txt_idWh.getText());
+//                idP = producto.getIdProduct();
+//
+//                if (date_Ini.getDate() != null) {
+//                    dateIniSearch = date_Ini.getDate();
+//                } else {
+//                    dateIniSearch = new Date();
+//                    dateIniSearch.setTime(0);
+//                }
+//                if (date_End.getDate() != null) {
+//                    dateEndSearch = date_End.getDate();
+//                } else {
+//                    dateEndSearch = new Date();
+//                }
+//
+//                if (dateEndSearch.before(dateIniSearch)) {
+//                    JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+//                }
+//                reporte.mostrarReporteKardexConFiltro(idAl, idP, dateIniSearch, dateEndSearch);
+//            }
+//        }
+        if (txt_idWh.getText().length() != 0) {
+            idAlmacen = Integer.parseInt(txt_idWh.getText());
+        }
+        if (txt_EAN.getText().length() != 0) {
+            idProduct = producto.getIdProduct();
+        }
+        if (date_Ini.getDate() != null) {
+            dateIniSearch = date_Ini.getDate();
+        } else {
             dateIniSearch = new Date();
             dateIniSearch.setTime(0);
-            dateEndSearch = new Date();
-
-            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
         }
-        else{
-        if (txt_Name.getText().length() == 0 && txt_idProduct.getText().length() == 0 && date_Ini.getDate() != null || date_End.getDate() != null) {
-            dateIniSearch = date_Ini.getDate();
+        if (date_End.getDate() != null) {
             dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
         } else {
-            idAl = Integer.parseInt(txt_Name.getText());
-            idP = producto.getIdProduct();
-            
-            if (date_Ini.getDate() != null) {
-                dateIniSearch = date_Ini.getDate();
-            } else {
-                dateIniSearch = new Date();
-                dateIniSearch.setTime(0);
-            }
-            if (date_End.getDate() != null) {
-                dateEndSearch = date_End.getDate();
-            } else {
-                dateEndSearch = new Date();
-            }
-
-            if (dateEndSearch.before(dateIniSearch)) {
-                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
-            }
-            reporte.mostrarReporteKardexConFiltro(idAl, idP, dateIniSearch, dateEndSearch);
-        }
+            dateEndSearch = new Date();
         }
 
+        if (idProduct == null && idAlmacen == null) {
+            reporte.mostrarReporteKardexSinFiltro(dateI, dateF);
+        }
+        if (idProduct != null && idAlmacen == null) {
+
+        }
+        if (idProduct == null && idAlmacen != null) {
+
+        }
+        if (idProduct != null && idAlmacen != null) {
+            reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateI, dateF);
+        }
     }//GEN-LAST:event_btn_ReportActionPerformed
 
     private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
@@ -480,7 +502,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
     public void setTextIdWh() {
 
-        txt_Name.setText(idAlmacen.toString());
+        txt_idWh.setText(idAlmacen.toString());
     }
 
     public void setProduct(Product p) {
@@ -490,7 +512,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
     public void setTextIdEan() {
 
-        txt_idProduct.setText(producto.getCodeEAN13());
+        txt_EAN.setText(producto.getCodeEAN13());
     }
 
     /**
@@ -522,8 +544,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private javax.swing.JTable tbl_Kardex;
     private javax.swing.JPanel tbl_Wh;
-    private javax.swing.JTextField txt_Name;
-    private javax.swing.JTextField txt_idProduct;
+    private javax.swing.JTextField txt_EAN;
+    private javax.swing.JTextField txt_idWh;
     // End of variables declaration//GEN-END:variables
 
     private void initializeTable() {
