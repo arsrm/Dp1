@@ -7,13 +7,16 @@ package Operaciones;
 
 import Model.InternmentOrder;
 import Model.InternmentOrderDetail;
+import Model.Log;
 import Model.Product;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoInternmentOrder;
+import dao.DaoLog;
 import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
 import dao.DaoProducts;
 import dao.impl.DaoInternmentOrderImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoProdImpl;
@@ -49,7 +52,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     /**
      * Creates new form Frm_ProductInterment
      */
-    String directory=null;
+    String directory = null;
     Frm_MenuPrincipal menu_padre = new Frm_MenuPrincipal();
     DaoProducts daoProducts = new DaoProdImpl();
     DaoInternmentOrder daoProdInt = new DaoInternmentOrderImpl();
@@ -588,6 +591,9 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 menu_padre.setVisible(true);
                 menu_padre.setLocationRelativeTo(null);
                 this.dispose();
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
+                daoLog.clientIns("Se ha agregado una orden de internamiento  " , Frm_IntermentOrder_Load.class.toString(), logSI.getIduser());
             }
         }
     }//GEN-LAST:event_btn_saveOrderActionPerformed
