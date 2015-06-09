@@ -1,22 +1,24 @@
 package Mantenimientos;
 
 import Model.Client;
+import Model.Log;
 import dao.DaoClient;
+import dao.DaoLog;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoLogImpl;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static tool.Convierte.aDouble;
 import static tool.Convierte.aInteger;
 
-
 public class Frm_Client extends javax.swing.JFrame {
 
     Frm_Client_Search frm_Client_Search = new Frm_Client_Search();
     DaoClient daoClient = new DaoClientImpl();
-    Integer idCliente=-1;
-   
+    Integer idCliente = -1;
+
     public Frm_Client(Frm_Client_Search client, Client cliente) {
-       setTitle("Datos del Cliente");
+        setTitle("Datos del Cliente");
         frm_Client_Search = client;
         initComponents();
         if (cliente != null) {
@@ -30,7 +32,6 @@ public class Frm_Client extends javax.swing.JFrame {
             idCliente = cliente.getIdClient();
         }
     }
-
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -260,18 +261,18 @@ public class Frm_Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-       
-       if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0 
-               ||  txt_address.getText().length() == 0 ||  txt_posx.getText().length() == 0 
-               ||  txt_posy.getText().length() == 0 ) {
+
+        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0
+                || txt_address.getText().length() == 0 || txt_posx.getText().length() == 0
+                || txt_posy.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
-        
-       }else{
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
+
+        } else {
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
 
                     Client client = new Client();
                     client.setRuc(txt_id.getText());
@@ -282,22 +283,32 @@ public class Frm_Client extends javax.swing.JFrame {
                     client.setPos_x(aInteger(txt_posx.getText()));
                     client.setPos_y(aInteger(txt_posy.getText()));
                     client.setStatus(1);
-                    
-                    if(daoClient.clientGet(client.getRuc())==null){
-                    daoClient.clientIns(client);
-                    }else daoClient.clientUpd(client);
-                    
+                    //log del sistema
+                    DaoLog daoLog = new DaoLogImpl();
+                    Log logSI = null;
+
+                    if (daoClient.clientGet(client.getRuc()) == null) {
+                        daoClient.clientIns(client);
+                        daoLog.clientIns("Se ha ingresado un nuevo cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
+
+                    } else {
+                        daoClient.clientUpd(client);
+                        daoLog.clientIns("Se ha actualizado un cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
+
+                    }
+
                     frm_Client_Search.setVisible(true);
                     frm_Client_Search.setLocationRelativeTo(null);
                     this.dispose();
                     frm_Client_Search.initilizeTable();
-               // }
+
+                    // }
+                }
             }
         }
-      }
     }//GEN-LAST:event_btn_saveActionPerformed
 
-   
+
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         this.dispose();
@@ -313,12 +324,13 @@ public class Frm_Client extends javax.swing.JFrame {
     private void btn_LocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_LocationActionPerformed
         // TODO add your handling code here:
         Frm_Client_Location frm_clientLocation;
-        if(idCliente==-1){
-          frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText());
-            
-        }else
-          frm_clientLocation = new Frm_Client_Location(this,txt_posx.getText(),txt_posy.getText(),idCliente);
-          
+        if (idCliente == -1) {
+            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText());
+
+        } else {
+            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(), idCliente);
+        }
+
         //frm_srs.setLocation(450,150);
         frm_clientLocation.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frm_clientLocation.setVisible(true);
@@ -326,14 +338,14 @@ public class Frm_Client extends javax.swing.JFrame {
         //frm_srs.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_LocationActionPerformed
 
-    public void fillPositions(Integer x, Integer y){
+    public void fillPositions(Integer x, Integer y) {
         txt_posx.setText(x.toString());
         txt_posy.setText(y.toString());
     }
     /**
      * @param args the command line arguments
      */
-   
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Location;

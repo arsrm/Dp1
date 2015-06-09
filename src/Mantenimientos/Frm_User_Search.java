@@ -1,13 +1,16 @@
 package Mantenimientos;
 
 import Model.Distribution_Center;
+import Model.Log;
 import Model.Profile;
 import Model.Users;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoDistributionCenter;
+import dao.DaoLog;
 import dao.DaoProfile;
 import dao.DaoUsers;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProfileImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
@@ -309,7 +312,8 @@ public class Frm_User_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        
+         DaoLog daoLog = new DaoLogImpl();
+                    Log logSI = null;
         modelo = (DefaultTableModel) tbl_user.getModel();
         List<Integer> ids=new  ArrayList<Integer>();
         int col,nr =modelo.getRowCount(); col =6;
@@ -318,6 +322,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
             if ((Boolean)prueba){
                 Integer numm= (Integer)modelo.getValueAt(i, 0);
                ids.add(numm);
+               daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con DNI :  " + numm, Frm_User_Search.class.toString(), logSI.getIduser());
             }
         }
         daoUsers.usersDel(ids);

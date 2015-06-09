@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Seguridad;
 
+import Model.Log;
+import dao.DaoLog;
 import dao.DaoUsers;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoUserImpl;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -21,17 +23,16 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
     /**
      * Creates new form Frm_Change_Password_user
      */
-    
-    Frm_Login frm_Login=new Frm_Login();
-    public Frm_Change_Password_user(Frm_Login login,Integer id) {
-       frm_Login=login;
-       setTitle("CAMBIAR CONTRASEÑA"); 
-       initComponents();
-       frm_Login.setVisible(false);
-       txt_id.setText(id.toString());
-       txt_id.setEnabled(false);
+    Frm_Login frm_Login = new Frm_Login();
+
+    public Frm_Change_Password_user(Frm_Login login, Integer id) {
+        frm_Login = login;
+        setTitle("CAMBIAR CONTRASEÑA");
+        initComponents();
+        frm_Login.setVisible(false);
+        txt_id.setText(id.toString());
+        txt_id.setEnabled(false);
     }
-   
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -153,67 +154,64 @@ public class Frm_Change_Password_user extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-         
+
         frm_Login.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void btn_acceptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_acceptActionPerformed
         // TODO add your handling code here:
-       if (txt_id.getText().length() == 0 || txt_newpwd.getPassword().length == 0 || txt_confirmpwd.getPassword().length == 0) {
+        if (txt_id.getText().length() == 0 || txt_newpwd.getPassword().length == 0 || txt_confirmpwd.getPassword().length == 0) {
             JOptionPane.showMessageDialog(this, "Ingrese un Usuario y/o contraseña validas");
             txt_newpwd.setText("");
             txt_confirmpwd.setText("");
-        }else{
-        
-        String pass = new String(txt_newpwd.getPassword());
-        String  pass_new = new String(txt_confirmpwd.getPassword());
-        DaoUsers daoUsers = new DaoUserImpl();
-        Integer id = aInteger(txt_id.getText());
-        
-        if(daoUsers.usersGet(id)!=null){
-           if(pass.compareTo(pass_new)==0){
-                   Object[] options = {"OK"};
-                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha creado la clave con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                    if(ok_option==JOptionPane.OK_OPTION){
-                        Integer flag =1;
-                        String result= daoUsers.setpasword(id,pass,flag);
-                        txt_id.setText("");
-                        txt_newpwd.setText("");
-                        txt_confirmpwd.setText("");
-                        frm_Login.setVisible(true);
-                        this.dispose();
+        } else {
+
+            String pass = new String(txt_newpwd.getPassword());
+            String pass_new = new String(txt_confirmpwd.getPassword());
+            DaoUsers daoUsers = new DaoUserImpl();
+            Integer id = aInteger(txt_id.getText());
+
+            if (daoUsers.usersGet(id) != null) {
+                if (pass.compareTo(pass_new) == 0) {
+                    Object[] options = {"OK"};
+                    if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha creado la clave con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {
+                            Integer flag = 1;
+                            String result = daoUsers.setpasword(id, pass, flag);
+                            txt_id.setText("");
+                            txt_newpwd.setText("");
+                            txt_confirmpwd.setText("");
+                            frm_Login.setVisible(true);
+                            this.dispose();
+
+                            DaoLog daoLog = new DaoLogImpl();
+                            Log logSI = null;
+                            daoLog.clientIns("Se ha cambiado la contraseña de usaurio con DNI :  " + id.toString(), Frm_Change_Password_user.class.toString(), logSI.getIduser());
+                        }
                     }
-                } 
-            }
-            else {
-                JOptionPane.showMessageDialog(this, "Las contraseñas deben ser iguales");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Las contraseñas deben ser iguales");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "El usuario no existe");
             }
         }
-        else {
-            JOptionPane.showMessageDialog(this, "El usuario no existe");
-        }
-      }
-        
+
     }//GEN-LAST:event_btn_acceptActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         // TODO add your handling code here:
         frm_Login.setVisible(true);
         this.dispose();
-        
+
     }//GEN-LAST:event_formWindowClosed
 
-    
-    
     /**
      * @param args the command line arguments
      */
-    
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_accept;

@@ -1,9 +1,12 @@
 package Mantenimientos;
 
 import Model.Client;
+import Model.Log;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
+import dao.DaoLog;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -281,7 +284,8 @@ DefaultTableModel modelo;
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-        
+          DaoLog daoLog = new DaoLogImpl();
+                    Log logSI = null;
         modelo = (DefaultTableModel) tbl_client.getModel();
         List<String> ids = new ArrayList<String>();
         int col, nr = modelo.getRowCount();
@@ -291,6 +295,7 @@ DefaultTableModel modelo;
             if ((Boolean) prueba) {
                 String numm =  (String)modelo.getValueAt(i, 0);
                 ids.add(numm);
+                daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
             }
         }
         daoClient.clientDel(ids);

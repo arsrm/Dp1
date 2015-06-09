@@ -230,18 +230,21 @@ public class Frm_User extends javax.swing.JFrame {
                     users.setDistribution_Center_idDistribution_Center(daoDistributionCenter.distribution_centerGet((String)cbo_center.getSelectedItem()).getIdDistribution_Center());
                     DaoProfile daoProfile =new DaoProfileImpl();
                     users.setProfile_idProfile(daoProfile.usersGet((String)cbo_profile.getSelectedItem()).getIdprofile());
+                    DaoLog daoLog =new DaoLogImpl();
+                     Log logSI = null; 
+                    
                     if(daoUsers.usersGet(users.getIdUser())==null){
                     daoUsers.usersIns(users);
-                    }else daoUsers.usersUpd(users);
+                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
+                    }else {daoUsers.usersUpd(users);
+                    daoLog.clientIns("Se ha actualizado un usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
+                    }
                     frm_user_search.setVisible(true);
                     frm_user_search.setLocationRelativeTo(null);
                     this.dispose();
                     frm_user_search.initilizeTable();
                     
-                    DaoLog daoLog =new DaoLogImpl();
-                     Log logSI = null; 
-                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
-                   
+                    
                     
              
             }

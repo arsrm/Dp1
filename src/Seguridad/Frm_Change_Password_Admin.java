@@ -1,6 +1,9 @@
 package Seguridad;
 
+import Model.Log;
+import dao.DaoLog;
 import dao.DaoUsers;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoUserImpl;
 import java.util.Arrays;
 import javax.swing.JFrame;
@@ -159,7 +162,9 @@ public class Frm_Change_Password_Admin extends javax.swing.JFrame {
                         txt_new_password.setText("");
                         txt_confirm_password.setText("");
                         this.setVisible(true);
-
+                         DaoLog daoLog = new DaoLogImpl();
+                            Log logSI = null;
+                            daoLog.clientIns("El administrador cambuo el pasword de un usuario al sistema con DNI :  " + id.toString(), Frm_Change_Password_Admin.class.toString(), logSI.getIduser());
                     }
                 }
             } else {
