@@ -5,10 +5,13 @@
  */
 package Mantenimientos;
 
+import Model.Log;
 import Model.Type_Condition_WareHouse;
 import Model.Warehouse;
+import dao.DaoLog;
 import dao.DaoTypeConditionWH;
 import dao.DaoWH;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoTypeConditionWHImpl;
 import dao.impl.DaoWHImpl;
 import java.util.ArrayList;
@@ -34,15 +37,14 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     DaoTypeConditionWH daoTC = new DaoTypeConditionWHImpl();
     List<Type_Condition_WareHouse> typeConditionList = null;
     Type_Condition_WareHouse tcWhSelected;
-    Validate validar=new Validate();
-   
+    Validate validar = new Validate();
 
     public Frm_Warehouse(Frm_Warehouse_Search menu, Warehouse wh) {
         setTitle("Mantenimiento de Almacenes");
         menu_padre = menu;
         warehouse = wh;
         initComponents();
-        
+
         typeConditionList = daoTC.tcwhQry();
         int cantTC = typeConditionList.size();
 //        cbo_type_condition.addItem("Seleccionar");
@@ -58,8 +60,8 @@ public class Frm_Warehouse extends javax.swing.JFrame {
 
     private void initializeForm() {
         cbo_type_condition.setEnabled(false);
-        for (int i=0; i<typeConditionList.size();i++){
-            if(typeConditionList.get(i).getIdType_Condition_WareHouse() == warehouse.getType_Condition_WareHouse_idType_Condition_WareHouse()){
+        for (int i = 0; i < typeConditionList.size(); i++) {
+            if (typeConditionList.get(i).getIdType_Condition_WareHouse() == warehouse.getType_Condition_WareHouse_idType_Condition_WareHouse()) {
                 cbo_type_condition.setSelectedItem(typeConditionList.get(i).getDescription());
             }
         }
@@ -186,55 +188,55 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-      
-        String nombre=null;
-        
-        if(cbo_type_condition.getSelectedItem().equals("Seleccione")){
+
+        String nombre = null;
+
+        if (cbo_type_condition.getSelectedItem().equals("Seleccione")) {
 
             JOptionPane.showMessageDialog(this, "Por favor complete el campo condición de almacén");
         }
-        
-        if( txt_description.getText().length() == 0){
+
+        if (txt_description.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor complete el campo nombre");
         }
-        
-        if(txt_description.getText().length() != 0){
-            nombre=txt_description.getText();
-            if(!Validate.validarNombre(nombre)){
-                JOptionPane.showMessageDialog(this,"solo se aceptan caracteres", "Advertencia", JOptionPane.OK_OPTION);
-            }
-            else{
-        if (warehouse == null) { //Guardar nuevo producto
 
-            warehouse = new Warehouse();
-            warehouse.setDescription(txt_description.getText());
-            warehouse.setType_Condition_WareHouse_idType_Condition_WareHouse(tcWhSelected.getIdType_Condition_WareHouse());
-            warehouse.setDistribution_Center_idDistribution_Center(1);
-            warehouse.setStatus(1);
-            daoWH.whIns(warehouse);
+        if (txt_description.getText().length() != 0) {
+            nombre = txt_description.getText();
+            if (!Validate.validarNombre(nombre)) {
+                JOptionPane.showMessageDialog(this, "solo se aceptan caracteres", "Advertencia", JOptionPane.OK_OPTION);
+            } else {
 
-        } else {
-            
-            
-            warehouse.setDescription(txt_description.getText());
-            daoWH.whUpd(warehouse);
-            
-        }
-        
-        Object[] options = {"OK"};
-        
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al Almacén con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                this.dispose();
+                Object[] options = {"OK"};
+
+                if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                        "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                    DaoLog daoLog = new DaoLogImpl();
+                    Log logSI = null;
+                    if (warehouse == null) { //Guardar nuevo producto
+
+                        warehouse = new Warehouse();
+                        warehouse.setDescription(txt_description.getText());
+                        warehouse.setType_Condition_WareHouse_idType_Condition_WareHouse(tcWhSelected.getIdType_Condition_WareHouse());
+                        warehouse.setDistribution_Center_idDistribution_Center(1);
+                        warehouse.setStatus(1);
+                        daoWH.whIns(warehouse);
+                        warehouse.setIdWH(daoWH.whGetMaxId());
+                        daoLog.clientIns("Se ha ingresado un nuevo Almacén al sistema con ID " + warehouse.getIdWarehouse().toString(), Frm_Warehouse.class.toString(), logSI.getIduser());
+                    } else {
+
+                        warehouse.setDescription(txt_description.getText());
+                        daoWH.whUpd(warehouse);
+                        daoLog.clientIns("Se ha actualizado un Almacén en el sistema con ID " + warehouse.getIdWarehouse().toString(), Frm_Warehouse.class.toString(), logSI.getIduser());
+                    }
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al Almacén con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        menu_padre.setVisible(true);
+                        menu_padre.setLocationRelativeTo(null);
+                        this.dispose();
+                    }
+                }
+
             }
-        }
-        
-        
-        }
             menu_padre.initilizeTable();
         }
     }//GEN-LAST:event_btn_saveActionPerformed
@@ -295,5 +297,4 @@ public class Frm_Warehouse extends javax.swing.JFrame {
     private javax.swing.JTextField txt_description;
     // End of variables declaration//GEN-END:variables
 
-    
 }

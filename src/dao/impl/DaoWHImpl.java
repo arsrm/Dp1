@@ -302,6 +302,32 @@ public class DaoWHImpl implements DaoWH{
         return list;
     }
 
+    @Override
+    public Integer whGetMaxId() {
+        Integer maxIdWh = 0;
+        String sql = "SELECT "
+                + "MAX(idWarehouse) "
+                + "FROM Warehouse";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    maxIdWh = rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                maxIdWh = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return maxIdWh;
+    }
+
   
     
 }

@@ -32,4 +32,5 @@ public interface DaoWH {
     public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center);
     
     public List<Warehouse> whSearch(Integer idWh, Integer idTypeCondition);
+    public Integer whGetMaxId();
 }
