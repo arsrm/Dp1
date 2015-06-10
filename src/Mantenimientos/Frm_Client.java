@@ -6,6 +6,8 @@ import dao.DaoClient;
 import dao.DaoLog;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoLogImpl;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static tool.Convierte.aDouble;
@@ -21,6 +23,8 @@ public class Frm_Client extends javax.swing.JFrame {
         setTitle("Datos del Cliente");
         frm_Client_Search = client;
         initComponents();
+        txt_posx.setEnabled(false);
+        txt_posy.setEnabled(false);
         if (cliente != null) {
             txt_id.setText(cliente.getRuc());
             txt_id.setEnabled(false);
@@ -31,6 +35,7 @@ public class Frm_Client extends javax.swing.JFrame {
             op_priority.setValue(cliente.getPriority());
             idCliente = cliente.getIdClient();
         }
+       
     }
 
     @SuppressWarnings("unchecked")
@@ -261,7 +266,15 @@ public class Frm_Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
+        
+        String input = txt_id.getText();
+        Pattern pat = Pattern.compile("[0-9]{11}");
+        Matcher mat = pat.matcher(input);
 
+        if (!mat.matches()) {
+            JOptionPane.showMessageDialog(this, "El campo Ruc debe ser un valor numerico y de 11 cifras");
+        } else {
+         
         if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0
                 || txt_address.getText().length() == 0 || txt_posx.getText().length() == 0
                 || txt_posy.getText().length() == 0) {
@@ -306,6 +319,7 @@ public class Frm_Client extends javax.swing.JFrame {
                 }
             }
         }
+        }
     }//GEN-LAST:event_btn_saveActionPerformed
 
 
@@ -325,6 +339,8 @@ public class Frm_Client extends javax.swing.JFrame {
         // TODO add your handling code here:
         Frm_Client_Location frm_clientLocation;
         if (idCliente == -1) {
+            txt_posx.setText("");
+            txt_posy.setText("");
             frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText());
 
         } else {

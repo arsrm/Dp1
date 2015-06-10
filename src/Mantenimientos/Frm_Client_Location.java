@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Mantenimientos;
 
 import Model.Client;
@@ -33,115 +32,113 @@ import javax.swing.JScrollPane;
  * @author Luis Miguel
  */
 public class Frm_Client_Location extends javax.swing.JFrame {
-    ImageIcon map ;
+
+    ImageIcon map;
     Frm_Client frm_clientAux;
     Frm_Distribution_Center frm_distributionAux;
-    Integer posX=-1, posY=-1;
+    Integer posX = -1, posY = -1;
     Imagen imagen;
     int flag;
     DaoClient daoClient = new DaoClientImpl();
     Client cliente;
-    
-    
-    
+
     public class Imagen extends javax.swing.JPanel {
-            ImageIcon simbolo = null;
-            
-            Path path = Paths.get(".\\Imagenes\\test.png");
-           
-            BufferedImage imageMap;
-            public Imagen(/*JPanel p*/) {
-                byte[] data;
-                try {
-                    data = Files.readAllBytes(path);
-                    imageMap = ImageIO.read(new ByteArrayInputStream(data));
-                    simbolo = new ImageIcon(imageMap.getScaledInstance(imageMap.getWidth(),imageMap.getHeight(), java.awt.Image.SCALE_SMOOTH)); 
-                    map = simbolo;
-                } catch (IOException ex) {
-                    
-                }
-                this.setSize(imageMap.getWidth(), imageMap.getHeight()); //se selecciona el tamaño del panel
-            }
-            
-            public void refresh(){
-                simbolo = map;
-            }
 
-    //Se crea un método cuyo parámetro debe ser un objeto Graphics
+        ImageIcon simbolo = null;
 
-            public void paint(Graphics grafico) {
+        Path path = Paths.get("Imagenes/test.png");
+
+        BufferedImage imageMap;
+
+        public Imagen(/*JPanel p*/) {
+            byte[] data;
+            try {
+                data = Files.readAllBytes(path);
+                imageMap = ImageIO.read(new ByteArrayInputStream(data));
+                simbolo = new ImageIcon(imageMap.getScaledInstance(imageMap.getWidth(), imageMap.getHeight(), java.awt.Image.SCALE_SMOOTH));
+                map = simbolo;
+            } catch (IOException ex) {
+
+            }
+            this.setSize(imageMap.getWidth(), imageMap.getHeight()); //se selecciona el tamaño del panel
+        }
+
+        public void refresh() {
+            simbolo = map;
+        }
+
+        //Se crea un método cuyo parámetro debe ser un objeto Graphics
+        public void paint(Graphics grafico) {
             Dimension height = getSize();
-            grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
-            if(posX!=-1 && posY!=-1){
+            grafico.drawImage(simbolo.getImage(), 0, 0, simbolo.getIconWidth(), simbolo.getIconHeight(), null);
+            if (posX != -1 && posY != -1) {
                 Graphics2D g2 = (Graphics2D) grafico;
                 g2.setStroke(new BasicStroke(10));
-                g2.drawLine(posX,posY,posX,posY);
+                g2.drawLine(posX, posY, posX, posY);
                 grafico.setFont(grafico.getFont().deriveFont(12f));
-                if(flag==1)
-                    grafico.drawString(cliente.getName(),posX,posY);
-                else
-                    grafico.drawString("Centro de Distribuciòn",posX,posY);
+                if (flag == 1) {
+                    grafico.drawString(cliente.getName(), posX, posY);
+                } else {
+                    grafico.drawString("Centro de Distribuciòn", posX, posY);
+                }
             }
             setOpaque(false);
             super.paintComponent(grafico);
         }
     }
-    /**
-     * Creates new form Frm_Client_Location
-     */
-    public Frm_Client_Location(Frm_Client frm_client, String posx,String posy, Integer idCliente) {
-        frm_clientAux = frm_client;      
+
+    public Frm_Client_Location(Frm_Client frm_client, String posx, String posy, Integer idCliente) {
+        frm_clientAux = frm_client;
         flag = 1;
         initComponents();
         cliente = daoClient.clientGet(idCliente);
-        if(cliente!=null){
-            if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
+        if (cliente != null) {
+            if (posx.equals("") == false) { //si no es nuevo se setea la coordenada
                 Double x = Double.parseDouble(posx);
                 posX = Integer.valueOf(x.intValue());
             }
-            if(posy.equals("")==false){//si no es nuevo se setea la coordenada
+            if (posy.equals("") == false) {//si no es nuevo se setea la coordenada
                 Double y = Double.parseDouble(posy);
                 posY = Integer.valueOf(y.intValue());
             }
         }
-        printMap(posX,posY);
-        
-       
+        printMap(posX, posY);
+
     }
-    
-    public Frm_Client_Location(Frm_Client frm_client, String posx,String posy) {
-        frm_clientAux = frm_client;      
+
+    public Frm_Client_Location(Frm_Client frm_client, String posx, String posy) {
+        frm_clientAux = frm_client;
         flag = 1;
         initComponents();
-        if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
+        if (posx.equals("") == false) { //si no es nuevo se setea la coordenada
             Double x = Double.parseDouble(posx);
             posX = Integer.valueOf(x.intValue());
         }
-        if(posy.equals("")==false){//si no es nuevo se setea la coordenada
+        if (posy.equals("") == false) {//si no es nuevo se setea la coordenada
             Double y = Double.parseDouble(posy);
             posY = Integer.valueOf(y.intValue());
         }
-        printMap(posX,posY);
-       
+        printMap(posX, posY);
+
     }
-    
-    public Frm_Client_Location(Frm_Distribution_Center frm_distribution, String posx,String posy){
-        frm_distributionAux = frm_distribution; 
-        flag=0;
+
+    public Frm_Client_Location(Frm_Distribution_Center frm_distribution, String posx, String posy) {
+        frm_distributionAux = frm_distribution;
+        flag = 0;
         initComponents();
-        if(posx.equals("")==false){ //si no es nuevo se setea la coordenada
+        if (posx.equals("") == false) { //si no es nuevo se setea la coordenada
             Double x = Double.parseDouble(posx);
             posX = Integer.valueOf(x.intValue());
         }
-        if(posy.equals("")==false){//si no es nuevo se setea la coordenada
+        if (posy.equals("") == false) {//si no es nuevo se setea la coordenada
             Double y = Double.parseDouble(posy);
             posY = Integer.valueOf(y.intValue());
         }
-        printMap(posX,posY);
-        
+        printMap(posX, posY);
+
     }
-    
-    private void printMap(Integer posx,Integer posy){
+
+    private void printMap(Integer posx, Integer posy) {
         imagen = new Imagen();
         int width = imagen.simbolo.getIconWidth();
         int height = imagen.simbolo.getIconHeight();
@@ -149,18 +146,18 @@ public class Frm_Client_Location extends javax.swing.JFrame {
         d.height = height;
         d.width = width;
         pnl_img.setPreferredSize(d);
-        JScrollPane scroll = new JScrollPane(pnl_img);        
-        scroll.setBounds(10,80,1200,600);        
+        JScrollPane scroll = new JScrollPane(pnl_img);
+        scroll.setBounds(10, 80, 1200, 600);
         scroll.setAutoscrolls(true);
         pnl_img.add(imagen);
         pnl_img.repaint();
         scroll.setViewportView(pnl_img);
-        scroll.getViewport().setView(pnl_img); 
+        scroll.getViewport().setView(pnl_img);
         this.add(scroll);
-        if(posx!=-1 && posy!=-1){
+        if (posx != -1 && posy != -1) {
             showPoint();
         }
-        
+
     }
 
     /**
@@ -305,7 +302,7 @@ public class Frm_Client_Location extends javax.swing.JFrame {
         showPoint();
     }//GEN-LAST:event_pnl_imgMouseClicked
 
-    private void showPoint(){
+    private void showPoint() {
         imagen.refresh();
         pnl_img.add(imagen);
         pnl_img.repaint();
@@ -313,55 +310,60 @@ public class Frm_Client_Location extends javax.swing.JFrame {
         txt_posY.setText(posY.toString());
         Graphics2D g2 = (Graphics2D) pnl_img.getGraphics();
         g2.setStroke(new BasicStroke(10));
-        g2.drawLine(posX,posY,posX,posY);
+        g2.drawLine(posX, posY, posX, posY);
         g2.setFont(g2.getFont().deriveFont(12f));
-        g2.drawString("Centro de Distribución",posX,posY);
+        g2.drawString("Centro de Distribución", posX, posY);
     }
     private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
-        if(txt_posX.getText().equals("")==true || txt_posY.getText().equals("")==true){
-             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Debe seleccionar una ubicación.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        }else{
-             Integer x = Integer.parseInt(txt_posX.getText());
-             Integer y = Integer.parseInt(txt_posY.getText());
-             if(flag==1){
-                frm_clientAux.fillPositions(x,y);
+        if (txt_posX.getText().equals("") == true || txt_posY.getText().equals("") == true) {
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Debe seleccionar una ubicación.", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        } else {
+            Integer x = Integer.parseInt(txt_posX.getText());
+            Integer y = Integer.parseInt(txt_posY.getText());
+            if (flag == 1) {
+                frm_clientAux.fillPositions(x, y);
                 frm_clientAux.setVisible(true);
                 this.dispose();
-             }else{
-                 frm_distributionAux.fillPositions(x,y);
-                 frm_distributionAux.setVisible(true);
-                 this.dispose();
-             }
-             
+            } else {
+                frm_distributionAux.fillPositions(x, y);
+                frm_distributionAux.setVisible(true);
+                this.dispose();
+            }
+
         }
-      
-       
+
+
     }//GEN-LAST:event_btn_SaveActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        if(flag==1){
-         frm_clientAux.setVisible(true);   
-        }else{
+        if (flag == 1) {
+            frm_clientAux.setVisible(true);
+        } else {
             frm_distributionAux.setVisible(true);
-        }    
+        }
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
     private void btn_ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ClearActionPerformed
         // TODO add your handling code here:
-        imagen.refresh();
-        pnl_img.add(imagen);
-        pnl_img.repaint();
-        posX=-1;
-        posY=-1;
-        txt_posX.setText("");
-        txt_posY.setText("");
+        
+        if (txt_posX.getText().equals("") == true || txt_posY.getText().equals("") == true) {
+           JOptionPane.showMessageDialog(this, "No se ha seleccionado ninguna ubicacion");
+        } else {
+            imagen.refresh();
+            pnl_img.add(imagen);
+            pnl_img.repaint();
+            posX = -1;
+            posY = -1;
+            txt_posX.setText("");
+            txt_posY.setText("");
+        }
     }//GEN-LAST:event_btn_ClearActionPerformed
 
-   
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Clear;
     private javax.swing.JButton btn_Save;
