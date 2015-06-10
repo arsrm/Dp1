@@ -33,6 +33,8 @@ public class Frm_Rack extends javax.swing.JFrame {
     /**
      * Creates new form Frm_rack
      */
+    static final int NUM_CEL_DETAILS = 2;
+    
     Frm_Rack_Search menu_padre = new Frm_Rack_Search();
     Rack rack = null;
     int currentDC=1, currentWH=0;
@@ -457,7 +459,8 @@ public class Frm_Rack extends javax.swing.JFrame {
         int numFloors = rack.getFloor_numbers();
         int length = rack.getLength().intValue();
         int numColumns = rack.getColumn_number();
-        int numLCDByLC = length/numColumns;
+        //int numLCDByLC = length/numColumns;
+        int numLCDByLC = NUM_CEL_DETAILS;
         int idLocationCell = 0;
         int idLocationCellDetail = 0;
         

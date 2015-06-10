@@ -161,10 +161,10 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_DispatchOrder)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_DispatchOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
                 .addComponent(btn_search)
-                .addGap(118, 118, 118))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_search_criteriaLayout.setVerticalGroup(
             pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,58 +503,64 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         int idVehicle;
         double functionValue;
         Date dispatchDate;
-        idDispatchOrder = Integer.parseInt(txt_DispatchOrder.getText());
-        dispatchOrder = daoDispatchOrder.dispatchOrderGet(idDispatchOrder);
         
-        if (dispatchOrder != null) {
-            idPickingOrder = dispatchOrder.getIdPickingOrder();
-            dispatchDate = dispatchOrder.getDepartureDate();
-            client = daoClient.clientGet(dispatchOrder.getIdClient());
+        try {
+            idDispatchOrder = Integer.parseInt(txt_DispatchOrder.getText());
+            dispatchOrder = daoDispatchOrder.dispatchOrderGet(idDispatchOrder);
 
-            //buscar lista de ExecutionAlgorithm por date para sacar todas las ejecuciones del dia
-            executionAlgorithmList = daoExecutionAlgorithm.executionAlgorithmQry(dispatchDate);
-            //buscar el idExecutionAlgorithm del ExecutionAlgorithm con mejor function_value        
-            if (executionAlgorithmList != null) {
-                functionValue = executionAlgorithmList.get(0).getFunction_value();
-                executionAlgorithm = executionAlgorithmList.get(0);
-                idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
-                for (int i = 0; i < executionAlgorithmList.size(); i++) {
-                    if (executionAlgorithmList.get(i).getFunction_value() < functionValue) {
-                        functionValue = executionAlgorithmList.get(i).getFunction_value();
-                        executionAlgorithm = executionAlgorithmList.get(i);
-                        idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
+            if (dispatchOrder != null) {
+                idPickingOrder = dispatchOrder.getIdPickingOrder();
+                dispatchDate = dispatchOrder.getDepartureDate();
+                client = daoClient.clientGet(dispatchOrder.getIdClient());
+
+                //buscar lista de ExecutionAlgorithm por date para sacar todas las ejecuciones del dia
+                executionAlgorithmList = daoExecutionAlgorithm.executionAlgorithmQry(dispatchDate);
+                //buscar el idExecutionAlgorithm del ExecutionAlgorithm con mejor function_value        
+                if (executionAlgorithmList != null) {
+                    functionValue = executionAlgorithmList.get(0).getFunction_value();
+                    executionAlgorithm = executionAlgorithmList.get(0);
+                    idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
+                    for (int i = 0; i < executionAlgorithmList.size(); i++) {
+                        if (executionAlgorithmList.get(i).getFunction_value() < functionValue) {
+                            functionValue = executionAlgorithmList.get(i).getFunction_value();
+                            executionAlgorithm = executionAlgorithmList.get(i);
+                            idExecutionAlgorithm = executionAlgorithm.getIdExecutionAlgorithm();
+                        }
                     }
+                    //buscar en Execution_Detail con el idDispatchOrder, idPickingOrder y idExecutionAlgorithm info del vehiculo        
+                    executionAlgorithmDetail = daoExecutionAlgorithmDetail.executionAlgorithmGet(idExecutionAlgorithm, idDispatchOrder, idPickingOrder);
+                    if (executionAlgorithmDetail != null) {
+                        idVehicle = executionAlgorithmDetail.getVehicle_idVehicle();
+                        vehicle = daoVehicle.vehicleGet(idVehicle);
+                        fillGeneralData();
+                    }
+                    //busco el detalle de los productos asociado al PickingOrder
+                    pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
+                    palletProductLocationList = new LinkedList<>();
+                    productList = new LinkedList<>();
+                    for (int j = 0; j < pickingOrderDetailList.size(); j++) {
+                        Pallet_Product_Location palletProductLocation = new Pallet_Product_Location();
+                        Product product = new Product();
+                        idPalletProductLocation = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
+                        idProduct = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
+                        palletProductLocation = daoPalletProductLocation.daoPallet_Product_LocationGet(idPalletProductLocation);
+                        product = daoProduct.ProductsGet(idProduct);
+                        palletProductLocationList.add(palletProductLocation);
+                        productList.add(product);
+                    }
+                    initializeTable();
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se puede retornar. La orden de despacho no ha sido entregada",
+                            "Advertencias", JOptionPane.WARNING_MESSAGE);
                 }
-                //buscar en Execution_Detail con el idDispatchOrder, idPickingOrder y idExecutionAlgorithm info del vehiculo        
-                executionAlgorithmDetail = daoExecutionAlgorithmDetail.executionAlgorithmGet(idExecutionAlgorithm, idDispatchOrder, idPickingOrder);
-                if (executionAlgorithmDetail!=null){
-                    idVehicle = executionAlgorithmDetail.getVehicle_idVehicle();
-                    vehicle = daoVehicle.vehicleGet(idVehicle);
-                    fillGeneralData();
-                }
-                //busco el detalle de los productos asociado al PickingOrder
-                pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
-                palletProductLocationList = new LinkedList<>();
-                productList = new LinkedList<>();
-                for (int j = 0; j < pickingOrderDetailList.size(); j++) {
-                    Pallet_Product_Location palletProductLocation = new Pallet_Product_Location();
-                    Product product = new Product();
-                    idPalletProductLocation = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
-                    idProduct = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
-                    palletProductLocation = daoPalletProductLocation.daoPallet_Product_LocationGet(idPalletProductLocation);
-                    product = daoProduct.ProductsGet(idProduct);
-                    palletProductLocationList.add(palletProductLocation);
-                    productList.add(product);
-                }
-                initializeTable();
-            }else{                
-                JOptionPane.showMessageDialog(null,"No se puede retornar. La orden de despacho no ha sido entregada", 
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe la orden de despacho buscada",
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
             }
-        } else {
-            JOptionPane.showMessageDialog(null,"No existe la orden de despacho buscada", 
-                        "Advertencias", JOptionPane.WARNING_MESSAGE);
-        }                                       
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Algunos datos deben ser numéricos",
+                    "Advertencias", JOptionPane.WARNING_MESSAGE);
+        }
         
     }//GEN-LAST:event_btn_searchActionPerformed
     
