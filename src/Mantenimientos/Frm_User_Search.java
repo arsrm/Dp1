@@ -16,7 +16,9 @@ import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 import static tool.Convierte.aInteger;
+import tool.SelectAllHeader;
 
 public class Frm_User_Search extends javax.swing.JFrame {
 
@@ -28,10 +30,13 @@ public class Frm_User_Search extends javax.swing.JFrame {
     List<Profile> profile = new ArrayList<Profile>();
     DefaultTableModel modelo;
     DaoUsers daoUsers = new DaoUserImpl();
+    
     public Frm_User_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Usuario");
         auxmenu = menu;  
         initComponents();
+        TableColumn tc = tbl_user.getColumnModel().getColumn(5);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_user, 5));
         modelo = (DefaultTableModel) tbl_user.getModel();
         distribution_centers = daoDC.distribution_centerGetQry();
         for (int i = 0; i < distribution_centers.size(); i++) {
@@ -41,7 +46,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
         for (int i = 0; i < profile.size(); i++) {
             this.cbo_profile.addItem(profile.get(i).getName());
         }
-     
+       
         initilizeTable();
         
       
@@ -320,6 +325,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
         for (int i=0; i<nr ;i++){
             Object prueba = modelo.getValueAt(i,5);
             if ((Boolean)prueba){
+                
                 Integer numm= (Integer)modelo.getValueAt(i, 0);
                ids.add(numm);
                daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con DNI :  " + numm, Frm_User_Search.class.toString(), logSI.getIduser());

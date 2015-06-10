@@ -66,7 +66,7 @@ public class DaoProfileImpl implements DaoProfile {
     
     Profile profile = null;
         Integer id=0;
-        String sql = "select idProfile,name,description "
+        String sql = "select idProfile,name,description,status "
                 +" From  Profile where idProfile = ?";
 
 
@@ -82,7 +82,7 @@ public class DaoProfileImpl implements DaoProfile {
                     profile.setIdprofile(rs.getInt(1));
                     profile.setName(rs.getString(2));
                     profile.setDescription(rs.getString(3));
-                    
+                    profile.setStatus(rs.getInt(4));
                 }
             } catch (SQLException e) {
                profile=null;
@@ -102,7 +102,7 @@ public class DaoProfileImpl implements DaoProfile {
     
     Profile profile = null;
         Integer id=0;
-        String sql = "select idProfile,name,description "
+        String sql = "select idProfile,name,description,status "
                 +" From  Profile where  name= ?";
 
 
@@ -118,7 +118,7 @@ public class DaoProfileImpl implements DaoProfile {
                     profile.setIdprofile(rs.getInt(1));
                     profile.setName(rs.getString(2));
                     profile.setDescription(rs.getString(3));
-                    
+                    profile.setStatus(rs.getInt(4));
                 }
             } catch (SQLException e) {
                profile=null;

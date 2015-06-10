@@ -1,6 +1,8 @@
 package dao.impl;
 
+import Model.Profile;
 import Model.Users;
+import dao.DaoProfile;
 import dao.DaoUsers;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
@@ -9,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.mindrot.BCrypt;
 import static org.mindrot.BCrypt.checkpw;
 import static tool.Convierte.aInteger;
@@ -153,7 +156,7 @@ public class DaoUserImpl implements DaoUsers {
         int sizelist= ids.size();
         String result = null;
         String sql = "UPDATE  User SET "
-                + "status= '0' "
+                + "status= ? "
                 + "WHERE idUser=?";
 /*"DELETE FROM User WHERE idUser=?";*/
         Connection cn = db.getConnection();
@@ -162,8 +165,20 @@ public class DaoUserImpl implements DaoUsers {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 for (int x = 0 ; x<sizelist ;x ++) {
                     int z= ids.get(x);
-                    ps.setInt(1,z);
-
+                    ps.setInt(2,z);
+                   Users u = new Users();
+                   Profile p =new Profile();
+                   DaoProfile dp =new DaoProfileImpl();
+                   
+                   u=usersGet(z);
+                   if (u.getStatus()==0){
+                       p=dp.usersGet(u.getProfile_idProfile());
+                       if (p.getStatus()!=0)
+                          ps.setInt(1,1); //n ote permite activar usuarios con el perfil ya caidos
+                       else  ps.setInt(1,0);//se mantiene
+                   
+                   }else ps.setInt(1,0);
+                   
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
                         throw new SQLException("ID: " + x + " no existe");
