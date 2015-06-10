@@ -34,7 +34,9 @@ public class Frm_User extends javax.swing.JFrame {
         setTitle("Mantenimiento de Usuarios");
         frm_user_search = user_menu;
         initComponents();
-        if (user!=null)pwdgenerica = user.getPassword();
+        if (user != null) {
+            pwdgenerica = user.getPassword();
+        }
         if (user != null) {
             int num_item = 0;
             distribution_centers = daoDC.distribution_centerGetQry();
@@ -208,48 +210,47 @@ public class Frm_User extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        
-        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0 ) {
+
+        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0) {
             JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
-        
-       }else {
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                     Users users = new Users();
+
+        } else {
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                if (ok_option == JOptionPane.OK_OPTION) {
+                    Users users = new Users();
                     users.setIdUser(aInteger(txt_id.getText()));
                     users.setname(txt_name.getText());
-                    
+
                     users.setPassword(pwdgenerica);
                     users.setPassword_change(1);
                     users.setStatus(1);
                     DaoDistributionCenter daoDistributionCenter = new DaoDistributionCenterImpl();
-                    
-                    users.setDistribution_Center_idDistribution_Center(daoDistributionCenter.distribution_centerGet((String)cbo_center.getSelectedItem()).getIdDistribution_Center());
-                    DaoProfile daoProfile =new DaoProfileImpl();
-                    users.setProfile_idProfile(daoProfile.usersGet((String)cbo_profile.getSelectedItem()).getIdprofile());
-                    DaoLog daoLog =new DaoLogImpl();
-                     Log logSI = null; 
-                    
-                    if(daoUsers.usersGet(users.getIdUser())==null){
-                    daoUsers.usersIns(users);
-                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
-                    }else {daoUsers.usersUpd(users);
-                    daoLog.clientIns("Se ha actualizado un usuario al sistema con ID " + users.getIdUser().toString() ,Frm_User.class.toString(), logSI.getIduser());
+
+                    users.setDistribution_Center_idDistribution_Center(daoDistributionCenter.distribution_centerGet((String) cbo_center.getSelectedItem()).getIdDistribution_Center());
+                    DaoProfile daoProfile = new DaoProfileImpl();
+                    users.setProfile_idProfile(daoProfile.usersGet((String) cbo_profile.getSelectedItem()).getIdprofile());
+                    DaoLog daoLog = new DaoLogImpl();
+                    Log logSI = null;
+
+                    if (daoUsers.usersGet(users.getIdUser()) == null) {
+                        users.setPassword_change(0);
+                        daoUsers.usersIns(users);
+                        daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
+                    } else {
+                        daoUsers.usersUpd(users);
+                        daoLog.clientIns("Se ha actualizado un usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
                     }
                     frm_user_search.setVisible(true);
                     frm_user_search.setLocationRelativeTo(null);
                     this.dispose();
                     frm_user_search.initilizeTable();
-                    
-                    
-                    
-             
+
+                }
             }
         }
-      }
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
