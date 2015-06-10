@@ -242,8 +242,6 @@
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="btn_Clean" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
-                          <Component id="test" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_generate_routes" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -258,7 +256,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btn_generate_routes" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="test" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_Clean" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -326,14 +323,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_generate_routesActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="test">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="test"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="testActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_Clean">

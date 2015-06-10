@@ -77,7 +77,10 @@ public class Frm_Client_Location extends javax.swing.JFrame {
                 g2.drawLine(posX, posY, posX, posY);
                 grafico.setFont(grafico.getFont().deriveFont(12f));
                 if (flag == 1) {
-                    grafico.drawString(cliente.getName(), posX, posY);
+                    if(cliente == null)
+                        grafico.drawString("CLIENTE NUEVO", posX, posY);
+                    else
+                        grafico.drawString(cliente.getName(),posX,posY);
                 } else {
                     grafico.drawString("Centro de Distribuciòn", posX, posY);
                 }
@@ -108,6 +111,7 @@ public class Frm_Client_Location extends javax.swing.JFrame {
 
     public Frm_Client_Location(Frm_Client frm_client, String posx, String posy) {
         frm_clientAux = frm_client;
+        
         flag = 1;
         initComponents();
         if (posx.equals("") == false) { //si no es nuevo se setea la coordenada

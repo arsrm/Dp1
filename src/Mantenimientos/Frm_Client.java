@@ -341,7 +341,7 @@ public class Frm_Client extends javax.swing.JFrame {
         if (idCliente == -1) {
             txt_posx.setText("");
             txt_posy.setText("");
-            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText());
+            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(),-1);
 
         } else {
             frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(), idCliente);
