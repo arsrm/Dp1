@@ -14,6 +14,8 @@ import dao.impl.DaoProfileImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import static tool.Convierte.aInteger;
@@ -29,6 +31,7 @@ public class Frm_User extends javax.swing.JFrame {
     ArrayList<Distribution_Center> distribution_centers = new ArrayList<>();
     DaoProfile daoprofile = new DaoProfileImpl();
     List<Profile> profile = new ArrayList<Profile>();
+    Integer flag = 1; //si esta habilidato el dni por defecto esta activado
 
     public Frm_User(Frm_User_Search user_menu, Users user) {
         setTitle("Mantenimiento de Usuarios");
@@ -37,7 +40,7 @@ public class Frm_User extends javax.swing.JFrame {
         if (user != null) {
             pwdgenerica = user.getPassword();
         }
-        if (user != null) {
+        if (user != null) { //para el update
             int num_item = 0;
             distribution_centers = daoDC.distribution_centerGetQry();
             for (int i = 0; i < distribution_centers.size(); i++) {
@@ -47,24 +50,30 @@ public class Frm_User extends javax.swing.JFrame {
                 }
             }
             cbo_center.setSelectedIndex(num_item);
-            num_item = 0;
-            profile = daoprofile.profileCbo();
+            num_item = -1;
+            profile = daoprofile.profileCbo1();
+            this.cbo_profile.addItem("");
             for (int i = 0; i < profile.size(); i++) {
                 this.cbo_profile.addItem(profile.get(i).getName());
                 if (profile.get(i).getIdprofile() == user.getProfile_idProfile()) {
                     num_item = i;
                 }
             }
-            cbo_profile.setSelectedIndex(num_item);
+            if (num_item == -1) {
+                cbo_profile.setSelectedIndex(0);
+            }
+            cbo_profile.setSelectedIndex(num_item + 1);
             txt_id.setText(user.getIdUser().toString());
             txt_id.setEnabled(false);
+            flag = 0;//para usaruis nuevos
             txt_name.setText(user.getname());
         } else {
             distribution_centers = daoDC.distribution_centerGetQry();
             for (int i = 0; i < distribution_centers.size(); i++) {
                 this.cbo_center.addItem(distribution_centers.get(i).getName());
             }
-            profile = daoprofile.profileCbo();
+            profile = daoprofile.profileCbo1();
+            this.cbo_profile.addItem("");
             for (int i = 0; i < profile.size(); i++) {
                 this.cbo_profile.addItem(profile.get(i).getName());
             }
@@ -106,6 +115,12 @@ public class Frm_User extends javax.swing.JFrame {
         });
 
         lbl_profile.setText("Perfil de Usuario");
+
+        cbo_profile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_profileActionPerformed(evt);
+            }
+        });
 
         lbl_id.setText("DNI");
 
@@ -211,43 +226,75 @@ public class Frm_User extends javax.swing.JFrame {
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
 
-        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
+        String input = txt_id.getText();
 
+        Pattern pat = Pattern.compile("^[^a-zA-ZñÑ@'$%#@^&*()}{||;:><.,/?]+");
+        Matcher mat = pat.matcher(input);
+
+        if (!mat.matches()) {
+            JOptionPane.showMessageDialog(this, "El valor en el campo usario debe ser un valor numerico");
         } else {
-            Object[] options = {"OK"};
-            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (ok_option == JOptionPane.OK_OPTION) {
-                    Users users = new Users();
-                    users.setIdUser(aInteger(txt_id.getText()));
-                    users.setname(txt_name.getText());
 
-                    users.setPassword(pwdgenerica);
-                    users.setPassword_change(1);
-                    users.setStatus(1);
-                    DaoDistributionCenter daoDistributionCenter = new DaoDistributionCenterImpl();
+            if (txt_id.getText().length() != 8) {
+                JOptionPane.showMessageDialog(this, "El valor del campo Usuario debe tener 8 digitos");
+            } else {
 
-                    users.setDistribution_Center_idDistribution_Center(daoDistributionCenter.distribution_centerGet((String) cbo_center.getSelectedItem()).getIdDistribution_Center());
-                    DaoProfile daoProfile = new DaoProfileImpl();
-                    users.setProfile_idProfile(daoProfile.usersGet((String) cbo_profile.getSelectedItem()).getIdprofile());
-                    DaoLog daoLog = new DaoLogImpl();
-                    Log logSI = null;
+                if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0) {
+                    JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
 
-                    if (daoUsers.usersGet(users.getIdUser()) == null) {
-                        users.setPassword_change(0);
-                        daoUsers.usersIns(users);
-                        daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
+                } else {
+
+                    if (((String) cbo_profile.getSelectedItem()).equals("") == true) {
+                        JOptionPane.showMessageDialog(this, "Por favor seleccionar un perfil");
                     } else {
-                        daoUsers.usersUpd(users);
-                        daoLog.clientIns("Se ha actualizado un usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
-                    }
-                    frm_user_search.setVisible(true);
-                    frm_user_search.setLocationRelativeTo(null);
-                    this.dispose();
-                    frm_user_search.initilizeTable();
 
+                        if ((flag == 1) && (daoUsers.usersGet(aInteger(txt_id.getText())) != null)) { //si el flag esta activado es un usario nuevo
+
+                            JOptionPane.showMessageDialog(this, "El usuario ya se encuentra registrado");
+
+                        }
+                        else {
+
+                        Object[] options = {"OK"};
+                        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                            if (ok_option == JOptionPane.OK_OPTION) {
+                                Users users = new Users();
+                                users.setIdUser(aInteger(txt_id.getText()));
+                                users.setname(txt_name.getText());
+
+                                users.setPassword(pwdgenerica);
+                                users.setPassword_change(1);
+                                users.setStatus(1);
+                                DaoDistributionCenter daoDistributionCenter = new DaoDistributionCenterImpl();
+
+                                users.setDistribution_Center_idDistribution_Center(daoDistributionCenter.distribution_centerGet((String) cbo_center.getSelectedItem()).getIdDistribution_Center());
+                                DaoProfile daoProfile = new DaoProfileImpl();
+                                users.setProfile_idProfile(daoProfile.usersGet((String) cbo_profile.getSelectedItem()).getIdprofile());
+                                DaoLog daoLog = new DaoLogImpl();
+                                Log logSI = null;
+
+                                if (daoUsers.usersGet(users.getIdUser()) == null) {
+
+                                    users.setPassword_change(0);
+                                    daoUsers.usersIns(users);
+                                    daoLog.clientIns("Se ha ingresado un nuevo usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
+
+                                } else {
+                                    daoUsers.usersUpd(users);
+                                    daoLog.clientIns("Se ha actualizado un usuario al sistema con ID " + users.getIdUser().toString(), Frm_User.class.toString(), logSI.getIduser());
+                                }
+                                frm_user_search.setVisible(true);
+                                frm_user_search.setLocationRelativeTo(null);
+                                this.dispose();
+                                frm_user_search.initilizeTable();
+
+                            }
+                        }
+                        //
+                    }}
+                    //   
                 }
             }
         }
@@ -270,6 +317,10 @@ public class Frm_User extends javax.swing.JFrame {
     private void cbo_centerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_centerActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbo_centerActionPerformed
+
+    private void cbo_profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_profileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbo_profileActionPerformed
 
     /**
      * @param args the command line arguments

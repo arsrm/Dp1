@@ -65,17 +65,29 @@ public class DaoUserImpl implements DaoUsers {
    
     @Override
     public List<Users> usersQry_search(Integer center, Integer perfil,Integer dni , String name) {
+        
+        
         List<Users> list = null;
         String num =null;
         if (dni==null){num =""; }else {num =dni.toString();}
         
         if (name==null)name="";
-        String sql =  "select idUser,name,password,password_change,status,"
+         String sql=null;
+        if (perfil !=-1){ //para todos loque si seleccionaron un perfil
+          sql =  "select idUser,name,password,password_change,status,"
                 +"Profile_idProfile,Distribution_Center_idDistribution_Center From  User "
                 + "where Distribution_Center_idDistribution_Center='"
                 +center
                 +"' AND Profile_idProfile ='"+ perfil + "' AND idUser LIKE ? AND name LIKE ?";
-
+        }
+        else {
+         sql =  "select idUser,name,password,password_change,status,"
+                +"Profile_idProfile,Distribution_Center_idDistribution_Center From  User "
+                + "where Distribution_Center_idDistribution_Center='"
+                +center
+                +"' AND idUser LIKE ? AND name LIKE ?";
+        }
+        
         Connection cn = db.getConnection();
         if (cn != null) {
             try {

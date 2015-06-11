@@ -18,6 +18,7 @@ public class Frm_Client extends javax.swing.JFrame {
     Frm_Client_Search frm_Client_Search = new Frm_Client_Search();
     DaoClient daoClient = new DaoClientImpl();
     Integer idCliente = -1;
+    Integer flag = 1;//si esta habilidato ,el ruc por defecto esta activado
 
     public Frm_Client(Frm_Client_Search client, Client cliente) {
         setTitle("Datos del Cliente");
@@ -28,6 +29,7 @@ public class Frm_Client extends javax.swing.JFrame {
         if (cliente != null) {
             txt_id.setText(cliente.getRuc());
             txt_id.setEnabled(false);
+            flag = 0;
             txt_name.setText(cliente.getName());
             txt_address.setText(cliente.getAddress());
             txt_posx.setText(cliente.getPos_x().toString());
@@ -35,7 +37,7 @@ public class Frm_Client extends javax.swing.JFrame {
             op_priority.setValue(cliente.getPriority());
             idCliente = cliente.getIdClient();
         }
-       
+
     }
 
     @SuppressWarnings("unchecked")
@@ -266,7 +268,7 @@ public class Frm_Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
-        
+
         String input = txt_id.getText();
         Pattern pat = Pattern.compile("[0-9]{11}");
         Matcher mat = pat.matcher(input);
@@ -274,51 +276,56 @@ public class Frm_Client extends javax.swing.JFrame {
         if (!mat.matches()) {
             JOptionPane.showMessageDialog(this, "El campo Ruc debe ser un valor numerico y de 11 cifras");
         } else {
-         
-        if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0
-                || txt_address.getText().length() == 0 || txt_posx.getText().length() == 0
-                || txt_posy.getText().length() == 0) {
-            JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
 
-        } else {
-            Object[] options = {"OK"};
-            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (ok_option == JOptionPane.OK_OPTION) {
+            if (txt_id.getText().length() == 0 || txt_name.getText().length() == 0
+                    || txt_address.getText().length() == 0 || txt_posx.getText().length() == 0
+                    || txt_posy.getText().length() == 0) {
+                JOptionPane.showMessageDialog(this, "Por favor completar todos los campos del formulario");
 
-                    Client client = new Client();
-                    client.setRuc(txt_id.getText());
-                    client.setName(txt_name.getText());
-                    client.setAddress(txt_address.getText());
-                    client.setAddress(txt_address.getText());
-                    client.setPriority(aInteger(op_priority.getValue().toString()));
-                    client.setPos_x(aInteger(txt_posx.getText()));
-                    client.setPos_y(aInteger(txt_posy.getText()));
-                    client.setStatus(1);
-                    //log del sistema
-                    DaoLog daoLog = new DaoLogImpl();
-                    Log logSI = null;
+            } else {
+                if ((flag == 1) && (daoClient.clientGet(txt_id.getText()) != null)) { //si esta habilidato y el cliente ya existe
+                    JOptionPane.showMessageDialog(this, "El cliente ya se encuentra registrado");
+                } else {
+                    Object[] options = {"OK"};
+                    if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado al usuario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {
 
-                    if (daoClient.clientGet(client.getRuc()) == null) {
-                        daoClient.clientIns(client);
-                        daoLog.clientIns("Se ha ingresado un nuevo cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
+                            Client client = new Client();
+                            client.setRuc(txt_id.getText());
+                            client.setName(txt_name.getText());
+                            client.setAddress(txt_address.getText());
+                            client.setAddress(txt_address.getText());
+                            client.setPriority(aInteger(op_priority.getValue().toString()));
+                            client.setPos_x(aInteger(txt_posx.getText()));
+                            client.setPos_y(aInteger(txt_posy.getText()));
+                            client.setStatus(1);
+                            //log del sistema
+                            DaoLog daoLog = new DaoLogImpl();
+                            Log logSI = null;
 
-                    } else {
-                        daoClient.clientUpd(client);
-                        daoLog.clientIns("Se ha actualizado un cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
+                            if (daoClient.clientGet(client.getRuc()) == null) {
+                                daoClient.clientIns(client);
+                                daoLog.clientIns("Se ha ingresado un nuevo cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
 
+                            } else {
+                                daoClient.clientUpd(client);
+                                daoLog.clientIns("Se ha actualizado un cliente al sistema con Ruc :  " + client.getRuc(), Frm_Client.class.toString(), logSI.getIduser());
+
+                            }
+
+                            frm_Client_Search.setVisible(true);
+                            frm_Client_Search.setLocationRelativeTo(null);
+                            this.dispose();
+                            frm_Client_Search.initilizeTable();
+
+                            // }
+                        }
                     }
-
-                    frm_Client_Search.setVisible(true);
-                    frm_Client_Search.setLocationRelativeTo(null);
-                    this.dispose();
-                    frm_Client_Search.initilizeTable();
-
-                    // }
+                    //
                 }
             }
-        }
         }
     }//GEN-LAST:event_btn_saveActionPerformed
 
@@ -341,7 +348,7 @@ public class Frm_Client extends javax.swing.JFrame {
         if (idCliente == -1) {
             txt_posx.setText("");
             txt_posy.setText("");
-            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(),-1);
+            frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(), -1);
 
         } else {
             frm_clientLocation = new Frm_Client_Location(this, txt_posx.getText(), txt_posy.getText(), idCliente);

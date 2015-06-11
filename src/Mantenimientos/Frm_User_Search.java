@@ -15,6 +15,8 @@ import dao.impl.DaoProfileImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import static tool.Convierte.aInteger;
@@ -43,6 +45,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
             this.cbo_center.addItem(distribution_centers.get(i).getName());
         }
         profile = daoprofile.profileCbo();
+        this.cbo_profile.addItem("");
         for (int i = 0; i < profile.size(); i++) {
             this.cbo_profile.addItem(profile.get(i).getName());
         }
@@ -94,6 +97,12 @@ public class Frm_User_Search extends javax.swing.JFrame {
         btn_search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_searchActionPerformed(evt);
+            }
+        });
+
+        cbo_profile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_profileActionPerformed(evt);
             }
         });
 
@@ -306,9 +315,10 @@ public class Frm_User_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
-       
         Integer center = daoDC.distribution_centerGet(cbo_center.getSelectedItem().toString()).getIdDistribution_Center();
-        Integer profile = daoprofile.usersGet(cbo_profile.getSelectedItem().toString()).getIdprofile();
+        Integer profile = -1; //no selecciono perfil para buscar
+        if(cbo_profile.getSelectedItem().toString().equals("")==false)
+           profile = daoprofile.usersGet(cbo_profile.getSelectedItem().toString()).getIdprofile();
         Integer id_codigo = aInteger(txt_id.getText());
         String name = txt_name.getText();
         List<Users> list = new ArrayList<Users>();
@@ -317,7 +327,13 @@ public class Frm_User_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-         DaoLog daoLog = new DaoLogImpl();
+        
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+        
+        
+        DaoLog daoLog = new DaoLogImpl();
                     Log logSI = null;
         modelo = (DefaultTableModel) tbl_user.getModel();
         List<Integer> ids=new  ArrayList<Integer>();
@@ -332,6 +348,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
             }
         }
         daoUsers.usersDel(ids);
+        }
         initilizeTable();
          
     }//GEN-LAST:event_btn_deleteActionPerformed
@@ -354,6 +371,10 @@ public class Frm_User_Search extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tbl_userMouseClicked
+
+    private void cbo_profileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_profileActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbo_profileActionPerformed
 
     /**
      * @param args the command line arguments

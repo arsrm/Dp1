@@ -151,7 +151,7 @@ public class DaoClientImpl implements DaoClient {
         int sizelist= ids.size();
         String result = null;
         String sql = "UPDATE  Client SET "
-                + "status= '0' "
+                + "status= ? "
                 + "WHERE ruc=?";
 /*"DELETE FROM Client WHERE idClient=?";*/
         Connection cn = db.getConnection();
@@ -160,8 +160,15 @@ public class DaoClientImpl implements DaoClient {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 for (int x = 0 ; x<sizelist ;x ++) {
                     String z= ids.get(x);
-                    ps.setString(1,z);
-
+                    ps.setString(2,z);
+                    Client c = new Client();
+                    c=clientGet(z);
+                    if (c.getStatus()==0)
+                         ps.setInt(1,1);
+                    else {
+                        //validar si el cliente tiene asuntos pendientes
+                         ps.setInt(1,0);
+                    }  
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
                         throw new SQLException("ID: " + x + " no existe");

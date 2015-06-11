@@ -11,26 +11,27 @@ import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 public class Frm_Client_Search extends javax.swing.JFrame {
 
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
-DefaultTableModel modelo;
-     DaoClient daoClient = new DaoClientImpl();
-     
+    DefaultTableModel modelo;
+    DaoClient daoClient = new DaoClientImpl();
+
     public Frm_Client_Search(Frm_MenuPrincipal menu) {
         setTitle("Mantenimiento de Clientes");
         menuaux = menu;
         initComponents();
-        
+        TableColumn tc = tbl_client.getColumnModel().getColumn(4);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_client, 4));
         modelo = (DefaultTableModel) tbl_client.getModel();
-        
         initilizeTable();
-
     }
-    
+
     public Frm_Client_Search() {
-       
+
     }
 
     @SuppressWarnings("unchecked")
@@ -216,7 +217,7 @@ DefaultTableModel modelo;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-      public void initilizeTable() {
+    public void initilizeTable() {
         List<Client> list = new ArrayList<Client>();
         list = daoClient.clientQry();
         modelo.getDataVector().removeAllElements();
@@ -236,8 +237,8 @@ DefaultTableModel modelo;
         }
 
     }
-      
-      public void initilizeTable(List<Client> list) {
+
+    public void initilizeTable(List<Client> list) {
 
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -255,7 +256,7 @@ DefaultTableModel modelo;
         } catch (Exception e) {
         }
     }
-      
+
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         menuaux.setVisible(true);
         this.dispose();
@@ -263,10 +264,10 @@ DefaultTableModel modelo;
 
     private void btn_newActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_newActionPerformed
         // TODO add your handling code here:
-        Frm_Client frm_Client = new Frm_Client(this,null);
+        Frm_Client frm_Client = new Frm_Client(this, null);
         frm_Client.setVisible(true);
         frm_Client.setLocationRelativeTo(null);
-         this.setVisible(false);  
+        this.setVisible(false);
     }//GEN-LAST:event_btn_newActionPerformed
 
     private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
@@ -276,16 +277,16 @@ DefaultTableModel modelo;
     }//GEN-LAST:event_formWindowClosed
 
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
-        
+
         List<Client> list = new ArrayList<Client>();
         list = daoClient.clientQry_search(txt_id.getText(), txt_name.getText());
         initilizeTable(list);
-        
+
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-          DaoLog daoLog = new DaoLogImpl();
-                    Log logSI = null;
+        DaoLog daoLog = new DaoLogImpl();
+        Log logSI = null;
         modelo = (DefaultTableModel) tbl_client.getModel();
         List<String> ids = new ArrayList<String>();
         int col, nr = modelo.getRowCount();
@@ -293,14 +294,14 @@ DefaultTableModel modelo;
         for (int i = 0; i < nr; i++) {
             Object prueba = modelo.getValueAt(i, 4);
             if ((Boolean) prueba) {
-                String numm =  (String)modelo.getValueAt(i, 0);
+                String numm = (String) modelo.getValueAt(i, 0);
                 ids.add(numm);
                 daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
             }
         }
         daoClient.clientDel(ids);
         initilizeTable();
-        
+
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private void tbl_clientMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_clientMouseClicked
@@ -309,19 +310,17 @@ DefaultTableModel modelo;
         if (evt.getSource() == tbl_client) {
             int rowSel = tbl_client.getSelectedRow();
             int colSel = tbl_client.getSelectedColumn();
-            idUserSel = (String)tbl_client.getValueAt(rowSel, 0);
+            idUserSel = (String) tbl_client.getValueAt(rowSel, 0);
             client = daoClient.clientGet(idUserSel);
             if (colSel != 4) {
                 this.setVisible(false);
-                Frm_Client frm_Client = new Frm_Client(this,client);
+                Frm_Client frm_Client = new Frm_Client(this, client);
                 frm_Client.setVisible(true);
                 frm_Client.setLocationRelativeTo(null);
-                
+
             }
         }
     }//GEN-LAST:event_tbl_clientMouseClicked
-
-    
 
     /**
      * @param args the command line arguments
