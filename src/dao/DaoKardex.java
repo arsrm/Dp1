@@ -18,4 +18,6 @@ public interface DaoKardex {
     public List<Movement> MovementSearch(Integer idProduct, Integer idwh, Date dateIni, Date dateEnd);
     public String MovementIns(Movement mov);
     public List<Movement> ProductsQry();
+    public void MovementUpdTypeMov(Integer typeMov, Integer subTypeMov,Integer idMov);
+    public Integer MovementGetMaxId();
 }

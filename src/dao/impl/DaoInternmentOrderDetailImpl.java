@@ -119,13 +119,13 @@ public class DaoInternmentOrderDetailImpl implements DaoInternmentOrderDetail {
         String result = null;
 
         for (Integer id : idsIntOrdDetail) {
-            result = IntOrderDetailDel(idIntOrder,id);
+            result = IntOrderDetailDel(idIntOrder, id);
         }
 
         return result;
     }
 
-    public String IntOrderDetailDel(Integer idIntOrder,Integer idIntOrdDetail) {
+    public String IntOrderDetailDel(Integer idIntOrder, Integer idIntOrdDetail) {
         String result = null;
         String sql = "UPDATE Internment_Order_Detail SET "
                 + "status = ? "
@@ -152,6 +152,38 @@ public class DaoInternmentOrderDetailImpl implements DaoInternmentOrderDetail {
             }
         }
         return result;
+    }
+
+    @Override
+    public Integer IntOrderDetailMaxId(Integer idProduct, Integer idIntOrd) {
+        Integer maxId = 0;
+        String sql = "SELECT MAX(idInternment_Order_Detail) "
+                + "FROM internment_order_detail "
+                + "WHERE Product_idProduct = ? "
+                + "AND Internment_Order_idInternment_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idProduct);
+                ps.setInt(2, idIntOrd);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    maxId = rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxId = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return maxId;
     }
 
 }

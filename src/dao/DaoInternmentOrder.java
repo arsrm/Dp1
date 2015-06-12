@@ -36,5 +36,7 @@ public interface DaoInternmentOrder {
     
     public String IntOrdersIntern(List<Integer> ids);
     
+    public String IntOrdersInternAdjustManual(List<InternmentOrder> listIntOrd);
+    
     public void IntOrdUpdStatus(Integer intOrd, Integer status);
 }

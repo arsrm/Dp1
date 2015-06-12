@@ -20,6 +20,8 @@ public interface DaoInternmentOrderDetail {
 //
 
     public String IntOrderDetailsDel(Integer idIntOrder,List<Integer> idsIntOrdDetail);
+    
+    public Integer IntOrderDetailMaxId(Integer idProduct, Integer idIntOrd);
 ////
 //
 //    public InternmentOrderDetail IntOrderDetailGet(Integer idIntOrder);

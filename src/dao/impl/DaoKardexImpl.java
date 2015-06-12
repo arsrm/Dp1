@@ -30,7 +30,7 @@ public class DaoKardexImpl implements DaoKardex {
 
     @Override
     public List<Movement> MovementSearch(Integer idProduct, Integer idwh, Date dateIni, Date dateEnd) {
-        
+
         String sql = null;
         List<Movement> movimientos = null;
 
@@ -57,7 +57,7 @@ public class DaoKardexImpl implements DaoKardex {
                     + "stock_initial, "
                     + "stock_final, "
                     + "Product_idProduct, "
-                    + "Warehouse_idWarehouse "                    
+                    + "Warehouse_idWarehouse "
                     + "FROM Movement "
                     + "WHERE date >= ? "
                     + "AND date <= ? "
@@ -73,7 +73,7 @@ public class DaoKardexImpl implements DaoKardex {
                     + "stock_initial, "
                     + "stock_final, "
                     + "Product_idProduct, "
-                    + "Warehouse_idWarehouse "                    
+                    + "Warehouse_idWarehouse "
                     + "FROM Movement "
                     + "WHERE date >= ? "
                     + "AND date <= ? "
@@ -88,7 +88,7 @@ public class DaoKardexImpl implements DaoKardex {
                     + "stock_initial, "
                     + "stock_final, "
                     + "Product_idProduct,4487 "
-                    + "Warehouse_idWarehouse "                    
+                    + "Warehouse_idWarehouse "
                     + "FROM Movement "
                     + "WHERE date >= ? "
                     + "AND date <= ? "
@@ -237,6 +237,66 @@ public class DaoKardexImpl implements DaoKardex {
         }
 
         return movimientos;
+    }
+
+    @Override
+    public void MovementUpdTypeMov(Integer typeMov, Integer subTypeMov, Integer idMov) {
+        String sql = "UPDATE Movement SET "
+                + "Type_Movement_idType_Movement=?, "
+                + "Type_Movement_idSubtype = ?, "
+                + "date = ? "
+                + "WHERE idMovement = ? ";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, typeMov);
+                ps.setInt(2, subTypeMov);
+                ps.setDate(3, new java.sql.Date(new Date().getTime()));
+                ps.setInt(4, idMov);
+                ps.executeUpdate();
+
+            } catch (SQLException e) {
+                e.getMessage();
+
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+    }
+
+    @Override
+    public Integer MovementGetMaxId() {
+        Integer maxIdProduct = 0;
+        String sql = "SELECT "
+                + "MAX(idMovement)"
+                + "FROM Movement ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    maxIdProduct = rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxIdProduct = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return maxIdProduct;
     }
 
 }

@@ -290,6 +290,8 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         Date dateIniSearch = null;
         Date dateEndSearch = null;
         Integer idIntOrdSearch;
+        String status = null;
+        
         if (txt_orderInternment.getText().length() != 0) {
             idIntOrdSearch = Integer.parseInt(txt_orderInternment.getText().toString());
         } else {
@@ -306,13 +308,24 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         } else {
             dateEndSearch = new Date();
         }
+        
         List<InternmentOrder> intOrderList = daoIntOrder.IntOrderSearch(idIntOrdSearch, dateIniSearch, dateEndSearch);
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         try {
             for (int i = 0; i < intOrderList.size(); i++) {
+                switch (intOrderList.get(i).getStatus()) {
+                    case 1:
+                        status = "Pendiente";
+                        break;
+                    case 2:
+                        status = "Internado";
+                        break;
+                    case 0:
+                        status = "Inactivo";
+                }
                 Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
-                    intOrderList.get(i).getDate(), intOrderList.get(i).getStatus(), false};
+                    intOrderList.get(i).getDate(), status, false};
                 modelo.addRow(fila);
             }
         } catch (Exception e) {
@@ -353,11 +366,6 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         intOrderList = daoIntOrder.IntOrderQry();
         try {
             for (int i = 0; i < intOrderList.size(); i++) {
-                if (intOrderList.get(i).getStatus() == 1) {
-                    status = "Pendiente";
-                } else {
-                    status = "Inactivo";
-                }
                 switch (intOrderList.get(i).getStatus()) {
                     case 1:
                         status = "Pendiente";

@@ -128,7 +128,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + "FROM product where Trademark_id_Trademark=" + idmark + " ";
         Connection cn = db.getConnection();
 
-      //  System.out.println("Query ejecutado " + sql);
+        //  System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -332,14 +332,20 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         String result = null;
         String ean128 = null;
         String pesoPallet = "";
-        String day="",month="",year="";
+        String day = "", month = "", year = "";
         Calendar cal = Calendar.getInstance();
         cal.setTime(expirationDate);
-        if(cal.get(Calendar.DAY_OF_MONTH)<10) day = "0"+cal.get(Calendar.DAY_OF_MONTH);
-        else day = ""+cal.get(Calendar.DAY_OF_MONTH);
-        if(cal.get(Calendar.MONTH)<10) month = "0"+cal.get(Calendar.MONTH);
-        else month = ""+cal.get(Calendar.MONTH);
-        year = ""+cal.get(Calendar.YEAR)%100;
+        if (cal.get(Calendar.DAY_OF_MONTH) < 10) {
+            day = "0" + cal.get(Calendar.DAY_OF_MONTH);
+        } else {
+            day = "" + cal.get(Calendar.DAY_OF_MONTH);
+        }
+        if (cal.get(Calendar.MONTH) < 10) {
+            month = "0" + cal.get(Calendar.MONTH);
+        } else {
+            month = "" + cal.get(Calendar.MONTH);
+        }
+        year = "" + cal.get(Calendar.YEAR) % 100;
         String sql = "insert into pallet_by_product(Pallet_idPallet,Product_Trademark_id_Trademark,Product_idProduct,expiration_date,Internment_Order_idInternment_Order,status,cod_ean128) "
                 + " values(?,?,?,?,?,1,?) ";
         Connection cn = db.getConnection();
@@ -353,7 +359,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
             pesoPallet += "0";
         }
         pesoPallet += cantProdPall.toString();
-        ean128 = "(01)" + prod.getCodeEAN13() + "(12)" + year + month + day 
+        ean128 = "(01)" + prod.getCodeEAN13() + "(12)" + year + month + day
                 + "(3100)" + pesoPallet + "(37)" + prod.getQuantityBoxesPerPallet();
         if (cn != null) {
             try {
@@ -431,12 +437,20 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     @Override
     public List<Integer> GetPalletsByIntOrder(Integer idIntOrder, Integer idProd) {
         List<Integer> palletList = null;
-        String sql = "SELECT "
-                + "Pallet_idPallet "
-                + "FROM Pallet_By_Product "
-                + "WHERE Internment_Order_idInternment_Order = ? "
-                + "AND Product_idProduct = ?";
-
+        String sql = null;
+        if (idIntOrder != 999999999) {//Cuando no es ajuste manual
+            sql = "SELECT "
+                    + "Pallet_idPallet "
+                    + "FROM Pallet_By_Product "
+                    + "WHERE Internment_Order_idInternment_Order = ? "
+                    + "AND Product_idProduct = ?";
+        } else {
+            sql = "SELECT "
+                    + "MAX(Pallet_idPallet) "
+                    + "FROM Pallet_By_Product "
+                    + "WHERE Internment_Order_idInternment_Order = ? "
+                    + "AND Product_idProduct = ?";
+        }
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -462,7 +476,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
 
         return palletList;
     }
-    
+
     @Override
     public Product GetProductId(Integer idmark, Integer idproduct) {
         Product objmodel = null;
@@ -475,18 +489,18 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + "physical_stock, "
                 + "free_stock, "
                 + "status, "
-                + "created_at, "                
-                + "updated_at, "                                
-                + "Type_Condition_idType_Condition, "                                                
-                + "cod_ean13, "                                                                
+                + "created_at, "
+                + "updated_at, "
+                + "Type_Condition_idType_Condition, "
+                + "cod_ean13, "
                 + "Trademark_id_Trademark,"
-                + "time_expiration  "                                                                                
-               // + "user_created, "                                                                                
-               // + "user_updated "                                                                                
-                + "FROM product where idProduct=" +idproduct+" "
-                + " and Trademark_id_Trademark="+idmark + " ";
-         
-      //    System.out.println("Cadena de ejecución"+ sql);
+                + "time_expiration  "
+                // + "user_created, "                                                                                
+                // + "user_updated "                                                                                
+                + "FROM product where idProduct=" + idproduct + " "
+                + " and Trademark_id_Trademark=" + idmark + " ";
+
+        //    System.out.println("Cadena de ejecución"+ sql);
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -511,7 +525,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 }
 
             } catch (SQLException e) {
-                System.out.println("Error es : "+ e.getMessage());
+                System.out.println("Error es : " + e.getMessage());
                 objmodel = null;
             } finally {
                 try {
@@ -535,16 +549,16 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + " updated_at, "
                 + " user_created, "
                 + " user_updated, "
-                + " expiration_date, "                
-                + " Internment_Order_idInternment_Order "                                
-                + " FROM pallet_by_product  " +CadenaWhere+" "
+                + " expiration_date, "
+                + " Internment_Order_idInternment_Order "
+                + " FROM pallet_by_product  " + CadenaWhere + " "
                 + "  and not (Pallet_idPallet+''+Product_Trademark_id_Trademark+''+Product_idProduct)"
                 + "  in ( select distinct(Pallet_By_Product_Pallet_idPallet+''+Pallet_By_Product_Product_Trademark_id_Trademark+''+Pallet_By_Product_Product_idProduct)"
                 + "  from pallet_by_product_by_location_cell_detail   )";
-                
+
         Connection cn = db.getConnection();
-        
-     //   System.out.println("Query ejecutado " + sql); 
+
+        //   System.out.println("Query ejecutado " + sql); 
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -593,10 +607,9 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 + "status, "
                 + "Warehouse_idWarehouse, "
                 + "Warehouse_Distribution_Center_idDistribution_Center "
-                + "FROM Rack WHERE idRack ="+idrack+ " "
-                + " and Warehouse_idWarehouse="+idware+ " " 
-                + " and Warehouse_Distribution_Center_idDistribution_Center="+idCD+ " "; 
-        
+                + "FROM Rack WHERE idRack =" + idrack + " "
+                + " and Warehouse_idWarehouse=" + idware + " "
+                + " and Warehouse_Distribution_Center_idDistribution_Center=" + idCD + " ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -621,7 +634,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 }
             } catch (SQLException e) {
                 rack = null;
-                System.out.println("Error "+ e.getMessage());
+                System.out.println("Error " + e.getMessage());
             } finally {
                 try {
                     cn.close();
@@ -635,26 +648,27 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     @Override
     public LocationCell GetLocationCellId(Integer idCD, Integer idware, Integer idrack, Integer idcelda) {
         LocationCell celda = null;
-        String sql = "select idLocation_Cell, \n" +
-                    " description,\n" +
-                    " width,\n" +
-                    " length,\n" +
-                    " height,\n" +
-                    " row_cell,\n" +
-                    " column_cell,\n" +
-                    " status,\n" +
-                    " Location_State_idLocation_State,\n" +
-                    " Rack_idRack,\n" +
-                    " Rack_Warehouse_idWarehouse,\n" +
-                    " Rack_Warehouse_Distribution_Center_idDistribution_Center \n" +
-                    " from location_cell\n" +
-                    " where  Rack_Warehouse_Distribution_Center_idDistribution_Center=" +idCD+" \n"+ 
-                    " and Rack_Warehouse_idWarehouse="+ idware + " \n" +
-                    " and Rack_idRack="+idrack  + " \n" +
-                    " and idLocation_Cell="+ idcelda+" "; 
+        String sql = "select idLocation_Cell, \n"
+                + " description,\n"
+                + " width,\n"
+                + " length,\n"
+                + " height,\n"
+                + " row_cell,\n"
+                + " column_cell,\n"
+                + " status,\n"
+                + " Location_State_idLocation_State,\n"
+                + " Rack_idRack,\n"
+                + " Rack_Warehouse_idWarehouse,\n"
+                + " Rack_Warehouse_Distribution_Center_idDistribution_Center \n"
+                + " from location_cell\n"
+                + " where  Rack_Warehouse_Distribution_Center_idDistribution_Center=" + idCD + " \n"
+                + " and Rack_Warehouse_idWarehouse=" + idware + " \n"
+                + " and Rack_idRack=" + idrack + " \n"
+                + " and idLocation_Cell=" + idcelda + " ";
         Connection cn = db.getConnection();
         if (cn != null) {
-            try { PreparedStatement ps = cn.prepareStatement(sql);
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     celda = new LocationCell();
@@ -673,7 +687,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                 }
             } catch (SQLException e) {
                 celda = null;
-                System.out.println("Error "+ e.getMessage());
+                System.out.println("Error " + e.getMessage());
             } finally {
                 try {
                     cn.close();
@@ -687,22 +701,23 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     @Override
     public LocationCellDetail GetLocationCellDetailId(Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet) {
         LocationCellDetail celda = null;
-        String sql ="select idLocation_Cell_Detail,\n" +
-                    " description,\n" +
-                    " availability,\n" +
-                    " Location_Cell_idLocation_Cell,\n" +
-                    " Location_Cell_Rack_idRack,\n" +
-                    " Location_Cell_Rack_Warehouse_idWarehouse,\n" +
-                    " idDistribution_Center \n" +
-                    " from location_cell_detail\n" +
-                    " where idDistribution_Center="+idCD +" \n" +
-                    " and Location_Cell_Rack_Warehouse_idWarehouse="+idware+ " \n" +
-                    " and Location_Cell_Rack_idRack="+idrack + " \n" +
-                    " and Location_Cell_idLocation_Cell="+idcelda + " \n" +
-                    " and idLocation_Cell_Detail="+idceldadet+" "; 
+        String sql = "select idLocation_Cell_Detail,\n"
+                + " description,\n"
+                + " availability,\n"
+                + " Location_Cell_idLocation_Cell,\n"
+                + " Location_Cell_Rack_idRack,\n"
+                + " Location_Cell_Rack_Warehouse_idWarehouse,\n"
+                + " idDistribution_Center \n"
+                + " from location_cell_detail\n"
+                + " where idDistribution_Center=" + idCD + " \n"
+                + " and Location_Cell_Rack_Warehouse_idWarehouse=" + idware + " \n"
+                + " and Location_Cell_Rack_idRack=" + idrack + " \n"
+                + " and Location_Cell_idLocation_Cell=" + idcelda + " \n"
+                + " and idLocation_Cell_Detail=" + idceldadet + " ";
         Connection cn = db.getConnection();
         if (cn != null) {
-            try { PreparedStatement ps = cn.prepareStatement(sql);
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     celda = new LocationCellDetail();
@@ -713,11 +728,11 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
                     celda.setLocation_Cell_Rack_idRack(rs.getInt(5));
                     celda.setLocation_Cell_Rack_Warehouse_idWarehouse(rs.getInt(6));
                     celda.setIdDistribution_Center(rs.getInt(7));
-                    
+
                 }
             } catch (SQLException e) {
                 celda = null;
-                System.out.println("Error "+ e.getMessage());
+                System.out.println("Error " + e.getMessage());
             } finally {
                 try {
                     cn.close();
@@ -727,54 +742,54 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         }
         return celda;
     }
-   
+
     @Override
     public String PalletProductLocationDelMasive(List<Integer> listidpallet, List<Integer> listidmarca, List<Integer> listidproduct, List<Integer> listidCD, List<Integer> listware, List<Integer> listrack, List<Integer> listcelda, List<Integer> listceldadet, List<Integer> listidstatus) {
-        int sizelist= listidpallet.size();
+        int sizelist = listidpallet.size();
         String result = null;
         String sql = "UPDATE  pallet_by_product_by_location_cell_detail SET "
                 + " status=? "
                 + " WHERE Pallet_By_Product_Pallet_idPallet=? "
                 + " and Pallet_By_Product_Product_Trademark_id_Trademark=? "
-                + " and Pallet_By_Product_Product_idProduct=? " 
-                + " and Location_Cell_Detail_idDistribution_Center=? " 
-                + " and Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse=? " 
-                + " and Location_Cell_Detail_Location_Cell_Rack_idRack=? " 
-                + " and Location_Cell_Detail_Location_Cell_idLocation_Cell=? " 
-                + " and Location_Cell_Detail_idLocation_Cell_Detail=? " ;
-        
+                + " and Pallet_By_Product_Product_idProduct=? "
+                + " and Location_Cell_Detail_idDistribution_Center=? "
+                + " and Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse=? "
+                + " and Location_Cell_Detail_Location_Cell_Rack_idRack=? "
+                + " and Location_Cell_Detail_Location_Cell_idLocation_Cell=? "
+                + " and Location_Cell_Detail_idLocation_Cell_Detail=? ";
+
         Connection cn = db.getConnection();
         Integer idpallet;
         Integer idmarca;
         Integer idproduct;
-        Integer idCD; 
-        Integer idware; 
-        Integer idrack; 
-        Integer idcelda; 
-        Integer idceldadet; 
-        Integer idstatus=0; 
+        Integer idCD;
+        Integer idware;
+        Integer idrack;
+        Integer idcelda;
+        Integer idceldadet;
+        Integer idstatus = 0;
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                for (int x = 0 ; x<sizelist ;x ++) {
-                    idpallet=listidpallet.get(x);
-                    idmarca=listidmarca.get(x);
-                    idproduct=listidproduct.get(x);
-                    idCD=listidCD.get(x);
-                    idware=listware.get(x);
-                    idrack=listrack.get(x);
-                    idcelda=listcelda.get(x);
-                    idceldadet=listceldadet.get(x);
-                    idstatus=listidstatus.get(x);
-                    ps.setInt(1,1-idstatus);
-                    ps.setInt(2,idpallet);
-                    ps.setInt(3,idmarca);
-                    ps.setInt(4,idproduct);
-                    ps.setInt(5,idCD);
-                    ps.setInt(6,idware);
-                    ps.setInt(7,idrack);
-                    ps.setInt(8,idcelda);
-                    ps.setInt(9,idceldadet);
+                for (int x = 0; x < sizelist; x++) {
+                    idpallet = listidpallet.get(x);
+                    idmarca = listidmarca.get(x);
+                    idproduct = listidproduct.get(x);
+                    idCD = listidCD.get(x);
+                    idware = listware.get(x);
+                    idrack = listrack.get(x);
+                    idcelda = listcelda.get(x);
+                    idceldadet = listceldadet.get(x);
+                    idstatus = listidstatus.get(x);
+                    ps.setInt(1, 1 - idstatus);
+                    ps.setInt(2, idpallet);
+                    ps.setInt(3, idmarca);
+                    ps.setInt(4, idproduct);
+                    ps.setInt(5, idCD);
+                    ps.setInt(6, idware);
+                    ps.setInt(7, idrack);
+                    ps.setInt(8, idcelda);
+                    ps.setInt(9, idceldadet);
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
                         throw new SQLException("ID: no existe");
@@ -796,22 +811,22 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     @Override
     public Integer GetCantNumord(Integer numorden) {
         Integer objmodel = 0;
-        String sql = " select count(1) from dispatch_order  " +
-                     " where idDispatch_Order="+numorden+" " +
-                      " and status=1";
-         
-      //    System.out.println("Cadena de ejecución"+ sql);
+        String sql = " select count(1) from dispatch_order  "
+                + " where idDispatch_Order=" + numorden + " "
+                + " and status=1";
+
+        //    System.out.println("Cadena de ejecución"+ sql);
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    objmodel=rs.getInt(1);
+                    objmodel = rs.getInt(1);
                 }
 
             } catch (SQLException e) {
-                System.out.println("Error es : "+ e.getMessage());
+                System.out.println("Error es : " + e.getMessage());
                 objmodel = null;
             } finally {
                 try {
@@ -826,21 +841,21 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     @Override
     public Integer GetCantNumpicking(Integer numpicking) {
         Integer objmodel = 0;
-        String sql = " select * from picking_order " +
-                      " where idPicking_Order="+numpicking+" and status=1";
-         
-      //    System.out.println("Cadena de ejecución"+ sql);
+        String sql = " select * from picking_order "
+                + " where idPicking_Order=" + numpicking + " and status=1";
+
+        //    System.out.println("Cadena de ejecución"+ sql);
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
-                    objmodel=rs.getInt(1);
+                    objmodel = rs.getInt(1);
                 }
 
             } catch (SQLException e) {
-                System.out.println("Error es : "+ e.getMessage());
+                System.out.println("Error es : " + e.getMessage());
                 objmodel = null;
             } finally {
                 try {
@@ -856,10 +871,10 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
     public List<DispatchOrder> GetDispatchOrderList(String CadenaWhere) {
         List<DispatchOrder> list = null;
         String sql = " select idDispatch_Order, idClient,departure_date,arrival_date,status,"
-                + " Picking_Order_idPicking_Order  from dispatch_order  "+CadenaWhere+ "  ";
-                
+                + " Picking_Order_idPicking_Order  from dispatch_order  " + CadenaWhere + "  ";
+
         Connection cn = db.getConnection();
-        System.out.println("Query ejecutado " + sql); 
+        System.out.println("Query ejecutado " + sql);
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
@@ -887,5 +902,50 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         }
         return list;
     }
-    
+
+    @Override
+    public PalletProduct getPalletProductById(Integer idPallet) {
+        PalletProduct palletPro = new PalletProduct();
+        String sql = " SELECT "
+                + "Pallet_idPallet, "
+                + "Product_Trademark_id_Trademark, "
+                + "Product_idProduct, "
+                + "cod_ean128, "
+                + "status, "
+                + "expiration_date, "
+                + "Internment_Order_idInternment_Order "
+                + "FROM Pallet_By_Product "
+                + "WHERE Pallet_idPallet = ?";
+
+        //    System.out.println("Cadena de ejecución"+ sql);
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idPallet);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    palletPro.setIdpallet(idPallet);
+                    palletPro.setIdtrademark(rs.getInt(2));
+                    palletPro.setIdproduct(rs.getInt(3));
+                    palletPro.setCod_ean128(rs.getString(4));
+                    palletPro.setStatus(rs.getInt(5));
+                    palletPro.setDateexpira(rs.getDate(6));
+                    palletPro.setNuminterna(rs.getInt(7));
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error es : " + e.getMessage());
+                palletPro = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return palletPro;
+    }
+
 }

@@ -285,13 +285,21 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         return result;
     }
 
+    public String IntOrderIntern(InternmentOrder intOrder) {
+        String result = null;
+        for (InternmentOrderDetail intOrdDet : intOrder.getInternmentOrderDetail()) {
+            result = IntOrderDetailIntern(intOrder.getIdInternmentOrder(), intOrdDet);
+        }
+        return result;
+    }
+
     public String IntOrderDetailIntern(Integer idIntOrder, InternmentOrderDetail intOrdDetail) {
         String result = null;
         List<LocationCellDetail> freeLocCellList = GetFreeLocationCellsDetail(intOrdDetail.getProduct().getIdProduct());
         List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder, intOrdDetail.getProduct().getIdProduct());
         Integer cantPalletsIngresados = 0;
         Integer cantFreeLocCells = freeLocCellList.size();
-        int lastFreeLocCell=0;
+        int lastFreeLocCell = 0;
         for (int i = 0; i < palletProduList.size(); i++) {
             for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
@@ -300,7 +308,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 if (freeLocCellList.get(j).getAvailability() == 1
                         && intOrdDetail.getProduct().getTypeConditionWH()
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
-                        && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) < daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
+                        && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) <= daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
                     PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
                     freeLocCellList.get(j).setAvailability(0);
                     daoLocCell.LocationCellAvailabilityUpd(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
@@ -315,7 +323,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     mov.setType_Movement_idSubtype(1);
                     daoKardex.MovementIns(mov);
                     cantPalletsIngresados++;
-                    lastFreeLocCell = j+1;
+                    lastFreeLocCell = j + 1;
                     break;
                 }
             }
@@ -424,23 +432,23 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         }
         return result;
     }
-    
-    public void IntOrdUpdStatus(Integer intOrd, Integer status){
-    String sql = "UPDATE Internment_Order SET "                
+
+    public void IntOrdUpdStatus(Integer intOrd, Integer status) {
+        String sql = "UPDATE Internment_Order SET "
                 + "status=? "
                 + "WHERE idInternment_Order = ? ";
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
-                
-                PreparedStatement ps = cn.prepareStatement(sql);                   
+
+                PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, status);
                 ps.setInt(2, intOrd);
                 ps.executeUpdate();
-                
+
             } catch (SQLException e) {
                 e.getMessage();
-                
+
             } finally {
                 try {
                     cn.close();
@@ -448,5 +456,15 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 }
             }
         }
+    }
+
+    @Override
+    public String IntOrdersInternAdjustManual(List<InternmentOrder> listIntOrd) {
+        String result = null;
+        for (InternmentOrder intOrd : listIntOrd) {
+            result = IntOrderIntern(intOrd);
+//            IntOrdUpdStatus(intOrd.getIdInternmentOrder(), 1);
+        }
+        return result;
     }
 }

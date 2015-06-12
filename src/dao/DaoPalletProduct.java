@@ -57,4 +57,6 @@ public interface DaoPalletProduct {
     public List<Integer> GetPalletByStatus(Integer status, Integer cantPallets);
     
     public List<Integer> GetPalletsByIntOrder(Integer idIntOrder, Integer IdProd);
+    
+    public PalletProduct getPalletProductById(Integer idPalletProduct);
 }
