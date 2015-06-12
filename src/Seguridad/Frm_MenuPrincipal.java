@@ -25,6 +25,7 @@ import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
+import Operaciones.Frm_adjustManual;
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_KardexReport;
@@ -156,8 +157,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         op_ReturnSearch = new javax.swing.JMenuItem();
         op_Carga_Datos = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        op_adjustManual = new javax.swing.JMenuItem();
+        op_adjustAutomatic = new javax.swing.JMenuItem();
         jMenuItem6 = new javax.swing.JMenuItem();
         menu_seguridad = new javax.swing.JMenu();
         op_Perfiles = new javax.swing.JMenuItem();
@@ -396,21 +397,21 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
 
         jMenu6.setText("Ajustes y Movimientos");
 
-        jMenuItem4.setText("Ajuste Manual");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        op_adjustManual.setText("Ajuste Manual");
+        op_adjustManual.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                op_adjustManualActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem4);
+        jMenu6.add(op_adjustManual);
 
-        jMenuItem5.setText("Ajuste Automático");
-        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+        op_adjustAutomatic.setText("Ajuste Automático");
+        op_adjustAutomatic.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem5ActionPerformed(evt);
+                op_adjustAutomaticActionPerformed(evt);
             }
         });
-        jMenu6.add(jMenuItem5);
+        jMenu6.add(op_adjustAutomatic);
 
         jMenuItem6.setText("Ajuste por Rotura");
         jMenu6.add(jMenuItem6);
@@ -782,13 +783,15 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_LibreDisponibilidadReport.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Reporte_Libre_disponibilidadActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void op_adjustManualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_adjustManualActionPerformed
+        Frm_adjustManual frm_adjustManual = new Frm_adjustManual(this);
+        frm_adjustManual.setVisible(true);
+        frm_adjustManual.setLocationRelativeTo(null);
+    }//GEN-LAST:event_op_adjustManualActionPerformed
 
-    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+    private void op_adjustAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_adjustAutomaticActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
+    }//GEN-LAST:event_op_adjustAutomaticActionPerformed
 //gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments
@@ -805,8 +808,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenu jMenu_Pallet;
     private javax.swing.JPopupMenu jPopupMenu1;
@@ -843,6 +844,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem op_Reporte_Stock_fecha;
     private javax.swing.JMenuItem op_RequestOrderSearch;
     private javax.swing.JMenuItem op_ReturnSearch;
+    private javax.swing.JMenuItem op_adjustAutomatic;
+    private javax.swing.JMenuItem op_adjustManual;
     private javax.swing.JMenuItem op_generator_simulation;
     private javax.swing.JMenuItem op_loadIntermentOrder;
     private javax.swing.JMenuItem op_loadRequestOrders;
