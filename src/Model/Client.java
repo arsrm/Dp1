@@ -1,6 +1,8 @@
 package Model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client {
     
@@ -14,9 +16,12 @@ public class Client {
     private Integer status;
     private Integer requestState;
     private Double totalWeight;
+    private List<Integer> listDispatch;
    
     public Client() {
         this.requestState = 0;
+        this.totalWeight = 0.0;
+        this.listDispatch = new ArrayList<>();
     }
     
     public Integer getIdClient() {
@@ -109,6 +114,20 @@ public class Client {
      */
     public void setTotalWeight(Double totalWeight) {
         this.totalWeight = totalWeight;
+    }
+
+    /**
+     * @return the listDispatch
+     */
+    public List<Integer> getListDispatch() {
+        return listDispatch;
+    }
+
+    /**
+     * @param listDispatch the listDispatch to set
+     */
+    public void setListDispatch(List<Integer> listDispatch) {
+        this.listDispatch = listDispatch;
     }
     
 }

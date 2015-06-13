@@ -24,6 +24,8 @@ public class DispatchOrder implements Serializable {
     private Date arrivalDate;
     private Integer status;
     private Integer idPickingOrder;
+    private Vehicle idVehicle;
+    
 
     public DispatchOrder() {
     }
@@ -112,7 +114,19 @@ public class DispatchOrder implements Serializable {
         this.idClient = idClient;
     }
 
-   
+    /**
+     * @return the idVehicle
+     */
+    public Vehicle getIdVehicle() {
+        return idVehicle;
+    }
+
+    /**
+     * @param idVehicle the idVehicle to set
+     */
+    public void setIdVehicle(Vehicle idVehicle) {
+        this.idVehicle = idVehicle;
+    }
 
     
 }

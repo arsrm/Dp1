@@ -86,7 +86,6 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         pnl_orders = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_orders = new javax.swing.JTable();
-        btn_Delete = new javax.swing.JButton();
         btn_Cancel = new javax.swing.JButton();
         btn_GenerateRoute = new javax.swing.JButton();
         pnl_search_criteria = new javax.swing.JPanel();
@@ -140,13 +139,6 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(table_orders);
 
-        btn_Delete.setText("Cambiar Estado");
-        btn_Delete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_DeleteActionPerformed(evt);
-            }
-        });
-
         btn_Cancel.setText("Cancelar");
         btn_Cancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,8 +162,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 1203, Short.MAX_VALUE)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
-                        .addComponent(btn_Delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_GenerateRoute)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_Cancel)
@@ -183,7 +174,6 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29)
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_Delete)
                     .addComponent(btn_Cancel)
                     .addComponent(btn_GenerateRoute))
                 .addContainerGap(15, Short.MAX_VALUE))
@@ -197,6 +187,8 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
         lbl_client.setText("Cliente:");
 
+        txt_id_client.setEditable(false);
+
         txt_client_name.setEditable(false);
 
         btn_client_search.setText("Buscar");
@@ -208,7 +200,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_Status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "ATENDIDO", "PENDIENTE", "CANCELADO" }));
+        cbo_Status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Entregado", "Pendiente", "En Vehículo", "Cancelado" }));
 
         check_advanced.setText("Seleccionar");
         check_advanced.addActionListener(new java.awt.event.ActionListener() {
@@ -407,7 +399,9 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
                 nameState = "Atendido";
             else if(dor.getStatus()==2)
                 nameState = "Pendiente";
-            else 
+            else if(dor.getStatus()==3)
+                nameState = "En vehículo";
+            else
                 nameState = "Cancelado";
             Object[] fila = {dor.getIdDispatch_Order(),ro.getClient().getName(),dor.getArrivalDate(),nameState,false};
             model.addRow(fila);
@@ -440,46 +434,6 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         menuaux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
-
-    private void btn_DeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_DeleteActionPerformed
-        // TODO add your handling code here:
-        Object[] options = {"OK"};
-        int ok_option;
-        if(ifNoColummnSelected()==false){
-            listDispatchToDelete = new ArrayList<>();
-            for (int i = 0; i < table_orders.getRowCount(); i++) {
-                if ((Boolean) table_orders.getValueAt(i, 4)) {
-                    listDispatchToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
-                }
-            }
-            
-            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                if(ok_option==JOptionPane.OK_OPTION){
-                    int size = listDispatchToDelete.size();
-                    for(int z=0;z<size;z++){
-                        DispatchOrder dor = daoDispatchOrder.dispatchOrderGet(listDispatchToDelete.get(z));
-                        daoDispatchOrder.dispatchOrderDel(dor.getIdDispatch_Order());
-                      
-                    }
-                    
-                }
-                refreshGrid();
-                /*String orderN =  txt_num_order.getText();
-                if(orderN == null || orderN.equals("")==true){ 
-                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                }else{
-                    Integer orderNumb = Integer.parseInt(orderN);
-                    pickingOrderList = daoPickingOrder.pickingOrderQry_search(orderNumb);
-                }
-                */
-                //fillTable();
-            }
-        }else{
-            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-        } 
-    }//GEN-LAST:event_btn_DeleteActionPerformed
 
     private void btn_search_advancedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_advancedActionPerformed
         // TODO add your handling code here:
@@ -544,60 +498,78 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
     private void btn_client_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_client_searchActionPerformed
         // TODO add your handling code here:
-        Object[] options = {"OK"};
-         int ok_option;
-        if(txt_id_client.getText().equals("")==true){
-            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un ruc de cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-             txt_client_name.setText("");
-        }else{
-            String ruc = txt_id_client.getText();
-            
-            client = daoClient.clientGet(ruc);
-            if(client!=null)
-                txt_client_name.setText(client.getName());
-            else{
-               ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontró cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                txt_client_name.setText("");
-            }    
-        }
+        Frm_Client_Get frm_cg = new Frm_Client_Get(this);
+        frm_cg.setLocation(450,150);
+        frm_cg.setVisible(true);
+        frm_cg.setLocationRelativeTo(null);
+        this.setVisible(false); 
     }//GEN-LAST:event_btn_client_searchActionPerformed
 
+    public void setClient(Client cliente){
+        Object[] options = {"OK"};
+        
+        if(cliente == null){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se obtuvo un cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }else{
+            client = cliente;
+            txt_id_client.setText(client.getRuc());
+            txt_client_name.setText(client.getName());
+        }
+    }
+    
     private void btn_GenerateRouteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerateRouteActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
+        String message = "Las siguientes  órdenes no se pueden generar sus rutas, puesto que ya fueron atendidas, ya cuentan con una ruta o se encuentran canceladas:\n";
         if(ifNoColummnSelected()==false){
             listDispatchToGenerate =  new ArrayList<>();
+            boolean allPending = verifyAllPending();
              for (int i = 0; i < table_orders.getRowCount(); i++) {
                 if ((Boolean) table_orders.getValueAt(i, 4)) {
-                    if(table_orders.getValueAt(i,3).equals("Atendido")==false)
+                    if(table_orders.getValueAt(i,3).equals("Pendiente")==true)
                         listDispatchToGenerate.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
                     else{
-                        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Despacho N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar y/o generar nueva ruta.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                        message+="Orden N° "+(int)table_orders.getValueAt(i,0)+" \n ";
                     }
                 }
             }
             if(listDispatchToGenerate.size()!=0){
                 if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
                     "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                    Frm_Algorithmic_Simulator frm_as = new Frm_Algorithmic_Simulator(this,listDispatchToGenerate);
-                    frm_as.setLocation(450,150);
-                    frm_as.setVisible(true);
-                    frm_as.setLocationRelativeTo(null);
-                    this.setVisible(false);
+                    if ( JOptionPane.showConfirmDialog(new JFrame(), message+" ¿Desea continuar? (se tomaran las órdenes en estado pendiente).", 
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                        Frm_Algorithmic_Simulator frm_as = new Frm_Algorithmic_Simulator(this,listDispatchToGenerate);
+                        frm_as.setLocation(450,150);
+                        frm_as.setVisible(true);
+                        frm_as.setLocationRelativeTo(null);
+                        this.setVisible(false);
+                    }
                 }
             }else{
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se realizaron cambios.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione órdenes en estado pendiente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
             }
         }else{
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
     }//GEN-LAST:event_btn_GenerateRouteActionPerformed
 
-   
+   private boolean verifyAllPending(){
+       Object[] options = {"OK"};
+       int size = listDispatchOrder.size();
+       if(size==0){
+           return false;
+       }else{
+          for(int i=0;i<size;i++){
+              if(listDispatchOrder.get(i).getStatus()!=2)
+                  return false;
+          }
+          return true;
+       }
+       
+   }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;
-    private javax.swing.JButton btn_Delete;
     private javax.swing.JButton btn_GenerateRoute;
     private javax.swing.JButton btn_client_search;
     private javax.swing.JButton btn_search_advanced;

@@ -7,7 +7,13 @@
 package dao.impl;
 
 import Model.DispatchOrder;
+import Model.Driver;
+import Model.Vehicle;
+import Model.VehicleState;
 import dao.DaoDispatchOrder;
+import dao.DaoDriver;
+import dao.DaoVehicle;
+import dao.DaoVehicleState;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +28,8 @@ import java.util.List;
  * @author Luis Miguel
  */
 public class DaoDispatchOrderImpl implements DaoDispatchOrder{
+    DaoVehicle daoVehicle = new DaoVehicleImpl();
+    
     private final ConectaDb db;
     
     public DaoDispatchOrderImpl() {
@@ -37,7 +45,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle "
                 +"FROM  dispatch_order";
 
         Connection cn = db.getConnection();
@@ -54,8 +63,12 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                     dor.setArrivalDate(rs.getDate(4));
                     dor.setStatus(rs.getInt(5));
                     dor.setIdPickingOrder(rs.getInt(6));
+                    if(rs.getObject(7)!=null){
+                        Vehicle veh = daoVehicle.vehicleGet(rs.getInt(7));
+                        dor.setIdVehicle(veh);
+                    }else
+                        dor.setIdVehicle(null);
                     list.add(dor);
-                    
                 }
 
             } catch (SQLException e) {
@@ -90,7 +103,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
                 + "FROM dispatch_order "
                 + "WHERE arrival_date >= ? "
                 + "AND arrival_date <= ? "
@@ -101,7 +115,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle "
                 + "FROM dispatch_order "
                 + "WHERE arrival_date >= ? "
                 + "AND arrival_date <= ? ";
@@ -137,6 +152,12 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                     dor.setArrivalDate(rs.getDate(4));
                     dor.setStatus(rs.getInt(5));
                     dor.setIdPickingOrder(rs.getInt(6));
+                    if(rs.getObject(7)!=null){
+                        Vehicle veh = daoVehicle.vehicleGet(rs.getInt(7));
+                        dor.setIdVehicle(veh);
+                    }else
+                        dor.setIdVehicle(null);
+                   
                     dispatchList.add(dor);
                 }
 
@@ -164,7 +185,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
                 + "FROM dispatch_order "
                 + "WHERE idDispatch_Order = ? ";
         }else{
@@ -173,7 +195,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
                 + "FROM dispatch_order ";
         }
         
@@ -196,6 +219,12 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                     dor.setArrivalDate(rs.getDate(4));
                     dor.setStatus(rs.getInt(5));
                     dor.setIdPickingOrder(rs.getInt(6));
+                    if(rs.getObject(7)!=null){
+                        Vehicle veh = daoVehicle.vehicleGet(rs.getInt(7));
+                        dor.setIdVehicle(veh);
+                    }else
+                        dor.setIdVehicle(null);
+                    
                     dispatchList.add(dor);
                 }
 
@@ -312,7 +341,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
                 + "FROM dispatch_order WHERE idDispatch_Order = ?";
 
         Connection cn = db.getConnection();
@@ -329,6 +359,11 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                     dispatchOrder.setArrivalDate(rs.getDate(4));
                     dispatchOrder.setStatus(rs.getInt(5));
                     dispatchOrder.setIdPickingOrder(rs.getInt(6));
+                    if(rs.getObject(7)!=null){
+                        Vehicle veh = daoVehicle.vehicleGet(rs.getInt(7));
+                        dispatchOrder.setIdVehicle(veh);
+                    }else
+                        dispatchOrder.setIdVehicle(null);
                 }
 
             } catch (SQLException e) {
@@ -346,8 +381,40 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
 
     @Override
     public String dispatchOrderUpd(DispatchOrder dispatchOrder) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-       
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       String result = null;
+        String sql = "UPDATE  dispatch_order SET "
+                +" status = ?  "
+                + "WHERE  idDispatch_Order=?";
+        
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,dispatchOrder.getStatus());
+                ps.setInt(2,dispatchOrder.getIdDispatch_Order());
+                
+                int ctos = ps.executeUpdate();
+                
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+                
+               
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -362,7 +429,8 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
-                + "Picking_Order_idPicking_Order "
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle "
                 + "FROM dispatch_order "
                 + "WHERE departure_date = ? ";
 
@@ -385,6 +453,12 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                     dor.setArrivalDate(rs.getDate(4));
                     dor.setStatus(rs.getInt(5));
                     dor.setIdPickingOrder(rs.getInt(6));
+                    if(rs.getObject(7)!=null){
+                        Vehicle veh = daoVehicle.vehicleGet(rs.getInt(7));
+                        dor.setIdVehicle(veh);
+                    }else
+                        dor.setIdVehicle(null);
+                   
                     dispatchList.add(dor);
                 }
 
@@ -399,8 +473,50 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
         }
         return dispatchList;
     }
-    
 
+    @Override
+    public String dispatchOrderAssignVehicle(DispatchOrder dispatchOrder) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "UPDATE  dispatch_order SET "
+                +" idVehicle = ? "
+                + "WHERE  idDispatch_Order=?";
+        
+        Connection cn = db.getConnection();
+        
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                
+                if(dispatchOrder.getIdVehicle()==null)
+                    ps.setString(1,null);
+                else
+                    ps.setInt(1,dispatchOrder.getIdVehicle().getIdVehicle());
+                
+                ps.setInt(2,dispatchOrder.getIdDispatch_Order());
+                int ctos = ps.executeUpdate();
+                
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+                
+               
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
+    
+    
    
     
 }

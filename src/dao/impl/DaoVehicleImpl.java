@@ -90,7 +90,7 @@ public class DaoVehicleImpl implements DaoVehicle {
                 + "name,"
                 + "capacity,"
                   +"dispatch_number,"
-                + "State_Request_Order_idStateRequest_Order,"
+                + "Vehicle_State_idVehicle_State,"
                 + "Driver_idDriver "
                 + "FROM vehicle WHERE idVehicle = ?";
 

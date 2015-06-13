@@ -123,13 +123,8 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
 
         if(index_status == 0){ //es cualquiera de los dos tipos
             sql+="";
-        }else if(index_status == 1){ //atendido
-            sql+= "AND State_Request_Order_idStateRequest_Order=1";
-        }else if(index_status==2){//pendiente
-            sql+= "AND State_Request_Order_idStateRequest_Order=2";
-        }else if(index_status==3){//cancelado
-            sql+= "AND State_Request_Order_idStateRequest_Order=3";
-        }
+        }else
+            sql+= "AND State_Request_Order_idStateRequest_Order="+index_status;
         Connection cn = db.getConnection();
         if (cn != null) {
             try {

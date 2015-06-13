@@ -73,8 +73,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" alignment="1" pref="1203" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="btn_Delete" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           <Component id="btn_GenerateRoute" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_Cancel" min="-2" max="-2" attributes="0"/>
@@ -90,7 +89,6 @@
                   <Component id="jScrollPane1" min="-2" pref="90" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="btn_Delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_Cancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_GenerateRoute" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -157,14 +155,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btn_Delete">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Cambiar Estado"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_DeleteActionPerformed"/>
-          </Events>
-        </Component>
         <Component class="javax.swing.JButton" name="btn_Cancel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Cancelar"/>
@@ -300,6 +290,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_id_client">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_client_name">
           <Properties>
@@ -322,11 +315,12 @@
         <Component class="javax.swing.JComboBox" name="cbo_Status">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
+              <StringArray count="5">
                 <StringItem index="0" value=""/>
-                <StringItem index="1" value="ATENDIDO"/>
-                <StringItem index="2" value="PENDIENTE"/>
-                <StringItem index="3" value="CANCELADO"/>
+                <StringItem index="1" value="Entregado"/>
+                <StringItem index="2" value="Pendiente"/>
+                <StringItem index="3" value="En Veh&#xed;culo"/>
+                <StringItem index="4" value="Cancelado"/>
               </StringArray>
             </Property>
           </Properties>

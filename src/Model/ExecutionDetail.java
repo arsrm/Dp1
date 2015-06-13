@@ -17,6 +17,7 @@ public class ExecutionDetail {
     private Integer idVehicle;
     private Integer idVehicle_State;
     private Integer idDriver;
+    private Integer order_route;
     
     public ExecutionDetail(){
         
@@ -105,6 +106,20 @@ public class ExecutionDetail {
      */
     public void setIdDriver(Integer idDriver) {
         this.idDriver = idDriver;
+    }
+
+    /**
+     * @return the order_route
+     */
+    public Integer getOrder_route() {
+        return order_route;
+    }
+
+    /**
+     * @param order_route the order_route to set
+     */
+    public void setOrder_route(Integer order_route) {
+        this.order_route = order_route;
     }
 
     

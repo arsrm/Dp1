@@ -11,9 +11,11 @@ import Model.DispatchOrder;
 import Model.PickingOrder;
 import Model.Vehicle;
 import dao.DaoClient;
+import dao.DaoDispatchOrder;
 import dao.DaoPickingOrder;
 import dao.DaoRequestOrder;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderImpl;
 import java.io.IOException;
@@ -36,8 +38,10 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
     DaoClient daoClient = new DaoClientImpl();
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
     DefaultTableModel model = new DefaultTableModel();
     Vehicle vehicleAux = new Vehicle();
+    List<Client> listCli = new ArrayList<>();
     /**
      * Creates new form Frm_Detail_Route
      */
@@ -45,11 +49,12 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
         initComponents();
     }
     
-    public Frm_Detail_Route(Frm_Detail_Algorithm frm_da, String route, List<DispatchOrder> listDO, Vehicle veh) {
+    public Frm_Detail_Route(Frm_Detail_Algorithm frm_da, String route, List<DispatchOrder> listDO, Vehicle veh,List<Client> cliList) {
         frm_daAux = frm_da;
         routeAux = route;
         listDOAux = listDO;
         vehicleAux = veh;
+        listCli = cliList;
         initComponents();
         txt_plate.setText(vehicleAux.getLicense_plate());
         txt_name_driver.setText(vehicleAux.getDriver().getName());
@@ -212,22 +217,23 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
     private void showClients(){
         String[] idClients = routeAux.split("-");
         int size = idClients.length;
+        int sizeC = listCli.size();
         int order = 1;
         for(int i=1;i<size-1;i++){
-            Client client = daoClient.clientGet(Integer.parseInt(idClients[i]));
-            int idDO = -1;
-            int sizeD = listDOAux.size();
-            int pos = -1;
-            for(int j=0;j<sizeD;j++){
-                if(client.getIdClient()==listDOAux.get(j).getIdClient()){
-                    pos = j;
-                    break;
+            int id = Integer.parseInt(idClients[i]);
+            Client cli =  new Client();
+            for(int j=0;j<sizeC;j++){
+                if(listCli.get(j).getIdClient()==id){
+                    cli = listCli.get(j);
                 }
             }
-            if(pos!=-1)
-                idDO = listDOAux.get(pos).getIdDispatch_Order();
-            Object[] fila = {order,idDO,client.getName(),listDOAux.get(pos).getDepartureDate()};
-            model.addRow(fila);
+            int sizeDispatch = cli.getListDispatch().size();
+            for(int j=0;j<sizeDispatch;j++){
+                DispatchOrder dor = daoDispatchOrder.dispatchOrderGet(cli.getListDispatch().get(j));
+                Object[] fila = {order,dor.getIdDispatch_Order(),cli.getName(),dor.getDepartureDate()};
+                model.addRow(fila);
+            }
+            
             order++;
                 
         }

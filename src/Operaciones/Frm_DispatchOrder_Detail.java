@@ -12,31 +12,46 @@ import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.PalletProduct;
 import Model.Pallet_Product_Location;
+import Model.PickingOrder;
 import Model.PickingOrderDetail;
 import Model.Product;
 import Model.Rack;
+import Model.RequestOrder;
+import Model.StateRequestOrder;
 import Model.Warehouse;
 import dao.DaoClient;
 import dao.DaoDispatchOrder;
 import dao.DaoDistributionCenter;
+import dao.DaoDriver;
 import dao.DaoLocationCell;
 import dao.DaoLocationCellDetail;
 import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
+import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoProducts;
 import dao.DaoRack;
+import dao.DaoRequestOrder;
+import dao.DaoStateRequestOrder;
+import dao.DaoVehicle;
+import dao.DaoVehicleState;
 import dao.DaoWH;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoDriverImpl;
 import dao.impl.DaoLocationCellDetailImpl;
 import dao.impl.DaoLocationCellImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoRackImpl;
+import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
+import dao.impl.DaoVehicleImpl;
+import dao.impl.DaoVehicleStateImpl;
 import dao.impl.DaoWHImpl;
 import java.util.List;
 import javax.swing.JFrame;
@@ -62,7 +77,12 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
     DaoWH daoWH = new DaoWHImpl();
     DaoDistributionCenter daoDistribution = new DaoDistributionCenterImpl();
     DaoRack daoRack = new DaoRackImpl();
-    
+    DaoVehicle daoVehicle = new DaoVehicleImpl();
+    DaoVehicleState daoVehicleState = new DaoVehicleStateImpl();
+    DaoDriver daoDriver = new DaoDriverImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
     
     /**
      * Creates new form Frm_VerDetalleOrdenDespacho1
@@ -71,6 +91,10 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         frm_dosAux = frm_fds;
         setTitle("ORDEN DE DESPACHO");
         initComponents();
+    }
+    
+    public Frm_DispatchOrder_Detail() {
+       
     }
 
     public Frm_DispatchOrder_Detail(Frm_DispatchOrder_Search frm_fds, DispatchOrder dispatchOrder) {
@@ -109,7 +133,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         txt_name_dispatcher = new javax.swing.JTextField();
         txt_id_dispatcher = new javax.swing.JTextField();
         lbl_vehicle = new javax.swing.JLabel();
-        txt_ClientAddress1 = new javax.swing.JTextField();
+        txt_license_plate = new javax.swing.JTextField();
         pnl_products = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_products = new javax.swing.JTable();
@@ -146,7 +170,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "REALIZADO", "PENDIENTE", "CANCELADO" }));
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Entregado", "Pendiente", "En vehiculo", "Cancelado" }));
         cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");
@@ -167,7 +191,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
 
         lbl_vehicle.setText("Vehículo:");
 
-        txt_ClientAddress1.setEditable(false);
+        txt_license_plate.setEditable(false);
 
         javax.swing.GroupLayout pnl_general_infoLayout = new javax.swing.GroupLayout(pnl_general_info);
         pnl_general_info.setLayout(pnl_general_infoLayout);
@@ -186,41 +210,44 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                         .addGap(64, 64, 64)
                         .addComponent(lbl_reg_date)))
                 .addGap(10, 10, 10)
-                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnl_general_infoLayout.createSequentialGroup()
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_ClientAddress)
+                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                        .addComponent(txt_ClientId, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_ClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(21, 21, 21)
+                        .addComponent(lbl_status)
+                        .addGap(214, 214, 214))
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addComponent(txt_ClientAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(lbl_dispatcher)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_id_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(249, 249, 249))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
-                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jDate_RegisterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txt_ClientAddress)
-                                        .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                            .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                                    .addComponent(txt_ClientId, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                    .addComponent(txt_ClientName, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGap(0, 0, Short.MAX_VALUE))))
-                                .addGap(21, 21, 21)
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_deliver_date)
-                                    .addComponent(lbl_status))
-                                .addGap(16, 16, 16)
-                                .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jDate_RegisterDate, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txt_name_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(62, 62, 62))))
+                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                        .addGap(0, 0, Short.MAX_VALUE)
+                                        .addComponent(lbl_deliver_date))
+                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                        .addComponent(txt_license_plate, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_dispatcher)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(txt_id_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(33, 33, 33)))
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDate_DeliverDate, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txt_name_dispatcher, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(62, 62, 62))
         );
         pnl_general_infoLayout.setVerticalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -245,7 +272,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
                         .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lbl_vehicle)
-                            .addComponent(txt_ClientAddress1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(txt_license_plate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(6, 6, 6))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
                         .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -281,7 +308,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Eliminar");
+        btn_delete.setText("Cancelar Despacho");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -380,6 +407,11 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                cbo_status.setSelectedIndex(2);
            else if (dispatchOrderAux.getStatus()==3)
                cbo_status.setSelectedIndex(3);
+           if(dispatchOrderAux.getIdVehicle()!=null){
+               txt_license_plate.setText(dispatchOrderAux.getIdVehicle().getLicense_plate());
+               txt_id_dispatcher.setText(dispatchOrderAux.getIdVehicle().getDriver().getIdDriver().toString());
+               txt_name_dispatcher.setText(dispatchOrderAux.getIdVehicle().getDriver().getName());
+           }
            fillTable();
         }
     }
@@ -435,12 +467,25 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-
-        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"El despacho ha finalizado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            if(ok_option==JOptionPane.OK_OPTION){
-                frm_dosAux.setVisible(true);
-                frm_dosAux.setLocationRelativeTo(null);
-                this.dispose();
+            /***********************************************************************/
+            /*************VERIFICAMOS  SI HAY VEHICULO ASIGNADO*********************/
+            if(dispatchOrderAux.getIdVehicle()==null){
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"La orden aun no ha sido puesto en un vehiculo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }else{
+                dispatchOrderAux.setStatus(1);
+                daoDispatchOrder.dispatchOrderUpd(dispatchOrderAux);
+                PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrderAux.getIdPickingOrder());
+                RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
+                StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
+                ro.setStateRequestOrder(state);
+                daoRequestOrder.requestOrderUpd(ro);
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"El despacho ha finalizado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                if(ok_option==JOptionPane.OK_OPTION){
+                    frm_dosAux.setVisible(true);
+                    frm_dosAux.setLocationRelativeTo(null);
+                    this.dispose();
+                }
+            
             }
         }
     }//GEN-LAST:event_btn_confirmActionPerformed
@@ -451,11 +496,12 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha eliminado la orden de despacho con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Para cancelar un despacho, se deberá registrar una orden de devolución.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             if(ok_option == JOptionPane.OK_OPTION){
-                frm_dosAux.setVisible(true);
-                frm_dosAux.setLocationRelativeTo(null);
-                this.dispose();
+                Frm_ReturnProducts frm_rps = new Frm_ReturnProducts(this,dispatchOrderAux);
+                frm_rps.setVisible(true);
+                frm_rps.setLocationRelativeTo(null);
+                this.setVisible(false);
             }
             
         } 
@@ -483,11 +529,11 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_products;
     private javax.swing.JTable table_products;
     private javax.swing.JTextField txt_ClientAddress;
-    private javax.swing.JTextField txt_ClientAddress1;
     private javax.swing.JTextField txt_ClientId;
     private javax.swing.JTextField txt_ClientName;
     private javax.swing.JTextField txt_OrderNum;
     private javax.swing.JTextField txt_id_dispatcher;
+    private javax.swing.JTextField txt_license_plate;
     private javax.swing.JTextField txt_name_dispatcher;
     // End of variables declaration//GEN-END:variables
 }

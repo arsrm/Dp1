@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultCellEditor;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -91,6 +92,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         TableColumn tc = table_products.getColumnModel().getColumn(8);
         tc.setHeaderRenderer(new SelectAllHeader(table_products, 8));
         model = (DefaultTableModel) table_products.getModel();
+        fillCombo();
         fillData();
         if(roAux.getStateRequestOrder().getIdStateRequestOrder()==3 || roAux.getStateRequestOrder().getIdStateRequestOrder()==1){//si esta cancelado o atendido
             btn_delete.setEnabled(false);
@@ -101,6 +103,17 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         putComboInTable();
     }
     
+    private void fillCombo(){
+        List<StateRequestOrder> list = daoStateRequestOrder.stateRequestOrderQry();
+        int size = list.size();
+        ArrayList<String> listStates = new ArrayList<>();
+        listStates.add(" ");
+        for(int i=0;i<size;i++){
+            listStates.add(list.get(i).getDescription());
+        }
+        cbo_status.setModel(new DefaultComboBoxModel(listStates.toArray()));
+        
+    }
     
     private void putComboInTable(){
         TableColumn tC = table_products.getColumnModel().getColumn(6);
@@ -189,7 +202,6 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ATENDIDO", "PENDIENTE", "CANCELADO" }));
         cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");
@@ -211,7 +223,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         pnl_general_infoLayout.setHorizontalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
-                .addGap(164, 164, 164)
+                .addGap(164, 256, Short.MAX_VALUE)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
                         .addComponent(jdate_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,27 +232,30 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                         .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_address)
-                                    .addComponent(lbl_reg_date))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 213, Short.MAX_VALUE)
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_reg_date)
+                                    .addComponent(lbl_address))
+                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                        .addGap(10, 10, 10)
                                         .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lbl_deliver_date))
-                                    .addComponent(txt_client_address, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(lbl_deliver_date)
+                                        .addGap(15, 15, 15))
+                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                        .addGap(13, 13, 13)
+                                        .addComponent(txt_client_address, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_num_ord)
-                                    .addComponent(lbl_client))
-                                .addGap(22, 22, 22)
+                                    .addComponent(lbl_client)
+                                    .addComponent(lbl_num_ord))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txt_order_num, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
                                         .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(15, 15, 15)
+                        .addGap(18, 18, 18)
                         .addComponent(lbl_status)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,10 +280,11 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                     .addComponent(lbl_address))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbl_deliver_date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jdate_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_reg_date))
+                    .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lbl_reg_date)))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
@@ -387,7 +403,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         txt_client_address.setText(roAux.getClient().getAddress());
         jdate_register_date.setDate(roAux.getDateArrive());
         jdate_deliver_date.setDate(roAux.getDateline());
-        cbo_status.setSelectedIndex(roAux.getStateRequestOrder().getIdStateRequestOrder()-1);
+        cbo_status.setSelectedIndex(roAux.getStateRequestOrder().getIdStateRequestOrder());
         fillTable();
         
     }
@@ -411,7 +427,6 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
-        
         if(ifNoColummnSelected()==false){
             listRequestToDelete = new ArrayList<>();
             for (int i = 0; i < table_products.getRowCount(); i++) {
@@ -431,6 +446,18 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 roAux = daoRequestOrder.requestOrderGet(idRequest);
                 fillTable();
                 verifyProducts();
+                boolean request_details_canceled= allCancelled();
+                if(request_details_canceled == true){ //cancelo todo el pedido y salgo de la pantalla
+                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"Todos los productos del pedido fueron inactivados. Se cancela la orden de pedido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    if(ok_option==JOptionPane.OK_OPTION){
+                        StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(3);
+                        roAux.setStateRequestOrder(state);
+                        daoRequestOrder.requestOrderUpd(roAux);
+                    }
+                    frm_rosAux.setVisible(true);
+                    frm_rosAux.refreshGrid();
+                    this.dispose();                    
+                }
             }
         }else{
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -488,75 +515,90 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         
             boolean correctData = validateData();
             if(correctData == true){
-                int size = table_products.getRowCount();
-                //TERCERO: buscar los pallets
-                PickingOrder po = new PickingOrder();
-                //seteamos datos principales
-                po.setDate(new Date());
-                //1: REALIZADO 2:PENDIENTE 3:CANCELADO
-                po.setStatus(2);
-                po.setIdRequest_Order(roAux.getIdRequestOrder());
-                Integer idPicking = daoPickingOrder.pickingOrderIns(po);
-                po.setIdPickingOrder(idPicking);
-                Integer index = 1;
-                List<PickingOrderDetail> listpoD=null;
-                boolean requestCompleted =true;
-                List<PickingOrderDetail> poList = new ArrayList<>();
-                for(int i=0;i<size;i++){
-                    //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
-                    Integer palletsNumberDelivered = (Integer)table_products.getValueAt(i,6);
-                    Integer palletsNumberRequested = Integer.parseInt(table_products.getValueAt(i,4).toString());
-                    if(palletsNumberDelivered <palletsNumberRequested){ //si entrega menos de lo que tienes--ya es parcial
-                        requestCompleted = false;
-                        System.out.println("ENTRO AQUI");
-                    }
-                    Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
-                    //System.out.println(palletsNumberDemanding +" " + product.getIdProduct());
-                    listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDelivered, product.getIdProduct());
-                    
-                    if(listpoD != null){
-                        int sizeL= listpoD.size();
-                        for(int j=0;j<sizeL;j++){
-                            daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
-                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
-                            poList.add(listpoD.get(j));
-                            daoPalletProductLocation.daoPallet_Product_LocationDel(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
-                            index++;
+                
+                boolean allColumnInZero = verifyColumnWithzZero();
+                if(  allColumnInZero == false){
+                    int size = table_products.getRowCount();
+                    //TERCERO: buscar los pallets
+                    PickingOrder po = new PickingOrder();
+                    //seteamos datos principales
+                    po.setDate(new Date());
+                    //1: REALIZADO 2:PENDIENTE 3:CANCELADO
+                    po.setStatus(2);
+                    po.setIdRequest_Order(roAux.getIdRequestOrder());
+                    Integer idPicking = daoPickingOrder.pickingOrderIns(po);
+                    po.setIdPickingOrder(idPicking);
+                    Integer index = 1;
+                    List<PickingOrderDetail> listpoD=null;
+                    boolean requestCompleted =true;
+                    List<PickingOrderDetail> poList = new ArrayList<>();
+                    for(int i=0;i<size;i++){
+                        //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
+                        if(table_products.getValueAt(i,7).equals("Activo")==true){
+                            Integer palletsNumberDelivered = (Integer)table_products.getValueAt(i,6);
+                            Integer palletsNumberRequested = Integer.parseInt(table_products.getValueAt(i,4).toString());
+                            if(palletsNumberDelivered <palletsNumberRequested){ //si entrega menos de lo que tienes--ya es parcial
+                                requestCompleted = false;
+                            }
+                            Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
+                            listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDelivered, product.getIdProduct());                    
+                            if(listpoD != null){
+                                int sizeL= listpoD.size();
+                                for(int j=0;j<sizeL;j++){
+                                    daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
+                                    Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                                    poList.add(listpoD.get(j));
+                                    daoPalletProductLocation.daoPallet_Product_LocationDel(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                                    index++;
+                                }
+                                Integer delivered = (Integer)table_products.getValueAt(i, 6);
+                                Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
+                                roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
+                                roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
+                                //y se ajusta la nueva cantidad solicitada con lo que falta
+                                //roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+                            }
                         }
-                        Integer delivered = (Integer)table_products.getValueAt(i, 6);
-                        Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
-                        roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
-                        roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
-                        //y se ajusta la nueva cantidad solicitada con lo que falta
-                        //roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
                     }
-                }
-                //SE SETEA EN ESTADO ATENDIDO o PENDIENTE AUN
-                StateRequestOrder state = new StateRequestOrder();
-                if(requestCompleted == true)
-                     state = daoStateRequestOrder.stateRequestOrderGet(1);
-                else
-                    state = daoStateRequestOrder.stateRequestOrderGet(2);
-                roAux.setStateRequestOrder(state);
-                //SE PROCEDE CON UN UPDATE
-                daoRequestOrder.requestOrderUpd(roAux);
-                if(JOptionPane.showOptionDialog(new JFrame(),"Orden de picking registrada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
-                    Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,poList);
-                    frm_rop.setLocation(450,150);
-                    frm_rop.setVisible(true);
-                    frm_rop.setLocationRelativeTo(null);
-                    this.dispose();
+                    //SE SETEA EN ESTADO PICKING GENERADO o PENDIENTE AUN
+                    StateRequestOrder state = new StateRequestOrder();
+                    if(requestCompleted == true)
+                         state = daoStateRequestOrder.stateRequestOrderGet(4); //se setea que esta generado el picking
+                    else
+                        state = daoStateRequestOrder.stateRequestOrderGet(2);
+                    roAux.setStateRequestOrder(state);
+                    //SE PROCEDE CON UN UPDATE
+                    daoRequestOrder.requestOrderUpd(roAux);
+                    if(JOptionPane.showOptionDialog(new JFrame(),"Orden de picking registrada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
+                        Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,poList);
+                        frm_rop.setLocation(450,150);
+                        frm_rop.setVisible(true);
+                        frm_rop.setLocationRelativeTo(null);
+                        this.dispose();
+                    }
                 }
             }else
-                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Debe completar esta columna por completo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Debe completar esta columna por completo y no está permitido llenar todas la columna con 0 pallets entregados.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
     }//GEN-LAST:event_btn_generate_orderActionPerformed
 
+    private boolean verifyColumnWithzZero(){
+        int sizeRows =  table_products.getRowCount();
+        int countZeros = 0;
+        for(int i=0;i<sizeRows;i++){
+            if((Integer)table_products.getValueAt(i,6)==0){
+                countZeros++; 
+            }  
+        }
+        if(countZeros == sizeRows)
+            return true;
+        else
+            return false;
+    }
     private boolean validateData(){
         int sizeRows =  table_products.getRowCount();
         for(int i=0;i<sizeRows;i++){
             if(aInteger(table_products.getValueAt(i,6).toString())==null){
-               System.out.println(i);
                 return false; 
             }
                
@@ -569,6 +611,15 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         for(int i=0;i<sizeRows;i++){
             boolean statusSelected = (Boolean)table_products.getValueAt(i, 8);
             if(statusSelected == true)
+                return false;
+        }
+        return true;
+    }
+    
+    private boolean allCancelled(){
+        int size = table_products.getRowCount();
+        for(int i=0;i<size;i++){
+            if(table_products.getValueAt(i,7).equals("Activo")==true)
                 return false;
         }
         return true;

@@ -9,19 +9,23 @@ package Operaciones;
 import Model.Client;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
+import Model.StateRequestOrder;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
+import dao.DaoStateRequestOrder;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -42,6 +46,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     DefaultTableModel model = new DefaultTableModel();
     DaoClient daoClient = new DaoClientImpl();
     DaoRequestOrderDetail daoRequestDetail = new DaoRequestOrderDetailImpl();
+    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+    List<StateRequestOrder> listStateRequest = new ArrayList<>();
     Client client;
     List<Integer> listRequestToDelete = new ArrayList<>();
     /**
@@ -49,8 +55,10 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
      */
     public Frm_RequestOrder_Search(Frm_MenuPrincipal menu) {
         setTitle("ÓRDENES DE PEDIDO");
+        listStateRequest = daoStateRequestOrder.stateRequestOrderQry();
         menuaux = menu;
         initComponents();
+        fillCombo(listStateRequest);
         TableColumn tc = table_orders.getColumnModel().getColumn(3);
         tc.setHeaderRenderer(new SelectAllHeader(table_orders, 3));
         model = (DefaultTableModel) table_orders.getModel();
@@ -64,6 +72,16 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     public void refreshGrid(){
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
+    }
+    
+    public void fillCombo(List<StateRequestOrder> list){
+        int size = list.size();
+        ArrayList<String> listStates = new ArrayList<>();
+        listStates.add(" ");
+        for(int i=0;i<size;i++){
+            listStates.add(list.get(i).getDescription());
+        }
+        cbo_status.setModel(new DefaultComboBoxModel(listStates.toArray()));
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -113,6 +131,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         lbl_status.setText("Estado:");
 
         lbl_client.setText("Cliente:");
+
+        txt_id_client.setEditable(false);
 
         txt_client_name.setEditable(false);
 
@@ -303,6 +323,18 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_table_ordersMouseClicked
 
+    public void setClient(Client cliente){
+        Object[] options = {"OK"};
+        
+        if(cliente == null){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se obtuvo un cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }else{
+            client = cliente;
+            txt_id_client.setText(client.getRuc());
+            txt_client_name.setText(client.getName());
+        }
+    }
+    
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
         menuaux.setVisible(true);
@@ -322,7 +354,9 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             listRequestToDelete =  new ArrayList<>();
              for (int i = 0; i < table_orders.getRowCount(); i++) {
                 if ((Boolean) table_orders.getValueAt(i, 3)) {
-                    if(table_orders.getValueAt(i,2).equals("Atendido")==false)
+                    String status_3 = daoStateRequestOrder.stateRequestOrderGet(3).getDescription();
+                    String status_4 = daoStateRequestOrder.stateRequestOrderGet(4).getDescription();
+                    if(table_orders.getValueAt(i,2).equals(status_3)==false || table_orders.getValueAt(i,2).equals(status_4)==false)
                         listRequestToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
                     else{
                         int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Pedido N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -349,25 +383,11 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
 
     private void btn_client_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_client_searchActionPerformed
         // TODO add your handling code here:
-         Object[] options = {"OK"};
-         int ok_option;
-        if(txt_id_client.getText().equals("")==true){
-            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un ruc de cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-             txt_client_name.setText("");
-        }else{
-            String ruc = txt_id_client.getText();
-            if(validarRazonSocial(ruc)==true){
-                client = daoClient.clientGet(ruc);
-                if(client!=null)
-                    txt_client_name.setText(client.getName());
-                else{
-                   ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontró cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                    txt_client_name.setText("");
-                }   
-            }else{
-                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un tipo de ruc valido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            }
-        }
+        Frm_Client_Get frm_cg = new Frm_Client_Get(this);
+        frm_cg.setLocation(450,150);
+        frm_cg.setVisible(true);
+        frm_cg.setLocationRelativeTo(null);
+        this.setVisible(false);  
             
     }//GEN-LAST:event_btn_client_searchActionPerformed
 

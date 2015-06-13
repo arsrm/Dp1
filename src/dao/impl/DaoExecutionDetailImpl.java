@@ -35,8 +35,8 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
         String sql = "INSERT INTO execution_detail("
                 + "Execution_Algorithm_idExecutionAlgorithm,Dispatch_Order_idDispatch_Order,"
                 + "Dispatch_Order_Picking_Order_idPicking_Order,Vehicle_idVehicle,"
-                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver "
-                + ") VALUES(?,?,?,?,?,?)";
+                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver, route_order "
+                + ") VALUES(?,?,?,?,?,?,?)";
          
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -48,6 +48,7 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
                 ps.setInt(4, execution.getIdVehicle());
                 ps.setInt(5, execution.getIdVehicle_State());
                 ps.setInt(6, execution.getIdDriver());
+                ps.setInt(7,execution.getOrder_route());
                 
                 
                 
@@ -78,7 +79,7 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
         String sql =  "select "
                 +"Execution_Algorithm_idExecutionAlgorithm,Dispatch_Order_idDispatch_Order,"
                 + "Dispatch_Order_Picking_Order_idPicking_Order,Vehicle_idVehicle,"
-                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver "
+                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver,route_order "
                 +"From  execution_detail where Execution_Algorithm_idExecutionAlgorithm=?";
 
         Connection cn = db.getConnection();
@@ -98,6 +99,7 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
                     execute.setIdVehicle(rs.getInt(4));
                     execute.setIdVehicle_State(rs.getInt(5));
                     execute.setIdDriver(rs.getInt(6));
+                    execute.setOrder_route(rs.getInt(7));
                     list.add(execute);
                 }
 
@@ -120,7 +122,7 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
         String sql =  "select "
                 +"Execution_Algorithm_idExecutionAlgorithm,Dispatch_Order_idDispatch_Order,"
                 + "Dispatch_Order_Picking_Order_idPicking_Order,Vehicle_idVehicle,"
-                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver "
+                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver, route_order "
                 +"From  execution_detail where Execution_Algorithm_idExecutionAlgorithm=?"
                 +" AND Dispatch_Order_idDispatch_Order=? AND "
                 +" Dispatch_Order_Picking_Order_idPicking_Order=?;";
@@ -141,6 +143,7 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
                     executionDetail.setIdVehicle(rs.getInt(4));
                     executionDetail.setIdVehicle_State(rs.getInt(5));
                     executionDetail.setIdDriver(rs.getInt(6));
+                    executionDetail.setOrder_route(rs.getInt(7));
                     
                 }
 

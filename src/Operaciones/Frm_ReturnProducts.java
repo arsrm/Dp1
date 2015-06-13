@@ -50,12 +50,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Frm_ReturnProducts extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
+    Frm_DispatchOrder_Detail frm_dodAux = new Frm_DispatchOrder_Detail();
     
     DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
     DispatchOrder dispatchOrder = null;
     
     DaoClient daoClient = new DaoClientImpl();
     Client client = null;
+    
     
     DaoExecutionAlgorithm daoExecutionAlgorithm = new DaoExecutionAlgorithmImpl();
     List<ExecutionAlgorithm> executionAlgorithmList = null;
@@ -94,6 +96,15 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         
         initComponents();
         blockObjects();
+    }
+    
+    public Frm_ReturnProducts(Frm_DispatchOrder_Detail frm_dod, DispatchOrder dispatch){
+         setTitle("Devolución de Productos");
+        frm_dodAux  = frm_dod;
+        initComponents();
+        blockObjects();
+        dispatchOrder = dispatch;
+        fillData();
     }
 
     /**
@@ -498,6 +509,30 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_returnActionPerformed
 
+    private void fillData(){
+        int idPickingOrder, idDispatchOrder;
+        Date dispatchDate;
+        double functionValue;
+        int idExecutionAlgorithm;
+        int idVehicle;
+        int idPalletProductLocation, idProduct;
+        if (dispatchOrder != null) {
+                idPickingOrder = dispatchOrder.getIdPickingOrder();
+                dispatchDate = dispatchOrder.getDepartureDate();
+                client = daoClient.clientGet(dispatchOrder.getIdClient());
+                //*****FALTA VEHICULO*****/
+                fillGeneralData();
+                //buscar lista de ExecutionAlgorithm por date para sacar todas las ejecuciones del dia
+                pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
+                initializeTable();
+                
+                
+            } else {
+                JOptionPane.showMessageDialog(null, "No existe la orden de despacho buscada",
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            }
+    }
+    
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
         int idDispatchOrder, idPickingOrder,idExecutionAlgorithm,idPalletProductLocation,idProduct;
         int idVehicle;
@@ -610,7 +645,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_ClientId.setEnabled(false);
         txt_ClientName.setEnabled(false);
         txt_ClientAddress.setEnabled(false);
-        
+       
         txt_vehicle_license_plate.setEnabled(false);
         txt_id_dispatcher.setEnabled(false);
         txt_name_dispatcher.setEnabled(false);

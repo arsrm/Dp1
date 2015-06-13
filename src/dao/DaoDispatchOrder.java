@@ -34,5 +34,7 @@ public interface DaoDispatchOrder {
     
     public List<DispatchOrder> dispatchOrderQry_search(Date departureDate);
     
+    public String dispatchOrderAssignVehicle(DispatchOrder dispatchOrder);
+    
     
 }

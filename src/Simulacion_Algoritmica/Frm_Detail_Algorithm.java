@@ -12,10 +12,14 @@ import Model.ExecutionAlgorithm;
 import Model.ExecutionDetail;
 import Model.Vehicle;
 import dao.DaoClient;
+import dao.DaoDispatchOrder;
 import dao.DaoExecutionAlgorithm;
+import dao.DaoExecutionDetail;
 import dao.DaoVehicle;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoExecutionAlgorithmImpl;
+import dao.impl.DaoExecutionDetailImpl;
 import dao.impl.DaoVehicleImpl;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,7 +43,10 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
     List<DispatchOrder> dispatchListAux = new ArrayList<>();
     Double tabuCost;
     DaoExecutionAlgorithm daoExe = new DaoExecutionAlgorithmImpl();
+    DaoExecutionDetail daoExeDetail = new DaoExecutionDetailImpl();
     DaoVehicle daoVehicle = new DaoVehicleImpl();
+    DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
+    Integer flagAux;
     /**
      * Creates new form Frm_Detail_Algorithm
      */
@@ -47,11 +54,16 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Frm_Detail_Algorithm(Frm_Algorithmic_Simulator frm_fas,List<String>listPerSolution, tabuSearchManager tsManager, List<DispatchOrder> dispatchList,Double cost ){
+    public Frm_Detail_Algorithm(Frm_Algorithmic_Simulator frm_fas,List<String>listPerSolution, tabuSearchManager tsManager, List<DispatchOrder> dispatchList,Double cost,Integer flag ){
         frm_fasAux = frm_fas;
         listPerSolutionAux = listPerSolution;
         tabuCost = cost;
         initComponents();
+        flagAux = flag;
+        if(flagAux==0)
+            btn_Save.setName("Guardar Ejecución");
+        else
+            btn_Save.setName("Guartdar Ruta");
         tabuManager = tsManager;
         vehList = tsManager.getVehicleList();
         cliList = tsManager.getClientList();
@@ -222,7 +234,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_Save)
-                .addGap(5, 5, 5))
+                .addContainerGap())
         );
 
         pack();
@@ -235,7 +247,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
             int colSel = table_vehicles.getSelectedColumn();
             if (colSel==0){
               Frm_Detail_Route frm_srs;
-              frm_srs = new Frm_Detail_Route(this,listPerSolutionAux.get(rowSel),dispatchListAux,vehList.get(rowSel));
+              frm_srs = new Frm_Detail_Route(this,listPerSolutionAux.get(rowSel),dispatchListAux,vehList.get(rowSel),cliList);
               frm_srs.setLocationRelativeTo(null);  
               frm_srs.setVisible(true);
                 this.setVisible(false);
@@ -252,25 +264,61 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
 
     private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
         // TODO add your handling code here:
+        Object[] options = {"OK"};
+        int ok_option;
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            //setear los datos de la ejecución
             ExecutionAlgorithm exe = new ExecutionAlgorithm();
             Date now = new Date();
             exe.setDate(now);
             exe.setFunction_value(tabuCost);
-            exe.setStatus(1);
+            if(flagAux==0)
+                exe.setStatus(1); //significa activo pero que proviene de una simulacion
+            else
+                exe.setStatus(2); //significa activo pero que proviene de la generacion de rutas
             exe.setVehicles_number(vehList.size());
             Integer id = daoExe.executionAlgorithmIns(exe);
             //insertamos el detalle
-            int sizeV = vehList.size();
+            int sizeV = listPerSolutionAux.size();
+            int index_order = 1;
             for(int i=0;i<sizeV;i++){
-                ExecutionDetail exeD = new ExecutionDetail();
-                exeD.setIdVehicle(vehList.get(i).getIdVehicle());
-                exeD.setIdExecutionAlgorithm(id);
-                exeD.setIdDriver(vehList.get(i).getDriver().getIdDriver());
-                
-                
+                //por cada vehiculo
+                String route = listPerSolutionAux.get(i);
+                String[] idClients = route.split("-");
+                int sizeCli = idClients.length;
+                for(int j=1;j<sizeCli-1;j++){
+                    int pos=tabuManager.getClientIndex(Integer.parseInt(idClients[j]));
+                    Client cli = cliList.get(pos);
+                    int listDisp = cli.getListDispatch().size();
+                    for(int z=0;z<listDisp;z++){
+                        DispatchOrder dor = daoDispatchOrder.dispatchOrderGet(cli.getListDispatch().get(z));
+                        /*****************************************************************/
+                        /***************QUEDA PENDIENTE AGREGAR EL VEHICULO***************/
+                        /****************************************************************/
+                        if(flagAux==1){
+                            dor.setStatus(3);
+                            Vehicle veh = vehList.get(i);
+                            dor.setIdVehicle(veh);
+                            daoDispatchOrder.dispatchOrderAssignVehicle(dor);
+                        }
+                        daoDispatchOrder.dispatchOrderUpd(dor);
+                        int idPicking = dor.getIdPickingOrder();
+                        ExecutionDetail exeD = new ExecutionDetail();
+                        exeD.setIdVehicle(vehList.get(i).getIdVehicle());
+                        exeD.setIdExecutionAlgorithm(id);
+                        exeD.setIdDriver(vehList.get(i).getDriver().getIdDriver());
+                        exeD.setIdVehicle_State(vehList.get(i).getVehicleState().getIdVehicleState());
+                        exeD.setOrder_route(index_order);
+                        exeD.setIdPicking_Order(idPicking);
+                        exeD.setIdDispatch_Order(dor.getIdDispatch_Order());
+                        daoExeDetail.executionDetailIns(exeD);
+                        
+                    }
+                }
+                index_order++;
             }
+            ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se registró la ejecución.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
 

@@ -161,7 +161,7 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
     public String locationCellDetailIns(LocationCellDetail users){
     
         String result = null;
-        String sql = "INSERT INTO User("
+        String sql = "INSERT INTO location_cell_detail("
                 +"description,availability,Location_Cell_idLocation_Cell,Location_Cell_Rack_idRack,"
                 + "Location_Cell_Rack_Warehouse_idWarehouse,idDistribution_Center"
                 + ") VALUES(?,?,?,?,?,?)";

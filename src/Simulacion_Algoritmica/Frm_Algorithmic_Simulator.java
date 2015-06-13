@@ -93,6 +93,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     DaoDistributionCenter daoCD = new DaoDistributionCenterImpl();
     Frm_DispatchOrder_Search frm_dosAux = new Frm_DispatchOrder_Search();
     List<Integer> listIdDispatch = new ArrayList<>();
+    List<Client> clientToAlgorithm = new ArrayList<>();
     int flag;
     
     /**
@@ -103,6 +104,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         menuaux=menu;
         initComponents();
         fillActualData();
+        clientList = daoClient.clientQry();
         listSolutions = new ArrayList<>();
         listPerSolutions =  new ArrayList<>();
         TableColumn tc = table_dispatch_orders.getColumnModel().getColumn(3);
@@ -123,6 +125,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         spn_number_vehicles.addChangeListener(listener);
         btn_generate_routes.setEnabled(false);
         flag = 0;
+        
     }
 
     public Frm_Algorithmic_Simulator(){
@@ -134,6 +137,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         frm_dosAux = frm_dos;
         initComponents();
         fillActualData();
+        clientList = daoClient.clientQry();
         listSolutions = new ArrayList<>();
         listPerSolutions =  new ArrayList<>();
         TableColumn tc = table_dispatch_orders.getColumnModel().getColumn(3);
@@ -158,6 +162,8 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         listIdDispatch = listDispatchToGenerate;
         fillTableDispatch();
         flag = 1;
+        
+        
     }
 
     /**
@@ -183,7 +189,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table_dispatch_orders = new javax.swing.JTable();
         btn_generate_routes = new javax.swing.JButton();
-        test = new javax.swing.JButton();
         btn_Clean = new javax.swing.JButton();
         btn_exit = new javax.swing.JButton();
         lbl_declaimer = new javax.swing.JLabel();
@@ -321,13 +326,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
         });
 
-        test.setText("test");
-        test.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                testActionPerformed(evt);
-            }
-        });
-
         btn_Clean.setText("Limpiar");
         btn_Clean.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -346,8 +344,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_dispatch_ordersLayout.createSequentialGroup()
                         .addComponent(btn_Clean)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(test)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_generate_routes)))
                 .addContainerGap())
         );
@@ -358,7 +354,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_dispatch_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_generate_routes)
-                    .addComponent(test)
                     .addComponent(btn_Clean))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -435,11 +430,13 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
                 String nameState = null;
                 if(dor.getStatus()==1)
-                    nameState = "REALIZADO";
+                    nameState = "Entregado";
                 else if(dor.getStatus()==2)
-                    nameState = "POR ENTREGAR";
-                else 
-                    nameState = "CANCELADO";
+                    nameState = "Pendiente";
+                else if(dor.getStatus()==3)
+                    nameState = "En vehículo";
+                else
+                    nameState = "Cancelado";
                 Object[] fila = {dor.getIdDispatch_Order(),ro.getClient().getName(), nameState,false};
                 model.addRow(fila);
         }
@@ -510,6 +507,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
         }
         
+        
     }//GEN-LAST:event_btn_search_ordersActionPerformed
 
     private void btn_generate_routesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_routesActionPerformed
@@ -525,21 +523,19 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             }
             //tenemos la lista de despachos
             //debemos transformarlo en lista de clientes
-            clientList = new ArrayList<>();
             setCDtoClientList();
             setDispatchToClient(dispatchOrderListForAlgorithm);
             
             //ya tenemos la lista de vehiculos
             //ya tenemos la lista de clientes
             //se realiza la busqueda tabu
-            tSManager = new tabuSearchManager(vehicleList,clientList,(Integer)spn_number_iterations.getValue());
+            tSManager = new tabuSearchManager(vehicleList,clientToAlgorithm,(Integer)spn_number_iterations.getValue());
             runAlgorithm();
             
             //se procede a asignar
             //LLENAR DATA
-             System.out.println("AJDHASJDHASDHASJK:"+tSManager.getClientList().size());
             Frm_Detail_Algorithm frm_srs;
-            frm_srs = new Frm_Detail_Algorithm(this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost);
+            frm_srs = new Frm_Detail_Algorithm(this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag);
             frm_srs.setLocationRelativeTo(null);
             frm_srs.setVisible(true);
             this.setVisible(false);
@@ -557,26 +553,10 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         client.setStatus(0);
         client.setTotalWeight(0.0);
         client.setPriority(0);
-        clientList.add(client);
+        clientToAlgorithm.add(client);
+        
     }
     
-    private void testActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testActionPerformed
-        try {
-            // TODO add your handling code here:
-            String route = "0-1-3-2-0";
-            String route1 = "0-2-1-0";
-            List<String> routes = new ArrayList<>();
-            routes.add(route);
-            routes.add(route1);
-            Frm_Show_Route_Solution fsrs = new Frm_Show_Route_Solution(this,routes);
-            fsrs.setLocation(400, 150);
-            fsrs.setVisible(true);
-            this.setVisible(false);
-        }catch (IOException ex) {
-            Logger.getLogger(Frm_Algorithmic_Simulator.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_testActionPerformed
-
     private void btn_CleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CleanActionPerformed
         // TODO add your handling code here:
         model.getDataVector().removeAllElements();
@@ -590,7 +570,6 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             int size = tabuSolution.size();
             listSolutions = tabuSolution;
             tabuCost = tSManager.calculateFunctionCost(tabuSolution);
-            //tSManager.updateClients(tabuSolution);
             List<String> solutionPerVehicle = tSManager.generateRoutes(tabuSolution);
             listPerSolutions = solutionPerVehicle;
             totalFunctionCost.add(tabuCost);
@@ -607,27 +586,33 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     
     private void setDispatchToClient(List<DispatchOrder> dispatchListToAlg){
         int size = dispatchListToAlg.size();
-        List<Client> list = new ArrayList<>();
         Double totalWeight;
-        for(int i=0;i<size;i++){
-            DispatchOrder dOrder = dispatchListToAlg.get(i);
-            PickingOrder po = daoPickingOrder.pickingOrderGet(dOrder.getIdPickingOrder());
-            RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
-            Client client = ro.getClient();
-            totalWeight = 0.0;
-            List<PickingOrderDetail> poDList = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
-            int sizePod = poDList.size();
-            for(int j=0;j<sizePod;j++){
-                PickingOrderDetail poD = poDList.get(j);
-                totalWeight += getTotalWeight(poD);
+        int sizeClient = clientList.size();
+        for(int j=0;j<sizeClient;j++){
+            boolean clientHasOrder = false;
+            for(int z=0;z<size;z++){
+                DispatchOrder dOrder = dispatchListToAlg.get(z);
+                PickingOrder po = daoPickingOrder.pickingOrderGet(dOrder.getIdPickingOrder());
+                RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
+                if(clientList.get(j).getIdClient()==dOrder.getIdClient()){ //depacho pertenece a cliente
+                    clientHasOrder = true;
+                    totalWeight = 0.0;
+                    List<PickingOrderDetail> poDList = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
+                    int sizePod = poDList.size();
+                    for(int p=0;p<sizePod;p++){
+                        PickingOrderDetail poD = poDList.get(p);
+                        totalWeight += getTotalWeight(poD);
+                    }
+                    clientList.get(j).setTotalWeight(totalWeight);
+                    clientList.get(j).getListDispatch().add(dOrder.getIdDispatch_Order());
+                }
             }
-            client.setTotalWeight(totalWeight);
-            System.out.println(totalWeight);
-            clientList.add(client);
-                    
-        }
-        System.out.println(clientList.size());
- }
+            if(clientHasOrder==true)
+                clientToAlgorithm.add(clientList.get(j));
+
+        }  
+        
+    }
     
     private boolean validateData(){
         boolean noAllSelected = ifNoColummnSelected();
@@ -703,6 +688,5 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     private javax.swing.JSpinner spn_number_iterations;
     private javax.swing.JSpinner spn_number_vehicles;
     private javax.swing.JTable table_dispatch_orders;
-    private javax.swing.JButton test;
     // End of variables declaration//GEN-END:variables
 }

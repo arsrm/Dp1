@@ -9,6 +9,7 @@ package Operaciones;
 import Model.DispatchOrder;
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.Movement;
 import Model.Pallet;
 import Model.PalletProduct;
 import Model.Pallet_Product_Location;
@@ -20,6 +21,7 @@ import Model.RequestOrder;
 import Model.Warehouse;
 import dao.DaoDispatchOrder;
 import dao.DaoDistributionCenter;
+import dao.DaoKardex;
 import dao.DaoLocationCell;
 import dao.DaoLocationCellDetail;
 import dao.DaoPalletProduct;
@@ -32,6 +34,7 @@ import dao.DaoRequestOrder;
 import dao.DaoWH;
 import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoKardexImpl;
 import dao.impl.DaoLocationCellDetailImpl;
 import dao.impl.DaoLocationCellImpl;
 import dao.impl.DaoPalletProductImpl;
@@ -73,6 +76,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     DaoDistributionCenter daoDistribution = new DaoDistributionCenterImpl();
     DaoRack daoRack = new DaoRackImpl();
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoKardex daoKardex = new DaoKardexImpl();
     /**
      * Creates new form Frm_verDetalleOrdenEntrega1
      */
@@ -150,7 +154,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "REALIZADO", "PENDIENTE", "CANCELADO" }));
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Terminado", "Pendiente", "Cancelado" }));
         cbo_status.setEnabled(false);
 
         lbl_reg_date.setText("Fecha Registro:");
@@ -175,20 +179,21 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     .addComponent(lbl_num_order)
                     .addComponent(lbl_num_orderR))
                 .addGap(25, 25, 25)
-                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                        .addComponent(date_register, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
-                        .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txt_OrderNumR, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
                         .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(99, 99, 99)
-                        .addComponent(lbl_status)))
+                        .addGap(127, 127, 127)
+                        .addComponent(lbl_status))
+                    .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                            .addComponent(date_register, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(33, 33, 33)
+                            .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txt_OrderNumR, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(cbo_status, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(date_deliver, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(date_deliver, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_general_infoLayout.setVerticalGroup(
@@ -199,8 +204,8 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                         .addComponent(txt_OrderNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lbl_num_order))
                     .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbl_status)))
+                        .addComponent(lbl_status)
+                        .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(pnl_general_infoLayout.createSequentialGroup()
@@ -353,15 +358,18 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     int size = listRequestToDelete.size();
                     for(int z=0;z<size;z++){
                         PickingOrderDetail detail = daoPickingOrderDetail.pickingOrderDetailGet(listRequestToDelete.get(z));
-                        if(detail.getStatus()==1 || detail.getStatus()==2){//lo dejamos de nuevo en su sitio
+                        if(detail.getStatus()==2){//lo dejamos de nuevo en su sitio
                             daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),3);
                             Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
                             daoPalletProductLocation.daoPallet_Product_LocationActivate(detail.getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
-                        }else{
+                        }else if(detail.getStatus()==3){
                             daoPickingOrderDetail.pickingOrderDetailDel(listRequestToDelete.get(z),detail.getPicking_Order_idPicking_Order(),2);
                             Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
                             //lo sacamos del location cell
                             daoPalletProductLocation.daoPallet_Product_LocationDel(detail.getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                        }else{
+                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(detail.getIdPallet_By_Product_By_Location_Cell_Detail());
+                            ok_option = JOptionPane.showOptionDialog(new JFrame(),"El Pallet de la línea N° " +z+" ya se encuentra picado.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                         }   
                     }
                     
@@ -369,6 +377,25 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 refreshGrid();
                 fillTable();
                 verifyProducts();
+                boolean allCancel = allCanceled();
+                if(allCancel == true){
+                    ok_option = JOptionPane.showOptionDialog(new JFrame(),"Todos los pallets se han cancelado. Se procede a cancelar la orden de picking.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    if(ok_option == JOptionPane.OK_OPTION){
+                        daoPickingOrder.pickingOrderDel(pickingOrderAux.getIdPickingOrder(),3);
+                        List<PickingOrderDetail> poL = daoPickingOrderDetail.pickingOrderDetailQry(pickingOrderAux.getIdPickingOrder());
+                        if(poL!=null){
+                            int sizeL = poL.size();
+                            for(int j=0;j<sizeL;j++){
+                                daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),pickingOrderAux.getIdPickingOrder() ,3);
+                                Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                                daoPalletProductLocation.daoPallet_Product_LocationActivate(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                            }
+                        }
+                        ok_option = JOptionPane.showOptionDialog(new JFrame(),"Orden de picking cancelada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                        frm_posAux.setVisible(true);
+                        this.dispose();
+                    }
+                }
             }
         }else{
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione al menos un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -443,7 +470,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         //**********************************
         Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             DispatchOrder dispatchOrder = new DispatchOrder();
             Date date = new Date();
             dispatchOrder.setDepartureDate(date);
@@ -454,6 +481,28 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             dispatchOrder.setIdPickingOrder(pickingOrderAux.getIdPickingOrder());
             daoDispatchOrder.dispatchOrderIns(dispatchOrder);
             daoPickingOrder.pickingOrderDel(pickingOrderAux.getIdPickingOrder(), 1);
+            //Se registra el movimiento para el kardex:
+            List<PickingOrderDetail> list = daoPickingOrderDetail.pickingOrderDetailQry(pickingOrderAux.getIdPickingOrder());
+            int size = list.size();
+            for(int i=0;i<size;i++){
+                if(list.get(i).getStatus()==1){
+                    Movement mov = new Movement();
+                    mov.setDate(date);
+                    Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(list.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+                    mov.setIdProduct(ppl.getPallet_By_Product_Product_idProduct());
+                    mov.setIdWh(ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
+                    Product product = daoProduct.ProductsGet(ppl.getPallet_By_Product_Product_idProduct());
+                    mov.setStock_inicial(product.getPhysicalStock());
+                    mov.setStock_final(product.getPhysicalStock() - product.getQuantityBoxesPerPallet());
+                    mov.setType_Movement_id(2);
+                    mov.setType_Movement_idSubtype(1);
+                    daoKardex.MovementIns(mov);
+                    //ademas se actualiza el location cell detail para saber que hay disponibles sitios para ubicar nuevos pallets
+                    LocationCellDetail lcD = daoLocationCellDetail.locationCellDetailQry(ppl.getLocation_Cell_Detail_idLocation_Cell_Detail(),ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell());
+                    lcD.setAvailability(1);//le pongo como habilitado
+                    daoLocationCell.LocationCellAvailabilityUpd(ppl.getLocation_Cell_Detail_idDistribution_Center(), ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse(), ppl.getLocation_Cell_Detail_Location_Cell_Rack_idRack(),ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell(),ppl.getLocation_Cell_Detail_idLocation_Cell_Detail(), 1);
+                }
+            }
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha generado la orden de despacho con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             frm_posAux.setVisible(true);
             this.dispose();
@@ -469,6 +518,15 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         }else{
             btn_generate_dispatch.setEnabled(true);
         }
+    }
+    
+    private boolean allCanceled(){
+        int size = table_products.getRowCount();
+        for(int i=0;i<size;i++){
+            if(table_products.getValueAt(i,7).equals("Cancelado")==false)
+                return false;
+        }
+        return true;
     }
     
     private void fillData(){
@@ -500,9 +558,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                 Product prod = daoProduct.ProductsGet(pp.get(j).getIdproduct());
                 desc = prod.getName();
             }
-            
             Integer idLocationCellDetail = ppl.getLocation_Cell_Detail_idLocation_Cell_Detail();
-            
             Integer idLocationCell = ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell();
             Integer idDist = ppl.getLocation_Cell_Detail_idDistribution_Center();
             Integer idWh = ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse();
@@ -510,9 +566,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             Rack rack = daoRack.rackGet(idRack);
             Warehouse wh = daoWH.whGet(idWh);
             LocationCell location = daoLocationCell.LocationCellGet(idDist, idWh, idRack, idLocationCell);
-            System.out.println(location.getDescription());
             LocationCellDetail cellDetail = daoLocationCellDetail.locationCellDetailQry(idLocationCellDetail,idLocationCell);
-            System.out.println(cellDetail.getDescription());
             String nameState = null;
             if(poD.getStatus()==1)
                 nameState = "Picado";

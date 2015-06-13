@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -29,7 +30,38 @@ public class DaoStateRequestOrderImpl implements DaoStateRequestOrder{
 
     @Override
     public List<StateRequestOrder> stateRequestOrderQry() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<StateRequestOrder> list = null;
+        String sql =  "SELECT idStateRequest_Order,"
+                + "description,"
+                + "status "
+                +"FROM  state_request_order";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    StateRequestOrder state = new StateRequestOrder();
+                    state.setIdStateRequestOrder(rs.getInt(1));
+                    state.setDescription(rs.getString(2));
+                    state.setStatus(rs.getInt(3));
+                    list.add(state);
+                    
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
     }
 
     @Override

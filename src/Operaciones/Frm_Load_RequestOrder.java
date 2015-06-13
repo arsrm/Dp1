@@ -49,7 +49,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
     
     DaoProducts daoProducts = new DaoProdImpl();
-    //DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     Users userAux = new Users();
     DefaultTableModel model = new DefaultTableModel();
     JFileChooser chooser = new JFileChooser();
@@ -259,9 +259,8 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             int sizeArray = requestOrderList.size();
             if(sizeArray!=0){
-                DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
                 for(int i=0;i<sizeArray;i++){
-                    daoRequestOrder.requestOrderIns(requestOrderList.get(i));
+                    String result = daoRequestOrder.requestOrderIns(requestOrderList.get(i));
                 }
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             }else{
@@ -384,7 +383,9 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             //se llena la lista en la tabla
             
             model = (DefaultTableModel) table_orders.getModel();
-            fillTable();
+            boolean verify = verifyFile(requestOrderList);
+            if(verify == true)
+                fillTable();
                  
         }
     }//GEN-LAST:event_btn_loadActionPerformed
@@ -395,6 +396,33 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         menuaux.setVisible(true);
         this.dispose();
         
+    }
+    
+    private boolean verifyFile(List<RequestOrder> list){
+        Object[] options = {"OK"};
+        int size = list.size();
+        List<Integer> idRepeated = new ArrayList<>();
+        for (int i=0;i<size;i++){
+            RequestOrder ro = daoRequestOrder.requestOrderGet(list.get(i).getIdRequestOrder());
+            if(ro != null)
+                idRepeated.add(list.get(i).getIdRequestOrder());
+        }
+        if(idRepeated.size()>0){
+            //quiere decir que el archivo esta con errores.
+            int sizeR = idRepeated.size();
+            String message = "Los siguientes pedidos se encuentran ya registrados:\n";
+            for(int i =0;i<sizeR;i++){
+                message+="Pedido N° "+idRepeated.get(i)+"\n";
+            }
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),message,"Error al cargar",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    
+            return false;
+                        
+        }else{
+             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Archivo cargado sin errores.","Éxito",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+             return true;
+                    
+        }
     }
     
     private void fillTable(){
