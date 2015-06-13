@@ -17,4 +17,7 @@ public interface DaoPickingOrderDetail {
     
     public List<PickingOrderDetail> pickingOrderDetailFind(Integer orderpallet , Integer numpallet , Integer codProd);
     
+    public String pickingOrderDetailAssignToDispatch(Integer idPickingOrderDetail,Integer idPickingOrder);
+
+    public String pickingOrderDetailReturnToWarehouse(Integer idPickingOrderDetail,Integer idPickingOrder);
 }

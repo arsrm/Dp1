@@ -134,6 +134,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         btn_confirm = new javax.swing.JButton();
         btn_generate_dispatch = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(850, 400));
@@ -275,13 +276,22 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Ver Leyenda");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_productsLayout = new javax.swing.GroupLayout(pnl_products);
         pnl_products.setLayout(pnl_productsLayout);
         pnl_productsLayout.setHorizontalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productsLayout.createSequentialGroup()
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_delete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btn_generate_dispatch)
@@ -299,7 +309,8 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     .addComponent(btn_cancel)
                     .addComponent(btn_delete)
                     .addComponent(btn_confirm)
-                    .addComponent(btn_generate_dispatch))
+                    .addComponent(btn_generate_dispatch)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -486,6 +497,11 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             int size = list.size();
             for(int i=0;i<size;i++){
                 if(list.get(i).getStatus()==1){
+                    //seteo el status del despacho referido a su status en despacho
+                    //dispatch_status = 0 --> Entregado
+                    //dispatch_status = 1 --> Por entregar
+                    //dispatch_status = 2 --> Devuelto a Almacén
+                    daoPickingOrderDetail.pickingOrderDetailAssignToDispatch(list.get(i).getIdPicking_Order_Detail(),pickingOrderAux.getIdPickingOrder());
                     Movement mov = new Movement();
                     mov.setDate(date);
                     Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(list.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
@@ -501,6 +517,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
                     LocationCellDetail lcD = daoLocationCellDetail.locationCellDetailQry(ppl.getLocation_Cell_Detail_idLocation_Cell_Detail(),ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell());
                     lcD.setAvailability(1);//le pongo como habilitado
                     daoLocationCell.LocationCellAvailabilityUpd(ppl.getLocation_Cell_Detail_idDistribution_Center(), ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse(), ppl.getLocation_Cell_Detail_Location_Cell_Rack_idRack(),ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell(),ppl.getLocation_Cell_Detail_idLocation_Cell_Detail(), 1);
+                
                 }
             }
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha generado la orden de despacho con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -510,6 +527,13 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_btn_generate_dispatchActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        Frm_Pallet_Legend frm_pl = new Frm_Pallet_Legend();
+        frm_pl.setVisible(true);
+        frm_pl.setLocationRelativeTo(null);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void verifyProducts(){
         boolean emptyRequest = allUnable();
@@ -589,6 +613,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_status;
     private com.toedter.calendar.JDateChooser date_deliver;
     private com.toedter.calendar.JDateChooser date_register;
+    private javax.swing.JButton jButton1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lbl_deliver_date;
     private javax.swing.JLabel lbl_num_order;

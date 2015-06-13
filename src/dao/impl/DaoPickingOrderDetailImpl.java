@@ -24,13 +24,15 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
     public DaoPickingOrderDetailImpl() {
         db = new ConectaDb();
     }
+    
     @Override
     public List<PickingOrderDetail> pickingOrderDetailQry(Integer idPickingOrder) {
         List<PickingOrderDetail> list = null;
         String sql =  "SELECT idPicking_Order_Detail,"
                 + "status,"
                 + "Picking_Order_idPicking_Order,"
-                + "idPallet_By_Product_By_Location_Cell_Detail "
+                + "idPallet_By_Product_By_Location_Cell_Detail, "
+                + "dispatchStatus "
                 +"FROM Picking_Order_Detail "
                 + "where  Picking_Order_idPicking_Order = ?";
 
@@ -47,6 +49,10 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
                     po.setStatus(rs.getInt(2));
                     po.setPicking_Order_idPicking_Order(rs.getInt(3));
                     po.setIdPallet_By_Product_By_Location_Cell_Detail(rs.getInt(4));
+                    if(rs.getObject(5)!=null){
+                        po.setDispatchStatus(rs.getInt(5));
+                    }else
+                        po.setDispatchStatus(0);
                     list.add(po);                    
                 }
 
@@ -136,7 +142,8 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
          String sql =  "SELECT idPicking_Order_Detail,"
                 + "status,"
                 + " Picking_Order_idPicking_Order,"
-                 + "idPallet_By_Product_By_Location_Cell_Detail "
+                 + "idPallet_By_Product_By_Location_Cell_Detail, "
+                 + "dispatchStatus "
                 + "FROM Picking_Order_Detail WHERE idPicking_Order_Detail = ?";
 
         Connection cn = db.getConnection();
@@ -151,6 +158,10 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
                     pickingOrder.setStatus(rs.getInt(2));
                     pickingOrder.setPicking_Order_idPicking_Order(rs.getInt(3));
                     pickingOrder.setIdPallet_By_Product_By_Location_Cell_Detail(rs.getInt(4));
+                    if(rs.getObject(5)!=null){
+                        pickingOrder.setDispatchStatus(rs.getInt(5));
+                    }else
+                        pickingOrder.setDispatchStatus(0);
                     
                 }
 
@@ -192,7 +203,6 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
                  
                   ps.setInt(1,codProd);
                   ps.setInt(2,numpallet);
-                  System.out.println(sql);
                 ResultSet rs = ps.executeQuery();
                 
                 list = new LinkedList<>();
@@ -220,4 +230,61 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
     
     }
     
+    @Override
+    public String pickingOrderDetailAssignToDispatch(Integer idPickingOrderDetail,Integer idPickingOrder){
+        String result = null;
+        String sql = "UPDATE Picking_Order_Detail SET "                
+                + "dispatchStatus = ? "
+                + "WHERE  idPicking_Order_Detail= ? AND Picking_Order_idPicking_Order = ?; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, 2);
+                ps.setInt(2, idPickingOrderDetail);
+                ps.setInt(3, idPickingOrder);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+        
+    }
+    
+    @Override
+    public String pickingOrderDetailReturnToWarehouse(Integer idPickingOrderDetail,Integer idPickingOrder){
+        String result = null;
+        String sql = "UPDATE Picking_Order_Detail SET "                
+                + "dispatchStatus = ? "
+                + "WHERE  idPicking_Order_Detail= ? AND Picking_Order_idPicking_Order = ?; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, 3);
+                ps.setInt(2, idPickingOrderDetail);
+                ps.setInt(3, idPickingOrder);
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+        
+    }
 }

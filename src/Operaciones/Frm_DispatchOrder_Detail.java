@@ -104,7 +104,16 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         dispatchOrderAux = dispatchOrder;
         model = (DefaultTableModel) table_products.getModel();
         fillData();
+        blockObjects();
         
+    }
+    
+    private void blockObjects(){
+        if(dispatchOrderAux.getStatus()==1 || dispatchOrderAux.getStatus()==4){
+            //no se puede cancelar ni confirmar
+            btn_confirm.setEnabled(false);
+            btn_delete.setEnabled(false);
+        }
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -140,6 +149,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
         btn_delete = new javax.swing.JButton();
         btn_confirm = new javax.swing.JButton();
+        btn_legend = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -170,7 +180,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Entregado", "Pendiente", "En vehiculo", "Cancelado" }));
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Entregado", "Pendiente", "En vehiculo", "Cancelado" }));
         cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");
@@ -296,7 +306,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Código Pallet", "Estado"
+                "Código Pallet", "Descripción", "Estado"
             }
         ));
         jScrollPane3.setViewportView(table_products);
@@ -322,15 +332,24 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
             }
         });
 
+        btn_legend.setText("Ver Leyenda");
+        btn_legend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_legendActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_productsLayout = new javax.swing.GroupLayout(pnl_products);
         pnl_products.setLayout(pnl_productsLayout);
         pnl_productsLayout.setHorizontalGroup(
             pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_productsLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane3)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_productsLayout.createSequentialGroup()
+                    .addGroup(pnl_productsLayout.createSequentialGroup()
+                        .addComponent(btn_legend, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_delete)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_confirm, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -347,7 +366,8 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                 .addGroup(pnl_productsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_cancel)
                     .addComponent(btn_delete)
-                    .addComponent(btn_confirm))
+                    .addComponent(btn_confirm)
+                    .addComponent(btn_legend))
                 .addContainerGap())
         );
 
@@ -407,6 +427,8 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                cbo_status.setSelectedIndex(2);
            else if (dispatchOrderAux.getStatus()==3)
                cbo_status.setSelectedIndex(3);
+           else
+               cbo_status.setSelectedIndex(4);
            if(dispatchOrderAux.getIdVehicle()!=null){
                txt_license_plate.setText(dispatchOrderAux.getIdVehicle().getLicense_plate());
                txt_id_dispatcher.setText(dispatchOrderAux.getIdVehicle().getDriver().getIdDriver().toString());
@@ -444,19 +466,15 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                 Rack rack = daoRack.rackGet(idRack);
                 Warehouse wh = daoWH.whGet(idWh);
                 LocationCell location = daoLocationCell.LocationCellGet(idDist, idWh, idRack, idLocationCell);
-                System.out.println(location.getDescription());
                 LocationCellDetail cellDetail = daoLocationCellDetail.locationCellDetailQry(idLocationCellDetail,idLocationCell);
-                System.out.println(cellDetail.getDescription());
                 String nameState = null;
-                /*if(poD.getStatus()==1)
-                    nameState = "Picado";
-                else if(poD.getStatus()==2)
-                    nameState = "Por Picar";
-                else 
-                    nameState = "Cancelado";*/
-                System.out.println(ean128);
-                System.out.println(desc);
-                Object[] fila = {ean128,desc};
+                if(poD.getDispatchStatus()==1)
+                    nameState = "Entregado";
+                else if(poD.getDispatchStatus()==2)
+                    nameState = "Por Entregar";
+                else if(poD.getDispatchStatus()==3)
+                    nameState = "Devuelto a Almacén";
+                Object[] fila = {ean128,desc,nameState};
                 model.addRow(fila);
             }
         }
@@ -469,9 +487,9 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             /***********************************************************************/
             /*************VERIFICAMOS  SI HAY VEHICULO ASIGNADO*********************/
-            if(dispatchOrderAux.getIdVehicle()==null){
+            if(dispatchOrderAux.getStatus()==2){ //en estado entregado
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"La orden aun no ha sido puesto en un vehiculo.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-            }else{
+            }else if(dispatchOrderAux.getStatus()==3){
                 dispatchOrderAux.setStatus(1);
                 daoDispatchOrder.dispatchOrderUpd(dispatchOrderAux);
                 PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrderAux.getIdPickingOrder());
@@ -485,7 +503,6 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                     frm_dosAux.setLocationRelativeTo(null);
                     this.dispose();
                 }
-            
             }
         }
     }//GEN-LAST:event_btn_confirmActionPerformed
@@ -507,12 +524,20 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+    private void btn_legendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_legendActionPerformed
+        // TODO add your handling code here:
+        Frm_Pallet_Legend frm_pl = new Frm_Pallet_Legend();
+        frm_pl.setVisible(true);
+        frm_pl.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btn_legendActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_confirm;
     private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_legend;
     private javax.swing.JComboBox cbo_status;
     private com.toedter.calendar.JDateChooser jDate_DeliverDate;
     private com.toedter.calendar.JDateChooser jDate_RegisterDate;

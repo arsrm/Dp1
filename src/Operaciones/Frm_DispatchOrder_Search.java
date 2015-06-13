@@ -56,6 +56,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         model = (DefaultTableModel) table_orders.getModel();
         TableColumn tc = table_orders.getColumnModel().getColumn(4);
         tc.setHeaderRenderer(new SelectAllHeader(table_orders, 4));
+        refreshGrid();
         initializeJPanelOrder();
         
     }
@@ -361,6 +362,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
     private void btn_search_orderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_orderActionPerformed
         // TODO add your handling code here:
+        refreshGrid();
         int numOrder;
         Object[] options = {"OK"};
         if(txt_num_order.getText().equals("")==true){
@@ -437,6 +439,7 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
 
     private void btn_search_advancedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_search_advancedActionPerformed
         // TODO add your handling code here:
+        refreshGrid();
         searchFilter();
         fillTable();
     }//GEN-LAST:event_btn_search_advancedActionPerformed

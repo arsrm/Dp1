@@ -310,7 +310,7 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 DispatchOrder dor = dispatchOrderGet(idDispatchOrder);
                 
                 if (dor.getStatus()==2 || dor.getStatus()==1) {//pendiente
-                    status = 3;//cancelada
+                    status = 4;//cancelada
                 } else {//cancelada
                    status = 2; 
                 }

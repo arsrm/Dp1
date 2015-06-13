@@ -295,7 +295,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             try {
                 dispatchFile = new BufferedReader(new FileReader(dispatchFileName));
                 String line = dispatchFile.readLine();
-                String[] words_line = null;
+                String[] words_line = {"TEST"};
                 /*Lectura de todos los datos principales de la orden de pedido*/
                 //VARIABLE PARA LA ORDEN 
                 Date dateArrive,dateline;
@@ -306,7 +306,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                 int cantidad;
                 int numOrder;
                 RequestOrder ro = new RequestOrder();
-                while (line != null) {                     
+                while (line != null  ) {                     
                     //lectura por pedido
                     ro = new RequestOrder();
                     words_line = line.split(",");
@@ -369,6 +369,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                         }
                         line = dispatchFile.readLine();
                         words_line = line.split(",");
+                        
                     }
                     line = dispatchFile.readLine();
                     requestOrderList.add(ro);

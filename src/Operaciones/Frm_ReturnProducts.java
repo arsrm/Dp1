@@ -11,10 +11,14 @@ import Model.DispatchOrder;
 import Model.ExecutionAlgorithm;
 import Model.ExecutionAlgorithmDetail;
 import Model.Movement;
+import Model.PalletProduct;
 import Model.Pallet_Product_Location;
+import Model.PickingOrder;
 import Model.PickingOrderDetail;
 import Model.Product;
 import Model.ProductReturn;
+import Model.RequestOrder;
+import Model.StateRequestOrder;
 import Model.Vehicle;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
@@ -22,20 +26,28 @@ import dao.DaoDispatchOrder;
 import dao.DaoExecutionAlgorithm;
 import dao.DaoExecutionAlgorithmDetail;
 import dao.DaoKardex;
+import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
+import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoProductReturn;
 import dao.DaoProducts;
+import dao.DaoRequestOrder;
+import dao.DaoStateRequestOrder;
 import dao.DaoVehicle;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoExecutionAlgorithmDetailImpl;
 import dao.impl.DaoExecutionAlgorithmImpl;
 import dao.impl.DaoKardexImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoProductReturnImpl;
+import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
 import dao.impl.DaoVehicleImpl;
 import java.util.Date;
 import java.util.LinkedList;
@@ -43,6 +55,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -82,9 +96,16 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     DaoProductReturn daoProductReturn = new DaoProductReturnImpl();
     ProductReturn productReturn = null;
     
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    
     DaoKardex daoKardex = new DaoKardexImpl();
     Movement movementIn = null;
     Movement movementOut = null;
+    
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
+    DaoStateRequestOrder daoStateOrderRequest = new DaoStateRequestOrderImpl();
+    int cancelAll;
     
     DefaultTableModel modelo;
     /**
@@ -93,9 +114,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     public Frm_ReturnProducts(Frm_MenuPrincipal menu) {
         setTitle("Devolución de Productos");
         menuaux = menu;
-        
         initComponents();
         blockObjects();
+        TableColumn tc = tbl_products.getColumnModel().getColumn(4);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_products, 4));
+        cancelAll = 0;
     }
     
     public Frm_ReturnProducts(Frm_DispatchOrder_Detail frm_dod, DispatchOrder dispatch) {
@@ -104,7 +127,13 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         initComponents();
         blockObjects();
         dispatchOrder = dispatch;
+        vehicle = dispatchOrder.getIdVehicle();
+        pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(dispatchOrder.getIdPickingOrder());
+        TableColumn tc = tbl_products.getColumnModel().getColumn(4);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_products, 4));
         fillData();
+        getProductList();
+        cancelAll = 1;
     }
 
     /**
@@ -195,14 +224,14 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID Orden Despacho", "ID Orden Pedido", "ID Orden Pedido Detalle", "Código Pallet", "Descripción", "Cantidad", "Estado", "Seleccionar"
+                "Número Detalle", "Código Pallet", "Descripción", "Estado", "Seleccionar"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, true
+                true, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -214,17 +243,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
             }
         });
         jScrollPane3.setViewportView(tbl_products);
-        if (tbl_products.getColumnModel().getColumnCount() > 0) {
-            tbl_products.getColumnModel().getColumn(0).setMinWidth(0);
-            tbl_products.getColumnModel().getColumn(0).setPreferredWidth(0);
-            tbl_products.getColumnModel().getColumn(0).setMaxWidth(0);
-            tbl_products.getColumnModel().getColumn(1).setMinWidth(0);
-            tbl_products.getColumnModel().getColumn(1).setPreferredWidth(0);
-            tbl_products.getColumnModel().getColumn(1).setMaxWidth(0);
-            tbl_products.getColumnModel().getColumn(2).setMinWidth(0);
-            tbl_products.getColumnModel().getColumn(2).setPreferredWidth(0);
-            tbl_products.getColumnModel().getColumn(2).setMaxWidth(0);
-        }
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -449,7 +467,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
     private void btn_returnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_returnActionPerformed
         int idDispatchDetail=0,idPickingOrder,idPickingOrderDetail,initialStock,finalStock;
-        String status;
         
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
@@ -460,8 +477,8 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     idDispatchDetail = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
                     idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
                     idPickingOrderDetail = pickingOrderDetailList.get(i).getIdPicking_Order_Detail();
-                    status = tbl_products.getValueAt(i, 6).toString();
-                    if (status.equalsIgnoreCase("Activo")) {
+                    int status = pickingOrderDetailList.get(i).getStatus();
+                    if (status == 2) {
                         //lo pondre inactivo
                         daoPickingOrderDetail.pickingOrderDetailDel(idPickingOrderDetail, idPickingOrder, 0);
                         //guardo el ProductReturn
@@ -521,7 +538,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 idPickingOrder = dispatchOrder.getIdPickingOrder();
                 dispatchDate = dispatchOrder.getDepartureDate();
                 client = daoClient.clientGet(dispatchOrder.getIdClient());
-                //*****FALTA VEHICULO*****/
+                vehicle = dispatchOrder.getIdVehicle();
                 fillGeneralData();
                 //buscar lista de ExecutionAlgorithm por date para sacar todas las ejecuciones del dia
                 pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
@@ -532,6 +549,22 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No existe la orden de despacho buscada",
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
             }
+    }
+    
+    private void getProductList(){
+        int idPalletProductLocation, idProduct;
+        productList = new LinkedList<>();
+        palletProductLocationList = new LinkedList<>();
+        for (int j = 0; j < pickingOrderDetailList.size(); j++) {
+            Pallet_Product_Location palletProductLocation = new Pallet_Product_Location();
+            Product product = new Product();
+            idPalletProductLocation = pickingOrderDetailList.get(j).getIdPallet_By_Product_By_Location_Cell_Detail();
+            palletProductLocation = daoPalletProductLocation.daoPallet_Product_LocationGet(idPalletProductLocation);
+            PalletProduct pp = daoPalletProduct.getPalletProductById(palletProductLocation.getPallet_By_Product_Pallet_idPallet());
+            product = daoProduct.ProductsGet(pp.getIdproduct());
+            palletProductLocationList.add(palletProductLocation);
+            productList.add(product);
+        }
     }
     
     private void btn_searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_searchActionPerformed
@@ -585,10 +618,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
         txt_ClientName.setText(client.getName().trim());
         txt_ClientAddress.setText(client.getAddress().trim());
         
-        txt_vehicle_license_plate.setText(vehicle.getLicense_plate().trim());
-        txt_id_dispatcher.setText(vehicle.getDriver().getIdDriver().toString().trim());
-        txt_name_dispatcher.setText(vehicle.getDriver().getName().trim());
-        
+        if(vehicle!=null){
+            txt_vehicle_license_plate.setText(vehicle.getLicense_plate().trim());
+            txt_id_dispatcher.setText(vehicle.getDriver().getIdDriver().toString().trim());
+            txt_name_dispatcher.setText(vehicle.getDriver().getName().trim());
+        }
         jDate_RegisterDate.setDate(dispatchOrder.getDepartureDate());
         jDate_DeliverDate.setDate(dispatchOrder.getArrivalDate());
     }
@@ -601,26 +635,31 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
             modelo.getDataVector().removeAllElements();
             modelo.fireTableDataChanged();
         }
+        
+        boolean select = false;
+        if(cancelAll==1)select=true;
+        else select = false;
         try {
             for (int i = 0; i < pickingOrderDetailList.size(); i++) {                
-                if (pickingOrderDetailList.get(i).getStatus()==0){
-                    status = "Inactivo";
-                    check = false;
+                if (pickingOrderDetailList.get(i).getDispatchStatus()==1){
+                    status = "Entregado";
                 }
-                else {
-                    status = "Activo";
-                    check = true;
+                else if(pickingOrderDetailList.get(i).getDispatchStatus()==2) {
+                    status = "Por Entregar";
+                }else if(pickingOrderDetailList.get(i).getDispatchStatus()==3){
+                    status = "Devuelto a Almacén";
                 }
-
+                
+                Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(pickingOrderDetailList.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+                PalletProduct pp = daoPalletProduct.getPalletProductById(ppl.getPallet_By_Product_Pallet_idPallet());
+                Product product = daoProduct.ProductsGet(pp.getIdproduct());
+                
                 Object newRow[] = {
-                    dispatchOrder.getIdDispatch_Order(),
-                    pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order(),
                     pickingOrderDetailList.get(i).getIdPicking_Order_Detail(),
-                    palletProductLocationList.get(i).getPallet_By_Product_Pallet_idPallet(),
-                    productList.get(i).getName(),
-                    1,
+                    pp.getCod_ean128(),
+                    product.getName(),
                     status,
-                    check
+                    select
                 };
                 modelo.addRow(newRow);
             }

@@ -13,6 +13,7 @@ public class PickingOrderDetail {
     private Integer status;
     private Integer  Picking_Order_idPicking_Order;
     private Integer idPallet_By_Product_By_Location_Cell_Detail;
+    private Integer dispatchStatus;
 
     public PickingOrderDetail() {
 
@@ -47,6 +48,20 @@ public class PickingOrderDetail {
 
     public void setIdPallet_By_Product_By_Location_Cell_Detail(Integer idPallet_By_Product_By_Location_Cell_Detail) {
         this.idPallet_By_Product_By_Location_Cell_Detail = idPallet_By_Product_By_Location_Cell_Detail;
+    }
+
+    /**
+     * @return the dispatchStatus
+     */
+    public Integer getDispatchStatus() {
+        return dispatchStatus;
+    }
+
+    /**
+     * @param dispatchStatus the dispatchStatus to set
+     */
+    public void setDispatchStatus(Integer dispatchStatus) {
+        this.dispatchStatus = dispatchStatus;
     }
 
     
