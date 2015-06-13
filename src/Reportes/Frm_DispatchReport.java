@@ -103,6 +103,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     return b;      
     }        
     
+    
     public String obtiene_where()
     { 
       String Cadenawhere="";
@@ -157,7 +158,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         } 
         catch (Exception e)   
         { if   (datefecini.length()>0 )
-          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Registro Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
+          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Salida Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
         }
 
        try 
@@ -179,7 +180,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         try
         {
         if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
-          {JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Registro", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); }   
+          {JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Salida", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); }   
         }
         catch(Exception e)
         { }    
@@ -198,6 +199,77 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       
       return Cadenawhere;
      }      
+    
+    public boolean valida_campos()
+    {  boolean valida=false; 
+       boolean validatemp=false; 
+       Integer anho1; 
+       Integer anho2; 
+       Integer mes1; 
+       Integer mes2; 
+       Integer dia1; 
+       Integer dia2;
+       Integer fechainicial=0; 
+       Integer fechafinal=0 ; 
+       String datefecini=""; 
+       String datefecfin=""; 
+
+       valida=validanumorden();
+       valida=valida && validanumpicking(); 
+
+        try 
+        {
+          String formato = jDate_in.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           Date date1 = jDate_in.getDate();
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho1=jDate_in.getCalendar().get(Calendar.YEAR);
+           mes1=jDate_in.getCalendar().get(Calendar.MONTH)+1;
+           dia1=jDate_in.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechainicial=anho1*10000+mes1*100+dia1;
+           datefecini=fechainicial.toString();
+           validatemp=true;
+        } 
+        catch (Exception e)   
+        { if   (datefecini.length()>0 )
+          {validatemp=false;}
+        }
+       
+       valida=valida&& validatemp;
+       try 
+        {  String formato = jDate_out.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho2=jDate_out.getCalendar().get(Calendar.YEAR);
+           mes2=jDate_out.getCalendar().get(Calendar.MONTH)+1;
+           dia2=jDate_out.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechafinal=anho2*10000+mes2*100+dia2;
+           datefecfin=fechafinal.toString();            
+           validatemp=true;
+        } 
+        catch (Exception e)   
+        {  if (datefecfin.length()>0)
+            {validatemp=false;}
+        }
+       valida=valida&& validatemp;
+        
+        try
+        {
+        validatemp=true;    
+        if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
+          {validatemp=false; }   
+        }
+        catch(Exception e)
+        { }    
+
+       valida=valida&& validatemp;
+       
+       
+       return valida; 
+    
+     }       
     
     public void limpiatabla()
     {
@@ -258,12 +330,13 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         btn_Export = new javax.swing.JToggleButton();
         btn_Cancelar = new javax.swing.JToggleButton();
         btn_filtrar = new javax.swing.JButton();
+        btn_clean = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnl_DispatchReport.setBorder(javax.swing.BorderFactory.createTitledBorder("Criterios de filtro"));
 
-        jLabel1.setText("Fecha de Registro");
+        jLabel1.setText("Fecha de Salida");
 
         jLabel2.setText("Fecha Entrega Estimada ");
 
@@ -290,7 +363,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Orden Despach", "Cliente", "Num Picking", "Fecha llegada", "Fecha salida"
+                "Orden Despach", "Cliente", "Num Picking", "Fecha Salida", "Fecha llegada"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -331,21 +404,32 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             }
         });
 
+        btn_clean.setText("Limpiar");
+        btn_clean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cleanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_DispatchReportLayout = new javax.swing.GroupLayout(pnl_DispatchReport);
         pnl_DispatchReport.setLayout(pnl_DispatchReportLayout);
         pnl_DispatchReportLayout.setHorizontalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addGap(181, 181, 181)
+                        .addComponent(btn_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(63, 63, 63)
                         .addComponent(btn_GenerarReporte)
-                        .addGap(72, 72, 72)
+                        .addGap(67, 67, 67)
                         .addComponent(btn_Export, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                        .addGap(62, 62, 62)
+                        .addComponent(btn_clean, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                         .addComponent(btn_Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_DispatchReportLayout.createSequentialGroup()
-                        .addContainerGap()
+                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -366,10 +450,9 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(txt_numpicking)
                                             .addComponent(jDate_out, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))))
-                            .addComponent(jLabel1)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btn_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(56, Short.MAX_VALUE))
+                            .addComponent(jLabel1))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         pnl_DispatchReportLayout.setVerticalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +481,8 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                             .addComponent(btn_GenerarReporte)
                             .addComponent(btn_Export)
                             .addComponent(btn_Cancelar)
-                            .addComponent(btn_filtrar)))
+                            .addComponent(btn_filtrar)
+                            .addComponent(btn_clean)))
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                         .addComponent(jDate_out, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -410,7 +494,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,8 +529,24 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ExportActionPerformed
 
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
-        Prueba pru = new Prueba();
-        pru.mostrarReporte();
+     boolean b=false; 
+     b=valida_campos();
+     
+     if (b)
+     {    String message = "Valores Ingresados correctamente !";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);        
+     }
+     else
+     {    String message = "Debe validar los valores ingresados !";
+          String title = "Información";
+          JFrame frame = new JFrame(" ");
+          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
+          JOptionPane.setDefaultLocale(null);        
+     }    
+
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void txt_numpickingFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numpickingFocusLost
@@ -466,6 +566,15 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     filtra_tabla(cadenawhere);
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
+    private void btn_cleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanActionPerformed
+        // TODO add your handling code here:
+    txt_NumOrden.setText(null);
+    txt_numpicking.setText(null);
+    txt_client.setText(null);
+    jDate_in.setDate(null);
+    jDate_out.setDate(null);
+    }//GEN-LAST:event_btn_cleanActionPerformed
+
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);
         menuaux.setVisible(true);
@@ -481,6 +590,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     private javax.swing.JToggleButton btn_Cancelar;
     private javax.swing.JToggleButton btn_Export;
     private javax.swing.JToggleButton btn_GenerarReporte;
+    private javax.swing.JButton btn_clean;
     private javax.swing.JButton btn_filtrar;
     private com.toedter.calendar.JDateChooser jDate_in;
     private com.toedter.calendar.JDateChooser jDate_out;
