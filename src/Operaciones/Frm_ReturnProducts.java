@@ -510,6 +510,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             movementIn.setIdProduct(productList.get(i).getIdProduct());
                             movementIn.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
                             daoKardex.MovementIns(movementIn);
+                            daoProduct.ProductUpdStock(productList.get(i).getIdProduct(), 1, 1);
 
                             movementOut = new Movement();
                             movementOut.setDate(jDate_return_date.getDate());
@@ -522,6 +523,8 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             movementOut.setIdProduct(productList.get(i).getIdProduct());
                             movementOut.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
                             daoKardex.MovementIns(movementOut);
+                            daoProduct.ProductUpdStock(productList.get(i).getIdProduct(), 1, 2);
+                            
                             int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                         }
                     }
