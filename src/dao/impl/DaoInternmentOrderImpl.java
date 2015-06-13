@@ -22,6 +22,7 @@ import dao.DaoRack;
 import dao.DaoWH;
 import dao.daoVirtualWarehouse;
 import enlaceBD.ConectaDb;
+import java.net.NetworkInterface;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -330,6 +331,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                 }
             }
         }
+        
         daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos
         if (cantPalletsIngresados < intOrdDetail.getQuantityPallets()) {
             VirtualWarehouse virtualWh = new VirtualWarehouse();
