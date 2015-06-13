@@ -33,7 +33,7 @@ public class Frm_Rack extends javax.swing.JFrame {
     /**
      * Creates new form Frm_rack
      */
-    static final int NUM_CEL_DETAILS = 2;
+    public static final int NUM_CEL_DETAILS = 2;
     
     Frm_Rack_Search menu_padre = new Frm_Rack_Search();
     Rack rack = null;
