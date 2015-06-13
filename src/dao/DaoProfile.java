@@ -8,6 +8,7 @@ import java.util.List;
 public interface DaoProfile {
   
     public List<Profile>  profileCbo();
+    public List<Profile>  profileCbo1();
     public Profile usersGet(Integer idprofile);
     public Profile usersGet(String name);
     public List<ProfileWindow> windowsGet(Integer idProfile);

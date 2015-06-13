@@ -62,6 +62,46 @@ public class DaoProfileImpl implements DaoProfile {
     }
     
     @Override
+    public List<Profile>  profileCbo1() {
+        
+        List<Profile> list = null;
+        String sql = "SELECT "
+                + "idProfile,"
+                + "name, "
+                + "description, "
+                + "status "
+                + "FROM Profile where status = 1";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    Profile c = new Profile();
+                    c.setIdprofile(rs.getInt(1));
+                    c.setName(rs.getString(2));
+                    c.setDescription(rs.getString(3));
+                    c.setStatus(rs.getInt(4));
+                    list.add(c);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return list;
+
+    }
+    @Override
     public Profile usersGet(Integer idprofile){
     
     Profile profile = null;
