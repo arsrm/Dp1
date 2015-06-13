@@ -475,7 +475,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             if(jDate_return_date.getDate()!=null){
                 for (int i = 0; i < tbl_products.getRowCount(); i++) {
-                    
+                    getProductList();
                     if ((Boolean) tbl_products.getValueAt(i, 4)) {
                         idDispatchDetail = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
                         idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
@@ -497,13 +497,15 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             productReturn.setPicking_Order_Detail_Picking_Order_idPicking_Order(idPickingOrder);
                             productReturn.setPicking_Order_Detail_Product_idProduct(productList.get(i).getIdProduct());
                             daoProductReturn.productReturnIns(productReturn);
-
+                            
                             //guardo la entrada por devolucion y salida por devolucion del producto
                             movementIn = new Movement();
                             movementIn.setDate(jDate_return_date.getDate());
                             movementIn.setType_Movement_id(1);
                             movementIn.setType_Movement_idSubtype(2);
                             initialStock = productList.get(i).getPhysicalStock();
+                            System.out.println("initial Stock"+initialStock);
+                            System.out.println("id:"+productList.get(i).getIdProduct());
                             movementIn.setStock_inicial(initialStock);
                             finalStock = initialStock + productList.get(i).getQuantityBoxesPerPallet() * 1;
                             movementIn.setStock_final(finalStock);
@@ -511,12 +513,13 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             movementIn.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
                             daoKardex.MovementIns(movementIn);
                             daoProduct.ProductUpdStock(productList.get(i).getIdProduct(), 1, 1);
-
+                             getProductList();
                             movementOut = new Movement();
                             movementOut.setDate(jDate_return_date.getDate());
                             movementOut.setType_Movement_id(2);
                             movementOut.setType_Movement_idSubtype(2);
                             initialStock = productList.get(i).getPhysicalStock();
+                            System.out.println("initial Stock"+initialStock);
                             movementOut.setStock_inicial(initialStock);
                             finalStock = initialStock - productList.get(i).getQuantityBoxesPerPallet() * 1;
                             movementOut.setStock_final(finalStock);
@@ -525,10 +528,11 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             daoKardex.MovementIns(movementOut);
                             daoProduct.ProductUpdStock(productList.get(i).getIdProduct(), 1, 2);
                             
-                            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                            
                         }
                     }
                 }
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if(cancelAll == 1){//cancelar la orden de despacho y de pedido
                     daoDispatchOrder.dispatchOrderDel(dispatchOrder.getIdDispatch_Order());
                     PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrder.getIdPickingOrder());
@@ -599,7 +603,6 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     client = daoClient.clientGet(dispatchOrder.getIdClient());
                     vehicle = dispatchOrder.getIdVehicle(); // llena data para todo un vehiculo - PD:getIdVehicle hasta la shit el name
                     fillGeneralData();
-                    
                     //busco el detalle de los productos asociado al PickingOrder
                     pickingOrderDetailList = daoPickingOrderDetail.pickingOrderDetailQry(idPickingOrder);
                     palletProductLocationList = new LinkedList<>();
