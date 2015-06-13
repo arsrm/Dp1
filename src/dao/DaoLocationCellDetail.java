@@ -18,4 +18,6 @@ public interface DaoLocationCellDetail {
      public String locationCellDetailIns(LocationCellDetail users);
      
      public LocationCellDetail locationCellDetailQry(Integer idLocationCellDetail, Integer idLocationCell);
+
+     public String locationCellDetailUpdAvailability(Integer idRack, Integer status);
 }

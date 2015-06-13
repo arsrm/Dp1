@@ -19,6 +19,8 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import tool.SelectAllHeader;
 
 /**
  *
@@ -44,6 +46,8 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
         txt_name.setEnabled(false);
         
         modelo = (DefaultTableModel) tbl_window.getModel();
+        TableColumn tc = tbl_window.getColumnModel().getColumn(4);
+        tc.setHeaderRenderer(new SelectAllHeader(tbl_window, 4));          
         initializeTable();
     }
     
@@ -188,6 +192,7 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
     
     public void initializeTable(){
         int hasWindow;
+        boolean check;
         String status= null;
         List<ProfileWindow> profileWindowList = new ArrayList<>();
         
@@ -206,15 +211,21 @@ public class Frm_Profile_Assignment extends javax.swing.JFrame {
         try {
             for (int i = 0; i < profileWindowList.size(); i++) {
                 
-                if (profileWindowList.get(i).getStatus()==0) status = "Inactivo";
-                else status = "Activo";
+                if (profileWindowList.get(i).getStatus()==0){
+                    status = "Inactivo";
+                    check = false;
+                }
+                else {
+                    status = "Activo";
+                    check = true;
+                }
 
                 Object newRow[] = {
                     profileWindowList.get(i).getId_menu(),
                     profileWindowList.get(i).getId_windows(),
                     profileWindowList.get(i).getDescription(),
                     status,
-                    false
+                    check
                 };
                 modelo.addRow(newRow);
             }

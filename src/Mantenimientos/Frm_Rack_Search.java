@@ -11,8 +11,12 @@ import Model.Rack;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoDistributionCenter;
+import dao.DaoLocationCell;
+import dao.DaoLocationCellDetail;
 import dao.DaoWH;
 import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoLocationCellImpl;
 import dao.impl.DaoRackImpl;
 import dao.impl.DaoWHImpl;
 import java.rmi.RemoteException;
@@ -20,9 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
 
@@ -43,7 +47,10 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
     DaoWH daoWH = new DaoWHImpl();
     ArrayList<Warehouse> warehouseList = new ArrayList<>();
     
-    DaoRackImpl daoRack = new DaoRackImpl();        
+    DaoRackImpl daoRack = new DaoRackImpl();    
+    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
+    DaoLocationCell daoLocationCell = new DaoLocationCellImpl();
+    
     DefaultTableModel modelo;        
     
     public Frm_Rack_Search(Frm_MenuPrincipal menu) {
@@ -320,9 +327,17 @@ public class Frm_Rack_Search extends javax.swing.JFrame {
                     if (status.equalsIgnoreCase("Activo")) {
                         rack = daoRack.rackGet(idRackDelete);
                         if (rackValidatedToDelete(rack)) {
+                            // desactivar Location_Cell_Detail
+                            daoLocationCellDetail.locationCellDetailUpdAvailability(idRackDelete, 0);
+                            // desactivar Location_Cell
+                            daoLocationCell.LocationCellUpdStatus(idRackDelete, 0);
                             daoRack.rackDel(idRackDelete, 0);
                         }
                     } else {
+                        // activar Location_Cell_Detail
+                        daoLocationCellDetail.locationCellDetailUpdAvailability(idRackDelete, 1);
+                        // activar Location_Cell
+                        daoLocationCell.LocationCellUpdStatus(idRackDelete, 1);
                         daoRack.rackDel(idRackDelete, 1);
                     }
                 }

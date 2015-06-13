@@ -23,4 +23,5 @@ public interface DaoLocationCell {
     public String LocationCellAvailabilityUpd(Integer idDistCent, Integer idWh, Integer idRack,Integer idLocCell,Integer idLocCellDetail,Integer status);
     public void LocationCellAvailabilityUpd(LocationCell locationCell, Integer statusToChange);
     public Integer idLocatioCellByColumFloor(Integer idWh, Integer idRack, Integer numCol, Integer numFloor);
+    public String LocationCellUpdStatus(Integer idRack, Integer status);
 }

@@ -463,13 +463,14 @@ public class Frm_Rack extends javax.swing.JFrame {
         int numLCDByLC = NUM_CEL_DETAILS;
         int idLocationCell = 0;
         int idLocationCellDetail = 0;
+        int idRack = rack.getIdRack();
         
         for (int i=0; i<numFloors; i++){
             for (int j=0; j<numColumns; j++){
                 idLocationCell++;
                 LocationCell locationCell = new LocationCell();
                 locationCell.setIdLocation_Cell(idLocationCell);
-                locationCell.setDescription("LC "+idLocationCell);
+                locationCell.setDescription("Rack " + idRack + " Piso " + (i+1) + " Columna " + (j+1));
                 locationCell.setWidth(rack.getWidth());
                 locationCell.setLength((length/numColumns)*1.0);
                 locationCell.setHeight(rack.getHeight_per_floor());
@@ -485,7 +486,7 @@ public class Frm_Rack extends javax.swing.JFrame {
                     LocationCellDetail locationCellDetail = new LocationCellDetail();
                     idLocationCellDetail = k + 1;
                     locationCellDetail.setIdLocation_Cell_Detail(idLocationCellDetail);
-                    locationCellDetail.setDescription("LCD "+idLocationCellDetail);
+                    locationCellDetail.setDescription("Rack " + idRack + " Piso " + (i+1) + " Columna " + (j+1) + " Detalle " + (k+1));
                     locationCellDetail.setAvailability(1);
                     locationCellDetail.setLocation_Cell_idLocation_Cell(idLocationCell);
                     locationCellDetail.setLocation_Cell_Rack_idRack(rack.getIdRack());

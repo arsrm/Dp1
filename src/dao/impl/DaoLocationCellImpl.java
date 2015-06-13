@@ -330,4 +330,39 @@ public class DaoLocationCellImpl implements DaoLocationCell {
         }
         return idLocCell;
     }
+    @Override
+    public String LocationCellUpdStatus(Integer idRack, Integer status) {
+        String result = null;
+        
+        String sql = "UPDATE  Location_Cell SET "
+                + "status= ? "
+                + "WHERE Rack_idRack=?;";
+        
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+
+                ps.setInt(1, status);
+                ps.setInt(2, idRack);
+
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("No se pudo actualizar el estado de algunos detalles");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
+
 }
