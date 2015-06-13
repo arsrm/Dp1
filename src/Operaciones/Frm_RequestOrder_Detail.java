@@ -44,8 +44,6 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
-import javax.swing.text.TableView.TableCell;
-import tool.Convierte;
 import static tool.Convierte.aInteger;
 import tool.SelectAllHeader;
 import tool.Validate;
@@ -72,6 +70,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     
     /**
      * Creates new form Frm_VerDetalleOrdenPedido1
+     * @param frm_ros
      */
     public Frm_RequestOrder_Detail(Frm_RequestOrder_Search frm_ros) {
         setTitle("ORDEN DE PEDIDO");
@@ -135,9 +134,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                         list[j]=j;
                     }
                     quantities.add(list);
-                } catch (NullPointerException e) {
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (NullPointerException | NumberFormatException e) {
                 }            
             }
         
@@ -476,7 +473,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         int size = list.size();
         for(int i=0;i<size;i++){
             RequestOrderDetail roD = list.get(i);
-            String status = null;
+            String status;
             if(roD.getStatus()==0)
                 status = "Inactivo";
             else
@@ -529,7 +526,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                     Integer idPicking = daoPickingOrder.pickingOrderIns(po);
                     po.setIdPickingOrder(idPicking);
                     Integer index = 1;
-                    List<PickingOrderDetail> listpoD=null;
+                    List<PickingOrderDetail> listpoD;
                     boolean requestCompleted =true;
                     List<PickingOrderDetail> poList = new ArrayList<>();
                     for(int i=0;i<size;i++){
@@ -561,7 +558,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                         }
                     }
                     //SE SETEA EN ESTADO PICKING GENERADO o PENDIENTE AUN
-                    StateRequestOrder state = new StateRequestOrder();
+                    StateRequestOrder state;
                     if(requestCompleted == true)
                          state = daoStateRequestOrder.stateRequestOrderGet(4); //se setea que esta generado el picking
                     else
@@ -646,6 +643,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                         
                 }
                 
+                @Override
                 public Component getTableCellEditorComponent(JTable table, Object value,
                           boolean isSelected, int row, int column) {
                         

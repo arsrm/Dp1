@@ -385,6 +385,7 @@ public class Frm_adjustManual extends javax.swing.JFrame {
                     pallets.add(palletProd.getIdpallet());
                     daoPalletIni.PalletsIniUpdStatus(pallets, 2);
                     daoPalletProd.palletProductByLocaCellUpdStatus(0, palletProd.getIdpallet(), prod.getTrademark(), prod.getIdProduct(), idLocCell, cellDetailSelected, idRackSelected, idWhSelected);
+                    daoProduct.ProductUpdStock(prod.getIdProduct(), 1, 2);//se actualiza el stock con un pallet con idMovimiento 2 (salida)
                 } else {
                     JOptionPane.showMessageDialog(this, "La ubicación no tiene ningún Pallet asociado");
                 }

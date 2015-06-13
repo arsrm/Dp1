@@ -114,7 +114,6 @@
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace type="separate" min="-2" max="-2" attributes="0"/>
                           <Component id="lbl_status" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="cbo_status" min="-2" pref="135" max="-2" attributes="0"/>
