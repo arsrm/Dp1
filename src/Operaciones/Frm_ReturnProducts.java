@@ -466,64 +466,78 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void btn_returnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_returnActionPerformed
+
         int idDispatchDetail=0,idPickingOrder,idPickingOrderDetail,initialStock,finalStock;
+        
         
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            if(jDate_return_date.getDate()!=null){
+                for (int i = 0; i < tbl_products.getRowCount(); i++) {
+                    
+                    if ((Boolean) tbl_products.getValueAt(i, 4)) {
+                        idDispatchDetail = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
+                        idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
+                        idPickingOrderDetail = pickingOrderDetailList.get(i).getIdPicking_Order_Detail();
+                        int status = pickingOrderDetailList.get(i).getDispatchStatus();
+                        if (status == 2) {
+                            //lo pondre inactivo
+                            daoPickingOrderDetail.pickingOrderDetailDel(idPickingOrderDetail, idPickingOrder, 4);
+                            daoPickingOrderDetail.pickingOrderDetailReturnToWarehouse(idPickingOrderDetail, idPickingOrder);
+                            //guardo el ProductReturn
+                            productReturn = new ProductReturn();
+                            productReturn.setQuantity(1);
+                            productReturn.setStatus(0);
+                            productReturn.setIdDispatch_Order(dispatchOrder.getIdDispatch_Order());
+                            productReturn.setIdClient(client.getIdClient());
+                            productReturn.setReturn_date(jDate_return_date.getDate());
+                            productReturn.setMotive_Return_idMotive_Return(1);
+                            productReturn.setPicking_Order_Detail_idPicking_Order_Detail(idPickingOrderDetail);;
+                            productReturn.setPicking_Order_Detail_Picking_Order_idPicking_Order(idPickingOrder);
+                            productReturn.setPicking_Order_Detail_Product_idProduct(productList.get(i).getIdProduct());
+                            daoProductReturn.productReturnIns(productReturn);
 
-            for (int i = 0; i < tbl_products.getRowCount(); i++) {
-                if ((Boolean) tbl_products.getValueAt(i, 7)) {
-                    idDispatchDetail = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
-                    idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
-                    idPickingOrderDetail = pickingOrderDetailList.get(i).getIdPicking_Order_Detail();
-                    int status = pickingOrderDetailList.get(i).getStatus();
-                    if (status == 2) {
-                        //lo pondre inactivo
-                        daoPickingOrderDetail.pickingOrderDetailDel(idPickingOrderDetail, idPickingOrder, 0);
-                        //guardo el ProductReturn
-                        productReturn = new ProductReturn();
-                        productReturn.setQuantity(1);
-                        productReturn.setStatus(0);
-                        productReturn.setIdDispatch_Order(idDispatchDetail);
-                        productReturn.setIdClient(client.getIdClient());
-                        productReturn.setReturn_date(jDate_return_date.getDate());
-                        productReturn.setMotive_Return_idMotive_Return(1);
-                        productReturn.setPicking_Order_Detail_idPicking_Order_Detail(idPickingOrderDetail);;
-                        productReturn.setPicking_Order_Detail_Picking_Order_idPicking_Order(idPickingOrder);
-                        productReturn.setPicking_Order_Detail_Product_idProduct(productList.get(i).getIdProduct());
-                        daoProductReturn.productReturnIns(productReturn);
+                            //guardo la entrada por devolucion y salida por devolucion del producto
+                            movementIn = new Movement();
+                            movementIn.setDate(jDate_return_date.getDate());
+                            movementIn.setType_Movement_id(1);
+                            movementIn.setType_Movement_idSubtype(2);
+                            initialStock = productList.get(i).getPhysicalStock();
+                            movementIn.setStock_inicial(initialStock);
+                            finalStock = initialStock + productList.get(i).getQuantityBoxesPerPallet() * 1;
+                            movementIn.setStock_final(finalStock);
+                            movementIn.setIdProduct(productList.get(i).getIdProduct());
+                            movementIn.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
+                            daoKardex.MovementIns(movementIn);
 
-                        //guardo la entrada por devolucion y salida por devolucion del producto
-                        movementIn = new Movement();
-                        movementIn.setDate(jDate_return_date.getDate());
-                        movementIn.setType_Movement_id(1);
-                        movementIn.setType_Movement_idSubtype(2);
-                        initialStock = productList.get(i).getPhysicalStock();
-                        movementIn.setStock_inicial(initialStock);
-                        finalStock = initialStock + productList.get(i).getQuantityBoxesPerPallet() * 1;
-                        movementIn.setStock_final(finalStock);
-                        movementIn.setIdProduct(productList.get(i).getIdProduct());
-                        movementIn.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
-                        daoKardex.MovementIns(movementIn);
-
-                        movementOut = new Movement();
-                        movementOut.setDate(jDate_return_date.getDate());
-                        movementOut.setType_Movement_id(2);
-                        movementOut.setType_Movement_idSubtype(2);
-                        initialStock = productList.get(i).getPhysicalStock();
-                        movementOut.setStock_inicial(initialStock);
-                        finalStock = initialStock - productList.get(i).getQuantityBoxesPerPallet() * 1;
-                        movementOut.setStock_final(finalStock);
-                        movementOut.setIdProduct(productList.get(i).getIdProduct());
-                        movementOut.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
-                        daoKardex.MovementIns(movementOut);
-                        
-                        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                            movementOut = new Movement();
+                            movementOut.setDate(jDate_return_date.getDate());
+                            movementOut.setType_Movement_id(2);
+                            movementOut.setType_Movement_idSubtype(2);
+                            initialStock = productList.get(i).getPhysicalStock();
+                            movementOut.setStock_inicial(initialStock);
+                            finalStock = initialStock - productList.get(i).getQuantityBoxesPerPallet() * 1;
+                            movementOut.setStock_final(finalStock);
+                            movementOut.setIdProduct(productList.get(i).getIdProduct());
+                            movementOut.setIdWh(palletProductLocationList.get(i).getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
+                            daoKardex.MovementIns(movementOut);
+                            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        }
                     }
                 }
+                if(cancelAll == 1){//cancelar la orden de despacho y de pedido
+                    daoDispatchOrder.dispatchOrderDel(dispatchOrder.getIdDispatch_Order());
+                    PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrder.getIdPickingOrder());
+                    RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
+                    StateRequestOrder state = daoStateOrderRequest.stateRequestOrderGet(3);
+                    ro.setStateRequestOrder(state);
+                    daoRequestOrder.requestOrderUpd(ro);
+                }
+                initializeTable();
+            }else{
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Ingrese una fecha de devolución.", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             }
-            initializeTable();
         }
     }//GEN-LAST:event_btn_returnActionPerformed
 

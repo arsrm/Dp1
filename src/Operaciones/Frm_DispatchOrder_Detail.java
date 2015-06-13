@@ -180,7 +180,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
 
         lbl_status.setText("Estado:");
 
-        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Entregado", "Pendiente", "En vehiculo", "Cancelado" }));
+        cbo_status.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "", "Entregado", "Pendiente", "En vehiculo", "Cancelado" }));
         cbo_status.setEnabled(false);
 
         lbl_address.setText("Dirección:");

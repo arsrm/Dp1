@@ -228,11 +228,12 @@
         <Component class="javax.swing.JComboBox" name="cbo_status">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Entregado"/>
-                <StringItem index="1" value="Pendiente"/>
-                <StringItem index="2" value="En vehiculo"/>
-                <StringItem index="3" value="Cancelado"/>
+              <StringArray count="5">
+                <StringItem index="0" value=""/>
+                <StringItem index="1" value="Entregado"/>
+                <StringItem index="2" value="Pendiente"/>
+                <StringItem index="3" value="En vehiculo"/>
+                <StringItem index="4" value="Cancelado"/>
               </StringArray>
             </Property>
             <Property name="enabled" type="boolean" value="false"/>

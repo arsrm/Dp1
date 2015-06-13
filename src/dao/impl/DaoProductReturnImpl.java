@@ -42,6 +42,8 @@ public class DaoProductReturnImpl implements DaoProductReturn{
 
     @Override
     public String productReturnIns(ProductReturn productReturn) {                
+        
+        
         String result = null;
         String sql = "INSERT INTO Product_Return("
                 + "quantity,"
@@ -50,8 +52,10 @@ public class DaoProductReturnImpl implements DaoProductReturn{
                 + "Motive_Return_idMotive_Return,"
                 + "Picking_Order_Detail_idPicking_Order_Detail,"
                 + "Picking_Order_Detail_Picking_Order_idPicking_Order,"
-                + "Picking_Order_Detail_Product_idProduct"
-                + ") VALUES(?,?,?,?,?,?,?)";
+                + "Picking_Order_Detail_Product_idProduct,"
+                + "idClient,"
+                + "return_date "
+                + ") VALUES(?,?,?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -62,9 +66,11 @@ public class DaoProductReturnImpl implements DaoProductReturn{
                 ps.setInt(3, productReturn.getIdDispatch_Order());
                 ps.setInt(4, productReturn.getMotive_Return_idMotive_Return()); 
                 ps.setInt(5, productReturn.getPicking_Order_Detail_idPicking_Order_Detail());
-                ps.setInt(5, productReturn.getPicking_Order_Detail_Picking_Order_idPicking_Order());
-                ps.setInt(6, productReturn.getPicking_Order_Detail_Product_idProduct());
-                
+                ps.setInt(6, productReturn.getPicking_Order_Detail_Picking_Order_idPicking_Order());
+                ps.setInt(7, productReturn.getPicking_Order_Detail_Product_idProduct());
+                ps.setInt(8,productReturn.getIdClient());
+                java.sql.Date return_date = new java.sql.Date(productReturn.getReturn_date().getTime());
+                ps.setDate(9, return_date);
                 int ctos = ps.executeUpdate();
 
             } catch (SQLException e) {

@@ -113,6 +113,7 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         table_products = new javax.swing.JTable();
         btn_exit = new javax.swing.JButton();
+        btn_legend = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -220,6 +221,13 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
             }
         });
 
+        btn_legend.setText("Ver Leyenda");
+        btn_legend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_legendActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -230,7 +238,9 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
                     .addComponent(pnl_products, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnl_order, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(21, 21, 21)
+                        .addComponent(btn_legend)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_exit)))
                 .addContainerGap())
         );
@@ -242,7 +252,9 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnl_products, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_exit)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_exit)
+                    .addComponent(btn_legend))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -259,10 +271,18 @@ public class Frm_RequestOrder_Preview extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
+    private void btn_legendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_legendActionPerformed
+        // TODO add your handling code here:
+        Frm_Pallet_Legend frm_pl = new Frm_Pallet_Legend();
+        frm_pl.setVisible(true);
+        frm_pl.setLocationRelativeTo(null);
+    }//GEN-LAST:event_btn_legendActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_exit;
+    private javax.swing.JButton btn_legend;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_client;
     private javax.swing.JLabel lbl_picking;
