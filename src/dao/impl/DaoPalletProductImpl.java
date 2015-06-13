@@ -905,7 +905,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
 
     @Override
     public PalletProduct getPalletProductById(Integer idPallet) {
-        PalletProduct palletPro = new PalletProduct();
+        PalletProduct palletPro = null;
         String sql = " SELECT "
                 + "Pallet_idPallet, "
                 + "Product_Trademark_id_Trademark, "
@@ -926,6 +926,7 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
 
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
+                    palletPro = new PalletProduct();
                     palletPro.setIdpallet(idPallet);
                     palletPro.setIdtrademark(rs.getInt(2));
                     palletPro.setIdproduct(rs.getInt(3));

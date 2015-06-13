@@ -34,6 +34,7 @@ import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoRackImpl;
 import dao.impl.DaoWHImpl;
+import java.awt.Color;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
@@ -111,6 +112,7 @@ public class Frm_adjustManual extends javax.swing.JFrame {
         txt_codPallet = new javax.swing.JTextField();
         txt_EANProd = new javax.swing.JTextField();
         txt_nameProduct = new javax.swing.JTextField();
+        lbl_validatePallet = new javax.swing.JLabel();
         radioBtn_Intern = new javax.swing.JRadioButton();
         radioBtn_exit = new javax.swing.JRadioButton();
         pnl_exit = new javax.swing.JPanel();
@@ -168,11 +170,6 @@ public class Frm_adjustManual extends javax.swing.JFrame {
             .addGroup(pnl_internLayout.createSequentialGroup()
                 .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_internLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jLabel2)
-                        .addGap(66, 66, 66)
-                        .addComponent(txt_codPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(pnl_internLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -180,7 +177,14 @@ public class Frm_adjustManual extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_nameProduct)
-                            .addComponent(txt_EANProd))))
+                            .addComponent(txt_EANProd)))
+                    .addGroup(pnl_internLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel2)
+                        .addGap(66, 66, 66)
+                        .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lbl_validatePallet)
+                            .addComponent(txt_codPallet, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(10, 10, 10))
         );
         pnl_internLayout.setVerticalGroup(
@@ -190,7 +194,9 @@ public class Frm_adjustManual extends javax.swing.JFrame {
                 .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txt_codPallet, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(2, 2, 2)
+                .addComponent(lbl_validatePallet)
+                .addGap(21, 21, 21)
                 .addGroup(pnl_internLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txt_EANProd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -404,10 +410,22 @@ public class Frm_adjustManual extends javax.swing.JFrame {
     }//GEN-LAST:event_txt_codPalletActionPerformed
 
     private void txt_codPalletFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_codPalletFocusLost
-        palletProd = daoPalletProd.getPalletProductById(Integer.parseInt(txt_codPallet.getText()));
-        product = daoProduct.ProductsGet(palletProd.getIdproduct());
-        txt_EANProd.setText(product.getCodeEAN13());
-        txt_nameProduct.setText(product.getName());
+        if (txt_codPallet.getText().length() > 0) {
+            palletProd = daoPalletProd.getPalletProductById(Integer.parseInt(txt_codPallet.getText()));
+            if (palletProd != null) {
+                lbl_validatePallet.setText("Pallet correcto");
+                lbl_validatePallet.setForeground(Color.green);
+                product = daoProduct.ProductsGet(palletProd.getIdproduct());
+                txt_EANProd.setText(product.getCodeEAN13());
+                txt_nameProduct.setText(product.getName());
+            } else {
+                lbl_validatePallet.setForeground(Color.red);
+                lbl_validatePallet.setText("Pallet no asociado a un producto");
+                txt_EANProd.setText("");
+                txt_nameProduct.setText("");
+            }
+        }
+
     }//GEN-LAST:event_txt_codPalletFocusLost
 
     private void radioBtn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioBtn_exitActionPerformed
@@ -467,9 +485,9 @@ public class Frm_adjustManual extends javax.swing.JFrame {
                 if (cbo_Rack.getSelectedItem().toString().equals(rack.getIdentifier()) && !cbo_Rack.getSelectedItem().toString().equals("Seleccionar")) {
                     idRackSelected = rack.getIdRack();
                     numFloorsRackSelected = rack.getFloor_numbers();
-                    lbl_numFloors.setText("Máximo: "+numFloorsRackSelected.toString());
+                    lbl_numFloors.setText("Máximo: " + numFloorsRackSelected.toString());
                     numColumnsRackSelected = rack.getColumn_number();
-                    lbl_num_Columns.setText("Máximo: "+numColumnsRackSelected.toString());
+                    lbl_num_Columns.setText("Máximo: " + numColumnsRackSelected.toString());
                     lbl_numCellDetail.setText("(1 o 2)");
                     opcion = 1;
                     break;
@@ -520,6 +538,7 @@ public class Frm_adjustManual extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_numCellDetail;
     private javax.swing.JLabel lbl_numFloors;
     private javax.swing.JLabel lbl_num_Columns;
+    private javax.swing.JLabel lbl_validatePallet;
     private javax.swing.JPanel pnl_exit;
     private javax.swing.JPanel pnl_intern;
     private javax.swing.JRadioButton radioBtn_Intern;
