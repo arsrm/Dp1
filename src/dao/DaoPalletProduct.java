@@ -59,4 +59,6 @@ public interface DaoPalletProduct {
     public List<Integer> GetPalletsByIntOrder(Integer idIntOrder, Integer IdProd);
     
     public PalletProduct getPalletProductById(Integer idPalletProduct);
+    
+    public String palletProductByLocaCellUpdStatus(Integer status,Integer idPallet, Integer idTrade, Integer idProd, Integer idCell,Integer idCellDet, Integer idRack, Integer idWh);
 }

@@ -10,6 +10,7 @@ import Model.Distribution_Center;
 import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.PalletIni;
+import Model.PalletProduct;
 import Model.Product;
 import Model.Rack;
 import Model.Warehouse;
@@ -651,5 +652,47 @@ public class DaoPalletImpl implements DaoPallet{
             }
         }
         return objmodel;
+    }
+
+    @Override
+    public PalletProduct palletProducLocatioCellDetailGet(Integer idWh, Integer idRack, Integer idLocationCell, Integer idLocationCellDetail) {
+        PalletProduct palletProd = new PalletProduct();
+        String sql = "select " 
+                +"Pallet_By_Product_Pallet_idPallet, "
+                +"Pallet_By_Product_Product_Trademark_id_Trademark, "
+                +"Pallet_By_Product_Product_idProduct, "
+                +"status "
+                +"FROM Pallet_By_Product_By_Location_Cell_Detail "
+                +"WHERE Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse = ? "
+                + "AND Location_Cell_Detail_Location_Cell_Rack_idRack = ? "
+                +"AND Location_Cell_Detail_Location_Cell_idLocation_Cell = ? "
+                +"AND Location_Cell_Detail_idLocation_Cell_Detail = ? ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idWh);
+                ps.setInt(2, idRack);
+                ps.setInt(3, idLocationCell);
+                ps.setInt(4, idLocationCellDetail);
+                
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    palletProd.setIdpallet(rs.getInt(1));
+                    palletProd.setIdtrademark(rs.getInt(2));
+                    palletProd.setIdproduct(rs.getInt(3));
+                }
+            } catch (SQLException e) {
+                System.out.println("Error de ejecución:" + e.getMessage());
+                palletProd = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return palletProd;
     }
 }

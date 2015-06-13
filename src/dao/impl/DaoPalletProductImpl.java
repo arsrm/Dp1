@@ -948,4 +948,45 @@ public class DaoPalletProductImpl implements DaoPalletProduct {
         return palletPro;
     }
 
+    @Override
+    public String palletProductByLocaCellUpdStatus(Integer status,Integer idPallet, Integer idTrade, Integer idProd, Integer idCell, Integer idCellDet, Integer idRack, Integer idWh) {
+        String result = null;
+        String sql = "UPDATE  pallet_by_product_by_location_cell_detail SET "
+                + " status=? "
+                + " WHERE Pallet_By_Product_Pallet_idPallet=? "
+                + " and Pallet_By_Product_Product_Trademark_id_Trademark=? "
+                + " and Pallet_By_Product_Product_idProduct=? "
+                + " and Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse=? "
+                + " and Location_Cell_Detail_Location_Cell_Rack_idRack=? "
+                + " and Location_Cell_Detail_Location_Cell_idLocation_Cell=? "
+                + " and Location_Cell_Detail_idLocation_Cell_Detail=? ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                    ps.setInt(1, status);
+                    ps.setInt(2, idPallet);
+                    ps.setInt(3, idTrade);
+                    ps.setInt(4, idProd);
+                    ps.setInt(5, idWh);
+                    ps.setInt(6, idRack);
+                    ps.setInt(7, idCell);
+                    ps.setInt(8, idCellDet);
+                    int ctos = ps.executeUpdate();
+                    if (ctos == 0) {
+                        throw new SQLException("ID: no existe");
+                    }
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+    }
+        return result;
+    }
 }

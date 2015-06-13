@@ -295,4 +295,39 @@ public class DaoLocationCellImpl implements DaoLocationCell {
         }
     }
 
+    @Override
+    public Integer idLocatioCellByColumFloor(Integer idWh, Integer idRack, Integer numCol, Integer numFloor) {
+        Integer idLocCell = null;
+        String sql = "SELECT "
+                + "idLocation_Cell "
+                + "FROM Location_Cell "
+                + "WHERE Rack_Warehouse_idWarehouse = ? AND "
+                + "Rack_idRack = ? AND "
+                + "column_cell = ? AND "
+                +"row_cell = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idWh);
+                ps.setInt(2, idRack);
+                ps.setInt(3, numCol);
+                ps.setInt(4, numFloor);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    idLocCell = rs.getInt(1);
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return idLocCell;
+    }
 }
