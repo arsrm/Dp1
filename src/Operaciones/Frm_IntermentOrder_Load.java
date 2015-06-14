@@ -40,6 +40,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import tool.Validate;
 
@@ -65,6 +66,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     List<InternmentOrderDetail> intOrderDetListMassive = null;
     List<InternmentOrderDetail> intOrderDetListManual = null;
     Integer lineIntOrdDetailManual = 1;
+    private BarraProgreso tarea;
 
     public Frm_IntermentOrder_Load(Frm_MenuPrincipal menu) {
 
@@ -79,6 +81,65 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
 
     public Frm_IntermentOrder_Load() {
 
+    }
+
+    class BarraProgreso extends SwingWorker<Void, Void> {
+
+        @Override
+        public void done() {
+            progressBar.setIndeterminate(false);
+            Object[] options = {"OK"};
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                menu_padre.setVisible(true);
+                menu_padre.setLocationRelativeTo(null);
+                Frm_IntermentOrder_Load.this.dispose();
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
+                daoLog.clientIns("Se ha agregado una orden de internamiento  ", Frm_IntermentOrder_Load.class.toString(), logSI.getIduser());
+            }
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+
+            List<Integer> freePalletList;
+            txt_idOrderInt.setEnabled(true);
+            txt_idProduct.setEnabled(true);
+            txt_quantityPallet.setEnabled(true);
+            jDate_dateOrder.setEnabled(true);
+            txt_route.setEnabled(true);
+            btn_addProduct.setEnabled(true);
+            btn_searchFile.setEnabled(true);
+            btn_saveOrder.setEnabled(false);
+
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                progressBar.setIndeterminate(true);
+                daoProdInt.IntOrderIns(internmentOrder);
+
+                for (int i = 0; i < internmentOrder.getInternmentOrderDetail().size(); i++) {
+                    Calendar cal = Calendar.getInstance();
+                    cal.setTime(internmentOrder.getDate());
+                    cal.add(Calendar.DATE, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTimeExpiration());
+                    freePalletList = daoPalletProduct.GetPalletByStatus(2, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
+                    daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
+                            internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct(),
+                            cal.getTime(), internmentOrder.getIdInternmentOrder());
+                    for (int j = 0; j < freePalletList.size(); j++) {
+                        daoPalletIni.PalletsIniUpdStatus(freePalletList, 1);//1 Estado no disponible
+                    }
+                }
+                modelo.getDataVector().removeAllElements();
+                modelo.fireTableDataChanged();
+                intOrderDetListMassive = null;
+                intOrderDetListManual = null;
+                internmentOrder = null;
+
+            }
+            return null;
+        }
     }
 
     /**
@@ -114,6 +175,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         tbl_orderDetail = new javax.swing.JTable();
         btn_Cancel = new javax.swing.JButton();
         btn_saveOrder = new javax.swing.JButton();
+        progressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -331,7 +393,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnl_orderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_orderLayout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 702, Short.MAX_VALUE)
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_orderLayout.createSequentialGroup()
                         .addComponent(btn_saveOrder)
@@ -356,11 +418,16 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(pnl_massive_load, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_product_int, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_order, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(pnl_massive_load, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pnl_product_int, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(pnl_order, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(284, 284, 284)
+                        .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -372,7 +439,9 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
                 .addComponent(pnl_massive_load, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnl_order, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(8, 8, 8))
         );
 
         pack();
@@ -554,48 +623,8 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_massive_loadActionPerformed
 
     private void btn_saveOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveOrderActionPerformed
-        List<Integer> freePalletList;
-        txt_idOrderInt.setEnabled(true);
-        txt_idProduct.setEnabled(true);
-        txt_quantityPallet.setEnabled(true);
-        jDate_dateOrder.setEnabled(true);
-        txt_route.setEnabled(true);
-        btn_addProduct.setEnabled(true);
-        btn_searchFile.setEnabled(true);
-        btn_saveOrder.setEnabled(false);
-
-        Object[] options = {"OK"};
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            daoProdInt.IntOrderIns(internmentOrder);
-
-            for (int i = 0; i < internmentOrder.getInternmentOrderDetail().size(); i++) {
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(internmentOrder.getDate());
-                cal.add(Calendar.DATE, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTimeExpiration());
-                freePalletList = daoPalletProduct.GetPalletByStatus(2, internmentOrder.getInternmentOrderDetail().get(i).getQuantityPallets());
-                daoPalletProduct.PalletProductInsMasive(freePalletList, internmentOrder.getInternmentOrderDetail().get(i).getProduct().getTrademark(),
-                        internmentOrder.getInternmentOrderDetail().get(i).getProduct().getIdProduct(),
-                        cal.getTime(), internmentOrder.getIdInternmentOrder());
-                for (int j = 0; j < freePalletList.size(); j++) {
-                    daoPalletIni.PalletsIniUpdStatus(freePalletList, 1);//1 Estado no disponible
-                }
-            }
-            modelo.getDataVector().removeAllElements();
-            modelo.fireTableDataChanged();
-            intOrderDetListMassive = null;
-            intOrderDetListManual = null;
-            internmentOrder = null;
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                this.dispose();
-                DaoLog daoLog = new DaoLogImpl();
-                Log logSI = null;
-                daoLog.clientIns("Se ha agregado una orden de internamiento  " , Frm_IntermentOrder_Load.class.toString(), logSI.getIduser());
-            }
-        }
+        tarea = new BarraProgreso();
+        tarea.execute();
     }//GEN-LAST:event_btn_saveOrderActionPerformed
 
     private void txt_idOrderIntFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_idOrderIntFocusLost
@@ -667,6 +696,7 @@ public class Frm_IntermentOrder_Load extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_massive_load;
     private javax.swing.JPanel pnl_order;
     private javax.swing.JPanel pnl_product_int;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JTable tbl_orderDetail;
     private javax.swing.JTextField txt_idOrderInt;
     private javax.swing.JTextField txt_idProduct;

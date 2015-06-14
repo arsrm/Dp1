@@ -302,15 +302,17 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         Integer cantFreeLocCells = freeLocCellList.size();
         int lastFreeLocCell = 0;
         Integer stockProd = intOrdDetail.getProduct().getPhysicalStock();
+        Integer pesoPallet = intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox();
         for (int i = 0; i < palletProduList.size(); i++) {
-            for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
+            Boolean encuentraCeldaDisponible = false;
+            for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {                
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                 LocationCell locCell = daoLocCell.LocationCellGet(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
                         freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
                 if (freeLocCellList.get(j).getAvailability() == 1
                         && intOrdDetail.getProduct().getTypeConditionWH()
                         == wh.getType_Condition_WareHouse_idType_Condition_WareHouse()
-                        && (intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox()) <= daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
+                        && pesoPallet <= daoRack.rackGet(locCell.getRack_idRack()).getResistance_weigth_per_floor()) {
                     PalletProductLocaCellIns(freeLocCellList.get(j), idIntOrder, palletProduList.get(i), intOrdDetail);
                     freeLocCellList.get(j).setAvailability(0);
                     daoLocCell.LocationCellAvailabilityUpd(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
@@ -327,9 +329,12 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     daoKardex.MovementIns(mov);
                     cantPalletsIngresados++;
                     lastFreeLocCell = j + 1;
+                    encuentraCeldaDisponible = true;
                     break;
                 }
             }
+            if(encuentraCeldaDisponible==false)
+                break;
         }
         
         daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos

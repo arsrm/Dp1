@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
@@ -34,6 +35,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     List<InternmentOrder> intOrderList = new ArrayList<InternmentOrder>();
     List<Integer> idIntOrderDeleteList = new ArrayList<>();
     List<Integer> idIntOrderInternList;
+    BarraProgreso tarea;
 
     public Frm_InternmentOrder_Search(Frm_MenuPrincipal menu) {
         menu_padre = menu;
@@ -46,6 +48,46 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }
 
     public Frm_InternmentOrder_Search() {
+    }
+
+    class BarraProgreso extends SwingWorker<Void, Void> {
+
+        @Override
+        public void done() {
+            progressBar.setIndeterminate(false);
+//        JOptionPane.showMessageDialog(null, "Tarea completa");
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+
+            int option;
+            Boolean op_Intern = true;
+            idIntOrderInternList = new ArrayList<>();
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                Object[] options = {"OK"};
+                for (int i = 0; i < tbl_order.getRowCount(); i++) {
+                    if ((Boolean) tbl_order.getValueAt(i, 3)) {
+                        if (tbl_order.getValueAt(i, 2).toString().equals("Internado")) {
+                            option = JOptionPane.showOptionDialog(new JFrame(), "Solo se puede internar órdenes con estado Pendiente.", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                            op_Intern = false;
+                        } else {
+                            idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
+                        }
+                    }
+                }
+                if (op_Intern) {
+                    progressBar.setIndeterminate(true);
+                    String result = daoIntOrder.IntOrdersIntern(idIntOrderInternList);
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito.\n" + result, "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        initializeTable();
+                    }
+                }
+            }
+            return null;
+        }
     }
 
     /**
@@ -71,6 +113,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
         btn_Intern = new javax.swing.JButton();
+        progressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -202,6 +245,10 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
                         .addGap(49, 49, 49))))
+            .addGroup(pnl_resultsLayout.createSequentialGroup()
+                .addGap(261, 261, 261)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         pnl_resultsLayout.setVerticalGroup(
             pnl_resultsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,7 +260,9 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                     .addComponent(btn_delete)
                     .addComponent(btn_cancel)
                     .addComponent(btn_Intern))
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -234,7 +283,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 .addComponent(pnl_criterios, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_results, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         pack();
@@ -291,7 +340,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         Date dateEndSearch = null;
         Integer idIntOrdSearch;
         String status = null;
-        
+
         if (txt_orderInternment.getText().length() != 0) {
             idIntOrdSearch = Integer.parseInt(txt_orderInternment.getText().toString());
         } else {
@@ -308,7 +357,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         } else {
             dateEndSearch = new Date();
         }
-        
+
         List<InternmentOrder> intOrderList = daoIntOrder.IntOrderSearch(idIntOrdSearch, dateIniSearch, dateEndSearch);
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
@@ -333,30 +382,8 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_searchActionPerformed
 
     private void btn_InternActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_InternActionPerformed
-        int option;
-        Boolean op_Intern = true;
-        idIntOrderInternList = new ArrayList<>();
-        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            Object[] options = {"OK"};
-            for (int i = 0; i < tbl_order.getRowCount(); i++) {
-                if ((Boolean) tbl_order.getValueAt(i, 3)) {
-                    if (tbl_order.getValueAt(i, 2).toString().equals("Internado")) {
-                        option = JOptionPane.showOptionDialog(new JFrame(), "Solo se puede internar órdenes con estado Pendiente.", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                        op_Intern = false;
-                    } else {
-                        idIntOrderInternList.add(Integer.parseInt(tbl_order.getValueAt(i, 0).toString()));
-                    }
-                }
-            }
-            if (op_Intern) {
-                String result = daoIntOrder.IntOrdersIntern(idIntOrderInternList);
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito\n"+result, "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if (ok_option == JOptionPane.OK_OPTION) {
-                    initializeTable();
-                }
-            }
-        }
+        tarea = new BarraProgreso();
+        tarea.execute();
     }//GEN-LAST:event_btn_InternActionPerformed
 
     public void initializeTable() {
@@ -397,6 +424,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_orderInt;
     private javax.swing.JPanel pnl_criterios;
     private javax.swing.JPanel pnl_results;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JTable tbl_order;
     private javax.swing.JTextField txt_orderInternment;
     // End of variables declaration//GEN-END:variables
