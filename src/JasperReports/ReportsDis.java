@@ -89,21 +89,19 @@ public class ReportsDis {
         }
     }
     
-    public void mostrarReporteKardexSinFiltro(Date dI, Date dF) {
+    public void mostrarReporteDepachoSinFiltro(Date dI, Date dF) {
         try {
            HashMap JasperParameter = new HashMap();  
             Map parameters = new HashMap(); 
 //            parameters.put("idW",idA);
 //            parameters.put("idP", idP);
-            parameters.put("fechaI", dI);
-            parameters.put("fechaF", dF);
+            //parameters.put("fechaI", dI);
+            //parameters.put("fechaF", dF);
             
-            JasperReport reporte = JasperCompileManager.compileReport("reportKardexSinFiltro.jrxml");
-            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
-            
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperReport reporte = JasperCompileManager.compileReport("reportDespachoSinFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             JasperViewer view = new JasperViewer(p, false);
-            view.setTitle("Reporte de Kardex sin filtro");
+            view.setTitle("Reporte de Despacho");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
             view.setVisible(true);
         } catch (JRException ex) {
