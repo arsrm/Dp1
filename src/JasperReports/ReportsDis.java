@@ -105,7 +105,7 @@ public class ReportsDis {
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
             view.setVisible(true);
         } catch (JRException ex) {
-            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ReportsDis.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
