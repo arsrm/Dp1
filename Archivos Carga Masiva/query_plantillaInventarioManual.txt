@@ -1,0 +1,3 @@
+/*Cambiar el idWarehouse en el WHERE*/
+
+SELECT DISTINCT d.availability, d.idLocation_Cell_Detail,d.Location_Cell_idLocation_Cell, c.row_cell,c.column_cell,d.Location_Cell_Rack_idRack FROM Location_Cell_Detail d JOIN Location_Cell c ON d.Location_Cell_idLocation_Cell = c.idLocation_Cell WHERE d.Location_Cell_Rack_Warehouse_idWarehouse = idWarehouse ORDER BY d.Location_Cell_Rack_idRack,c.row_cell,c.column_cell

@@ -248,7 +248,7 @@ public class Frm_adjustManual extends javax.swing.JFrame {
 
         jLabel7.setText("Columna");
 
-        jLabel8.setText("Detalle");
+        jLabel8.setText("División");
 
         txt_numCol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

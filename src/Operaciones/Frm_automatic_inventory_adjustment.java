@@ -3,10 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package Operaciones;
 
+import Model.LocationCellDetailInventory;
+import Model.Rack;
+import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoLocationCell;
+import dao.DaoLocationCellDetail;
+import dao.DaoRack;
+import dao.DaoWH;
+import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoRackImpl;
+import dao.impl.DaoWHImpl;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,11 +41,32 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
      * Creates new form Frm_automatic_inventory_adjustment
      */
     Frm_MenuPrincipal menuPadre;
-    
+    DaoWH daoWh = new DaoWHImpl();
+    DaoRack daoRack = new DaoRackImpl();
+    DaoLocationCell daoLocationCell = new DaoLocationCellImpl();
+    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
+    List<Warehouse> whList;
+    List<Rack> rackList;
+    Integer idWhSelected;
+    SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+    DefaultTableModel modelo = new DefaultTableModel();
+    List<LocationCellDetailInventory> listLocCellInventVirtual = null;
+    List<LocationCellDetailInventory> listLocCellInventManual = null;
+    String directoryFileInventManual = null;
+
     public Frm_automatic_inventory_adjustment(Frm_MenuPrincipal menu) {
         this.setTitle("Ajuste automático de inventario");
-        menuPadre = menu;       
+        Date date = new Date();
+        menuPadre = menu;
         initComponents();
+        modelo = (DefaultTableModel) tbl_Inventory.getModel();
+        txt_date.setText(formatDate.format(date));
+        whList = daoWh.whQry();
+//        cbo_wh.removeAllItems();
+//        cbo_wh.addItem("Seleccionar");
+        for (Warehouse whList1 : whList) {
+            cbo_wh.addItem(whList1.getDescription());
+        }
     }
 
     /**
@@ -34,33 +78,157 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        cbo_wh = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
+        txt_date = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        txt_file = new javax.swing.JTextField();
+        btn_selectFIle = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tbl_Inventory = new javax.swing.JTable();
+        btn_compare = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
+        setSize(new java.awt.Dimension(800, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
             }
         });
 
-        jLabel1.setText("jLabel1");
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Parámetros de ajuste de inventario"));
+
+        jLabel2.setText("Almacén");
+
+        cbo_wh.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Seleccionar" }));
+        cbo_wh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_whActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Fecha de ajuste:");
+
+        txt_date.setEnabled(false);
+
+        jLabel3.setText("Archivo de Inventario manual");
+
+        btn_selectFIle.setText("Seleccionar");
+        btn_selectFIle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_selectFIleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txt_file, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btn_selectFIle))
+                    .addComponent(cbo_wh, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(157, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(cbo_wh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txt_file, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_selectFIle))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        tbl_Inventory.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Rack", "Fila", "Columna", "División", "Estado Virtual", "Estado Físico", "Tipo de ajuste"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tbl_Inventory);
+
+        btn_compare.setText("Comparar");
+        btn_compare.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_compareActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Realizar ajuste");
+
+        btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(330, 330, 330)
-                .addComponent(jLabel1)
-                .addContainerGap(436, Short.MAX_VALUE))
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btn_compare)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_cancel))
+                    .addComponent(jScrollPane1)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(81, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 586, Short.MAX_VALUE)
-                .addComponent(jLabel1))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_compare)
+                    .addComponent(jButton2)
+                    .addComponent(btn_cancel))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
 
         pack();
@@ -72,9 +240,128 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         menuPadre.setEnabled(true);
     }//GEN-LAST:event_formWindowClosed
 
+    private void cbo_whActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_whActionPerformed
+        int opcion = 1;
+        if (cbo_wh.getItemCount() > 0) {
+            for (Warehouse whList1 : whList) {
+                if (cbo_wh.getSelectedItem().toString().equals(whList1.getDescription()) && !cbo_wh.getSelectedItem().toString().equals("Seleccionar")) {
+                    idWhSelected = whList1.getIdWarehouse();
+                    opcion = 1;
+                    break;
+                } else {
+                    opcion = 0;
+                }
+            }
 
+            listLocCellInventVirtual = daoLocationCellDetail.locationCellDetailInventory(idWhSelected);
+            listLocCellInventManual = null;
+            if (opcion == 1) {
+                initializeTable();
+            }
+        }
+    }//GEN-LAST:event_cbo_whActionPerformed
+
+    private void btn_compareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_compareActionPerformed
+        Object[] options = {"OK"};
+        int ok_option;
+        if (directoryFileInventManual == null) {
+            ok_option = JOptionPane.showOptionDialog(new JFrame(), "Seleccione un archivo", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        } else {
+            String line = null;
+            listLocCellInventManual = new ArrayList<>();
+            File file = new File(directoryFileInventManual);
+            BufferedReader reader = null;
+
+            try {
+                reader = new BufferedReader(new FileReader(file));
+                reader.readLine();
+
+                while ((line = reader.readLine()) != null) {
+                    LocationCellDetailInventory locCellInvent = new LocationCellDetailInventory();
+                    String[] lineArray = line.split(",");
+                    locCellInvent.setIdRack(Integer.parseInt(lineArray[0]));
+                    locCellInvent.setIdRow(Integer.parseInt(lineArray[2]));
+                    locCellInvent.setIdColumn(Integer.parseInt(lineArray[3]));
+                    locCellInvent.setIdLocationCellDetail(Integer.parseInt(lineArray[4]));
+                    locCellInvent.setAvailability(Integer.parseInt(lineArray[5]));
+                    listLocCellInventManual.add(locCellInvent);
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (reader != null) {
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                    }
+                }
+            }
+        }
+        initializeTable();
+    }//GEN-LAST:event_btn_compareActionPerformed
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        menuPadre.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_selectFIleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectFIleActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccione archivo");
+        fileChooser.showDialog(this, null);
+        try {
+            directoryFileInventManual = fileChooser.getSelectedFile().getAbsolutePath();
+            txt_file.setText(directoryFileInventManual);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_selectFIleActionPerformed
+
+    public void initializeTable() {
+        modelo.getDataVector().removeAllElements();
+        modelo.fireTableDataChanged();
+        String availabilityVirtual;
+        String availabilityManual = "-";
+        String adjust;
+        try {
+            for (int i = 0; i < listLocCellInventVirtual.size(); i++) {
+                if (listLocCellInventVirtual.get(i).getAvailability() == 1) {
+                    availabilityVirtual = "Libre";
+                } else {
+                    availabilityVirtual = "Ocupado";
+                }
+                if (listLocCellInventManual != null) {
+                    if (listLocCellInventManual.get(i).getAvailability() == 1) {
+                        availabilityManual = "Libre";
+                    } else {
+                        availabilityManual = "Ocupado";
+                    }
+                }
+
+                Object[] fila = {listLocCellInventVirtual.get(i).getIdRack(),
+                    listLocCellInventVirtual.get(i).getIdRow(), listLocCellInventVirtual.get(i).getIdColumn(),
+                    listLocCellInventVirtual.get(i).getIdLocationCellDetail(), availabilityVirtual, availabilityManual, "-"};
+                modelo.addRow(fila);
+
+            }
+        } catch (Exception e) {
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_compare;
+    private javax.swing.JButton btn_selectFIle;
+    private javax.swing.JComboBox cbo_wh;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable tbl_Inventory;
+    private javax.swing.JTextField txt_date;
+    private javax.swing.JTextField txt_file;
     // End of variables declaration//GEN-END:variables
 }

@@ -254,7 +254,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
             }
         }
@@ -288,7 +288,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                 try {
                     reader.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(Frm_IntermentOrder_Load.class.getName()).log(Level.SEVERE, null, ex);
+                    
                 }
             }
         }

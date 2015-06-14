@@ -2,12 +2,14 @@ package dao.impl;
 
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.LocationCellDetailInventory;
 import dao.DaoLocationCellDetail;
 import enlaceBD.ConectaDb;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -80,20 +82,20 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
     }
 
     @Override
-    public String locationCellDetailDel(List<Integer> ids){
-       int sizelist= ids.size();
+    public String locationCellDetailDel(List<Integer> ids) {
+        int sizelist = ids.size();
         String result = null;
         String sql = "UPDATE  Location_Cell_Detail SET "
                 + "availability= '1' "
                 + "WHERE idLocation_Cell_Detail=?";
-/*"DELETE FROM User WHERE idUser=?";*/
+        /*"DELETE FROM User WHERE idUser=?";*/
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                for (int x = 0 ; x<sizelist ;x ++) {
-                    int z= ids.get(x);
-                    ps.setInt(1,z);
+                for (int x = 0; x < sizelist; x++) {
+                    int z = ids.get(x);
+                    ps.setInt(1, z);
 
                     int ctos = ps.executeUpdate();
                     if (ctos == 0) {
@@ -116,12 +118,12 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
     }
 
     @Override
-    public String locationCellDetailUpd(LocationCellDetail users){
+    public String locationCellDetailUpd(LocationCellDetail users) {
         String result = null;
         String sql = "UPDATE  Location_Cell_Detail SET "
                 + "description=? ,"
                 + "availability=? ,"
-                 + "Location_Cell_idLocation_Cell=? ,"
+                + "Location_Cell_idLocation_Cell=? ,"
                 + "Location_Cell_Rack_idRack=? ,"
                 + "Location_Cell_Rack_Warehouse_idWarehouse=? "
                 + "idDistribution_Center=? "
@@ -157,30 +159,30 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
 
         return result;
     }
-@Override
-    public String locationCellDetailIns(LocationCellDetail users){
-    
+
+    @Override
+    public String locationCellDetailIns(LocationCellDetail users) {
+
         String result = null;
         String sql = "INSERT INTO location_cell_detail("
-                +"description,availability,Location_Cell_idLocation_Cell,Location_Cell_Rack_idRack,"
+                + "description,availability,Location_Cell_idLocation_Cell,Location_Cell_Rack_idRack,"
                 + "Location_Cell_Rack_Warehouse_idWarehouse,idDistribution_Center"
                 + ") VALUES(?,?,?,?,?,?)";
-         
-        
+
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                
+
                 ps.setString(1, users.getDescription());
                 ps.setInt(2, users.getAvailability());
-                ps.setInt(3,users.getLocation_Cell_idLocation_Cell() );
+                ps.setInt(3, users.getLocation_Cell_idLocation_Cell());
                 ps.setInt(4, users.getLocation_Cell_Rack_idRack());
                 ps.setInt(5, users.getLocation_Cell_Rack_Warehouse_idWarehouse());
                 ps.setInt(6, users.getIdDistribution_Center());
-                
+
                 int ctos = ps.executeUpdate();
-                
+
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
                 }
@@ -219,7 +221,7 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, idLocationCellDetail);
-                ps.setInt(2,idLocationCell);
+                ps.setInt(2, idLocationCell);
 
                 ResultSet rs = ps.executeQuery();
 
@@ -250,13 +252,13 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
     }
 
     @Override
-    public String locationCellDetailUpdAvailability(Integer idRack, Integer status) {        
+    public String locationCellDetailUpdAvailability(Integer idRack, Integer status) {
         String result = null;
-        
+
         String sql = "UPDATE  Location_Cell_Detail SET "
                 + "availability= ? "
                 + "WHERE Location_Cell_Rack_idRack=?;";
-        
+
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
@@ -283,5 +285,52 @@ public class DaoLocationCellDetailImpl implements DaoLocationCellDetail {
 
         return result;
     }
-    
+
+    @Override
+    public List<LocationCellDetailInventory> locationCellDetailInventory(Integer idWh) {
+        List<LocationCellDetailInventory> listLocCellInvent = new ArrayList<>();
+        LocationCellDetailInventory locCellInvent = null;
+        String sql = "SELECT DISTINCT "
+                + "d.availability, "
+                + "d.idLocation_Cell_Detail,"
+                + "d.Location_Cell_idLocation_Cell, "
+                + "c.row_cell,"
+                + "c.column_cell,"
+                + "d.Location_Cell_Rack_idRack "
+                + "FROM Location_Cell_Detail d JOIN Location_Cell c ON d.Location_Cell_idLocation_Cell = c.idLocation_Cell "
+                + "WHERE d.Location_Cell_Rack_Warehouse_idWarehouse = ? "
+                + "ORDER BY d.Location_Cell_Rack_idRack,c.row_cell,c.column_cell";
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idWh);
+
+                ResultSet rs = ps.executeQuery();
+
+                while (rs.next()) {
+                    locCellInvent = new LocationCellDetailInventory();
+
+                    locCellInvent.setAvailability(rs.getInt(1));
+                    locCellInvent.setIdLocationCellDetail(rs.getInt(2));
+                    locCellInvent.setIdRow(rs.getInt(4));
+                    locCellInvent.setIdColumn(rs.getInt(5));
+                    locCellInvent.setIdRack(rs.getInt(6));
+                    locCellInvent.setIdWh(idWh);
+                    listLocCellInvent.add(locCellInvent);
+                }
+
+            } catch (SQLException e) {
+                listLocCellInvent = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return listLocCellInvent;
+    }
+
 }

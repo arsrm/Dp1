@@ -6,9 +6,12 @@
 package Operaciones;
 
 import Model.InternmentOrder;
+import Model.Log;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoInternmentOrder;
+import dao.DaoLog;
 import dao.impl.DaoInternmentOrderImpl;
+import dao.impl.DaoLogImpl;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +58,16 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
         @Override
         public void done() {
             progressBar.setIndeterminate(false);
-//        JOptionPane.showMessageDialog(null, "Tarea completa");
+                    Object[] options = {"OK"};
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                menu_padre.setVisible(true);
+                menu_padre.setLocationRelativeTo(null);
+                Frm_InternmentOrder_Search.this.dispose();
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
+                daoLog.clientIns("Se ha agregado una orden de internamiento  ", Frm_IntermentOrder_Load.class.toString(), logSI.getIduser());
+            }
         }
 
         @Override

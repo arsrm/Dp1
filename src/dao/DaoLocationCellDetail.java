@@ -3,6 +3,7 @@ package dao;
 
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.LocationCellDetailInventory;
 import Model.Rack;
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface DaoLocationCellDetail {
      public LocationCellDetail locationCellDetailQry(Integer idLocationCellDetail, Integer idLocationCell);
 
      public String locationCellDetailUpdAvailability(Integer idRack, Integer status);
+     
+     public List<LocationCellDetailInventory> locationCellDetailInventory(Integer idWh);
 }
