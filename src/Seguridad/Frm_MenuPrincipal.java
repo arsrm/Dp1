@@ -27,6 +27,7 @@ import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
 import Operaciones.Frm_ReturnProducts_Search;
 import Operaciones.Frm_adjustManual;
+import Operaciones.Frm_automatic_inventory_adjustment;
 import Reportes.Frm_DispatchReport;
 import Reportes.Frm_InternmentReport;
 import Reportes.Frm_KardexReport;
@@ -160,7 +161,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         jMenu6 = new javax.swing.JMenu();
         op_adjustManual = new javax.swing.JMenuItem();
         op_adjustAutomatic = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
         menu_seguridad = new javax.swing.JMenu();
         op_Perfiles = new javax.swing.JMenuItem();
         op_Cambio_Contraseña = new javax.swing.JMenuItem();
@@ -413,9 +413,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             }
         });
         jMenu6.add(op_adjustAutomatic);
-
-        jMenuItem6.setText("Ajuste por Rotura");
-        jMenu6.add(jMenuItem6);
 
         menu_operaciones.add(jMenu6);
 
@@ -793,7 +790,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_adjustManualActionPerformed
 
     private void op_adjustAutomaticActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_adjustAutomaticActionPerformed
-        // TODO add your handling code here:
+        Frm_automatic_inventory_adjustment frm_automatic_adjustemnt = new Frm_automatic_inventory_adjustment(this);
+        frm_automatic_adjustemnt.setVisible(true);
+        frm_automatic_adjustemnt.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_adjustAutomaticActionPerformed
 //gzavala-fin 24/05 23:45    
     /**
@@ -811,7 +810,6 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JMenu jMenu_Pallet;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JLabel lbl_name;
