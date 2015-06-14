@@ -8,6 +8,7 @@ package Operaciones;
 import Mantenimientos.Frm_Rack;
 import Model.InternmentOrder;
 import Model.InternmentOrderDetail;
+import Model.Log;
 import Model.Movement;
 import Model.PalletProduct;
 import Model.Product;
@@ -18,6 +19,7 @@ import dao.DaoInternmentOrder;
 import dao.DaoInternmentOrderDetail;
 import dao.DaoKardex;
 import dao.DaoLocationCell;
+import dao.DaoLog;
 import dao.DaoPallet;
 import dao.DaoPalletIni;
 import dao.DaoPalletProduct;
@@ -28,6 +30,7 @@ import dao.impl.DaoInternmentOrderDetailImpl;
 import dao.impl.DaoInternmentOrderImpl;
 import dao.impl.DaoKardexImpl;
 import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoPalletImpl;
 import dao.impl.DaoPalletIniImpl;
 import dao.impl.DaoPalletProductImpl;
@@ -39,6 +42,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -353,51 +357,66 @@ public class Frm_adjustManual extends javax.swing.JFrame {
         if (!radioBtn_Intern.isSelected() && !radioBtn_exit.isSelected()) {
             JOptionPane.showMessageDialog(this, "Seleccione el tipo de ajuste manual (Internamiento o Salida)");
         } else {
-            if (typeAjustSelected == 1) { //Internamiento de producto
-                InternmentOrder intOrder = daoIntOrder.IntOrderGet(999999999);
-                List<InternmentOrderDetail> intOrderDetList = new ArrayList<>();
-                InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
-                List<InternmentOrder> internOrderList = new ArrayList<>();
-                intOrdDetail.setIdInternmentOrderDetail(daoIntOrdDetail.IntOrderDetailMaxId(product.getIdProduct(), 999999999) + 1);
-                intOrdDetail.setProduct(product);
-                intOrdDetail.setQuantityPallets(1);
-                intOrdDetail.setStatus(1);
-                intOrderDetList.add(intOrdDetail);
-                intOrder.setInternmentOrderDetail(intOrderDetList);
-                internOrderList.add(intOrder);
-                daoIntOrdDetail.IntOrderDetailIns(999999999, intOrdDetail);
-                daoIntOrder.IntOrdersInternAdjustManual(internOrderList);
-                daoMov.MovementUpdTypeMov(1, 3, daoMov.MovementGetMaxId());
-            }
-            if (typeAjustSelected == 2) { //Salida de producto
-                floorSelected = Integer.parseInt(txt_numFloor.getText());
-                columnSelected = Integer.parseInt(txt_numCol.getText());
-                cellDetailSelected = Integer.parseInt(txt_numCellDetail.getText());
-                Integer idLocCell = daoLocCell.idLocatioCellByColumFloor(idWhSelected, idRackSelected, columnSelected, floorSelected);
-                palletProd = daoPallet.palletProducLocatioCellDetailGet(idWhSelected, idRackSelected, idLocCell, cellDetailSelected);
-                if (palletProd != null) {
-                    daoLocCell.LocationCellAvailabilityUpd(1, idWhSelected, idRackSelected, idLocCell, cellDetailSelected, 1);//Se actualiza la disponibilidad a 1
-                    Movement mov = new Movement();
-                    mov.setIdProduct(palletProd.getIdproduct());
-                    mov.setIdWh(idWhSelected);
-                    mov.setType_Movement_id(2);
-                    mov.setType_Movement_idSubtype(3);
-                    Product prod = daoProduct.ProductsGet(palletProd.getIdproduct());
-                    mov.setStock_inicial(prod.getPhysicalStock());
-                    mov.setStock_final(prod.getPhysicalStock() - prod.getQuantityBoxesPerPallet());
-                    mov.setDate(new Date());
-                    daoMov.MovementIns(mov);
-                    List<Integer> pallets = new ArrayList<>();
-                    pallets.add(palletProd.getIdpallet());
-                    daoPalletIni.PalletsIniUpdStatus(pallets, 2);
-                    daoPalletProd.palletProductByLocaCellUpdStatus(0, palletProd.getIdpallet(), prod.getTrademark(), prod.getIdProduct(), idLocCell, cellDetailSelected, idRackSelected, idWhSelected);
-                    daoProduct.ProductUpdStock(prod.getIdProduct(), 1, 2);//se actualiza el stock con un pallet con idMovimiento 2 (salida)
-                } else {
-                    JOptionPane.showMessageDialog(this, "La ubicación no tiene ningún Pallet asociado");
+            
+            Object[] options = {"OK"};
+            if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
+                if (typeAjustSelected == 1) { //Internamiento de producto
+                    InternmentOrder intOrder = daoIntOrder.IntOrderGet(999999999);
+                    List<InternmentOrderDetail> intOrderDetList = new ArrayList<>();
+                    InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
+                    List<InternmentOrder> internOrderList = new ArrayList<>();
+                    intOrdDetail.setIdInternmentOrderDetail(daoIntOrdDetail.IntOrderDetailMaxId(product.getIdProduct(), 999999999) + 1);
+                    intOrdDetail.setProduct(product);
+                    intOrdDetail.setQuantityPallets(1);
+                    intOrdDetail.setStatus(1);
+                    intOrderDetList.add(intOrdDetail);
+                    intOrder.setInternmentOrderDetail(intOrderDetList);
+                    internOrderList.add(intOrder);
+                    daoIntOrdDetail.IntOrderDetailIns(999999999, intOrdDetail);
+                    daoIntOrder.IntOrdersInternAdjustManual(internOrderList);
+                    daoMov.MovementUpdTypeMov(1, 3, daoMov.MovementGetMaxId());
+                    daoLog.clientIns("Se ha realizado un internamiento por ajuste de inventario manual ", Frm_adjustManual.class.toString(), logSI.getIduser());
                 }
+                if (typeAjustSelected == 2) { //Salida de producto
+                    floorSelected = Integer.parseInt(txt_numFloor.getText());
+                    columnSelected = Integer.parseInt(txt_numCol.getText());
+                    cellDetailSelected = Integer.parseInt(txt_numCellDetail.getText());
+                    Integer idLocCell = daoLocCell.idLocatioCellByColumFloor(idWhSelected, idRackSelected, columnSelected, floorSelected);
+                    palletProd = daoPallet.palletProducLocatioCellDetailGet(idWhSelected, idRackSelected, idLocCell, cellDetailSelected);
+                    if (palletProd != null) {
+                        daoLocCell.LocationCellAvailabilityUpd(1, idWhSelected, idRackSelected, idLocCell, cellDetailSelected, 1);//Se actualiza la disponibilidad a 1
+                        Movement mov = new Movement();
+                        mov.setIdProduct(palletProd.getIdproduct());
+                        mov.setIdWh(idWhSelected);
+                        mov.setType_Movement_id(2);
+                        mov.setType_Movement_idSubtype(3);
+                        Product prod = daoProduct.ProductsGet(palletProd.getIdproduct());
+                        mov.setStock_inicial(prod.getPhysicalStock());
+                        mov.setStock_final(prod.getPhysicalStock() - prod.getQuantityBoxesPerPallet());
+                        mov.setDate(new Date());
+                        daoMov.MovementIns(mov);
+                        List<Integer> pallets = new ArrayList<>();
+                        pallets.add(palletProd.getIdpallet());
+                        daoPalletIni.PalletsIniUpdStatus(pallets, 2);
+                        daoPalletProd.palletProductByLocaCellUpdStatus(0, palletProd.getIdpallet(), prod.getTrademark(), prod.getIdProduct(), idLocCell, cellDetailSelected, idRackSelected, idWhSelected);
+                        daoProduct.ProductUpdStock(prod.getIdProduct(), 1, 2);//se actualiza el stock con un pallet con idMovimiento 2 (salida)
+                        daoLog.clientIns("Se ha realizado una salida por ajuste de inventario manual ", Frm_adjustManual.class.toString(), logSI.getIduser());
+                    } else {
+                        JOptionPane.showMessageDialog(this, "La ubicación no tiene ningún Pallet asociado");
+                    }
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha realizado el ajuste manual de inventario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        menu_padre.setVisible(true);
+                        menu_padre.setLocationRelativeTo(null);
+                        this.dispose();
+                    }
+                }
+
             }
         }
-
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

@@ -279,23 +279,23 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
     }
 
     public String IntOrderIntern(Integer id) {
-        String result = null;
+        String result = "";
         for (InternmentOrderDetail intOrdDet : IntOrderGet(id).getInternmentOrderDetail()) {
-            result = IntOrderDetailIntern(id, intOrdDet);
+            result += IntOrderDetailIntern(id, intOrdDet);
         }
         return result;
     }
 
     public String IntOrderIntern(InternmentOrder intOrder) {
-        String result = null;
+        String result = "";
         for (InternmentOrderDetail intOrdDet : intOrder.getInternmentOrderDetail()) {
-            result = IntOrderDetailIntern(intOrder.getIdInternmentOrder(), intOrdDet);
+            result += IntOrderDetailIntern(intOrder.getIdInternmentOrder(), intOrdDet);
         }
         return result;
     }
 
     public String IntOrderDetailIntern(Integer idIntOrder, InternmentOrderDetail intOrdDetail) {
-        String result = null;
+        String result = "";
         List<LocationCellDetail> freeLocCellList = GetFreeLocationCellsDetail(intOrdDetail.getProduct().getIdProduct());
         List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder, intOrdDetail.getProduct().getIdProduct());
         Integer cantPalletsIngresados = 0;
@@ -341,6 +341,8 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             virtualWh.setDate(IntOrderGet(idIntOrder).getDate());
             virtualWh.setQuantity(intOrdDetail.getQuantityPallets() - cantPalletsIngresados);
             daoVirtualWh.VirtualWarehouseIns(virtualWh);
+            result = virtualWh.getQuantity()+" pallets del producto "+intOrdDetail.getProduct().getName()+
+                    " se ingresaron al almacén virtual.\n";
         }
 
         return result;

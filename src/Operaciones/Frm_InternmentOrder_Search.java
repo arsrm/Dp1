@@ -350,8 +350,8 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 }
             }
             if (op_Intern) {
-                daoIntOrder.IntOrdersIntern(idIntOrderInternList);
-                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                String result = daoIntOrder.IntOrdersIntern(idIntOrderInternList);
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito\n"+result, "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                 if (ok_option == JOptionPane.OK_OPTION) {
                     initializeTable();
                 }
