@@ -179,6 +179,48 @@ public class DaoVehicleImpl implements DaoVehicle {
         }
         return list;
     }
+
+    @Override
+    public String vehicleIns(Vehicle vehicle) {
+        String result = null;
+        String sql = "INSERT INTO Vehicle("
+                + "license_plate,"
+                + "name,"
+                + "capacity,"
+                + "dispatch_number,"
+                + "status,"
+                + "Driver_idDriver"
+                + ") VALUES(?,?,?,?,?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, vehicle.getLicense_plate());
+                ps.setString(2, vehicle.getName());
+                ps.setDouble(3, vehicle.getCapacity());
+                ps.setInt(4, vehicle.getDispatchNumber());
+                ps.setInt(5, vehicle.getVehicleState().getIdVehicleState());
+                ps.setInt(6, vehicle.getDriver().getIdDriver());
+
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
     
 }
                     

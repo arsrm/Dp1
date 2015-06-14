@@ -22,4 +22,6 @@ public interface DaoVehicle {
     public Vehicle vehicleGet(Integer idvehicle);
     
     public String vehicleUpd(Vehicle vehicle);
+    
+    public String vehicleIns(Vehicle vehicle);
 }
