@@ -54,20 +54,15 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
     }
 
     class BarraProgreso extends SwingWorker<Void, Void> {
-
+        String result=null;
         @Override
         public void done() {
             progressBar.setIndeterminate(false);
                     Object[] options = {"OK"};
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la orden de internamiento con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-            if (ok_option == JOptionPane.OK_OPTION) {
-                menu_padre.setVisible(true);
-                menu_padre.setLocationRelativeTo(null);
-                Frm_InternmentOrder_Search.this.dispose();
-                DaoLog daoLog = new DaoLogImpl();
-                Log logSI = null;
-                daoLog.clientIns("Se ha agregado una orden de internamiento  ", Frm_IntermentOrder_Load.class.toString(), logSI.getIduser());
-            }
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito.\n" + result, "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    if (ok_option == JOptionPane.OK_OPTION) {
+                        initializeTable();
+                    }
         }
 
         @Override
@@ -91,11 +86,7 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                 }
                 if (op_Intern) {
                     progressBar.setIndeterminate(true);
-                    String result = daoIntOrder.IntOrdersIntern(idIntOrderInternList);
-                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha ingresado las ordenes de internamiento seleccionadas con éxito.\n" + result, "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                    if (ok_option == JOptionPane.OK_OPTION) {
-                        initializeTable();
-                    }
+                    result = daoIntOrder.IntOrdersIntern(idIntOrderInternList);
                 }
             }
             return null;
