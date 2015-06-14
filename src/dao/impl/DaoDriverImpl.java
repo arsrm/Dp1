@@ -74,7 +74,38 @@ public class DaoDriverImpl implements DaoDriver{
 
     @Override
     public String driverIns(Driver driver) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "INSERT INTO Driver("
+                + "idDriver,"
+                + "name,"
+                + "status"
+                + ") VALUES(?,?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, driver.getIdDriver());
+                ps.setString(2, driver.getName());
+                ps.setInt(3, driver.getStatus());
+
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
@@ -125,6 +156,36 @@ public class DaoDriverImpl implements DaoDriver{
     @Override
     public String driverUpd(Driver driver) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Integer driverGetMaxId() {
+        Integer maxIdDriver=0;
+        String sql = "SELECT "
+                + "MAX(idDriver)"
+                + "FROM Driver ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    maxIdDriver = rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxIdDriver = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return maxIdDriver;
     }
     
 }

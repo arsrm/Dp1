@@ -25,6 +25,7 @@ public interface DaoDriver {
     public Driver driverGet(Integer idDriver);
     
     public String driverUpd(Driver driver);
+    public Integer driverGetMaxId();
     
     
 }

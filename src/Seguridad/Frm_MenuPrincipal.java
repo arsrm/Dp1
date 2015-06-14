@@ -21,6 +21,7 @@ import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_IntermentOrder_Load;
 import Operaciones.Frm_InternmentOrder_Search;
 import Operaciones.Frm_Load_RequestOrder;
+import Operaciones.Frm_MassiveLoad;
 import Operaciones.Frm_PickingOrder_Search;
 import Operaciones.Frm_RequestOrder_Search;
 import Operaciones.Frm_ReturnProducts;
@@ -544,7 +545,9 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_op_ProductoActionPerformed
 
     private void op_Carga_DatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_op_Carga_DatosActionPerformed
-        // TODO add your handling code here:
+        Frm_MassiveLoad frm_massiveLoad = new Frm_MassiveLoad(this);
+        frm_massiveLoad.setVisible(true);
+        frm_massiveLoad.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_Carga_DatosActionPerformed
 
     private void menu_cerrarsesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menu_cerrarsesionMouseClicked
