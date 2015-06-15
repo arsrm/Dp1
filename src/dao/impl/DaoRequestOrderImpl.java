@@ -459,7 +459,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
     }
   
       @Override
-    public RequestOrder requestOrderGetClient(String idclient) {
+    public RequestOrder requestOrderGetClient(Integer idclient) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
          RequestOrder requestOrder = null;
           String sql =  "SELECT idRequest_Order,"
@@ -474,7 +474,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setString(1, idclient);
+                ps.setInt(1, idclient);
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     requestOrder = new RequestOrder();

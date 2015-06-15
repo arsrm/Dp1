@@ -12,6 +12,7 @@ import dao.impl.DaoRequestOrderImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
@@ -298,11 +299,12 @@ public class Frm_Client_Search extends javax.swing.JFrame {
             if ((Boolean) prueba) {
                 String numm = (String) modelo.getValueAt(i, 0);
                 DaoRequestOrder dro = new DaoRequestOrderImpl();
-                if (dro.requestOrderGetClient(numm)!=null) {
+                Client c =daoClient.clientGet(numm);
+                
+                if (dro.requestOrderGetClient(c.getIdClient()) == null) {
                     ids.add(numm);
-                  
                     daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
-                }
+                }else JOptionPane.showMessageDialog(this, "No se puede editar al Cliente "+numm+" porque esta tiene pedidos pendientes");
             }
         }
         daoClient.clientDel(ids);
