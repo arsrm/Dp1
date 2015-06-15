@@ -25,6 +25,7 @@ import dao.DaoClient;
 import dao.DaoDispatchOrder;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoDispatchOrderImpl;
+import Reportes.Frm_DispatchOrderDetail_Report;
 
 
 /**
@@ -729,7 +730,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         iddispatch=Integer.parseInt(tbl_Dispatch.getValueAt(rowSel, 0).toString());    
         DaoDispatchOrder dao= new DaoDispatchOrderImpl();
         model=dao.dispatchOrderGet(iddispatch);
-        Frm_DispatchOrderDetail frm_orderdetail = new Frm_DispatchOrderDetail(this,model);
+        Frm_DispatchOrderDetail_Report frm_orderdetail = new Frm_DispatchOrderDetail_Report(this,model);
         frm_orderdetail.setVisible(true);
         frm_orderdetail.setLocationRelativeTo(null);
         this.setVisible(false);

@@ -42,7 +42,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author gzavala
  */
-public class Frm_DispatchOrderDetail extends javax.swing.JFrame {
+public class Frm_DispatchOrderDetail_Report extends javax.swing.JFrame {
 
     /**
      * Creates new form Frm_DispatchOrderDetail
@@ -104,7 +104,7 @@ public class Frm_DispatchOrderDetail extends javax.swing.JFrame {
         }
     }
     
-    public Frm_DispatchOrderDetail( Frm_DispatchReport ventana,DispatchOrder dispatch ) {
+    public Frm_DispatchOrderDetail_Report( Frm_DispatchReport ventana,DispatchOrder dispatch ) {
         setTitle("Detalle Orden Despacho");
         menu_padre=ventana;
         objmodel=dispatch;
