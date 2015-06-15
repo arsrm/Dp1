@@ -300,6 +300,7 @@ public class Frm_Client_Search extends javax.swing.JFrame {
                 DaoRequestOrder dro = new DaoRequestOrderImpl();
                 if (dro.requestOrderGetClient(numm)!=null) {
                     ids.add(numm);
+                  
                     daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
                 }
             }

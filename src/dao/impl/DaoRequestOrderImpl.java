@@ -414,7 +414,7 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
                 + "Client_idClient,"
                 + "State_Request_Order_idStateRequest_Order "
                 + "FROM request_order WHERE Client_idClient = ?"
-                + " AND State_Request_Order_idStateRequest_Order = 2 ";
+                + " AND State_Request_Order_idStateRequest_Order = 2  ";
 
         Connection cn = db.getConnection();
         if (cn != null) {
