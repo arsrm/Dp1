@@ -415,6 +415,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             this.dispose();
         }else{
             frm_dosAux.setVisible(true);
+            frm_dosAux.refreshGrid();
             this.dispose();
         }
         

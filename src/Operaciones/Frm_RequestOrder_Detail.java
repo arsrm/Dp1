@@ -551,7 +551,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                                 Integer delivered = (Integer)table_products.getValueAt(i, 6);
                                 Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
                                 roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
-                                roAux.getRequestOrderDetailList().get(i).setRemaining(quantity-delivered);
+                                roAux.getRequestOrderDetailList().get(i).setRemaining(palletsNumberRequested-delivered);
                                 //y se ajusta la nueva cantidad solicitada con lo que falta
                                 //roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
                             }

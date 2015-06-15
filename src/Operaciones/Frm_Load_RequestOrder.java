@@ -7,6 +7,7 @@
 package Operaciones;
 
 import Model.Client;
+import Model.Log;
 import Model.Product;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
@@ -14,11 +15,13 @@ import Model.StateRequestOrder;
 import Model.Users;
 import Seguridad.*;
 import dao.DaoClient;
+import dao.DaoLog;
 import dao.DaoProducts;
 import dao.DaoRequestOrder;
 import dao.DaoStateRequestOrder;
 import dao.DaoUsers;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoRequestOrderImpl;
 import dao.impl.DaoStateRequestOrderImpl;
@@ -153,7 +156,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Número de Orden", "Cliente", "FechaRegistro", "Fecha Límite de Entrega", "Estado"
+                "Número de Orden", "Cliente", "Fecha Límite de Entrega", "Fecha Llegada", "Estado"
             }
         ));
         table_orders.setColumnSelectionAllowed(true);
@@ -239,8 +242,11 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         // TODO add your handling code here:
         chooser.setDialogTitle("SELECCIONAR ARCHIVO DE ÓRDENES DE PEDIDO");
         chooser.showDialog(this, null);
-        dispatchFileName= chooser.getSelectedFile().getAbsolutePath();
-        txt_LoadFile.setText(dispatchFileName);
+        File file = chooser.getSelectedFile();
+        if(file != null)
+            dispatchFileName= file.getAbsolutePath();
+       
+        txt_LoadFile.setText(dispatchFileName.toString());
     }//GEN-LAST:event_btn_SearchActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -259,10 +265,15 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             int sizeArray = requestOrderList.size();
             if(sizeArray!=0){
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
                 for(int i=0;i<sizeArray;i++){
                     String result = daoRequestOrder.requestOrderIns(requestOrderList.get(i));
+                    daoLog.clientIns("Se ha registrado la orden de pedido N° :  " + requestOrderList.get(i).getIdRequestOrder(), Frm_Load_RequestOrder.class.toString(), logSI.getIduser());
                 }
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                
+                
             }else{
                  int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No hay registros por guardar.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             }
@@ -314,10 +325,6 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                     ro.setIdRequestOrder(numOrder);
                     line = dispatchFile.readLine();
                     words_line = line.split(",");
-                    dateArrive = dateFormat.parse(words_line[1]);
-                    ro.setDateArrive(dateArrive);
-                    line = dispatchFile.readLine();
-                    words_line = line.split(",");
                     dateline = dateFormat.parse(words_line[1]);
                     ro.setDateline(dateline);
                     line = dispatchFile.readLine();
@@ -330,7 +337,6 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                     StateRequestOrder stateRequest = daoStateRequestOrder.stateRequestOrderGet(idStateRequest);
                     if(client!=null && stateRequest != null){
                         ro.setClient(client);
-                        ro.setDateArrive(dateArrive);
                         ro.setDateline(dateline);                    
                         ro.setRequestOrderDetailList(new ArrayList<RequestOrderDetail>());
                         ro.setUserCreated(userAux.getIdUser());
@@ -432,9 +438,12 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         for(int i=0;i<sizeOrder;i++){
             RequestOrder ro = requestOrderList.get(i);
             String nameState = ro.getStateRequestOrder().getDescription();
-            String dateArrive = sdf.format(ro.getDateArrive());
+            Date dateArrive = ro.getDateArrive();
+            String dateA = null;
+            if(dateArrive != null)
+                dateA = sdf.format(dateArrive);
             String dateLine = sdf.format(ro.getDateline());
-            Object[] fila = {i,ro.getClient().getName(),dateArrive,dateLine, nameState};
+            Object[] fila = {ro.getIdRequestOrder(),ro.getClient().getName(),dateLine,dateA, nameState};
             model.addRow(fila);
         }
     }

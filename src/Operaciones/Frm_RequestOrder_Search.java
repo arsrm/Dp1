@@ -7,15 +7,18 @@
 package Operaciones;
 
 import Model.Client;
+import Model.PickingOrder;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import Model.StateRequestOrder;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
+import dao.DaoPickingOrder;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
 import dao.DaoStateRequestOrder;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
 import dao.impl.DaoStateRequestOrderImpl;
@@ -109,6 +112,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         table_orders = new javax.swing.JTable();
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
+        btn_update = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -257,6 +261,13 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             }
         });
 
+        btn_update.setText("Actualizar Pedidos");
+        btn_update.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_updateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_ordersLayout = new javax.swing.GroupLayout(pnl_orders);
         pnl_orders.setLayout(pnl_ordersLayout);
         pnl_ordersLayout.setHorizontalGroup(
@@ -267,6 +278,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
                         .addComponent(btn_delete)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
                         .addGap(4, 4, 4))))
@@ -279,7 +292,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
-                    .addComponent(btn_cancel))
+                    .addComponent(btn_cancel)
+                    .addComponent(btn_update))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -401,6 +415,57 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbo_statusActionPerformed
 
+    private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
+        // TODO add your handling code here:
+        Object[] options = {"OK"};
+         System.out.println("HOLI");
+        List<RequestOrder> list = daoRequest.requestOrderQryByStatus(2);
+       
+        System.out.println(list.size());
+        if(list == null){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron pedidos pendientes.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+        }else{
+            if(list.size()==0){
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron pedidos pendientes.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+            }else{
+                int size = list.size();
+                for(int i=0;i<size;i++){
+                    RequestOrder ro = list.get(i);
+                    updateByDate(ro);
+                }
+            }
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han cancelado los pedidos que pasaron el límite de fecha máxima de entrega.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+        }
+    }//GEN-LAST:event_btn_updateActionPerformed
+
+     private void updateByDate(RequestOrder ro){
+        Date actualDate = new Date();
+        System.out.println(actualDate);
+        Date requestDate = ro.getDateline();
+        System.out.println(requestDate);
+        DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+        if(actualDate.getTime()<requestDate.getTime()){
+            List<PickingOrder> listPo = daoPickingOrder.pickingOrderQry_search(ro.getIdRequestOrder());
+            if(listPo!=null){
+                if(listPo.size()==0){
+                    StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(3);
+                    ro.setStateRequestOrder(state);
+                    daoRequest.requestOrderUpd(ro);
+                }else{
+                    StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
+                    ro.setStateRequestOrder(state);
+                    daoRequest.requestOrderUpd(ro);
+                }
+            }else{
+                    StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(3);
+                    ro.setStateRequestOrder(state);
+                    daoRequest.requestOrderUpd(ro);
+            }
+            
+        }
+        
+    }
+    
     private boolean validateRequest(Integer idRequest){
         RequestOrder ro = daoRequest.requestOrderGet(idRequest);
         if(ro!=null){
@@ -469,7 +534,9 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                 for(int i=0;i<size;i++){
                     RequestOrder ro = requestOrderList.get(i);
                     String nameState = ro.getStateRequestOrder().getDescription();
-                    String dateArrive = sdf.format(ro.getDateArrive());
+                    String dateArrive = null;
+                    if(ro.getDateArrive()!=null)
+                        dateArrive = sdf.format(ro.getDateArrive());
                     String dateLine = sdf.format(ro.getDateline());
                     Object[] fila = {ro.getIdRequestOrder(),ro.getClient().getName(), nameState,false};
                     model.addRow(fila);
@@ -483,6 +550,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     private javax.swing.JButton btn_client_search;
     private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_search;
+    private javax.swing.JButton btn_update;
     private javax.swing.JComboBox cbo_status;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

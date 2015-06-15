@@ -20,4 +20,6 @@ public interface DaoPickingOrderDetail {
     public String pickingOrderDetailAssignToDispatch(Integer idPickingOrderDetail,Integer idPickingOrder);
 
     public String pickingOrderDetailReturnToWarehouse(Integer idPickingOrderDetail,Integer idPickingOrder);
+    
+    public String pickingOrderDetailConfirmDespatch(Integer idPickingOrderDetail,Integer idPickingOrder);
 }

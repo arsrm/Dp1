@@ -86,55 +86,111 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
     }
 
     @Override
-    public List<RequestOrder> requestOrderQry_search(Integer id, Date dateFrom, Date dateTo,Integer index_status) {
+    public List<RequestOrder> requestOrderQry_search(Integer id, Date fi, Date ff,Integer index_status) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String sql = null;
+        int flag = 0;
+        if (fi != null && ff !=null ){
+            sql = "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                + "FROM request_order "
+                + "WHERE dateline BETWEEN ? AND ? ";
+                if(id!=-1)
+                    sql+= " AND Client_idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND State_Request_Order_idStateRequest_Order="+index_status;
+            flag = 1;
+        }else if(fi != null && ff == null){
+             sql = "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                + "FROM request_order "
+                + "WHERE dateline >= ? ";
+                if(id!=-1)
+                    sql+= " AND Client_idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND State_Request_Order_idStateRequest_Order="+index_status;
+             flag = 2;
+        }else if (fi == null && ff != null){
+            sql = "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                + "FROM request_order "
+                + "WHERE dateline <= ? ";
+                if(id!=-1)
+                    sql+= " AND Client_idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND State_Request_Order_idStateRequest_Order="+index_status;
+            flag = 3;
+        }else if (fi == null && ff == null){
+            sql = "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                + "FROM request_order ";
+                if(id!=-1){
+                     sql+= " WHERE Client_idClient = ? ";
+                        if(index_status == 0){ //es cualquiera de los dos tipos
+                            sql+="";
+                        }else
+                            sql+= " AND State_Request_Order_idStateRequest_Order="+index_status;
+                    }
+                    else{
+                        if(index_status == 0){ //es cualquiera de los dos tipos
+                            sql+="";
+                        }else
+                            sql+= " WHERE State_Request_Order_idStateRequest_Order="+index_status;
+                    }
+        }
+        
+        
+        
+        
         
         int idStatus;
         List<RequestOrder> requestOrders = null;
-        if(dateFrom==null){
-            dateFrom = new Date();
-            dateFrom.setTime(0);
-        }
-        if(dateTo == null){
-            dateTo = new Date();
-        }
         
-        if(id!=-1){
-            sql = "SELECT idRequest_Order,"
-                + "dateArrive,"
-                + "dateline,"
-                + "Client_idClient,"
-                + "State_Request_Order_idStateRequest_Order "
-                + "FROM request_order "
-                + "WHERE dateline >= ? "
-                + "AND dateline <= ? "
-                + "AND Client_idClient = ? ";
-        }else{
-            sql = "SELECT idRequest_Order,"
-                + "dateArrive,"
-                + "dateline,"
-                + "Client_idClient,"
-                + "State_Request_Order_idStateRequest_Order "
-                + "FROM request_order "
-                + "WHERE dateline >= ? "
-                + "AND dateline <= ? ";
-        }
-
-        if(index_status == 0){ //es cualquiera de los dos tipos
-            sql+="";
-        }else
-            sql+= "AND State_Request_Order_idStateRequest_Order="+index_status;
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
 //                java.sql.Date dateIniSql = new java.sql.Date(dateIni.getTime());
-                ps.setDate(1, new java.sql.Date(dateFrom.getTime()));
-                ps.setDate(2, new java.sql.Date(dateTo.getTime()));
-                if(id!=-1)
-                    ps.setInt(3,id);
-
+                if (flag == 1 ){
+                    ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                    ps.setDate(2,  new java.sql.Date(ff.getTime()));
+                    if(id!=-1)
+                        ps.setInt(3,id);                    
+                }
+                else if (flag ==2 ){
+                    ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                    if(id!=-1)
+                        ps.setInt(2,id);
+                }
+                else if (flag ==3 ){
+                    ps.setDate(1,  new java.sql.Date(ff.getTime()));
+                    if(id!=-1)
+                        ps.setInt(2,id);
+                     
+                }else{
+                    if(id!=-1)
+                        ps.setInt(1,id);     
+                    
+                }
+                
                 ResultSet rs = ps.executeQuery();
 
                 requestOrders = new LinkedList<>();
@@ -175,21 +231,19 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         String result = null;
         String sql = "INSERT INTO request_order("
                 + "idRequest_Order,"
-                + "dateArrive,"
                 + "dateline,"
                 + "Client_idClient,"
                 + "State_Request_Order_idStateRequest_Order"
-                + ") VALUES(?,?,?,?,?)";
+                + ") VALUES(?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setInt(1, requestOrder.getIdRequestOrder());
-                ps.setDate(2,  new java.sql.Date(requestOrder.getDateArrive().getTime()));
-                ps.setDate(3, new java.sql.Date(requestOrder.getDateline().getTime()));
-                ps.setInt(4, requestOrder.getClient().getIdClient()); 
-                ps.setInt(5, requestOrder.getStateRequestOrder().getIdStateRequestOrder());
+                ps.setDate(2, new java.sql.Date(requestOrder.getDateline().getTime()));
+                ps.setInt(3, requestOrder.getClient().getIdClient()); 
+                ps.setInt(4, requestOrder.getStateRequestOrder().getIdStateRequestOrder());
                
                              
                 
@@ -451,5 +505,120 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         return requestOrder;
     }
 
+    
+    @Override
+    public List<RequestOrder> requestOrderQryByStatus(Integer status) {
+        List<RequestOrder> list = null;
+        String sql =  "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                +"FROM  request_order "
+                + "WHERE State_Request_Order_idStateRequest_Order=? ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, status);
+                ResultSet rs = ps.executeQuery();
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    List<RequestOrderDetail> requestDetail =  null;
+                    RequestOrder ro = new RequestOrder();
+                    ro.setIdRequestOrder(rs.getInt(1));
+                    requestDetail = daoRequestOrderDetail.requestOrderDetailQry(rs.getInt(1));
+                    ro.setDateArrive(rs.getDate(2));
+                    ro.setDateline(rs.getDate(3));
+                    DaoClient daoClient = new DaoClientImpl();
+                   
+                    Client client = daoClient.clientGet(rs.getInt(4));
+                    ro.setClient(client);
+                    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+                    ro.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(5)));
+                   
+                    ro.setRequestOrderDetailList(requestDetail);
+                    list.add(ro);
+                    
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Integer getQuantityDispatchesDeliveredCanceled(Integer idRequest) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Integer count = 0;
+        String sql =  "select COUNT(d.`idDispatch_Order`) as count from request_order r,picking_order p,dispatch_order d"
+                + " where r.`idRequest_Order` = p.`Request_Order_idRequest_Order` and d.`Picking_Order_idPicking_Order` = p.`idPicking_Order` and r.`idRequest_Order`=?"
+                + " and (d.status=1 OR d.status=4)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,idRequest);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    count = rs.getInt("count");
+                    
+                }
+
+            } catch (SQLException e) {
+                count = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return count;
+    }
+
+    @Override
+    public String setDateArrivalToRequest(RequestOrder ro) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        DaoRequestOrderDetail daoDetail = new DaoRequestOrderDetailImpl();
+        String result = null;
+        String sql = "UPDATE request_order SET "
+                + "dateArrive = ? "
+                + "WHERE idRequest_Order = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+               
+                
+                ps.setDate(1,new java.sql.Date(ro.getDateArrive().getTime()));
+                ps.setInt(2, ro.getIdRequestOrder());
+               
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+    
+    
     
 }

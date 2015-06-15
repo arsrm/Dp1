@@ -31,6 +31,12 @@ public interface DaoRequestOrder {
     
     public String requestsDelInvalidate(Integer idRequest);
     
+    public List<RequestOrder> requestOrderQryByStatus(Integer status);
+    
+    public Integer getQuantityDispatchesDeliveredCanceled(Integer idRequest);
+    
+    public String setDateArrivalToRequest(RequestOrder ro);
+    
     public RequestOrder requestOrderGetClient(String idclient);
       
     

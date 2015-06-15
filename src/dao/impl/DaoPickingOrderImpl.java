@@ -70,7 +70,7 @@ public class DaoPickingOrderImpl implements DaoPickingOrder {
                 + "status,"
                 + "Request_Order_idRequest_Order "
                 + "from Picking_Order "
-                 + "where Date BETWEEEN ? AND ? ";
+                 + "where Date BETWEEN ? AND ? ";
          flag = 1; 
        }
        else if (fi != null && ff == null){

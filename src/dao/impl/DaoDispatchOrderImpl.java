@@ -84,20 +84,13 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
     }
 
     @Override
-    public List<DispatchOrder> dispatchOrderQry_search(Integer id, Date dateFrom, Date dateTo, Integer index_status) {
+    public List<DispatchOrder> dispatchOrderQry_search(Integer id, Date fi, Date ff, Integer index_status) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         String sql = null;
         int idStatus;
         List<DispatchOrder> dispatchList = null;
-        if(dateFrom==null){
-            dateFrom = new Date();
-            dateFrom.setTime(0);
-        }
-        if(dateTo == null){
-            dateTo = new Date();
-        }
-        
-        if(id!=-1){
+        int flag = 0;
+        if (fi != null && ff !=null ){
             sql = "SELECT idDispatch_Order,"
                 + "idClient,"
                 + "departure_date,"
@@ -106,40 +99,99 @@ public class DaoDispatchOrderImpl implements DaoDispatchOrder{
                 + "Picking_Order_idPicking_Order, "
                 + "idVehicle " 
                 + "FROM dispatch_order "
-                + "WHERE arrival_date >= ? "
-                + "AND arrival_date <= ? "
-                + "AND idClient = ? ";
-        }else{
+                + "WHERE arrival_date BETWEEN ? AND ? ";
+                if(id!=-1)
+                    sql+= " AND idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND status="+index_status;
+            flag = 1;
+        }else if(fi != null && ff == null){
+             sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
+                + "FROM dispatch_order "
+                + "WHERE arrival_date >= ? ";
+                if(id!=-1)
+                    sql+= " AND idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND status="+index_status;
+             flag = 2;
+        }else if (fi == null && ff != null){
+           sql = "SELECT idDispatch_Order,"
+                + "idClient,"
+                + "departure_date,"
+                + "arrival_date,"
+                + "status,"
+                + "Picking_Order_idPicking_Order, "
+                + "idVehicle " 
+                + "FROM dispatch_order "
+                + "WHERE arrival_date <= ? ";
+                if(id!=-1)
+                    sql+= " AND idClient = ? ";
+                if(index_status == 0){ //es cualquiera de los dos tipos
+                    sql+="";
+                }else
+                    sql+= " AND status="+index_status;
+            flag = 3;
+        }else if (fi == null && ff == null){
             sql = "SELECT idDispatch_Order,"
                 + "idClient,"
                 + "departure_date,"
                 + "arrival_date,"
                 + "status,"
                 + "Picking_Order_idPicking_Order, "
-                + "idVehicle "
-                + "FROM dispatch_order "
-                + "WHERE arrival_date >= ? "
-                + "AND arrival_date <= ? ";
+                + "idVehicle " 
+                + "FROM dispatch_order ";
+                if(id!=-1){
+                    sql+= " WHERE idClient = ? ";
+                    if(index_status == 0){ //es cualquiera de los dos tipos
+                        sql+="";
+                    }else
+                        sql+= " AND status="+index_status;
+                    }
+                    else{
+                        if(index_status == 0){ //es cualquiera de los dos tipos
+                            sql+="";
+                        }else
+                            sql+= " WHERE status="+index_status;
+                    }
         }
-
-        if(index_status == 0){ //es cualquiera de los dos tipos
-            sql+="";
-        }else if(index_status == 1){ //atendido
-            sql+= "AND status=1";
-        }else if(index_status==2){//pendiente
-            sql+= "AND status=2";
-        }else if(index_status==3){//cancelado
-            sql+= "AND status=3";
-        }
+        
+        
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
 //                java.sql.Date dateIniSql = new java.sql.Date(dateIni.getTime());
-                ps.setDate(1, new java.sql.Date(dateFrom.getTime()));
-                ps.setDate(2, new java.sql.Date(dateTo.getTime()));
-                if(id!=-1)
-                    ps.setInt(3,id);
+                if (flag == 1 ){
+                    ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                    ps.setDate(2,  new java.sql.Date(ff.getTime()));
+                    if(id!=-1)
+                        ps.setInt(3,id);                    
+                }
+                else if (flag ==2 ){
+                    ps.setDate(1,  new java.sql.Date(fi.getTime()));
+                    if(id!=-1)
+                        ps.setInt(2,id);
+                }
+                else if (flag ==3 ){
+                    ps.setDate(1,  new java.sql.Date(ff.getTime()));
+                    if(id!=-1)
+                        ps.setInt(2,id);
+                     
+                }else{
+                    if(id!=-1)
+                        ps.setInt(1,id);     
+                    
+                }
 
                 ResultSet rs = ps.executeQuery();
 

@@ -179,8 +179,8 @@
                   <Table columnCount="5" rowCount="0">
                     <Column editable="true" title="N&#xfa;mero de Orden" type="java.lang.Object"/>
                     <Column editable="true" title="Cliente" type="java.lang.Object"/>
-                    <Column editable="true" title="FechaRegistro" type="java.lang.Object"/>
                     <Column editable="true" title="Fecha L&#xed;mite de Entrega" type="java.lang.Object"/>
+                    <Column editable="true" title="Fecha Llegada" type="java.lang.Object"/>
                     <Column editable="true" title="Estado" type="java.lang.Object"/>
                   </Table>
                 </Property>

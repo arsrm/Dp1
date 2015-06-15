@@ -522,6 +522,7 @@ public class Frm_PickingOrder_Detail extends javax.swing.JFrame {
             }
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha generado la orden de despacho con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             frm_posAux.setVisible(true);
+            frm_posAux.refreshGrid();
             this.dispose();
         }
         

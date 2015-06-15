@@ -17,6 +17,7 @@ import Model.PickingOrderDetail;
 import Model.Product;
 import Model.Rack;
 import Model.RequestOrder;
+import Model.RequestOrderDetail;
 import Model.StateRequestOrder;
 import Model.Warehouse;
 import dao.DaoClient;
@@ -53,6 +54,7 @@ import dao.impl.DaoStateRequestOrderImpl;
 import dao.impl.DaoVehicleImpl;
 import dao.impl.DaoVehicleStateImpl;
 import dao.impl.DaoWHImpl;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -493,10 +495,16 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                 dispatchOrderAux.setStatus(1);
                 daoDispatchOrder.dispatchOrderUpd(dispatchOrderAux);
                 PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrderAux.getIdPickingOrder());
+               
+                //setear los status por orden de picking detail
+                List<PickingOrderDetail> list = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
+                int size = list.size();
+                for(int i=0;i<size;i++){
+                    daoPickingOrderDetail.pickingOrderDetailConfirmDespatch(list.get(i).getIdPicking_Order_Detail(),po.getIdPickingOrder());
+                }
                 RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
-                StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
-                ro.setStateRequestOrder(state);
-                daoRequestOrder.requestOrderUpd(ro);
+                updateRequestOrder(ro);
+               
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"El despacho ha finalizado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                 if(ok_option==JOptionPane.OK_OPTION){
                     frm_dosAux.setVisible(true);
@@ -507,6 +515,40 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_confirmActionPerformed
 
+    private void updateRequestOrder(RequestOrder ro){
+        //verificamos dos cosas:
+        //1: con los despachos que ya se han hecho, ya se han entregado o cancelado
+        List<RequestOrderDetail> list = ro.getRequestOrderDetailList();
+        int size = list.size();
+        boolean completed = true;
+        for(int i=0;i<size;i++){
+            if(list.get(i).getRemaining()!=0){
+                completed =false;
+                break;
+            }    
+        }
+        System.out.println("PROBANDO "+completed);
+        
+        //si el estado esta en true, quiere decir que se hizo picking de todo pero habran picking anulados
+        //habran picking que aun no son despachos entregados
+        if(completed == true){
+           List<PickingOrder> listPos = daoPickingOrder.pickingOrderQry_search(ro.getIdRequestOrder());
+           int pickingOrdersCount = listPos.size();
+           System.out.println("size Picking: "+pickingOrdersCount);
+           int dispatchOrdersCount = daoRequestOrder.getQuantityDispatchesDeliveredCanceled(ro.getIdRequestOrder());
+           System.out.println("size Dispatch: "+dispatchOrdersCount);
+           if(pickingOrdersCount == dispatchOrdersCount){
+               StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(1);
+               ro.setStateRequestOrder(state);
+               daoRequestOrder.requestOrderUpd(ro);
+               Date dateArrival = new Date();
+               ro.setDateArrive(dateArrival);
+           }
+        }
+            
+        
+    }
+    
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};

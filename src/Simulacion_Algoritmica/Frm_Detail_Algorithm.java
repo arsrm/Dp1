@@ -284,6 +284,8 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
             int index_order = 1;
             for(int i=0;i<sizeV;i++){
                 //por cada vehiculo
+                Vehicle veh = vehList.get(i);
+                int countDispatches = veh.getDispatchNumber();
                 String route = listPerSolutionAux.get(i);
                 String[] idClients = route.split("-");
                 int sizeCli = idClients.length;
@@ -298,7 +300,6 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                         /****************************************************************/
                         if(flagAux==1){
                             dor.setStatus(3);
-                            Vehicle veh = vehList.get(i);
                             dor.setIdVehicle(veh);
                             daoDispatchOrder.dispatchOrderAssignVehicle(dor);
                         }
@@ -313,8 +314,12 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                         exeD.setIdPicking_Order(idPicking);
                         exeD.setIdDispatch_Order(dor.getIdDispatch_Order());
                         daoExeDetail.executionDetailIns(exeD);
+                        countDispatches++;
                         
                     }
+                    
+                    veh.setDispatchNumber(countDispatches);
+                    daoVehicle.vehicleUpd(veh);
                 }
                 index_order++;
             }

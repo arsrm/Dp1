@@ -130,7 +130,31 @@ public class DaoVehicleImpl implements DaoVehicle {
 
     @Override
     public String vehicleUpd(Vehicle vehicle) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String result = null;
+        String sql = "UPDATE Vehicle SET "
+                + "dispatch_number = ? "
+                + "WHERE idVehicle = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1,vehicle.getDispatchNumber());
+                ps.setInt(2,vehicle.getIdVehicle());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
     }
 
     @Override

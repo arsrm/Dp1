@@ -6,21 +6,30 @@
 
 package Operaciones;
 
+import Model.PalletProduct;
 import Model.Pallet_Product_Location;
 import Model.PickingOrder;
 import Model.PickingOrderDetail;
 import Model.RequestOrder;
+import Model.RequestOrderDetail;
+import Model.StateRequestOrder;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoLocationCellDetail;
+import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
 import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
+import dao.DaoRequestOrderDetail;
+import dao.DaoStateRequestOrder;
 import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
 import dao.impl.DaoPickingOrderImpl;
+import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +38,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
+import tool.Validate;
 import static tool.Validate.validarEntero;
 
 /**
@@ -44,6 +54,9 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
     List<Integer> pickingToDelete = new ArrayList<>();
     DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
     DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+    DaoRequestOrderDetail daoRequestOrderDetail = new DaoRequestOrderDetailImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
     /**
      * Creates new form Frm_VerOrdenesEntrega1
      */
@@ -373,7 +386,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                         for(int z=0;z<size;z++){
                             PickingOrder po = daoPickingOrder.pickingOrderGet(pickingToDelete.get(z));
                             List<PickingOrderDetail> poL = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
-                            if(po.getStatus()==2){ //atendido o pendiente lo llevamos al almacen
+                            if(po.getStatus()==2){ // pendiente lo llevamos al almacen
                                 daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),3);
                                 if(poL!=null){
                                     int sizeL = poL.size();
@@ -383,17 +396,8 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                                         daoPalletProductLocation.daoPallet_Product_LocationActivate(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
                                     }
                                 }
+                                updateRequestOrder(pickingToDelete.get(z));
 
-                            }else if(po.getStatus()==3){
-                                daoPickingOrder.pickingOrderDel(pickingToDelete.get(z),2);
-                                if(poL!=null){
-                                    int sizeL = poL.size();
-                                    for(int j=0;j<sizeL;j++){ //lo sacamos del location cell provisionalmente
-                                        daoPickingOrderDetail.pickingOrderDetailDel(poL.get(j).getIdPicking_Order_Detail(),po.getIdPickingOrder() ,2);
-                                        Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
-                                        daoPalletProductLocation.daoPallet_Product_LocationDel(poL.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
-                                    }
-                                }
                             }else{
                                 ok_option = JOptionPane.showOptionDialog(new JFrame(),"La orden N° "+po.getIdPickingOrder()+" ya fue terminada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                             }
@@ -410,6 +414,36 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+    private void updateRequestOrder(int idPickingOrder){
+        PickingOrder po = daoPickingOrder.pickingOrderGet(idPickingOrder);
+        RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
+        StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(2);
+        ro.setStateRequestOrder(state);
+        daoRequestOrder.requestOrderUpd(ro);
+        List<RequestOrderDetail> list = ro.getRequestOrderDetailList();
+        int size = list.size();
+        for(int i=0;i<size;i++){
+            int remaining = list.get(i).getRemaining();
+            int delivered = countPalletsDelivered(po,list.get(i).getProduct().getIdProduct());
+            list.get(i).setRemaining(remaining+delivered);
+            list.get(i).setDelivered(0);
+            daoRequestOrderDetail.requestOrderDetailUpd(list.get(i));
+        }
+    }
+    
+    private int countPalletsDelivered(PickingOrder po, int idProduct){
+        List<PickingOrderDetail> list = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
+        int count = 0;
+        int size = list.size();
+        for(int i=0;i<size;i++){
+            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(list.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+            PalletProduct pp = daoPalletProduct.getPalletProductById(ppl.getPallet_By_Product_Pallet_idPallet());
+            if(idProduct == pp.getIdproduct())
+                count++;
+        }
+        return count;
+    }
+    
     private void cbox_selectDatesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbox_selectDatesActionPerformed
         // TODO add your handling code here:
         if(cbox_selectDates.isSelected()==true){
@@ -459,7 +493,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
         refreshGrid();
         Object[] options = {"OK"};
         String orderN =  txt_num_order.getText();
-        if(orderN == null || orderN.equals("")==true){      
+        if(orderN == null || orderN.equals("")==true || Validate.validarEntero(txt_num_order.getText())){      
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un número de orden de pedido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                  
         }else{

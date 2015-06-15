@@ -29,6 +29,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
+import tool.Validate;
 
 /**
  *
@@ -69,11 +70,13 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
             txt_id_client.setEnabled(false);
             jdate_request_date_from.setEnabled(false);
             jdate_request_date_to.setEnabled(false);
+            btn_client_search.setEnabled(false);
             cbo_Status.setEnabled(false);
             check_advanced.setSelected(false);
             check_num.setSelected(true);
             txt_num_order.setEnabled(true);
             btn_search_order.setEnabled(true);
+            btn_search_advanced.setEnabled(false);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -368,20 +371,21 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         if(txt_num_order.getText().equals("")==true){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Ingrese un número de orden de despacho.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }else{
-             if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
-                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
-                numOrder = Integer.parseInt(txt_num_order.getText());
-                listDispatchOrder = daoDispatchOrder.dispatchOrderQry_search(numOrder);
-                if(listDispatchOrder == null ){
-                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                }else{
-                    if(listDispatchOrder.size()==0){
+                if(Validate.validarEntero(txt_num_order.getText())){
+                    numOrder = Integer.parseInt(txt_num_order.getText());
+                    listDispatchOrder = daoDispatchOrder.dispatchOrderQry_search(numOrder);
+                    if(listDispatchOrder == null ){
                         int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                     }else{
-                        fillTable();
+                        if(listDispatchOrder.size()==0){
+                            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                        }else{
+                            fillTable();
+                        }
                     }
+                }else{
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Por favor, escribir un número de despacho válido.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                 }
-             }
         }
     }//GEN-LAST:event_btn_search_orderActionPerformed
 
@@ -441,10 +445,11 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         // TODO add your handling code here:
         refreshGrid();
         searchFilter();
-        fillTable();
+        
     }//GEN-LAST:event_btn_search_advancedActionPerformed
 
     private void searchFilter(){
+        Object[] options = {"OK"};
         String ruc = txt_id_client.getText();
         Client client = daoClient.clientGet(ruc);
         int id;
@@ -457,6 +462,15 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         Date dateTo = jdate_request_date_to.getDate();
         Integer index_status = cbo_Status.getSelectedIndex();
         listDispatchOrder = daoDispatchOrder.dispatchOrderQry_search(id, dateFrom, dateTo, index_status);
+        if(listDispatchOrder == null){
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }else{
+            if(listDispatchOrder.size()==0){
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron registros.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }else{
+                fillTable();
+            }
+        }
         
     }
     
@@ -481,6 +495,8 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
             check_num.setSelected(true);
             txt_num_order.setEnabled(true);
             btn_search_order.setEnabled(true);
+            btn_search_advanced.setEnabled(false);
+            btn_client_search.setEnabled(false);
         }
             
     }//GEN-LAST:event_check_numActionPerformed
@@ -496,6 +512,9 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
             check_num.setSelected(false);
             txt_num_order.setEnabled(false);
             btn_search_order.setEnabled(false);
+            btn_search_advanced.setEnabled(true);
+            btn_client_search.setEnabled(true);
+            
         }
     }//GEN-LAST:event_check_advancedActionPerformed
 
