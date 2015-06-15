@@ -23,7 +23,7 @@ public interface DaoWH {
     
     public String whIns(Warehouse wh);
     
-    public String whsDel(List<Integer> ids);
+    public String whsDel(Integer idWarehouse, Integer status);    
     
     public Warehouse whGet(Integer idWh);
     
@@ -33,4 +33,7 @@ public interface DaoWH {
     
     public List<Warehouse> whSearch(Integer idWh, Integer idTypeCondition);
     public Integer whGetMaxId();
+    
+    public boolean warehouseInUse(Integer idWarehouse);
+    
 }

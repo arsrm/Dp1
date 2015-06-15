@@ -102,15 +102,7 @@ public class DaoWHImpl implements DaoWH{
             }
         }
         return result;
-    }
-    @Override
-    public String whsDel(List<Integer> ids) {
-        String result = null;
-        for (Integer id : ids) {
-            result = WhsDel(id);
-        }
-        return result;
-    }
+    }    
 
     @Override
     public Warehouse whGet(Integer idwh) {
@@ -175,34 +167,6 @@ public class DaoWHImpl implements DaoWH{
         }
         return result;
     }
-    
-
-    private String WhsDel(Integer idWarehouse) {
-         String result = null;
-        String sql = "UPDATE Warehouse SET "
-                + "status = ? "
-                + "WHERE idWarehouse = ?";
-
-        Connection cn = db.getConnection();
-        if (cn != null) {
-            try {
-                PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, 0);//se cambia a cero el campo status
-                ps.setInt(2, idWarehouse);
-                
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                result = e.getMessage();
-            } finally {
-                try {
-                    cn.close();
-                } catch (SQLException e) {
-                    result = e.getMessage();
-                }
-            }
-        }
-        return result;
-    }
 
     @Override
     public ArrayList<Warehouse> whSearchByID(Distribution_Center distribution_center) {
@@ -249,33 +213,56 @@ public class DaoWHImpl implements DaoWH{
     public List<Warehouse> whSearch(Integer idWh, Integer idTypeCondition) {
        String sql=  null; 
        ArrayList<Warehouse> list = new ArrayList<>();
-       if(idWh!=0){
-        sql = "SELECT "
-                + "idWarehouse,"
-                + "description, "
-                + "status, "
-                + "Type_Condition_idType_Condition, "
-                + "Distribution_Center_idDistribution_Center "
-                + "FROM Warehouse "
-                + "WHERE  Type_Condition_idType_Condition=? "
-                + "AND idWarehouse=?";
-       }
-       else {
-           sql = "SELECT "
-                + "idWarehouse,"
-                + "description, "
-                + "status, "
-                + "Type_Condition_idType_Condition, "
-                + "Distribution_Center_idDistribution_Center "
-                + "FROM Warehouse "
-                + "WHERE  Type_Condition_idType_Condition=? ";
-       }
+        if (idTypeCondition == null) { // Todos
+            if (idWh != 0) {
+                sql = "SELECT "
+                        + "idWarehouse,"
+                        + "description, "
+                        + "status, "
+                        + "Type_Condition_idType_Condition, "
+                        + "Distribution_Center_idDistribution_Center "
+                        + "FROM Warehouse "
+                        + "WHERE  Type_Condition_idType_Condition=? "
+                        + "AND idWarehouse=?";
+            } else {
+                sql = "SELECT "
+                        + "idWarehouse,"
+                        + "description, "
+                        + "status, "
+                        + "Type_Condition_idType_Condition, "
+                        + "Distribution_Center_idDistribution_Center "
+                        + "FROM Warehouse ";
+            }
+        }else{ // Algun tipo de Almacen
+            if (idWh != 0) {
+                sql = "SELECT "
+                        + "idWarehouse,"
+                        + "description, "
+                        + "status, "
+                        + "Type_Condition_idType_Condition, "
+                        + "Distribution_Center_idDistribution_Center "
+                        + "FROM Warehouse "
+                        + "WHERE  Type_Condition_idType_Condition=? "
+                        + "AND idWarehouse=?";
+            } else {
+                sql = "SELECT "
+                        + "idWarehouse,"
+                        + "description, "
+                        + "status, "
+                        + "Type_Condition_idType_Condition, "
+                        + "Distribution_Center_idDistribution_Center "
+                        + "FROM Warehouse "
+                        + "WHERE  Type_Condition_idType_Condition=? ";
+            }
+        }
+       
         Connection cn = db.getConnection();
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setInt(1, idTypeCondition);
-
+                if (idTypeCondition != null){
+                    ps.setInt(1, idTypeCondition);
+                }
                 
                 if(idWh!=0) ps.setInt(2, idWh);
                 ResultSet rs = ps.executeQuery();
@@ -326,6 +313,64 @@ public class DaoWHImpl implements DaoWH{
             }
         }
         return maxIdWh;
+    }
+
+    @Override
+    public String whsDel(Integer idWarehouse, Integer status) {
+        String result = null;
+        String sql = "UPDATE Warehouse SET "
+                + "status = ? "
+                + "WHERE idWarehouse = ?";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, status);//se cambia el campo status
+                ps.setInt(2, idWarehouse);
+
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean warehouseInUse(Integer idWarehouse) {
+        String sql = "SELECT "
+                + "count(*) "
+                + "FROM Rack "
+                + "WHERE Warehouse_idWarehouse = ? AND "
+                + "status = 1; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idWarehouse);
+
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    if (rs.getInt(1)>0) return true;
+                }
+            } catch (SQLException e) {
+                
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return false;
     }
 
   

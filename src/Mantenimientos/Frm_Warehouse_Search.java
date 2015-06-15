@@ -8,14 +8,16 @@ package Mantenimientos;
 import Model.Type_Condition_WareHouse;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
-import dao.DaoWH;
 import dao.DaoTypeConditionWH;
+import dao.DaoWH;
 import dao.impl.DaoTypeConditionWHImpl;
 import dao.impl.DaoWHImpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -247,16 +249,42 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_newActionPerformed
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
-
-        for (int i = 0; i < tbl_warehouse.getRowCount(); i++) {
-            if ((Boolean) tbl_warehouse.getValueAt(i, 3)) {
-                idWhList.add(Integer.parseInt(tbl_warehouse.getValueAt(i, 0).toString()));
+        int idWarehouse;
+        String status;
+        
+        Object[] options = {"OK"};
+        if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
+                "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < tbl_warehouse.getRowCount(); i++) {
+                if ((Boolean) tbl_warehouse.getValueAt(i, 3)) {
+                    idWarehouse = Integer.parseInt(tbl_warehouse.getValueAt(i, 0).toString());
+                    status = tbl_warehouse.getValueAt(i, 2).toString();
+                    if (status.equalsIgnoreCase("Activo")) {
+                        if (warehouseValidatedToDelete(idWarehouse)){
+                            daoWH.whsDel(idWarehouse, 0);
+                        }
+                    } else {
+                        daoWH.whsDel(idWarehouse, 1);
+                    }
+                }
             }
-        }
-        daoWH.whsDel(idWhList);
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Acciones realizadas con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                initilizeTable();
+            }
+        }        
         initilizeTable();
     }//GEN-LAST:event_btn_deleteActionPerformed
-
+    
+    private boolean warehouseValidatedToDelete(Integer idWarehouse){
+        if (daoWH.warehouseInUse(idWarehouse)){
+            JOptionPane.showMessageDialog(null,"No se puede eliminar. El almacen esta siendo usado", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } 
+        return true;
+    }
+    
     private void tbl_warehouseMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_warehouseMouseClicked
         Warehouse wh = null;
         Integer idWhSel;
@@ -288,14 +316,17 @@ public class Frm_Warehouse_Search extends javax.swing.JFrame {
             idWhSearch=Integer.parseInt(txt_IdWh.getText().toString());
         else idWhSearch=0;
        
-            if(cbo_type_condition.getSelectedItem()!=null){
-            for(int i=0; i<typeConditionList.size(); i++)
-                if(cbo_type_condition.getSelectedItem().equals(typeConditionList.get(i).getDescription()))
-                       idTypeConditionSearch=typeConditionList.get(i).getIdType_Condition_WareHouse();
+        if (cbo_type_condition.getSelectedItem() != null) {
+            if (cbo_type_condition.getSelectedItem() != "Todos") {
+                for (int i = 0; i < typeConditionList.size(); i++) {
+                    if (cbo_type_condition.getSelectedItem().equals(typeConditionList.get(i).getDescription())) {
+                        idTypeConditionSearch = typeConditionList.get(i).getIdType_Condition_WareHouse();
+                    }
+                }
+            } else{
+                idTypeConditionSearch = null;
             }
-            else{
-                idTypeConditionSearch=null;
-            }
+        }
         
         whList=daoWH.whSearch(idWhSearch, idTypeConditionSearch);
         
