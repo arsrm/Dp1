@@ -115,6 +115,10 @@ public class ReportsDis {
             Map parameters = new HashMap(); 
             parameters.put("fecI", dI);
             parameters.put("fecF", dF);
+            parameters.put("nameclient", nameclient);
+            parameters.put("idnumpicking", idnumpicking);
+            parameters.put("idnumorder", idnumorden);
+            
 
 //            parameters.put("idW",idA);
 //            parameters.put("idP", idP);

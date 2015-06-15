@@ -637,7 +637,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       { 
         idnumorden=Integer.parseInt(txt_NumOrden.getText());
         idnumpicking=Integer.parseInt(txt_numpicking.getText());
-        nameclient=txt_client.getText();
+        nameclient=txt_client.getText().toUpperCase();
         Date dateIniSearch = null;
         Date dateEndSearch = null;
 
@@ -646,11 +646,13 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         } else {
             dateIniSearch = new Date();
             dateIniSearch.setTime(0);
+            dateIniSearch=null;
         }
         if (date_End.getDate() != null) {
             dateEndSearch = date_End.getDate();
         } else {
             dateEndSearch = new Date();
+            dateEndSearch = null;            
         }
             
         reporte.mostrarReporteDepachoConFiltro(idnumorden,idnumpicking,nameclient,dateIniSearch,dateEndSearch);
