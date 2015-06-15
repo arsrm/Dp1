@@ -255,7 +255,7 @@ public class DaoUserImpl implements DaoUsers {
         String sql = "UPDATE  User SET "
                 + "name=? ,"
                 + "password=? ,"
-                + "password_change=? ,"
+                //+ "password_change=? ,"
                  + "status=? ,"
                 + "Profile_idProfile=? ,"
                 + "Distribution_Center_idDistribution_Center=? "
@@ -267,11 +267,11 @@ public class DaoUserImpl implements DaoUsers {
                 PreparedStatement ps = cn.prepareStatement(sql);
                 ps.setString(1, users.getname());
                 ps.setString(2, users.getPassword());
-                ps.setInt(3, users.getPassword_change());
-                ps.setInt(4, users.getStatus());
-                ps.setInt(5, users.getProfile_idProfile());
-                ps.setInt(6, users.getDistribution_Center_idDistribution_Center());
-                ps.setInt(7, users.getIdUser());
+               // ps.setInt(3, users.getPassword_change());
+                ps.setInt(3, users.getStatus());
+                ps.setInt(4, users.getProfile_idProfile());
+                ps.setInt(5, users.getDistribution_Center_idDistribution_Center());
+                ps.setInt(6, users.getIdUser());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
