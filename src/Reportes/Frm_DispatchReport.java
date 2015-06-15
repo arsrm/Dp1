@@ -8,6 +8,7 @@ package Reportes;
 
 import JasperReports.ReportsDis;
 import JasperReports.Prueba;
+import Mantenimientos.Frm_PalletIni;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoPalletProduct;
 import dao.impl.DaoPalletIniImpl;
@@ -39,6 +40,9 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     Integer idnumorden=0;
     Integer idnumpicking=0;
     String nameclient="";
+
+   public  Frm_DispatchReport() {
+    }
     
     
     public boolean validanumorden()
@@ -446,6 +450,11 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tbl_Dispatch.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_DispatchMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbl_Dispatch);
         if (tbl_Dispatch.getColumnModel().getColumnCount() > 0) {
             tbl_Dispatch.getColumnModel().getColumn(0).setResizable(false);
@@ -704,6 +713,25 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     date_Ini.setDate(null);
     date_End.setDate(null);
     }//GEN-LAST:event_btn_cleanActionPerformed
+
+    private void tbl_DispatchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_DispatchMouseClicked
+
+        String message = "¿Desea Ver el detalle de la Orden de Despacho?";
+        String title = "Confirmación";
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        JOptionPane.setDefaultLocale(null);
+        if (reply == JOptionPane.YES_OPTION) {
+        Frm_DispatchOrderDetail frm_orderdetail = new Frm_DispatchOrderDetail(this);
+        frm_orderdetail.setVisible(true);
+        frm_orderdetail.setLocationRelativeTo(null);
+        this.setVisible(false);
+        }
+       
+        
+
+
+       
+    }//GEN-LAST:event_tbl_DispatchMouseClicked
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);

@@ -19,6 +19,15 @@
 	<parameter name="fecF" class="java.util.Date">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="nameclient" class="java.lang.String">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idnumorder" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
+	<parameter name="idnumpicking" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
+	</parameter>
 	<queryString>
 		<![CDATA[SELECT
      a.`idDispatch_Order`,
@@ -32,10 +41,12 @@
       when 4 then "Cancelado"
      end  as status,
      a.`Picking_Order_idPicking_Order`
-FROM
-     `dispatch_order` a INNER JOIN `client` b ON (a.`idClient` = b.`idClient`)
-where a.departure_date>=  $P{fecI}
-and a.arrival_date<= $P{fecF}]]>
+FROM     `dispatch_order` a INNER JOIN `client` b ON (a.`idClient` = b.`idClient`)
+where a.departure_date>=  ifnull($P{fecI},a.departure_date)
+and a.arrival_date<= ifnull($P{fecF},a.arrival_date) 
+and upper(b.name) like concat("%",$P{nameclient},"%")
+and a.idDispatch_Order=ifnull($P{idnumorder},a.idDispatch_Order)
+and a.Picking_Order_idPicking_Order=ifnull($P{idnumpicking},a.Picking_Order_idPicking_Order)]]>
 	</queryString>
 	<field name="idDispatch_Order" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
