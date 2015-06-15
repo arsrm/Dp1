@@ -47,7 +47,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       Integer numorden=0; 
       
       if ( (txt_NumOrden.getText().toString().isEmpty() )|| (txt_NumOrden.getText().equals(null) ) )
-      { b=false;}   
+      { b=true;}   
       else 
       {
        try{
@@ -80,7 +80,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       Integer numpicking=0; 
       
       if ( (txt_numpicking.getText().toString().isEmpty() )|| (txt_numpicking.getText().equals(null) ) )
-      { b=false;}   
+      { b=true;}   
       else 
       {
        try{
@@ -105,6 +105,74 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       }   
     }
     return b;      
+    }        
+    
+    public boolean validafechas()
+    { boolean b=false; 
+       Integer anho1; 
+       Integer anho2; 
+       Integer mes1; 
+       Integer mes2; 
+       Integer dia1; 
+       Integer dia2;
+       Integer fechainicial=0; 
+       Integer fechafinal=0 ; 
+       String datefecini=""; 
+       String datefecfin=""; 
+
+        try 
+        {
+          String formato = date_Ini.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           Date date1 = date_Ini.getDate();
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho1=date_Ini.getCalendar().get(Calendar.YEAR);
+           mes1=date_Ini.getCalendar().get(Calendar.MONTH)+1;
+           dia1=date_Ini.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechainicial=anho1*10000+mes1*100+dia1;
+           datefecini=fechainicial.toString();
+           b=true; 
+        } 
+        catch (Exception e)   
+        { if   (datefecini.length()>0 )
+          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Salida Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+           b=false;}
+          else
+          { b=true;} 
+        }
+
+       try 
+        {  String formato = date_End.getDateFormatString();
+           //String formato = "YYYYMMDD";
+           //SimpleDateFormat sdf = new SimpleDateFormat(formato);
+           anho2=date_End.getCalendar().get(Calendar.YEAR);
+           mes2=date_End.getCalendar().get(Calendar.MONTH)+1;
+           dia2=date_End.getCalendar().get(Calendar.DAY_OF_MONTH);
+           //datefecini = sdf.format(date1).toUpperCase();
+           fechafinal=anho2*10000+mes2*100+dia2;
+           datefecfin=fechafinal.toString();            
+           b=b&&true; 
+        } 
+        catch (Exception e)   
+        {  if (datefecfin.length()>0)
+            {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Entrega Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+             b=b&&false; }
+           else
+            {b=b&&true;}
+        }
+
+        try
+        {
+        if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
+          {JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Salida", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); 
+           b=b&&false; 
+          }   
+        }
+        catch(Exception e)
+        { }    
+    
+    return b; 
     }        
     
     public String obtiene_where()
@@ -136,7 +204,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         { Cadenawhere=Cadenawhere+ "  (1=1)  and "; }     
       else   
       { numpick=Integer.parseInt(txt_numpicking.getText().toString());
-        Cadenawhere=Cadenawhere+ "  idDispatch_Order= "+numorden + "  and ";      
+        Cadenawhere=Cadenawhere+ "  Picking_Order_idPicking_Order= "+numpick + "  and ";      
       }
       
       if ( txt_client.getText().toString().isEmpty() || (txt_client.getText().equals(null) ) ) 
@@ -161,7 +229,8 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         } 
         catch (Exception e)   
         { if   (datefecini.length()>0 )
-          {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Salida Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
+          {//JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Salida Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+          }
         }
 
        try 
@@ -177,13 +246,15 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         } 
         catch (Exception e)   
         {  if (datefecfin.length()>0)
-            {JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Entrega Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);}
+            {//JOptionPane.showMessageDialog(null, "Debe Ingresar una Fecha Entrega Valida", " Error..!!", JOptionPane.ERROR_MESSAGE);
+            }
         }
 
         try
         {
         if ( (fechafinal<fechainicial) && (fechafinal*fechainicial>0)  )
-          {JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Salida", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); }   
+          { //JOptionPane.showMessageDialog(null, "La Fecha Entrega debe ser mayor a la Fecha de Salida", " Error Fechas..!!", JOptionPane.INFORMATION_MESSAGE); 
+          }   
         }
         catch(Exception e)
         { }    
@@ -524,7 +595,8 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         boolean b=false;
         b=validanumorden();
         if (b)
-        {System.out.println("Valido correctamente la orden de internamiento");
+        {  
+            System.out.println("Valido correctamente la orden de internamiento");
         }
 
     }//GEN-LAST:event_txt_NumOrdenFocusLost
@@ -535,20 +607,21 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ExportActionPerformed
 
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
-     boolean b=false; 
-     /*
-     b=valida_campos();
-     
-     if (b)
-     {   
-          String message = "Valores Ingresados correctamente !";
-          String title = "Información";
-          JFrame frame = new JFrame(" ");
-          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
-          JOptionPane.setDefaultLocale(null);  
-      */
-        ///Prueba reporte = new Prueba();            
-        //reporte.mostrarReporteStockSinFiltro();
+
+    boolean bnumorden=false;  
+    boolean bnumpickin=false;  
+    boolean bvalfec=false; 
+    bnumorden=validanumorden();
+    bnumpickin=validanumpicking();
+    bvalfec=validafechas();
+        
+    if (bnumorden)    
+    { 
+       if (bnumpickin)
+      {  
+       if(bvalfec)
+       { 
+        
         Date dateIniSearch = null;
         Date dateEndSearch = null;
 
@@ -569,17 +642,12 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
      
         ReportsDis reporte = new ReportsDis();
         reporte.mostrarReporteDepachoSinFiltro(dateIniSearch, dateEndSearch);
+     
         
-    /*      
-     }
-     else
-     {    String message = "Debe validar los valores ingresados !";
-          String title = "Información";
-          JFrame frame = new JFrame(" ");
-          JOptionPane.showMessageDialog(frame,message,title,JOptionPane.WARNING_MESSAGE);
-          JOptionPane.setDefaultLocale(null);        
-     }    
-    */
+       }  
+      }    
+    } 
+        
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void txt_numpickingFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_numpickingFocusLost
@@ -595,8 +663,22 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
     String cadenawhere="";
-    cadenawhere=obtiene_where();
-    filtra_tabla(cadenawhere);
+    boolean bnumorden=false;  
+    boolean bnumpickin=false;  
+    boolean bvalfec=false; 
+    bnumorden=validanumorden();
+    bnumpickin=validanumpicking();
+    bvalfec=validafechas();
+    if (bnumorden)
+    { 
+      if (bnumpickin)  
+      {
+       if(bvalfec)   
+       {cadenawhere=obtiene_where();
+        filtra_tabla(cadenawhere);
+       } 
+      }
+     }
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void btn_cleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanActionPerformed

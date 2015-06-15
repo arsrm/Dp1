@@ -19,10 +19,15 @@
      b.`name`,
      a.`departure_date`,
      a.`arrival_date`,
-     a.`status`,
+     case a.`status`
+      when 1 then "Atendido"
+      when 2 then "Pendiente"
+      when 3 then "En Vehiculo"	
+      when 4 then "Cancelado"
+     end  as status,
      a.`Picking_Order_idPicking_Order`
 FROM
-     `dispatch_order` a INNER JOIN `client` b ON a.`idClient` = b.`idClient`]]>
+     `dispatch_order` a INNER JOIN `client` b ON (a.`idClient` = b.`idClient`)]]>
 	</queryString>
 	<field name="idDispatch_Order" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -36,7 +41,7 @@ FROM
 	<field name="arrival_date" class="java.sql.Timestamp">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="status" class="java.lang.Integer">
+	<field name="status" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="Picking_Order_idPicking_Order" class="java.lang.Integer">
@@ -77,27 +82,27 @@ FROM
 			</line>
 			<staticText>
 				<reportElement style="Column header" x="0" y="0" width="133" height="15" forecolor="#736343" uuid="a253b89b-9881-42b8-899b-eaafba3410bd"/>
-				<text><![CDATA[idDispatch_Order]]></text>
+				<text><![CDATA[Orden Despacho]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="133" y="0" width="133" height="15" forecolor="#736343" uuid="776ff735-0e7f-40fd-93fb-7599450f2d0e"/>
-				<text><![CDATA[name]]></text>
+				<text><![CDATA[Cliente]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="266" y="0" width="133" height="15" forecolor="#736343" uuid="0fccc725-b248-4236-8c0c-e9b77be9f9c1"/>
-				<text><![CDATA[departure_date]]></text>
+				<text><![CDATA[Salida]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="399" y="0" width="133" height="15" forecolor="#736343" uuid="5ea091b7-a2eb-4c21-a471-0792e8d525bc"/>
-				<text><![CDATA[arrival_date]]></text>
+				<text><![CDATA[Lllegada]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="532" y="0" width="133" height="15" forecolor="#736343" uuid="d97b5cf8-b2d1-49bf-b29c-2a1a6408991e"/>
-				<text><![CDATA[status]]></text>
+				<text><![CDATA[Estado]]></text>
 			</staticText>
 			<staticText>
 				<reportElement style="Column header" x="665" y="0" width="133" height="15" forecolor="#736343" uuid="147f3df9-efba-40e4-95e3-d819897cdc75"/>
-				<text><![CDATA[Picking_Order_idPicking_Order]]></text>
+				<text><![CDATA[Orden Picking]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
