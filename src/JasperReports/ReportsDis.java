@@ -75,7 +75,7 @@ public class ReportsDis {
             parameters.put("idP", idP);
             parameters.put("fechaI", dI);
             parameters.put("fechaF", dF);
-            
+             
             JasperReport reporte = JasperCompileManager.compileReport("reportKardexConFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
@@ -89,7 +89,7 @@ public class ReportsDis {
         }
     }
     
-    public void mostrarReporteDepachoSinFiltro(Date dI, Date dF) {
+    public void mostrarReporteDepachoSinFiltro() {
         try {
            HashMap JasperParameter = new HashMap();  
             Map parameters = new HashMap(); 
@@ -100,6 +100,27 @@ public class ReportsDis {
             
             JasperReport reporte = JasperCompileManager.compileReport("reportDespachoSinFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte de Despacho");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(ReportsDis.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void mostrarReporteDepachoConFiltro(Integer idnumorden,Integer idnumpicking,String nameclient,Date dI,Date dF) {
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("fecI", dI);
+            parameters.put("fecF", dF);
+
+//            parameters.put("idW",idA);
+//            parameters.put("idP", idP);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportDespachoConFiltro.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Despacho");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);

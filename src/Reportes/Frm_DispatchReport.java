@@ -622,6 +622,22 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
        if(bvalfec)
        { 
         
+        ReportsDis reporte = new ReportsDis();
+           
+      if ( ( ( txt_NumOrden.getText().toString().isEmpty() ) || (txt_NumOrden.getText().equals(null) ) ) 
+            && 
+          ((txt_numpicking.getText().toString().isEmpty() ) || (txt_numpicking.getText().equals(null) )  )
+            &&
+          ((txt_client.getText().toString().isEmpty() ) || (txt_client.getText().equals(null) )  )    
+         )
+      {  
+         reporte.mostrarReporteDepachoSinFiltro();
+      }
+      else
+      { 
+        idnumorden=Integer.parseInt(txt_NumOrden.getText());
+        idnumpicking=Integer.parseInt(txt_numpicking.getText());
+        nameclient=txt_client.getText();
         Date dateIniSearch = null;
         Date dateEndSearch = null;
 
@@ -636,13 +652,10 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         } else {
             dateEndSearch = new Date();
         }
-        idnumorden= Integer.parseInt(txt_NumOrden.getText()) ;
-        idnumpicking=Integer.parseInt(txt_numpicking.getText());
-        nameclient=txt_client.getText();
-     
-        ReportsDis reporte = new ReportsDis();
-        reporte.mostrarReporteDepachoSinFiltro(dateIniSearch, dateEndSearch);
-     
+            
+        reporte.mostrarReporteDepachoConFiltro(idnumorden,idnumpicking,nameclient,dateIniSearch,dateEndSearch);
+      }    
+      
         
        }  
       }    
