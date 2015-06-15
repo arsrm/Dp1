@@ -6,7 +6,38 @@
 package Reportes;
 
 import Mantenimientos.Frm_Pallet_SearchIni;
+import Model.DispatchOrder;
+import Model.LocationCell;
+import Model.LocationCellDetail;
+import Model.PalletProduct;
+import Model.Pallet_Product_Location;
+import Model.PickingOrderDetail;
+import Model.Product;
+import Model.Rack;
+import Model.Warehouse;
 import Reportes.Frm_DispatchReport;
+import dao.DaoClient;
+import dao.DaoDistributionCenter;
+import dao.DaoLocationCell;
+import dao.DaoLocationCellDetail;
+import dao.DaoPalletProduct;
+import dao.DaoPallet_Product_Location;
+import dao.DaoPickingOrderDetail;
+import dao.DaoProducts;
+import dao.DaoRack;
+import dao.DaoWH;
+import dao.impl.DaoClientImpl;
+import dao.impl.DaoDistributionCenterImpl;
+import dao.impl.DaoLocationCellDetailImpl;
+import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
+import dao.impl.DaoPickingOrderDetailImpl;
+import dao.impl.DaoProdImpl;
+import dao.impl.DaoRackImpl;
+import dao.impl.DaoWHImpl;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author gzavala
@@ -16,12 +47,73 @@ public class Frm_DispatchOrderDetail extends javax.swing.JFrame {
     /**
      * Creates new form Frm_DispatchOrderDetail
      */
-    Frm_DispatchReport  menu_padre = new Frm_DispatchReport();     
+    Frm_DispatchReport  menu_padre = new Frm_DispatchReport();   
+    DispatchOrder objmodel= new DispatchOrder(); 
+    DaoClient objclient= new DaoClientImpl();
+    DefaultTableModel model = new DefaultTableModel();
+    DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
+    DaoWH daoWH = new DaoWHImpl();
+    DaoDistributionCenter daoDistribution = new DaoDistributionCenterImpl();
+    DaoRack daoRack = new DaoRackImpl();
+    DaoLocationCell daoLocationCell = new DaoLocationCellImpl();
+    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
     
-    public Frm_DispatchOrderDetail( Frm_DispatchReport ventana ) {
+
+    private void fillTable(){
+        List<PickingOrderDetail> list = daoPickingOrderDetail.pickingOrderDetailQry(objmodel.getIdPickingOrder());
+        if(list!=null){
+            int size = list.size();
+            for(int i=0;i<size;i++){
+                PickingOrderDetail poD = list.get(i);
+                //EAN 128 - DESCRIPCION (PRODUCTO) - UBICACION - ESTADO - SELECCIONAR
+                Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(list.get(i).getIdPallet_By_Product_By_Location_Cell_Detail());
+                List<PalletProduct> pp = daoPalletProduct.GetPalletProductList("WHERE Pallet_idPallet="+ppl.getPallet_By_Product_Pallet_idPallet());
+                int sizepp = pp.size();
+                String ean128 = null;
+                String desc = null;
+                for(int j=0;j<sizepp;j++){
+                    
+                    ean128 = pp.get(j).getCod_ean128();
+                    Product prod = daoProduct.ProductsGet(pp.get(j).getIdproduct());
+                    desc = prod.getName();
+                }
+
+                Integer idLocationCellDetail = ppl.getLocation_Cell_Detail_idLocation_Cell_Detail();
+
+                Integer idLocationCell = ppl.getLocation_Cell_Detail_Location_Cell_idLocation_Cell();
+                Integer idDist = ppl.getLocation_Cell_Detail_idDistribution_Center();
+                Integer idWh = ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse();
+                Integer idRack = ppl.getLocation_Cell_Detail_Location_Cell_Rack_idRack();
+                Rack rack = daoRack.rackGet(idRack);
+                Warehouse wh = daoWH.whGet(idWh);
+                LocationCell location = daoLocationCell.LocationCellGet(idDist, idWh, idRack, idLocationCell);
+                LocationCellDetail cellDetail = daoLocationCellDetail.locationCellDetailQry(idLocationCellDetail,idLocationCell);
+                String nameState = null;
+                if(poD.getDispatchStatus()==1)
+                    nameState = "Entregado";
+                else if(poD.getDispatchStatus()==2)
+                    nameState = "Por Entregar";
+                else if(poD.getDispatchStatus()==3)
+                    nameState = "Devuelto a Almacén";
+                Object[] fila = {ean128,desc,nameState};
+                model.addRow(fila);
+            }
+        }
+    }
+    
+    public Frm_DispatchOrderDetail( Frm_DispatchReport ventana,DispatchOrder dispatch ) {
         setTitle("Detalle Orden Despacho");
         menu_padre=ventana;
+        objmodel=dispatch;
         initComponents();
+        model = (DefaultTableModel)tbl_Dispatch.getModel();
+        txt_numorden.setText(objmodel.getIdDispatch_Order().toString());
+        txt_picking.setText(objmodel.getIdPickingOrder().toString());
+        txt_client.setText(objclient.clientGet(objmodel.getIdClient()).getName()  );
+        
     }
 
     /**
@@ -117,9 +209,17 @@ public class Frm_DispatchOrderDetail extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Codigo Pallet", "Descripcion", "Estado"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tbl_Dispatch);
 
         btn_report.setText("Generar Reporte");

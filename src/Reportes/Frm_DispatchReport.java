@@ -22,7 +22,9 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import Model.DispatchOrder;
 import dao.DaoClient;
+import dao.DaoDispatchOrder;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoDispatchOrderImpl;
 
 
 /**
@@ -715,13 +717,19 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cleanActionPerformed
 
     private void tbl_DispatchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_DispatchMouseClicked
-
+        Integer iddispatch; 
+        DispatchOrder model=null;
         String message = "¿Desea Ver el detalle de la Orden de Despacho?";
         String title = "Confirmación";
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         JOptionPane.setDefaultLocale(null);
         if (reply == JOptionPane.YES_OPTION) {
-        Frm_DispatchOrderDetail frm_orderdetail = new Frm_DispatchOrderDetail(this);
+        int rowSel = tbl_Dispatch.getSelectedRow();
+        int colSel = tbl_Dispatch.getSelectedColumn();
+        iddispatch=Integer.parseInt(tbl_Dispatch.getValueAt(rowSel, 0).toString());    
+        DaoDispatchOrder dao= new DaoDispatchOrderImpl();
+        model=dao.dispatchOrderGet(iddispatch);
+        Frm_DispatchOrderDetail frm_orderdetail = new Frm_DispatchOrderDetail(this,model);
         frm_orderdetail.setVisible(true);
         frm_orderdetail.setLocationRelativeTo(null);
         this.setVisible(false);
