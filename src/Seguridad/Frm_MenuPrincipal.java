@@ -75,6 +75,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
             this.op_RegisterReturn.setEnabled(daoUsers.accesswindow(idprofile,"op_RegisterReturn"));
             this.op_ReturnSearch.setEnabled(daoUsers.accesswindow(idprofile,"op_ReturnSearch"));
             this.op_Carga_Datos.setEnabled(daoUsers.accesswindow(idprofile,"op_Carga_Datos"));
+            this.op_adjustManual.setEnabled(daoUsers.accesswindow(idprofile,"op_adjustManual"));
+            this.op_adjustAutomatic.setEnabled(daoUsers.accesswindow(idprofile,"op_adjustAutomatic"));
             this.op_Perfiles.setEnabled(daoUsers.accesswindow(idprofile,"op_Perfiles"));
             this.op_Cambio_Contraseña.setEnabled(daoUsers.accesswindow(idprofile,"op_Cambio_Contraseña"));
             this.op_Reporte_Internamiento.setEnabled(daoUsers.accesswindow(idprofile,"op_Reporte_Internamiento"));

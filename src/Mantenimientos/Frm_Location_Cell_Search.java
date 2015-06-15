@@ -220,7 +220,7 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
             }
         });
 
-        btn_delete.setText("Cambiar Estado");
+        btn_delete.setText("Guardar");
         btn_delete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteActionPerformed(evt);
@@ -231,9 +231,6 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE)
-                .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_rack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -241,9 +238,13 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(btn_delete)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 584, Short.MAX_VALUE)
                 .addComponent(btn_cancel)
                 .addGap(37, 37, 37))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -325,22 +326,19 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
                 "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             for (int i = 0; i < tbl_location_cell.getRowCount(); i++) {
+                idDistributionCenter = Integer.parseInt(tbl_location_cell.getValueAt(i, 0).toString());
+                idWarehouse = Integer.parseInt(tbl_location_cell.getValueAt(i, 1).toString());
+                idRack = Integer.parseInt(tbl_location_cell.getValueAt(i, 2).toString());
+                idLocationCell = Integer.parseInt(tbl_location_cell.getValueAt(i, 3).toString());
+                status = tbl_location_cell.getValueAt(i, 7).toString();
+                locationCell = daoLocationCell.LocationCellGet(idDistributionCenter, idWarehouse, idRack, idLocationCell);
                 if ((Boolean) tbl_location_cell.getValueAt(i, 8)) {
-                    idDistributionCenter = Integer.parseInt(tbl_location_cell.getValueAt(i, 0).toString());
-                    idWarehouse = Integer.parseInt(tbl_location_cell.getValueAt(i, 1).toString());
-                    idRack = Integer.parseInt(tbl_location_cell.getValueAt(i, 2).toString());
-                    idLocationCell = Integer.parseInt(tbl_location_cell.getValueAt(i, 3).toString());
-                    status = tbl_location_cell.getValueAt(i, 7).toString();
-                    if (status.equalsIgnoreCase("Activo")) {                        
-                        locationCell = daoLocationCell.LocationCellGet(idDistributionCenter, idWarehouse, idRack, idLocationCell);
-                        if (rackValidatedToDelete(locationCell)) {
-                            daoLocationCell.locationCellChangeState(locationCell, 0);
-                            daoLocationCell.LocationCellAvailabilityUpd(locationCell, 0);
-                        }
-                    } else {
-                        locationCell = daoLocationCell.LocationCellGet(idDistributionCenter, idWarehouse, idRack, idLocationCell);
-                        daoLocationCell.locationCellChangeState(locationCell, 1);
-                        daoLocationCell.LocationCellAvailabilityUpd(locationCell, 1);
+                    daoLocationCell.locationCellChangeState(locationCell, 1);
+                    daoLocationCell.LocationCellAvailabilityUpd(locationCell, 1);
+                }else{
+                    if (rackValidatedToDelete(locationCell)) {
+                        daoLocationCell.locationCellChangeState(locationCell, 0);
+                        daoLocationCell.LocationCellAvailabilityUpd(locationCell, 0);
                     }
                 }
             }
@@ -353,8 +351,11 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_deleteActionPerformed
 
     private boolean rackValidatedToDelete(LocationCell locationCell){
+        int fila, columna;
         if (daoLocationCell.locationCellInUse(locationCell)){
-            JOptionPane.showMessageDialog(null,"No se puede eliminar. La celda de ubicación esta siendo usada", 
+            fila = locationCell.getRow_Cell();
+            columna = locationCell.getColumn_Cell();
+            JOptionPane.showMessageDialog(null,"No se puede eliminar. La celda de ubicación en la fila " + fila + " y columna " + columna + " esta siendo usada", 
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
             return false;
         } 
@@ -392,6 +393,7 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_rackMouseClicked
           
     public void initializeTable(){
+        boolean check;
         
         if (cbo_warehouse.getSelectedItem() != null && cbo_rack.getSelectedItem() != null) {
             for (int i=0; i < warehouseList.size(); i++){
@@ -417,8 +419,10 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
 
                     if (locationCellList.get(i).getStatus() == 0) {
                         status = "Inactivo";
+                        check = false;
                     } else {
                         status = "Activo";
+                        check = true;
                     }
 
                     Object newRow[] = {
@@ -430,7 +434,7 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
                         locationCellList.get(i).getColumn_Cell(),
                         locationCellList.get(i).getDescription(),                        
                         status,
-                        false
+                        check
                     };
                     modelo.addRow(newRow);
                 }

@@ -85,6 +85,11 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
         btn_search = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         pnl_returns.setBorder(javax.swing.BorderFactory.createTitledBorder("Devoluciones"));
 
@@ -264,9 +269,12 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
         
         if ( jdate_request_date_from.getDate()!=null && jdate_request_date_to.getDate()!=null ){
             dateFrom = jdate_request_date_from.getDate();
-            dateTo = jdate_request_date_to.getDate();            
+            dateTo = jdate_request_date_to.getDate();
             productReturnList = daoProductReturn.productReturnQry(idClient, dateFrom, dateTo, 1);
             initializeTable();
+        }else{
+            JOptionPane.showMessageDialog(null,"Escoja las fechas de inicio y fin", 
+                        "Advertencias", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_btn_searchActionPerformed
@@ -282,6 +290,12 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
                         "Advertencias", JOptionPane.WARNING_MESSAGE);
         }
     }//GEN-LAST:event_btn_client_searchActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        // TODO add your handling code here:
+        menuaux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
     
     public void initializeTable(){
         String status= null;
@@ -305,7 +319,7 @@ public class Frm_ReturnProducts_Search extends javax.swing.JFrame {
                     product.getName(),
                     productReturnList.get(i).getQuantity(),
                     productReturnList.get(i).getReturn_date(),
-                    productReturnList.get(i).getStatus()
+                    status
                 };
                 modelo.addRow(newRow);
             }

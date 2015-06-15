@@ -152,7 +152,7 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosed(java.awt.event.WindowEvent evt) {
                 formWindowClosed(evt);
@@ -210,12 +210,9 @@ public class Frm_Pallet_SearchIni extends javax.swing.JFrame {
                             .addComponent(cbo_pallet_act, 0, 150, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnl_palletLayout.createSequentialGroup()
-                                .addComponent(lbl_status_pallet)
-                                .addGap(81, 81, 81))
-                            .addGroup(pnl_palletLayout.createSequentialGroup()
-                                .addComponent(lbl_description, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(73, 73, 73)))
+                            .addComponent(lbl_status_pallet)
+                            .addComponent(lbl_description, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(73, 73, 73)
                         .addGroup(pnl_palletLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txt_description, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(cbo_pallet_state, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))

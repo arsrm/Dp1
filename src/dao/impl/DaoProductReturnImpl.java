@@ -130,7 +130,7 @@ public class DaoProductReturnImpl implements DaoProductReturn{
                 + "Motive_Return_idMotive_Return,"
                 + "Picking_Order_Detail_idPicking_Order_Detail,"
                 + "Picking_Order_Detail_Picking_Order_idPicking_Order,"
-                + "Picking_Order_Detail_Product_idProduct"
+                + "Picking_Order_Detail_Product_idProduct "
                 + "FROM Product_Return "
                 + "WHERE return_date >= ? "
                 + "AND return_date <= ? "
@@ -145,7 +145,7 @@ public class DaoProductReturnImpl implements DaoProductReturn{
                 + "Motive_Return_idMotive_Return,"
                 + "Picking_Order_Detail_idPicking_Order_Detail,"
                 + "Picking_Order_Detail_Picking_Order_idPicking_Order,"
-                + "Picking_Order_Detail_Product_idProduct"
+                + "Picking_Order_Detail_Product_idProduct "
                 + "FROM Product_Return "
                 + "WHERE return_date >= ? "
                 + "AND return_date <= ? ";

@@ -488,7 +488,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                             //guardo el ProductReturn
                             productReturn = new ProductReturn();
                             productReturn.setQuantity(1);
-                            productReturn.setStatus(0);
+                            productReturn.setStatus(1);
                             productReturn.setIdDispatch_Order(dispatchOrder.getIdDispatch_Order());
                             productReturn.setIdClient(client.getIdClient());
                             productReturn.setReturn_date(jDate_return_date.getDate());
