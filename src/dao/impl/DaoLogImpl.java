@@ -27,6 +27,9 @@ public class DaoLogImpl implements DaoLog {
     @Override
     public String clientIns(String mensaje, String clase, Integer iduser) {
 
+        String aux1 = "Current IP address 127.0.0.1";
+        String aux2 = "Current MAC address : 08-00-27-00-6C-F5";
+        
         String result = null;
         String sql = "INSERT INTO Log_Security("
                 + "date,action ,class, User_idUser,ip,mac_address"
@@ -46,6 +49,7 @@ public class DaoLogImpl implements DaoLog {
                 ps.setInt(4, iduser);
 
                 InetAddress ip;
+                
                 try {
 
                     ip = InetAddress.getLocalHost();
@@ -55,7 +59,7 @@ public class DaoLogImpl implements DaoLog {
                     NetworkInterface network = NetworkInterface.getByInetAddress(ip);
 
                     byte[] mac = network.getHardwareAddress();
-
+                    if (mac!=null){
 		//System.out.print("Current MAC address : ");
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < mac.length; i++) {
@@ -63,12 +67,20 @@ public class DaoLogImpl implements DaoLog {
                     }
                     //System.out.println(sb.toString());
                     ps.setString(6, "Current MAC address : " + sb.toString());
+                    }
+                    else {
+                        ps.setString(5, aux1);
+                        ps.setString(6, aux2);
+                    
+                    }
                 } catch (UnknownHostException e) {
-
+                    ps.setString(5, aux1);
+                    ps.setString(6, aux2);
                     e.printStackTrace();
 
                 } catch (SocketException e) {
-
+                      ps.setString(5, aux1);
+                    ps.setString(6, aux2);
                     e.printStackTrace();
 
                 }
