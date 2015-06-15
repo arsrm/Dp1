@@ -31,4 +31,7 @@ public interface DaoRequestOrder {
     
     public String requestsDelInvalidate(Integer idRequest);
     
+    public RequestOrder requestOrderGetClient(String idclient);
+    
+    
 }

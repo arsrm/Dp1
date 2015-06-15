@@ -403,5 +403,53 @@ public class DaoRequestOrderImpl implements DaoRequestOrder{
         }
         return result;
     }
+  
+      @Override
+    public RequestOrder requestOrderGetClient(String idclient) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         RequestOrder requestOrder = null;
+          String sql =  "SELECT idRequest_Order,"
+                + "dateArrive,"
+                + "dateline,"
+                + "Client_idClient,"
+                + "State_Request_Order_idStateRequest_Order "
+                + "FROM request_order WHERE Client_idClient = ?"
+                + " AND State_Request_Order_idStateRequest_Order = 2 ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setString(1, idclient);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    requestOrder = new RequestOrder();
+                    requestOrder.setIdRequestOrder(rs.getInt(1));
+                    List<RequestOrderDetail> requestDetail =  null;
+                    requestDetail = daoRequestOrderDetail.requestOrderDetailQry(rs.getInt(1));
+                    requestOrder.setDateArrive(rs.getDate(2));
+                    requestOrder.setDateline(rs.getDate(3));
+                    DaoClient daoClient = new DaoClientImpl();
+                    Client client = daoClient.clientGet(rs.getInt(4));
+                    requestOrder.setClient(client);
+                    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+                    requestOrder.setStateRequestOrder(daoStateRequestOrder.stateRequestOrderGet(rs.getInt(5)));
+                    
+                    requestOrder.setRequestOrderDetailList(requestDetail);
+                }
+
+            } catch (SQLException e) {
+                requestOrder = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return requestOrder;
+    }
+
     
 }

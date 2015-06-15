@@ -5,8 +5,10 @@ import Model.Log;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
 import dao.DaoLog;
+import dao.DaoRequestOrder;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoLogImpl;
+import dao.impl.DaoRequestOrderImpl;
 import dao.impl.DaoUserImpl;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,8 +297,11 @@ public class Frm_Client_Search extends javax.swing.JFrame {
             Object prueba = modelo.getValueAt(i, 4);
             if ((Boolean) prueba) {
                 String numm = (String) modelo.getValueAt(i, 0);
-                ids.add(numm);
-                daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
+                DaoRequestOrder dro = new DaoRequestOrderImpl();
+                if (dro.requestOrderGetClient(numm)!=null) {
+                    ids.add(numm);
+                    daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con Ruc :  " + numm, Frm_Client_Search.class.toString(), logSI.getIduser());
+                }
             }
         }
         daoClient.clientDel(ids);
