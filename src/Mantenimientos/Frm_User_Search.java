@@ -51,7 +51,7 @@ public class Frm_User_Search extends javax.swing.JFrame {
         }
        
         initilizeTable();
-        
+        cbo_center.setEnabled(false);
       
     }
 
@@ -335,16 +335,20 @@ public class Frm_User_Search extends javax.swing.JFrame {
         
         DaoLog daoLog = new DaoLogImpl();
                     Log logSI = null;
+                    Integer dni = logSI.getIduser();
+                   
         modelo = (DefaultTableModel) tbl_user.getModel();
         List<Integer> ids=new  ArrayList<Integer>();
         int col,nr =modelo.getRowCount(); col =6;
         for (int i=0; i<nr ;i++){
             Object prueba = modelo.getValueAt(i,5);
             if ((Boolean)prueba){
-                
+             
                 Integer numm= (Integer)modelo.getValueAt(i, 0);
-               ids.add(numm);
+             if ((int)numm!=(int)dni){
+                ids.add(numm);
                daoLog.clientIns("Se ha modificado el estado de un usuario al sistema con DNI :  " + numm, Frm_User_Search.class.toString(), logSI.getIduser());
+               }else if ((int)numm==(int)dni)  JOptionPane.showMessageDialog(this, "No se puede editar al usario "+dni.toString()+" porque esta activo");
             }
         }
         daoUsers.usersDel(ids);
