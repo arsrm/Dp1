@@ -695,4 +695,45 @@ public class DaoPalletImpl implements DaoPallet{
         }
         return palletProd;
     }
+
+    @Override
+    public List<PalletIni> getFreePallet() {
+        List<PalletIni> palletList = new ArrayList<>();
+        String sql = "select " 
+                +"idPallet, "
+                +"description, "
+                +"Pallet_State_idPallet_Type, "
+                +"status "
+                +"FROM Pallet "
+                +"WHERE Pallet_State_idPallet_Type = ? ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, 2);
+                
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    PalletIni pallet = new PalletIni();
+                    pallet.setIdpallet(rs.getInt(1));
+                    pallet.setDescription(rs.getString(2));
+                    pallet.setStatusactividad(2);
+                    pallet.setStatuspallet(rs.getInt(4));
+                    
+                    palletList.add(pallet);
+                }
+            } catch (SQLException e) {
+                System.out.println("Error de ejecución:" + e.getMessage());
+                palletList = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return palletList;
+    }
+    
 }

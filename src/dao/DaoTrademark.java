@@ -17,4 +17,5 @@ public interface DaoTrademark {
     public List<Trademark> TrademarkQry();
     public String trademarkIns(Trademark trademark);
     public Integer trademarkGetMaxId();
+    public Trademark TrademarkGetById(Integer idTrademark);   
 }

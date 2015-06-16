@@ -9,6 +9,7 @@ import Model.Distribution_Center;
 import Model.LocationCell;
 import Model.LocationCellDetail;
 import Model.Pallet;
+import Model.PalletIni;
 import Model.PalletProduct;
 import Model.Rack;
 import Model.Warehouse;
@@ -64,4 +65,6 @@ public interface DaoPallet {
     public Integer ValidaCelda(Integer idCD, Integer idware, Integer idrack, Integer idcelda, Integer idceldadet);
     
     public PalletProduct palletProducLocatioCellDetailGet(Integer idWh, Integer idRack, Integer idLocationCell, Integer idLocationCellDetail);
+    
+    public List<PalletIni> getFreePallet();
 }
