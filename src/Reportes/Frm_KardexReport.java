@@ -522,8 +522,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         if (idProduct == null && idAlmacen == null) {
             
             
-            //reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
-            reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
+            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+           // reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
         }
         if (idProduct != null && idAlmacen == null) {
             

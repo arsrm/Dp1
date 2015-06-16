@@ -1,0 +1,11 @@
+idVehicle,license_plate,name,capacity,dispatch_number,status,Vehicle_State_idVehicle_State,Driver_idDriver
+4,PLACA4,Vehiculo4,100000,1,1,2,1
+5,PLACA5,Vehiculo5,100000,1,1,2,2
+6,PLACA6,Vehiculo6,100000,1,1,2,3
+7,PLACA7,Vehiculo7,100000,1,1,2,4
+8,PLACA8,Vehiculo8,100000,1,1,2,5
+9,PLACA9,Vehiculo9,100000,1,1,2,6
+10,PLACA10,Vehiculo10,100000,1,1,2,7
+11,PLACA11,Vehiculo11,100000,1,1,2,8
+12,PLACA12,Vehiculo12,100000,1,1,2,9
+13,PLACA13,Vehiculo13,100000,1,1,2,10
