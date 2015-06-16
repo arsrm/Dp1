@@ -203,13 +203,13 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         lbl_welcome.setForeground(new java.awt.Color(255, 255, 255));
         lbl_welcome.setText("Bienvenido:");
         getContentPane().add(lbl_welcome);
-        lbl_welcome.setBounds(10, 670, 150, 30);
+        lbl_welcome.setBounds(410, 230, 150, 30);
 
         lbl_name.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         lbl_name.setForeground(new java.awt.Color(255, 255, 255));
         lbl_name.setText("Nombre");
         getContentPane().add(lbl_name);
-        lbl_name.setBounds(160, 670, 250, 30);
+        lbl_name.setBounds(560, 230, 680, 30);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/picture/wms.png"))); // NOI18N
         jLabel1.setText("       ");
