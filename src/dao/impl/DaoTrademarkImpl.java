@@ -133,7 +133,7 @@ public class DaoTrademarkImpl implements DaoTrademark {
 
     @Override
     public Integer trademarkGetMaxId() {
-        Integer maxIdTrademark=0;
+        Integer maxIdTrademark=1;
         String sql = "SELECT "
                 + "MAX(id_Trademark)"
                 + "FROM Trademark ";
@@ -149,7 +149,7 @@ public class DaoTrademarkImpl implements DaoTrademark {
                 }
 
             } catch (SQLException e) {
-                maxIdTrademark = 0;
+                maxIdTrademark = 1;
             } finally {
                 try {
                     cn.close();

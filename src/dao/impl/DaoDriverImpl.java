@@ -160,7 +160,7 @@ public class DaoDriverImpl implements DaoDriver{
 
     @Override
     public Integer driverGetMaxId() {
-        Integer maxIdDriver=0;
+        Integer maxIdDriver=1;
         String sql = "SELECT "
                 + "MAX(idDriver)"
                 + "FROM Driver ";
@@ -176,7 +176,7 @@ public class DaoDriverImpl implements DaoDriver{
                 }
 
             } catch (SQLException e) {
-                maxIdDriver = 0;
+                maxIdDriver = 1;
             } finally {
                 try {
                     cn.close();

@@ -167,6 +167,11 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         });
 
         btn_cancel.setText("Cancelar");
+        btn_cancel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cancelActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -242,14 +247,16 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                 if (directoryDriver != null) {
                     loadDriver();
                 }
-                if (directoryTrademark != null){
+                if (directoryTrademark != null) {
                     loadTrademark();
                 }
-                
-                    ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha cargado los archivos con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                }
+
+                ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha cargado los archivos con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             }
-        
+        }
+        txt_fileClient.setText("");
+        txt_fileDriver.setText("");
+        txt_fileTrademark.setText("");
     }//GEN-LAST:event_btn_SaveActionPerformed
 
     private void btn_selectFileTrademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectFileTrademarkActionPerformed
@@ -262,6 +269,12 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         } catch (Exception e) {
         }
     }//GEN-LAST:event_btn_selectFileTrademarkActionPerformed
+
+    private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        this.dispose();
+        menuPadre.setVisible(true);
+        menuPadre.setEnabled(true);
+    }//GEN-LAST:event_btn_cancelActionPerformed
 
     public void loadClient() {
         String line = null;
@@ -304,6 +317,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
     public void loadDriver() {
         String line = null;
         Integer maxId = daoDriver.driverGetMaxId();
+        maxId++; // aumento en 1 para el primer insert
         File file = new File(directoryDriver);
         BufferedReader reader = null;
 
@@ -338,6 +352,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
     public void loadTrademark() {
         String line = null;
         Integer maxId = daoTrademark.trademarkGetMaxId();
+        maxId++; // aumento en 1 para el primer ingreso
         File file = new File(directoryTrademark);
         BufferedReader reader = null;
 
