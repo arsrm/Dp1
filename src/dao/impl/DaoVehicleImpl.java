@@ -213,8 +213,9 @@ public class DaoVehicleImpl implements DaoVehicle {
                 + "capacity,"
                 + "dispatch_number,"
                 + "status,"
+                + "Vehicle_State_idVehicle_State,"
                 + "Driver_idDriver"
-                + ") VALUES(?,?,?,?,?,?)";
+                + ") VALUES(?,?,?,?,?,?,?)";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -224,8 +225,9 @@ public class DaoVehicleImpl implements DaoVehicle {
                 ps.setString(2, vehicle.getName());
                 ps.setDouble(3, vehicle.getCapacity());
                 ps.setInt(4, vehicle.getDispatchNumber());
-                ps.setInt(5, vehicle.getVehicleState().getIdVehicleState());
-                ps.setInt(6, vehicle.getDriver().getIdDriver());
+                ps.setInt(5, 1);
+                ps.setInt(6, vehicle.getVehicleState().getIdVehicleState());
+                ps.setInt(7, vehicle.getDriver().getIdDriver());
 
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {

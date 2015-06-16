@@ -59,7 +59,7 @@
                   <Component id="btn_Save" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="80" max="32767" attributes="0"/>
+              <EmptySpace pref="62" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,11 +82,13 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="txt_fileDriver" pref="211" max="32767" attributes="0"/>
                       <Component id="txt_fileClient" max="32767" attributes="0"/>
+                      <Component id="txt_fileTrademark" max="32767" attributes="0"/>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
@@ -95,7 +97,10 @@
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Component id="btn_selectFileDriver" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btn_selectFileDriver" max="32767" attributes="0"/>
+                              <Component id="btn_selectFileTrademark" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
                   <EmptySpace pref="312" max="32767" attributes="0"/>
@@ -117,7 +122,13 @@
                       <Component id="btn_selectFileDriver" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_fileDriver" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="394" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_fileTrademark" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_selectFileTrademark" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="371" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -152,6 +163,21 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_fileDriver">
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Archivo Marcas"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_fileTrademark">
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_selectFileTrademark">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Seleccionar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_selectFileTrademarkActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

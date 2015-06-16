@@ -64,4 +64,68 @@ public class DaoTrademarkImpl implements DaoTrademark {
         return trademarkList;
     }
 
+    @Override
+    public String trademarkIns(Trademark trademark) {
+        String result = null;
+        String sql = "INSERT INTO Trademark("
+                + "id_Trademark,"
+                + "name"
+                + ") VALUES(?,?)";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, trademark.getId_Trademark());
+                ps.setString(2, trademark.getName());                
+
+                int ctos = ps.executeUpdate();
+                if (ctos == 0) {
+                    throw new SQLException("0 filas afectadas");
+                }
+
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+
+        return result;
+    }
+
+    @Override
+    public Integer trademarkGetMaxId() {
+        Integer maxIdTrademark=0;
+        String sql = "SELECT "
+                + "MAX(id_Trademark)"
+                + "FROM Trademark ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery();
+                
+                while (rs.next()) {
+                    maxIdTrademark = rs.getInt(1);
+                }
+
+            } catch (SQLException e) {
+                maxIdTrademark = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return maxIdTrademark;
+    }
+
 }

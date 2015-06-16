@@ -14,5 +14,7 @@ import java.util.List;
  * @author Gustavo
  */
 public interface DaoTrademark {
-    public List<Trademark> TrademarkQry();   
+    public List<Trademark> TrademarkQry();
+    public String trademarkIns(Trademark trademark);
+    public Integer trademarkGetMaxId();
 }
