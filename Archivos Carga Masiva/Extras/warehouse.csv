@@ -1,0 +1,3 @@
+idWarehouse,description,status,Type_Condition_idType_Condition,Distribution_Center_idDistribution_Center
+1,Almacen Principal,1,1,1
+2,Almacen Secundario,1,1,1
