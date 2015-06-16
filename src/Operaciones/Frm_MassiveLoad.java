@@ -257,7 +257,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         fileChooser.setDialogTitle("Seleccione archivo");
         fileChooser.showDialog(this, null);
         try {
-            directoryDriver = fileChooser.getSelectedFile().getAbsolutePath();
+            directoryTrademark = fileChooser.getSelectedFile().getAbsolutePath();
             txt_fileTrademark.setText(directoryTrademark);
         } catch (Exception e) {
         }
