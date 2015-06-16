@@ -105,6 +105,7 @@ public class Frm_Client_Get extends javax.swing.JFrame {
         table_client = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         btn_Cancel = new javax.swing.JButton();
+        btn_Clean = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -137,17 +138,27 @@ public class Frm_Client_Get extends javax.swing.JFrame {
             }
         });
 
+        btn_Clean.setText("Limpiar");
+        btn_Clean.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CleanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(15, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jLabel1)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btn_Cancel, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_Clean)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Cancel)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -158,7 +169,9 @@ public class Frm_Client_Get extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btn_Cancel)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_Cancel)
+                    .addComponent(btn_Clean))
                 .addContainerGap())
         );
 
@@ -216,10 +229,27 @@ public class Frm_Client_Get extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_table_clientMouseClicked
 
+    private void btn_CleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CleanActionPerformed
+        // TODO add your handling code here:
+        if(flag_window == 1){
+            frm_rosAux.setClient(null);
+            frm_rosAux.setVisible(true);
+            this.dispose();
+        }else if(flag_window == 2){
+            frm_posAux.setVisible(true);
+            this.dispose();
+        }else{
+            frm_dosAux.setClient(null);
+            frm_dosAux.setVisible(true);
+            this.dispose();
+        }
+    }//GEN-LAST:event_btn_CleanActionPerformed
+
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Cancel;
+    private javax.swing.JButton btn_Clean;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table_client;

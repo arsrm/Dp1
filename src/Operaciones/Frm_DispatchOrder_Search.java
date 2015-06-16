@@ -131,9 +131,16 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         table_orders.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -531,11 +538,15 @@ public class Frm_DispatchOrder_Search extends javax.swing.JFrame {
         Object[] options = {"OK"};
         
         if(cliente == null){
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se obtuvo un cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            txt_id_client.setText(null);
+            txt_client_name.setText(null);
         }else{
             client = cliente;
-            txt_id_client.setText(client.getRuc());
-            txt_client_name.setText(client.getName());
+            
+                txt_id_client.setText(client.getRuc());
+                txt_client_name.setText(client.getName());
+            
+                
         }
     }
     

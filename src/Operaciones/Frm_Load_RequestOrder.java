@@ -34,6 +34,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,6 +42,7 @@ import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableModel;
 
@@ -60,7 +62,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     List<RequestOrder> requestOrderList = new ArrayList<>();
     DaoClient daoClients = new DaoClientImpl();
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    
+    private BarraProgreso tarea;
     /**
      * Creates new form Frm_CambiarLog
      */
@@ -91,6 +93,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
         table_orders = new javax.swing.JTable();
         btn_exit = new javax.swing.JButton();
         btn_save = new javax.swing.JButton();
+        progress_bar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -217,6 +220,10 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                     .addComponent(lbl_orders, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pnl_load, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(324, 324, 324)
+                .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,7 +232,9 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
                 .addComponent(pnl_load, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbl_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -260,7 +269,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
     private void btn_saveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_saveActionPerformed
         // TODO add your handling code here:
-        Object[] options = {"OK"};
+        /*Object[] options = {"OK"};
         if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
             int sizeArray = requestOrderList.size();
@@ -277,7 +286,9 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
             }else{
                  int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No hay registros por guardar.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
             }
-        }       
+        }     */
+        tarea = new BarraProgreso();
+        tarea.execute();
     }//GEN-LAST:event_btn_saveActionPerformed
 
     private void table_ordersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ordersMouseClicked
@@ -452,7 +463,46 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     
-    
+    class BarraProgreso extends SwingWorker<Void, Void> {
+
+        @Override
+        public void done() {
+            progress_bar.setIndeterminate(false);
+            Object[] options = {"OK"};
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado las órdenes de pedido con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (ok_option == JOptionPane.OK_OPTION) {
+                menuaux.setVisible(true);
+                menuaux.setLocationRelativeTo(null);
+                Frm_Load_RequestOrder.this.dispose();
+                
+            }
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+            
+           Object[] options = {"OK"};
+            if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+            "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+            int sizeArray = requestOrderList.size();
+            progress_bar.setIndeterminate(true);
+            if(sizeArray!=0){
+                DaoLog daoLog = new DaoLogImpl();
+                Log logSI = null;
+                for(int i=0;i<sizeArray;i++){
+                    String result = daoRequestOrder.requestOrderIns(requestOrderList.get(i));
+                    daoLog.clientIns("Se ha registrado la orden de pedido N° :  " + requestOrderList.get(i).getIdRequestOrder(), Frm_Load_RequestOrder.class.toString(), logSI.getIduser());
+                }
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han guardado los pedidos con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                
+                
+            }else{
+                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No hay registros por guardar.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                }
+            } 
+            return null;
+        }
+    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -464,6 +514,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
     private javax.swing.JPanel lbl_orders;
     private javax.swing.JLabel loadLabel2;
     private javax.swing.JPanel pnl_load;
+    private javax.swing.JProgressBar progress_bar;
     private javax.swing.JTable table_orders;
     private javax.swing.JTextField txt_LoadFile;
     // End of variables declaration//GEN-END:variables

@@ -52,6 +52,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
@@ -95,6 +96,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     List<Integer> listIdDispatch = new ArrayList<>();
     List<Client> clientToAlgorithm = new ArrayList<>();
     int flag;
+    private BarraProgreso tarea;
     
     /**
      * Creates new form Frm_algorithmic_simulator
@@ -192,6 +194,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         btn_Clean = new javax.swing.JButton();
         btn_exit = new javax.swing.JButton();
         lbl_declaimer = new javax.swing.JLabel();
+        progressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -388,6 +391,10 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_exit, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(31, 31, 31))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(280, 280, 280)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -402,6 +409,8 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_exit)
                     .addComponent(lbl_declaimer))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(progressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -511,9 +520,57 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btn_search_ordersActionPerformed
 
+    class BarraProgreso extends SwingWorker<Void, Void> {
+
+        @Override
+        public void done() {
+            progressBar.setIndeterminate(false);
+           
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+            
+            boolean correctData = validateData();
+            if(correctData ==true){
+                progressBar.setIndeterminate(true);
+                //se realiza el trabajo de seleccionar todos los despachos
+                dispatchOrderListForAlgorithm = new ArrayList<>();
+                int size = dispatchOrderList.size();
+                for(int i=0;i<size;i++){
+                    if((Boolean)table_dispatch_orders.getValueAt(i,3)==true)
+                        dispatchOrderListForAlgorithm.add(dispatchOrderList.get(i));
+                }
+                //tenemos la lista de despachos
+                //debemos transformarlo en lista de clientes
+                setCDtoClientList();
+                setDispatchToClient(dispatchOrderListForAlgorithm);
+
+                //ya tenemos la lista de vehiculos
+                //ya tenemos la lista de clientes
+                //se realiza la busqueda tabu
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Los datos han sido cargados para la ejecución.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                if(ok_option == JOptionPane.OK_OPTION){
+                    tSManager = new tabuSearchManager(vehicleList,clientToAlgorithm,(Integer)spn_number_iterations.getValue());
+                    runAlgorithm();
+                    //se procede a asignar
+                    //LLENAR DATA
+                    Frm_Detail_Algorithm frm_srs;
+                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag);
+                    frm_srs.setLocationRelativeTo(null);
+                    frm_srs.setVisible(true);
+                    Frm_Algorithmic_Simulator.this.setVisible(false);
+
+                }
+                
+            }
+            return null;
+        }
+    }
+    
     private void btn_generate_routesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_generate_routesActionPerformed
         // TODO add your handling code here:
-        boolean correctData = validateData();
+        /*boolean correctData = validateData();
         if(correctData ==true){
             //se realiza el trabajo de seleccionar todos los despachos
             dispatchOrderListForAlgorithm = new ArrayList<>();
@@ -541,7 +598,9 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
             frm_srs.setVisible(true);
             this.setVisible(false);
             
-        }
+        }*/
+        tarea = new BarraProgreso();
+        tarea.execute();
     }//GEN-LAST:event_btn_generate_routesActionPerformed
 
     private void setCDtoClientList(){
@@ -597,7 +656,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
                 if(clientList.get(j).getIdClient()==dOrder.getIdClient()){ //depacho pertenece a cliente
                     clientHasOrder = true;
-                    totalWeight = 0.0;
+                    totalWeight = clientList.get(j).getTotalWeight();
                     List<PickingOrderDetail> poDList = daoPickingOrderDetail.pickingOrderDetailQry(po.getIdPickingOrder());
                     int sizePod = poDList.size();
                     for(int p=0;p<sizePod;p++){
@@ -686,6 +745,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_dispatch_criteria;
     private javax.swing.JPanel pnl_dispatch_orders;
     private javax.swing.JPanel pnl_generalParameters;
+    private javax.swing.JProgressBar progressBar;
     private javax.swing.JSpinner spn_number_iterations;
     private javax.swing.JSpinner spn_number_vehicles;
     private javax.swing.JTable table_dispatch_orders;

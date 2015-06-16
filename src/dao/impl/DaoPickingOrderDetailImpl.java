@@ -316,4 +316,33 @@ public class DaoPickingOrderDetailImpl implements DaoPickingOrderDetail{
         return result;
         
     }
+    
+     @Override
+    public String pickingOrderDetailUpd(PickingOrderDetail poD){
+        String result = null;
+        String sql = "UPDATE Picking_Order_Detail SET "                
+                + "status = ? "
+                + "WHERE  idPicking_Order_Detail= ? AND Picking_Order_idPicking_Order = ?; ";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, poD.getStatus());
+                ps.setInt(2, poD.getIdPicking_Order_Detail());
+                ps.setInt(3, poD.getPicking_Order_idPicking_Order());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                result = e.getMessage();
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                    result = e.getMessage();
+                }
+            }
+        }
+        return result;
+        
+    }
 }

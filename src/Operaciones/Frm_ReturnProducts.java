@@ -456,13 +456,24 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
         // TODO add your handling code here:
-        menuaux.setVisible(true);
-        this.dispose();
+        if(cancelAll==1){
+            frm_dodAux.setVisible(true);
+            this.dispose();
+        }else{
+            menuaux.setVisible(true);
+            this.dispose();
+        }
+        
     }//GEN-LAST:event_btn_cancelActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        menuaux.setVisible(true);
-        this.dispose();
+        if(cancelAll==1){
+            frm_dodAux.setVisible(true);
+            this.dispose();
+        }else{
+            menuaux.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     private void btn_returnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_returnActionPerformed
@@ -540,6 +551,8 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     StateRequestOrder state = daoStateOrderRequest.stateRequestOrderGet(3);
                     ro.setStateRequestOrder(state);
                     daoRequestOrder.requestOrderUpd(ro);
+                    frm_dodAux.setVisible(true);
+                    this.dispose();
                 }
                 initializeTable();
             }else{

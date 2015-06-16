@@ -29,10 +29,15 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="pnl_orders" max="32767" attributes="0"/>
-                  <Component id="pnl_search_criteria" alignment="1" max="32767" attributes="0"/>
+                  <Component id="pnl_search_criteria" max="32767" attributes="0"/>
+                  <Component id="pnl_orders" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
+          </Group>
+          <Group type="102" alignment="1" attributes="0">
+              <EmptySpace max="32767" attributes="0"/>
+              <Component id="progress_bar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="349" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -40,10 +45,12 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="pnl_search_criteria" max="32767" attributes="0"/>
+              <Component id="pnl_search_criteria" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="pnl_orders" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="progress_bar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="20" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -110,7 +117,7 @@
                       <Component id="btn_client_search" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_client_name" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="10" max="32767" attributes="0"/>
+                  <EmptySpace pref="14" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jdate_request_date_from" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -217,8 +224,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" alignment="1" pref="809" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
+                          <Component id="btn_massive" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="btn_delete" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btn_update" min="-2" pref="225" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
@@ -238,6 +247,7 @@
                       <Component id="btn_delete" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_update" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_massive" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -320,7 +330,17 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_updateActionPerformed"/>
           </Events>
         </Component>
+        <Component class="javax.swing.JButton" name="btn_massive">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Creaci&#xf3;n Masiva de &#xd3;rdenes de Entrega"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_massiveActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JProgressBar" name="progress_bar">
+    </Component>
   </SubComponents>
 </Form>

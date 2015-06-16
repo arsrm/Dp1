@@ -56,7 +56,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
             String routes = null;
-            Path path = Paths.get(".\\Imagenes\\test.png");
+            Path path = Paths.get(".\\Imagenes\\mapWMS.png");
            
             BufferedImage imageMap;
             public Imagen() {
@@ -98,7 +98,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
                      Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
                      Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
                      g2.drawLine(start.getPos_x(),start.getPos_y(),dis.getPos_x(),dis.getPos_y());
-                     g2.drawString(dis.getName(),dis.getPos_x(),dis.getPos_y());
+                     g2.drawString((i+1)+" "+dis.getName(),dis.getPos_x(),dis.getPos_y());
                      g2.drawLine(dis.getPos_x(),dis.getPos_y(),dis.getPos_x(),dis.getPos_y());
                      break;
 
@@ -106,7 +106,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
                     Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
                     Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
                     g2.drawLine(start.getPos_x(),start.getPos_y(),finish.getPos_x(),finish.getPos_y());
-                    g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawString((i+1)+" "+finish.getName(),finish.getPos_x(),finish.getPos_y());
                     g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
                  }
                 }   
@@ -129,44 +129,20 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         //printMap(posX,posY);
     }
     
-    public Frm_Show_Route_Solution(Frm_Algorithmic_Simulator frm_as,List<String> solutionsPerList) throws IOException {
-        frm_asAux=frm_as;
-        setTitle("VISUALIZACIÓN DE LA RUTA");
-        initComponents();
-        listPerSol = solutionsPerList;
-        initializeCombo();
-        printMap();
-        
-        showRoute(solutionsPerList.get(0));
-        flagWindow = 0;
-        
-    }
+    
     
     public Frm_Show_Route_Solution(Frm_Detail_Route frm_dr,List<String> solutionsPerList) throws IOException {
         frm_drAux=frm_dr;
         setTitle("VISUALIZACIÓN DE LA RUTA");
         initComponents();
         listPerSol = solutionsPerList;
-        initializeCombo();
         printMap();
         
         showRoute(solutionsPerList.get(0));
         flagWindow = 1;
     }
     
-    private void initializeCombo(){
-        int size = listPerSol.size();
-        
-        for(int i=0;i<size;i++){
-            String item = "RUTA VEHICULO " + i;
-            
-            cbo_vehicles.addItem(item);
-        }
-       
-        
-        
-        
-    }
+    
     
      
 
@@ -198,8 +174,6 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     private void initComponents() {
 
         brn_exit = new javax.swing.JButton();
-        lbl_select_vehicle = new javax.swing.JLabel();
-        cbo_vehicles = new javax.swing.JComboBox();
         pnl_img = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -213,14 +187,6 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         brn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 brn_exitActionPerformed(evt);
-            }
-        });
-
-        lbl_select_vehicle.setText("Seleccionar Vehículo");
-
-        cbo_vehicles.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                cbo_vehiclesItemStateChanged(evt);
             }
         });
 
@@ -241,25 +207,18 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addComponent(lbl_select_vehicle)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 269, Short.MAX_VALUE)
                 .addComponent(brn_exit)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addContainerGap(853, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(219, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lbl_select_vehicle)
-                    .addComponent(cbo_vehicles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(brn_exit))
+                .addComponent(brn_exit)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnl_img, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(40, Short.MAX_VALUE))
@@ -281,21 +240,9 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         // TODO add your handling code here:
-        frm_asAux.setVisible(true);
+        frm_drAux.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
-
-    private void cbo_vehiclesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbo_vehiclesItemStateChanged
-        // TODO add your handling code here:
-        if(flag==0){
-            flag=1;
-        }else{
-            int indexVehicleList = cbo_vehicles.getSelectedIndex();
-            String solutionForVehicle = listPerSol.get(indexVehicleList);
-            showRoute(solutionForVehicle);
-        }
-        
-    }//GEN-LAST:event_cbo_vehiclesItemStateChanged
 
     private void showRoute(String sol){
         //imagen = new Imagen();
@@ -337,8 +284,6 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton brn_exit;
-    private javax.swing.JComboBox cbo_vehicles;
-    private javax.swing.JLabel lbl_select_vehicle;
     private javax.swing.JPanel pnl_img;
     // End of variables declaration//GEN-END:variables
 }

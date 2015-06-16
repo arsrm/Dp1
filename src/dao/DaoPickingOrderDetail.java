@@ -22,4 +22,6 @@ public interface DaoPickingOrderDetail {
     public String pickingOrderDetailReturnToWarehouse(Integer idPickingOrderDetail,Integer idPickingOrder);
     
     public String pickingOrderDetailConfirmDespatch(Integer idPickingOrderDetail,Integer idPickingOrder);
+    
+    public String pickingOrderDetailUpd(PickingOrderDetail poD);
 }

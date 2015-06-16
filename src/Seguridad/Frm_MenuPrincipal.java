@@ -16,6 +16,9 @@ import Mantenimientos.Frm_Rack_Search;
 import Mantenimientos.Frm_User_Search;
 import Mantenimientos.Frm_Warehouse_Search;
 import Model.Log;
+import Model.PickingOrder;
+import Model.RequestOrder;
+import Model.StateRequestOrder;
 import Model.Users;
 import Operaciones.Frm_DispatchOrder_Search;
 import Operaciones.Frm_IntermentOrder_Load;
@@ -37,10 +40,18 @@ import Reportes.Frm_StockReport;
 import Reportes.Frm_TransportGuide;
 import Simulacion_Algoritmica.Frm_Algorithmic_Simulator;
 import dao.DaoLog;
+import dao.DaoPickingOrder;
+import dao.DaoRequestOrder;
+import dao.DaoStateRequestOrder;
 import dao.DaoUsers;
 import dao.impl.DaoLogImpl;
+import dao.impl.DaoPickingOrderImpl;
+import dao.impl.DaoRequestOrderImpl;
+import dao.impl.DaoStateRequestOrderImpl;
 import dao.impl.DaoUserImpl;
 import java.awt.event.ActionEvent;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -51,6 +62,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     
     Log logSI = new Log();
     DaoLog daoLog =new DaoLogImpl();
+    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+    DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     
     //gzavala-inicio 24/05
     public void access_windows_user(Integer idprofile)
@@ -796,6 +809,8 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         frm_automatic_adjustemnt.setVisible(true);
         frm_automatic_adjustemnt.setLocationRelativeTo(null);
     }//GEN-LAST:event_op_adjustAutomaticActionPerformed
+
+   
 //gzavala-fin 24/05 23:45    
     /**
      * @param args the command line arguments

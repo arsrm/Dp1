@@ -7,17 +7,27 @@
 package Operaciones;
 
 import Model.Client;
+import Model.Log;
+import Model.Pallet_Product_Location;
 import Model.PickingOrder;
+import Model.PickingOrderDetail;
+import Model.Product;
 import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import Model.StateRequestOrder;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
+import dao.DaoLog;
+import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
+import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
 import dao.DaoStateRequestOrder;
 import dao.impl.DaoClientImpl;
+import dao.impl.DaoLogImpl;
+import dao.impl.DaoPallet_Producto_LocationImpl;
+import dao.impl.DaoPickingOrderDetailImpl;
 import dao.impl.DaoPickingOrderImpl;
 import dao.impl.DaoRequestOrderDetailImpl;
 import dao.impl.DaoRequestOrderImpl;
@@ -32,6 +42,7 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SwingWorker;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import tool.SelectAllHeader;
@@ -53,6 +64,13 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     List<StateRequestOrder> listStateRequest = new ArrayList<>();
     Client client;
     List<Integer> listRequestToDelete = new ArrayList<>();
+    DaoLog daoLog = new DaoLogImpl();
+    Log logSI = null;
+    List<RequestOrder> requestOrderListToPicking = new ArrayList<>();
+    DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
+    DaoPickingOrderDetail daoPickingOrderDetail = new DaoPickingOrderDetailImpl();
+    DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
+    private BarraProgreso tarea;
     /**
      * Creates new form Frm_VerOrdenesPedidos1
      */
@@ -75,6 +93,50 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     public void refreshGrid(){
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
+    }
+    
+    class BarraProgreso extends SwingWorker<Void, Void> {
+
+        @Override
+        public void done() {
+            progress_bar.setIndeterminate(false);
+           
+        }
+
+        @Override
+        public Void doInBackground() throws Exception {
+            
+           Object[] options = {"OK"};
+            if(ifNoColummnSelected()==false){
+                requestOrderListToPicking =  new ArrayList<>();
+                 for (int i = 0; i < table_orders.getRowCount(); i++) {
+                    if ((Boolean) table_orders.getValueAt(i, 3)) {
+                        if(requestOrderList.get(i).getStateRequestOrder().getIdStateRequestOrder()==2)//verificamos solo los pendientes
+                            requestOrderListToPicking.add(requestOrderList.get(i));
+                        else{
+                            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Pedido N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                        }
+                    }
+                }
+                if(requestOrderListToPicking.size()!=0){
+                    if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                        "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                        massive_picking_creation(requestOrderListToPicking);
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han creado las órdenes de picking.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+
+                        refreshGrid();
+                        searchFilter();
+                        fillTable();
+
+                    }
+                }else{
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se realizaron cambios.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+                }
+            }else{
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            }
+            return null;
+        }
     }
     
     public void fillCombo(List<StateRequestOrder> list){
@@ -113,6 +175,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         btn_delete = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
         btn_update = new javax.swing.JButton();
+        btn_massive = new javax.swing.JButton();
+        progress_bar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -199,7 +263,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                     .addComponent(lbl_client)
                     .addComponent(btn_client_search)
                     .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnl_search_criteriaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jdate_request_date_from, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -268,6 +332,13 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             }
         });
 
+        btn_massive.setText("Creación Masiva de Órdenes de Entrega");
+        btn_massive.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_massiveActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pnl_ordersLayout = new javax.swing.GroupLayout(pnl_orders);
         pnl_orders.setLayout(pnl_ordersLayout);
         pnl_ordersLayout.setHorizontalGroup(
@@ -277,8 +348,10 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 809, Short.MAX_VALUE)
                     .addGroup(pnl_ordersLayout.createSequentialGroup()
+                        .addComponent(btn_massive)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btn_delete)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addComponent(btn_update, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
@@ -293,7 +366,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                 .addGroup(pnl_ordersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_delete)
                     .addComponent(btn_cancel)
-                    .addComponent(btn_update))
+                    .addComponent(btn_update)
+                    .addComponent(btn_massive))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -304,18 +378,24 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_search_criteria, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnl_search_criteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnl_orders, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(349, 349, 349))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(pnl_search_criteria, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnl_search_criteria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(pnl_orders, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(progress_bar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -341,9 +421,13 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         Object[] options = {"OK"};
         
         if(cliente == null){
-            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se obtuvo un cliente.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+            
+            txt_id_client.setText(null);
+            txt_client_name.setText(null);
+        
         }else{
             client = cliente;
+            
             txt_id_client.setText(client.getRuc());
             txt_client_name.setText(client.getName());
         }
@@ -368,9 +452,8 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
             listRequestToDelete =  new ArrayList<>();
              for (int i = 0; i < table_orders.getRowCount(); i++) {
                 if ((Boolean) table_orders.getValueAt(i, 3)) {
-                    String status_3 = daoStateRequestOrder.stateRequestOrderGet(3).getDescription();
-                    String status_4 = daoStateRequestOrder.stateRequestOrderGet(4).getDescription();
-                    if(table_orders.getValueAt(i,2).equals(status_3)==false || table_orders.getValueAt(i,2).equals(status_4)==false)
+                    
+                    if(requestOrderList.get(i).getStateRequestOrder().getIdStateRequestOrder()==2)
                         listRequestToDelete.add(Integer.parseInt(table_orders.getValueAt(i, 0).toString()));
                     else{
                         int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Pedido N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
@@ -382,6 +465,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
                     "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
                     daoRequest.requestsDel(listRequestToDelete);
                     int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han cambiado los estados de los pedidos.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    log();
                     refreshGrid();
                     searchFilter();
                     fillTable();
@@ -418,10 +502,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     private void btn_updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_updateActionPerformed
         // TODO add your handling code here:
         Object[] options = {"OK"};
-         System.out.println("HOLI");
         List<RequestOrder> list = daoRequest.requestOrderQryByStatus(2);
-       
-        System.out.println(list.size());
         if(list == null){
             int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se encontraron pedidos pendientes.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
         }else{
@@ -438,6 +519,105 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_updateActionPerformed
 
+    private void btn_massiveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_massiveActionPerformed
+        // TODO add your handling code here:
+        /*Object[] options = {"OK"};
+        if(ifNoColummnSelected()==false){
+            requestOrderListToPicking =  new ArrayList<>();
+             for (int i = 0; i < table_orders.getRowCount(); i++) {
+                if ((Boolean) table_orders.getValueAt(i, 3)) {
+                    if(requestOrderList.get(i).getStateRequestOrder().getIdStateRequestOrder()==2)//verificamos solo los pendientes
+                        requestOrderListToPicking.add(requestOrderList.get(i));
+                    else{
+                        int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Pedido N° "+(int)table_orders.getValueAt(i,0)+" fue atendido. No se puede cancelar","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    }
+                }
+            }
+            if(requestOrderListToPicking.size()!=0){
+                if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
+                    "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
+                    massive_picking_creation(requestOrderListToPicking);
+                    int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se han creado las órdenes de picking.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+                    
+                    refreshGrid();
+                    searchFilter();
+                    fillTable();
+
+                }
+            }else{
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(),"No se realizaron cambios.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);  
+            }
+        }else{
+            int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Seleccione un registro.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
+        }*/
+        tarea = new BarraProgreso();
+        tarea.execute();
+    }//GEN-LAST:event_btn_massiveActionPerformed
+
+    
+    private void massive_picking_creation(List<RequestOrder> list){
+        int sizeR = requestOrderListToPicking.size();
+        for(int m=0;m<sizeR;m++){
+            RequestOrder roAux = requestOrderListToPicking.get(m);
+            List<RequestOrderDetail> roAuxDetail = roAux.getRequestOrderDetailList();
+            PickingOrder po = new PickingOrder();
+            //seteamos datos principales
+            po.setDate(new Date());
+            //1: REALIZADO 2:PENDIENTE 3:CANCELADO
+            po.setStatus(2);
+            po.setIdRequest_Order(roAux.getIdRequestOrder());
+            Integer idPicking = daoPickingOrder.pickingOrderIns(po);
+            po.setIdPickingOrder(idPicking);
+            Integer index = 1;
+            List<PickingOrderDetail> listpoD;
+            boolean requestCompleted =true;
+            List<PickingOrderDetail> poList = new ArrayList<>();
+            int size = roAuxDetail.size();
+            boolean isEmptyRequest = false;
+            for(int i=0;i<size;i++){
+                //vemos la cantidad de pallets necesarios para cada uno de los productos solicitados
+                if(roAuxDetail.get(i).getStatus()==1){
+                    Integer palletsNumberDelivered = roAuxDetail.get(i).getQuantity(); //le entrego todos los pallets de ese detalle
+                    Integer palletsNumberRequested = roAuxDetail.get(i).getQuantity();
+                    if(palletsNumberDelivered <palletsNumberRequested){ //si entrega menos de lo que tienes--ya es parcial
+                        requestCompleted = false;
+                    }
+                    Product product = roAux.getRequestOrderDetailList().get(i).getProduct();
+                    listpoD = daoPickingOrderDetail.pickingOrderDetailFind(idPicking, palletsNumberDelivered, product.getIdProduct());                    
+                    if(listpoD != null){
+                        int sizeL= listpoD.size();
+                        for(int j=0;j<sizeL;j++){
+                            daoPickingOrderDetail.pickingOrderDetailIns(listpoD.get(j));
+                            Pallet_Product_Location ppl = daoPalletProductLocation.daoPallet_Product_LocationGet(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail());
+                            poList.add(listpoD.get(j));
+                            daoPalletProductLocation.daoPallet_Product_LocationDel(listpoD.get(j).getIdPallet_By_Product_By_Location_Cell_Detail(),ppl.getPallet_By_Product_Pallet_idPallet());
+                            index++;
+                        }
+                        Integer delivered = roAuxDetail.get(i).getQuantity();
+                        Integer quantity = roAux.getRequestOrderDetailList().get(i).getQuantity();
+                        roAux.getRequestOrderDetailList().get(i).setDelivered(delivered);
+                        roAux.getRequestOrderDetailList().get(i).setRemaining(palletsNumberRequested-delivered);
+                        //y se ajusta la nueva cantidad solicitada con lo que falta
+                        //roAux.getRequestOrderDetailList().get(i).setQuantity(quantity-delivered);
+                    }else
+                        isEmptyRequest = true;
+                }
+            }
+            if(isEmptyRequest == false){
+                StateRequestOrder state;
+                if(requestCompleted == true)
+                     state = daoStateRequestOrder.stateRequestOrderGet(4); //se setea que esta generado el picking
+                else
+                    state = daoStateRequestOrder.stateRequestOrderGet(2);
+                roAux.setStateRequestOrder(state);
+                //SE PROCEDE CON UN UPDATE
+                daoRequest.requestOrderUpd(roAux);
+                daoLog.clientIns("Se ha registrado la orden de picking N° " +idPicking, Frm_RequestOrder_Detail.class.toString(), logSI.getIduser());
+            }
+            
+        }
+    }
+    
      private void updateByDate(RequestOrder ro){
         Date actualDate = new Date();
         System.out.println(actualDate);
@@ -466,6 +646,14 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
         
     }
     
+    private void log(){
+        int size = listRequestToDelete.size();
+        for(int i=0;i<size;i++){
+            daoLog.clientIns("Se ha cambiado el estado del pedido N° :  " + listRequestToDelete.get(i), Frm_RequestOrder_Search.class.toString(), logSI.getIduser());
+
+        }
+    } 
+     
     private boolean validateRequest(Integer idRequest){
         RequestOrder ro = daoRequest.requestOrderGet(idRequest);
         if(ro!=null){
@@ -549,6 +737,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_client_search;
     private javax.swing.JButton btn_delete;
+    private javax.swing.JButton btn_massive;
     private javax.swing.JButton btn_search;
     private javax.swing.JButton btn_update;
     private javax.swing.JComboBox cbo_status;
@@ -561,6 +750,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_status;
     private javax.swing.JPanel pnl_orders;
     private javax.swing.JPanel pnl_search_criteria;
+    private javax.swing.JProgressBar progress_bar;
     private javax.swing.JTable table_orders;
     private javax.swing.JTextField txt_client_name;
     private javax.swing.JTextField txt_id_client;

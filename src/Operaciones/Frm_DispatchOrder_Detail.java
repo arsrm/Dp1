@@ -10,6 +10,7 @@ import Model.Client;
 import Model.DispatchOrder;
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.Log;
 import Model.PalletProduct;
 import Model.Pallet_Product_Location;
 import Model.PickingOrder;
@@ -26,6 +27,7 @@ import dao.DaoDistributionCenter;
 import dao.DaoDriver;
 import dao.DaoLocationCell;
 import dao.DaoLocationCellDetail;
+import dao.DaoLog;
 import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
@@ -43,6 +45,7 @@ import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoDriverImpl;
 import dao.impl.DaoLocationCellDetailImpl;
 import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
@@ -85,7 +88,8 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     DaoPickingOrder daoPickingOrder = new DaoPickingOrderImpl();
     DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
-    
+    DaoLog daoLog = new DaoLogImpl();
+    Log logSI = null;
     /**
      * Creates new form Frm_VerDetalleOrdenDespacho1
      */
@@ -404,6 +408,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         // TODO add your handling code here:
         frm_dosAux.setVisible(true);
         frm_dosAux.setLocationRelativeTo(null);
+        frm_dosAux.refreshGrid();
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
@@ -411,6 +416,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         // TODO add your handling code here:
         frm_dosAux.setVisible(true);
         frm_dosAux.setLocationRelativeTo(null);
+        frm_dosAux.refreshGrid();
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
@@ -504,11 +510,12 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                 }
                 RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
                 updateRequestOrder(ro);
-               
+                daoLog.clientIns("Se ha confirmado la entrega N° :  " + dispatchOrderAux.getIdDispatch_Order(), Frm_DispatchOrder_Detail.class.toString(), logSI.getIduser());
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"El despacho ha finalizado con éxito.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                 if(ok_option==JOptionPane.OK_OPTION){
                     frm_dosAux.setVisible(true);
                     frm_dosAux.setLocationRelativeTo(null);
+                    frm_dosAux.refreshGrid();
                     this.dispose();
                 }
             }
@@ -527,7 +534,6 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                 break;
             }    
         }
-        System.out.println("PROBANDO "+completed);
         
         //si el estado esta en true, quiere decir que se hizo picking de todo pero habran picking anulados
         //habran picking que aun no son despachos entregados
@@ -543,6 +549,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
                daoRequestOrder.requestOrderUpd(ro);
                Date dateArrival = new Date();
                ro.setDateArrive(dateArrival);
+               daoRequestOrder.setDateArrivalToRequest(ro);
            }
         }
             

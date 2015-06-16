@@ -232,10 +232,8 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
                 DispatchOrder dor = daoDispatchOrder.dispatchOrderGet(cli.getListDispatch().get(j));
                 Object[] fila = {order,dor.getIdDispatch_Order(),cli.getName(),dor.getDepartureDate()};
                 model.addRow(fila);
+                order++;
             }
-            
-            order++;
-                
         }
         
     }

@@ -7,6 +7,7 @@
 package Operaciones;
 
 import Model.LocationCellDetail;
+import Model.Log;
 import Model.Pallet;
 import Model.Pallet_Product_Location;
 import Model.PickingOrder;
@@ -16,6 +17,7 @@ import Model.RequestOrder;
 import Model.RequestOrderDetail;
 import Model.StateRequestOrder;
 import Model.Users;
+import dao.DaoLog;
 import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
 import dao.DaoPickingOrder;
@@ -23,6 +25,7 @@ import dao.DaoPickingOrderDetail;
 import dao.DaoRequestOrder;
 import dao.DaoRequestOrderDetail;
 import dao.DaoStateRequestOrder;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
 import dao.impl.DaoPickingOrderDetailImpl;
@@ -67,6 +70,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     Integer idRequest;
     Boolean validateRequest = true;
     Validate valida = new Validate();
+    DaoLog daoLog = new DaoLogImpl();
+    Log logSI = null;
     
     /**
      * Creates new form Frm_VerDetalleOrdenPedido1
@@ -164,7 +169,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         cbo_status = new javax.swing.JComboBox();
         lbl_address = new javax.swing.JLabel();
         lbl_reg_date = new javax.swing.JLabel();
-        jdate_register_date = new com.toedter.calendar.JDateChooser();
+        jdate_arrival_date = new com.toedter.calendar.JDateChooser();
         jdate_deliver_date = new com.toedter.calendar.JDateChooser();
         txt_client_address = new javax.swing.JTextField();
         txt_id_client = new javax.swing.JTextField();
@@ -203,9 +208,9 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
 
         lbl_address.setText("Dirección:");
 
-        lbl_reg_date.setText("Fecha Registro:");
+        lbl_reg_date.setText("Fecha de Llegada:");
 
-        jdate_register_date.setEnabled(false);
+        jdate_arrival_date.setEnabled(false);
 
         jdate_deliver_date.setEnabled(false);
 
@@ -219,54 +224,56 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         pnl_general_info.setLayout(pnl_general_infoLayout);
         pnl_general_infoLayout.setHorizontalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
-                .addGap(164, 256, Short.MAX_VALUE)
+            .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                .addContainerGap(274, Short.MAX_VALUE)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
-                        .addComponent(jdate_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(173, 173, 173))
+                        .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
                         .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lbl_reg_date)
-                                    .addComponent(lbl_address))
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                        .addGap(10, 10, 10)
-                                        .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbl_deliver_date)
-                                        .addGap(15, 15, 15))
-                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                        .addGap(13, 13, 13)
-                                        .addComponent(txt_client_address, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(lbl_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18))
                             .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(lbl_client)
+                                    .addComponent(lbl_address)
                                     .addComponent(lbl_num_ord))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_order_num, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                                        .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(18, 18, 18)
-                        .addComponent(lbl_status)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(112, 112, 112))))
+                                .addGap(32, 32, 32)))
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_client_address, javax.swing.GroupLayout.PREFERRED_SIZE, 307, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jdate_arrival_date, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jdate_deliver_date, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE))
+                            .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                                .addComponent(txt_order_num, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
+                                .addComponent(lbl_status)))))
+                .addGap(18, 18, 18)
+                .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(112, 112, 112))
+            .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                .addGap(305, 305, 305)
+                .addComponent(lbl_reg_date)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnl_general_infoLayout.setVerticalGroup(
             pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_general_infoLayout.createSequentialGroup()
-                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txt_order_num, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lbl_num_ord)
-                    .addComponent(lbl_status)
-                    .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_general_infoLayout.createSequentialGroup()
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(cbo_status, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbl_status))
+                        .addGap(0, 10, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_general_infoLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbl_num_ord)
+                            .addComponent(txt_order_num, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_id_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_client_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,14 +282,15 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txt_client_address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lbl_address))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbl_deliver_date, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jdate_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jdate_register_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(lbl_reg_date)))
-                .addContainerGap(25, Short.MAX_VALUE))
+                    .addComponent(jdate_deliver_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnl_general_infoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lbl_reg_date)
+                    .addComponent(jdate_arrival_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnl_products.setBorder(javax.swing.BorderFactory.createTitledBorder("Productos"));
@@ -377,17 +385,17 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnl_products, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(pnl_general_info, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnl_general_info, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(7, 7, 7)
+                .addContainerGap()
                 .addComponent(pnl_general_info, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(7, 7, 7)
                 .addComponent(pnl_products, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -398,9 +406,10 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         txt_id_client.setText(roAux.getClient().getRuc());
         txt_client_name.setText(roAux.getClient().getName());
         txt_client_address.setText(roAux.getClient().getAddress());
-        jdate_register_date.setDate(roAux.getDateArrive());
         jdate_deliver_date.setDate(roAux.getDateline());
         cbo_status.setSelectedIndex(roAux.getStateRequestOrder().getIdStateRequestOrder());
+        if(roAux.getDateArrive()!=null)
+            jdate_arrival_date.setDate(roAux.getDateArrive());
         fillTable();
         
     }
@@ -438,7 +447,9 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se ha cambiado el estado de/del el/los producto(s) con éxito","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
                 if(ok_option==JOptionPane.OK_OPTION){
                     daoRequestOrderDetail.requestOrderDetailsDel(listRequestToDelete, idRequest);
+                    
                 }
+                
                 refreshGrid();
                 roAux = daoRequestOrder.requestOrderGet(idRequest);
                 fillTable();
@@ -450,6 +461,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                         StateRequestOrder state = daoStateRequestOrder.stateRequestOrderGet(3);
                         roAux.setStateRequestOrder(state);
                         daoRequestOrder.requestOrderUpd(roAux);
+                        daoLog.clientIns("Se ha cancelido el pedido N° :  " + roAux.getIdRequestOrder(), Frm_RequestOrder_Detail.class.toString(), logSI.getIduser());
                     }
                     frm_rosAux.setVisible(true);
                     frm_rosAux.refreshGrid();
@@ -461,6 +473,13 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteActionPerformed
 
+    private void logDetail(){
+        int size = listRequestToDelete.size();
+        for(int i=0;i<size;i++){
+            daoLog.clientIns("Se ha cambiado el estado del detalle N° " +listRequestToDelete.get(i) + " del pedido N° :  " + roAux.getIdRequestOrder(), Frm_RequestOrder_Detail.class.toString(), logSI.getIduser());
+        }
+    }
+    
     private void refreshGrid(){
         model.getDataVector().removeAllElements();
         model.fireTableDataChanged();
@@ -566,6 +585,7 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
                     roAux.setStateRequestOrder(state);
                     //SE PROCEDE CON UN UPDATE
                     daoRequestOrder.requestOrderUpd(roAux);
+                    daoLog.clientIns("Se ha registrado la orden de picking N° " +idPicking, Frm_RequestOrder_Detail.class.toString(), logSI.getIduser());
                     if(JOptionPane.showOptionDialog(new JFrame(),"Orden de picking registrada.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0])==JOptionPane.OK_OPTION){
                         Frm_RequestOrder_Preview frm_rop =  new Frm_RequestOrder_Preview(po,poList);
                         frm_rop.setLocation(450,150);
@@ -668,8 +688,8 @@ public class Frm_RequestOrder_Detail extends javax.swing.JFrame {
     private javax.swing.JComboBox cbo_status;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextField jTextField1;
+    private com.toedter.calendar.JDateChooser jdate_arrival_date;
     private com.toedter.calendar.JDateChooser jdate_deliver_date;
-    private com.toedter.calendar.JDateChooser jdate_register_date;
     private javax.swing.JLabel lbl_address;
     private javax.swing.JLabel lbl_client;
     private javax.swing.JLabel lbl_declaimer;

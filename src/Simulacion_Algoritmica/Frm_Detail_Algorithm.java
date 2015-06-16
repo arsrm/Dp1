@@ -10,16 +10,19 @@ import Model.Client;
 import Model.DispatchOrder;
 import Model.ExecutionAlgorithm;
 import Model.ExecutionDetail;
+import Model.Log;
 import Model.Vehicle;
 import dao.DaoClient;
 import dao.DaoDispatchOrder;
 import dao.DaoExecutionAlgorithm;
 import dao.DaoExecutionDetail;
+import dao.DaoLog;
 import dao.DaoVehicle;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoDispatchOrderImpl;
 import dao.impl.DaoExecutionAlgorithmImpl;
 import dao.impl.DaoExecutionDetailImpl;
+import dao.impl.DaoLogImpl;
 import dao.impl.DaoVehicleImpl;
 import java.util.ArrayList;
 import java.util.Date;
@@ -47,6 +50,8 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
     DaoVehicle daoVehicle = new DaoVehicleImpl();
     DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
     Integer flagAux;
+    DaoLog daoLog = new DaoLogImpl();
+    Log logSI = null;
     /**
      * Creates new form Frm_Detail_Algorithm
      */
@@ -86,16 +91,29 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
     
     private double calculateDistance(String route){
         double distance = 0.0;
+        System.out.println(route);
         String[] clientsId = route.split("-");
         int sizeId = clientsId.length;
         double distanceMatrix[][] = tabuManager.getDistances();
         
         for(int i=0;i<sizeId-1;i++){
-            int indexIni = Integer.parseInt(clientsId[i]);
-            int indexEnd = Integer.parseInt(clientsId[i+1]);
+            int indexIni = getIndex(clientsId[i]);
+            System.out.println(indexIni+"-INDEXINI");
+            int indexEnd = getIndex(clientsId[i+1]);
+            System.out.println(indexEnd+"-INDEXEND");
             distance+=distanceMatrix[indexIni][indexEnd];
         }
         return distance;
+    }
+    
+    private int getIndex(String id){
+        int size = cliList.size();
+        
+        for(int i=0;i<size;i++){
+            if(Integer.parseInt(id)==cliList.get(i).getIdClient())
+                return i;
+        }
+        return -1;
     }
     
     private double calculateWeight(String route){
@@ -103,7 +121,6 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         String[] clientsId = route.split("-");
         int sizeId = clientsId.length;
         int sizeClient = cliList.size();
-        System.out.println("SIZE: "+sizeClient);
         for(int i=1;i<sizeId-1;i++){
             Client cli = new Client();
             
@@ -114,6 +131,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 }
             }
             totalweight+=cli.getTotalWeight();
+            System.out.println(cli.getTotalWeight());
         }
         return totalweight;
     }
@@ -128,9 +146,6 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        txt_num_exe = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         table_vehicles = new javax.swing.JTable();
@@ -142,33 +157,6 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
         });
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Ejecución"));
-
-        jLabel1.setText("Número de Ejecución:");
-
-        txt_num_exe.setEditable(false);
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(txt_num_exe, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txt_num_exe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(23, Short.MAX_VALUE))
-        );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle Ejecución"));
 
@@ -198,9 +186,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 9, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         btn_Save.setText("Guardar Ejecución");
@@ -214,27 +200,23 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btn_Save)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_Save)
-                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_Save)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -323,17 +305,15 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 }
                 index_order++;
             }
+            daoLog.clientIns("Se ha registrado la simulación N°  " + id, Frm_Detail_Algorithm.class.toString(), logSI.getIduser());
             ok_option = JOptionPane.showOptionDialog(new JFrame(),"Se registró la ejecución.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Save;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table_vehicles;
-    private javax.swing.JTextField txt_num_exe;
     // End of variables declaration//GEN-END:variables
 }

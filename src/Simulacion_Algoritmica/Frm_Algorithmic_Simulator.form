@@ -48,6 +48,11 @@
                   </Group>
               </Group>
           </Group>
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace min="-2" pref="280" max="-2" attributes="0"/>
+              <Component id="progressBar" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+          </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -65,6 +70,8 @@
                   <Component id="btn_exit" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="lbl_declaimer" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+              <Component id="progressBar" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -350,6 +357,8 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Todos los campos marcados con (*) son obligatorios"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JProgressBar" name="progressBar">
     </Component>
   </SubComponents>
 </Form>
