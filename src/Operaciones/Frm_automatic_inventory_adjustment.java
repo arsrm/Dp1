@@ -299,6 +299,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
     }//GEN-LAST:event_cbo_whActionPerformed
 
     private void btn_compareActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_compareActionPerformed
+        opAjusteRealizado=0;
         Object[] options = {"OK"};
         int ok_option;
         if (directoryFileInventManual == null) {
@@ -416,6 +417,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                 daoLog.clientIns("Se ha realizado una salida por ajuste de inventario automático ", Frm_adjustManual.class.toString(), logSI.getIduser());
             }
         }
+        opAjusteRealizado=1;
         initializeTable();
     }//GEN-LAST:event_btn_automaticAdjustActionPerformed
 
