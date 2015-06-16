@@ -7,16 +7,23 @@ package Operaciones;
 
 import Model.Client;
 import Model.Driver;
+import Model.Product;
 import Model.Trademark;
+import Model.Vehicle;
+import Model.VehicleState;
 import Seguridad.Frm_MenuPrincipal;
 import dao.DaoClient;
 import dao.DaoDriver;
+import dao.DaoProducts;
 import dao.DaoRequestOrder;
 import dao.DaoTrademark;
+import dao.DaoVehicle;
 import dao.impl.DaoClientImpl;
 import dao.impl.DaoDriverImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoRequestOrderImpl;
 import dao.impl.DaoTrademarkImpl;
+import dao.impl.DaoVehicleImpl;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -42,9 +49,13 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
     String directoryClient = null;
     String directoryDriver = null;
     String directoryTrademark = null;
+    String directoryVehicle = null;
+    String directoryProduct = null;
     DaoClient daoClient = new DaoClientImpl();
     DaoDriver daoDriver = new DaoDriverImpl();
     DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    DaoVehicle daoVehicle = new DaoVehicleImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
 
     public Frm_MassiveLoad(Frm_MenuPrincipal menu) {
         menuPadre = menu;
@@ -70,6 +81,12 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txt_fileTrademark = new javax.swing.JTextField();
         btn_selectFileTrademark = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txt_fileVehicle = new javax.swing.JTextField();
+        btn_selectFileVehicle = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        txt_fileProduct = new javax.swing.JTextField();
+        btn_selectFileProduct = new javax.swing.JButton();
         btn_Save = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
@@ -94,7 +111,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
             }
         });
 
-        jLabel2.setText("Archivo Conductores");
+        jLabel2.setText("Archivo de Conductores");
 
         btn_selectFileDriver.setText("Seleccionar");
         btn_selectFileDriver.addActionListener(new java.awt.event.ActionListener() {
@@ -103,12 +120,31 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Archivo Marcas");
+        jLabel3.setText("Archivo de Marcas");
 
         btn_selectFileTrademark.setText("Seleccionar");
         btn_selectFileTrademark.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_selectFileTrademarkActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Archivo de Vehiculos");
+
+        btn_selectFileVehicle.setText("Seleccionar");
+        btn_selectFileVehicle.setActionCommand("Seleccionar");
+        btn_selectFileVehicle.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_selectFileVehicleActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setText("Archivo de Productos");
+
+        btn_selectFileProduct.setText("Seleccionar");
+        btn_selectFileProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_selectFileProductActionPerformed(evt);
             }
         });
 
@@ -121,22 +157,24 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel5))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txt_fileTrademark)
                     .addComponent(txt_fileDriver, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
                     .addComponent(txt_fileClient)
-                    .addComponent(txt_fileTrademark))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btn_selectFileClient))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btn_selectFileDriver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btn_selectFileTrademark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(312, Short.MAX_VALUE))
+                    .addComponent(txt_fileVehicle)
+                    .addComponent(txt_fileProduct))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_selectFileDriver, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_selectFileClient, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_selectFileTrademark, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_selectFileVehicle, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_selectFileProduct, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(307, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -153,10 +191,20 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                     .addComponent(txt_fileDriver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(txt_fileVehicle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_selectFileVehicle))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txt_fileTrademark, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_selectFileTrademark))
-                .addContainerGap(371, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(txt_fileProduct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_selectFileProduct))
+                .addContainerGap(271, Short.MAX_VALUE))
         );
 
         btn_Save.setText("Cargar archivos");
@@ -188,18 +236,18 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                         .addComponent(btn_Save)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel)
-                        .addGap(22, 22, 22))))
+                        .addGap(25, 25, 25))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_Save)
                     .addComponent(btn_cancel))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -236,7 +284,7 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
     private void btn_SaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_SaveActionPerformed
         Object[] options = {"OK"};
         int ok_option;
-        if (directoryClient == null && directoryDriver == null && directoryTrademark == null) {
+        if (directoryClient == null && directoryDriver == null && directoryTrademark == null && directoryVehicle == null && directoryProduct == null) {
             ok_option = JOptionPane.showOptionDialog(new JFrame(), "Seleccione un archivo", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         } else {
             if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
@@ -247,16 +295,25 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
                 if (directoryDriver != null) {
                     loadDriver();
                 }
+                if (directoryVehicle != null) {
+                    loadVehicle();
+                }
                 if (directoryTrademark != null) {
                     loadTrademark();
                 }
-
+                
+                if (directoryProduct != null) {
+                    loadProduct();
+                }
+                
                 ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha cargado los archivos con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
             }
         }
         txt_fileClient.setText("");
         txt_fileDriver.setText("");
         txt_fileTrademark.setText("");
+        txt_fileVehicle.setText("");
+        txt_fileProduct.setText("");
     }//GEN-LAST:event_btn_SaveActionPerformed
 
     private void btn_selectFileTrademarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectFileTrademarkActionPerformed
@@ -275,6 +332,28 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         menuPadre.setVisible(true);
         menuPadre.setEnabled(true);
     }//GEN-LAST:event_btn_cancelActionPerformed
+
+    private void btn_selectFileVehicleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectFileVehicleActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccione archivo");
+        fileChooser.showDialog(this, null);
+        try {
+            directoryVehicle = fileChooser.getSelectedFile().getAbsolutePath();
+            txt_fileVehicle.setText(directoryVehicle);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_selectFileVehicleActionPerformed
+
+    private void btn_selectFileProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_selectFileProductActionPerformed
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Seleccione archivo");
+        fileChooser.showDialog(this, null);
+        try {
+            directoryProduct = fileChooser.getSelectedFile().getAbsolutePath();
+            txt_fileProduct.setText(directoryProduct);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btn_selectFileProductActionPerformed
 
     public void loadClient() {
         String line = null;
@@ -383,18 +462,103 @@ public class Frm_MassiveLoad extends javax.swing.JFrame {
         }
     }
     
+    public void loadVehicle() {
+        String line = null;
+        File file = new File(directoryVehicle);
+        BufferedReader reader = null;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            reader.readLine();
+            
+            VehicleState vehicleState = new VehicleState();
+            Driver driver = new Driver();
+            while ((line = reader.readLine()) != null) {
+                Vehicle vehicle = new Vehicle();
+                String[] lineArray = line.split(",");
+                vehicle.setLicense_plate(lineArray[1]);
+                vehicle.setName(lineArray[2]);
+                vehicle.setCapacity(Double.parseDouble(lineArray[3]));
+                vehicle.setDispatchNumber(Integer.parseInt(lineArray[4]));
+                vehicleState.setIdVehicleState(Integer.parseInt(lineArray[6]));
+                vehicle.setVehicleState(vehicleState);
+                driver.setIdDriver(Integer.parseInt(lineArray[7]));
+                vehicle.setDriver(driver);
+                daoVehicle.vehicleIns(vehicle);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    
+                }
+            }
+        }
+    }
+    
+    public void loadProduct() {
+        String line = null;
+        File file = new File(directoryProduct);
+        BufferedReader reader = null;
+
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            reader.readLine();
+            
+            while ((line = reader.readLine()) != null) {                
+                Product product = new Product();
+                String[] lineArray = line.split(",");
+                product.setName(lineArray[1]);
+                product.setQuantityPerBox(Integer.parseInt(lineArray[2]));
+                product.setWeightPerBox(Integer.parseInt(lineArray[3]));
+                product.setQuantityBoxesPerPallet(Integer.parseInt(lineArray[4]));
+                product.setPhysicalStock(Integer.parseInt(lineArray[5]));
+                product.setFreeStock(Integer.parseInt(lineArray[6]));
+                product.setStatus(Integer.parseInt(lineArray[7]));
+                product.setTrademark(Integer.parseInt(lineArray[8]));
+                product.setTypeConditionWH(Integer.parseInt(lineArray[9]));                
+                product.setCodeEAN13(lineArray[10]);
+                product.setTimeExpiration(Integer.parseInt(lineArray[11]));                
+                daoProduct.ProductsIns(product);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    
+                }
+            }
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Save;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_selectFileClient;
     private javax.swing.JButton btn_selectFileDriver;
+    private javax.swing.JButton btn_selectFileProduct;
     private javax.swing.JButton btn_selectFileTrademark;
+    private javax.swing.JButton btn_selectFileVehicle;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txt_fileClient;
     private javax.swing.JTextField txt_fileDriver;
+    private javax.swing.JTextField txt_fileProduct;
     private javax.swing.JTextField txt_fileTrademark;
+    private javax.swing.JTextField txt_fileVehicle;
     // End of variables declaration//GEN-END:variables
 }

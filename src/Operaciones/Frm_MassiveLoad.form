@@ -43,7 +43,7 @@
                       <Component id="btn_Save" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="btn_cancel" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                   </Group>
               </Group>
           </Group>
@@ -54,12 +54,12 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btn_Save" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btn_cancel" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="62" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -82,28 +82,27 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                       <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="txt_fileTrademark" max="32767" attributes="0"/>
                       <Component id="txt_fileDriver" pref="211" max="32767" attributes="0"/>
                       <Component id="txt_fileClient" max="32767" attributes="0"/>
-                      <Component id="txt_fileTrademark" max="32767" attributes="0"/>
+                      <Component id="txt_fileVehicle" max="32767" attributes="0"/>
+                      <Component id="txt_fileProduct" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="btn_selectFileClient" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btn_selectFileDriver" max="32767" attributes="0"/>
-                              <Component id="btn_selectFileTrademark" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="btn_selectFileDriver" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btn_selectFileClient" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btn_selectFileTrademark" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btn_selectFileVehicle" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btn_selectFileProduct" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="312" max="32767" attributes="0"/>
+                  <EmptySpace pref="307" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -124,11 +123,23 @@
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_fileVehicle" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_selectFileVehicle" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="txt_fileTrademark" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btn_selectFileTrademark" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="371" max="32767" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txt_fileProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="btn_selectFileProduct" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="271" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -151,7 +162,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel2">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Archivo Conductores"/>
+            <Property name="text" type="java.lang.String" value="Archivo de Conductores"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btn_selectFileDriver">
@@ -166,7 +177,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Archivo Marcas"/>
+            <Property name="text" type="java.lang.String" value="Archivo de Marcas"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txt_fileTrademark">
@@ -177,6 +188,37 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_selectFileTrademarkActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Archivo de Vehiculos"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_fileVehicle">
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_selectFileVehicle">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Seleccionar"/>
+            <Property name="actionCommand" type="java.lang.String" value="Seleccionar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_selectFileVehicleActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="jLabel5">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Archivo de Productos"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txt_fileProduct">
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_selectFileProduct">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Seleccionar"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_selectFileProductActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
