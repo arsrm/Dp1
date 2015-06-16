@@ -10,13 +10,16 @@ import Model.Movement;
 import Model.Product;
 import Model.Trademark;
 import Seguridad.Frm_MenuPrincipal;
+import static com.sun.org.apache.xalan.internal.lib.ExsltDatetime.formatDate;
 import dao.DaoKardex;
 import dao.DaoProducts;
 import dao.DaoTrademark;
 import dao.impl.DaoKardexImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -48,6 +51,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     public Date dateI;
     public Date dateF;
 
+    SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     /**
      * Creates new form Frm_KardexReport
      */
@@ -244,7 +248,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(8, 8, 8)
                 .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(35, 35, 35)
                 .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel5)
@@ -254,17 +258,14 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(14, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel4))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(6, 6, 6))))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6))
         );
 
         btn_Kardex.setText("Filtrar");
@@ -446,6 +447,12 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 
     private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
 
+        //para reporte kardex sin filtro 2
+        Calendar dateIniCal = Calendar.getInstance();
+        Calendar dateFinCal = Calendar.getInstance();
+        
+        
+        
         Date dateIniSearch = null;
         Date dateEndSearch = null;
 
@@ -494,14 +501,18 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         
         if (date_Ini.getDate() != null) {
             dateIniSearch = date_Ini.getDate();
+            dateIniCal.setTime(date_Ini.getDate());
         } else {
             dateIniSearch = new Date();
             dateIniSearch.setTime(0);
+            dateIniCal.setTime(new Date(0));
         }
         if (date_End.getDate() != null) {
             dateEndSearch = date_End.getDate();
+            dateFinCal.setTime(date_End.getDate());
         } else {
             dateEndSearch = new Date();
+            dateFinCal.setTime(new Date());
         }
         if (dateEndSearch.before(dateIniSearch)) {
                 JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
@@ -511,7 +522,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         if (idProduct == null && idAlmacen == null) {
             
             
-            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+            //reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+            reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
         }
         if (idProduct != null && idAlmacen == null) {
             

@@ -393,4 +393,26 @@ public class Prueba {
             Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public void mostrarReporteKardexSinFiltro2(String dI, String dF) {
+   
+    try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+
+            parameters.put("fechaI", dI);
+            parameters.put("fechaF", dF);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("reportKardex2.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            
+//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Reporte Kardex");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(Prueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

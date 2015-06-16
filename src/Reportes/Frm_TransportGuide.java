@@ -6,6 +6,7 @@
 
 package Reportes;
 
+import JasperReports.ReportsDis;
 import Seguridad.Frm_MenuPrincipal;
 import java.awt.event.ActionEvent;
 import javax.swing.JFileChooser;
@@ -39,14 +40,14 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton1 = new javax.swing.JButton();
         pnl_TransportGuide = new javax.swing.JPanel();
         btn_GenerarReporte = new javax.swing.JToggleButton();
-        btn_Export = new javax.swing.JToggleButton();
         lbl_Placa = new javax.swing.JLabel();
         txt_Placa = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_TransportGuide = new javax.swing.JTable();
         btn_Cancelar = new javax.swing.JToggleButton();
+
+        jButton1.setText("jButton1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
@@ -60,9 +61,14 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
             }
         });
 
-        btn_Export.setText("Exportar");
-
         lbl_Placa.setText("Placa:");
+
+        btn_Cancelar.setText("Cancelar");
+        btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CancelarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnl_TransportGuideLayout = new javax.swing.GroupLayout(pnl_TransportGuide);
         pnl_TransportGuide.setLayout(pnl_TransportGuideLayout);
@@ -74,14 +80,13 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
                     .addGroup(pnl_TransportGuideLayout.createSequentialGroup()
                         .addComponent(lbl_Placa)
                         .addGap(32, 32, 32)
-                        .addComponent(txt_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_TransportGuideLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(txt_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(pnl_TransportGuideLayout.createSequentialGroup()
                         .addComponent(btn_GenerarReporte)
-                        .addGap(45, 45, 45)
-                        .addComponent(btn_Export)
-                        .addGap(25, 25, 25))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 384, Short.MAX_VALUE)
+                        .addComponent(btn_Cancelar)))
+                .addContainerGap())
         );
         pnl_TransportGuideLayout.setVerticalGroup(
             pnl_TransportGuideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -90,58 +95,28 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
                 .addGroup(pnl_TransportGuideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lbl_Placa)
                     .addComponent(txt_Placa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
                 .addGroup(pnl_TransportGuideLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_GenerarReporte)
-                    .addComponent(btn_Export))
-                .addGap(39, 39, 39))
+                    .addComponent(btn_Cancelar))
+                .addContainerGap())
         );
-
-        tbl_TransportGuide.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "ID Cliente", "ID Producto", "Cantidad"
-            }
-        ));
-        jScrollPane1.setViewportView(tbl_TransportGuide);
-
-        btn_Cancelar.setText("Cancelar");
-        btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_CancelarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 594, Short.MAX_VALUE)
-                        .addContainerGap())
-                    .addComponent(pnl_TransportGuide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btn_Cancelar)
-                .addGap(35, 35, 35))
+                .addContainerGap()
+                .addComponent(pnl_TransportGuide, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(12, 12, 12))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(pnl_TransportGuide, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btn_Cancelar)
-                .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(122, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -153,12 +128,20 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_CancelarActionPerformed
 
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
+        /*
         JFileChooser fileChooser = new JFileChooser();
         int res = fileChooser.showOpenDialog(this);
         try {
             fileExport = fileChooser.getSelectedFile().getAbsolutePath();
 
         } catch (Exception e) {}
+        */
+        String placa="";
+        placa=txt_Placa.getText().trim();
+        ReportsDis reporte = new ReportsDis();
+        
+        reporte.mostrarReporteTransportistaConFiltro(placa);
+        
     }//GEN-LAST:event_btn_GenerarReporteActionPerformed
 
     private void formWindowClosed(ActionEvent evt) {
@@ -173,12 +156,10 @@ public class Frm_TransportGuide extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btn_Cancelar;
-    private javax.swing.JToggleButton btn_Export;
     private javax.swing.JToggleButton btn_GenerarReporte;
-    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel lbl_Placa;
     private javax.swing.JPanel pnl_TransportGuide;
-    private javax.swing.JTable tbl_TransportGuide;
     private javax.swing.JTextField txt_Placa;
     // End of variables declaration//GEN-END:variables
 }

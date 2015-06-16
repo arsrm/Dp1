@@ -350,30 +350,30 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     
      }       
     
-    public void limpiatabla()
-    {
-        DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel(); 
-        Integer cantreg=0; 
-        cantreg=model.getRowCount();
-        for(int i=0; i<cantreg; i++)       
-        { model.removeRow(cantreg-i-1);
-        }   
-     }        
+//    public void limpiatabla()
+//    {
+//        DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel(); 
+//        Integer cantreg=0; 
+//        cantreg=model.getRowCount();
+//        for(int i=0; i<cantreg; i++)       
+//        { model.removeRow(cantreg-i-1);
+//        }   
+//     }        
     
-    public void filtra_tabla(String cadenawhere)
-    {  limpiatabla();
-       DaoPalletProduct objdao= new DaoPalletProductImpl();
-       Integer cantreg= objdao.GetDispatchOrderList(cadenawhere).size();
-       DispatchOrder[] list=new DispatchOrder[cantreg] ;  
-       DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel();     
-       DaoClient daocliente= new DaoClientImpl();
-        for (int i=0; i<cantreg; i++)
-         {  list[i]=objdao.GetDispatchOrderList(cadenawhere).get(i);
-             model.addRow(new Object[]{list[i].getIdDispatch_Order(), daocliente.clientGet(list[i].getIdClient()).getName() ,list[i].getIdPickingOrder(),list[i].getDepartureDate(),list[i].getArrivalDate()} );           
-         }   
-       
-       
-     }       
+//    public void filtra_tabla(String cadenawhere)
+//    {  limpiatabla();
+//       DaoPalletProduct objdao= new DaoPalletProductImpl();
+//       Integer cantreg= objdao.GetDispatchOrderList(cadenawhere).size();
+//       DispatchOrder[] list=new DispatchOrder[cantreg] ;  
+//       DefaultTableModel model= (DefaultTableModel)tbl_Dispatch.getModel();     
+//       DaoClient daocliente= new DaoClientImpl();
+//        for (int i=0; i<cantreg; i++)
+//         {  list[i]=objdao.GetDispatchOrderList(cadenawhere).get(i);
+//             model.addRow(new Object[]{list[i].getIdDispatch_Order(), daocliente.clientGet(list[i].getIdClient()).getName() ,list[i].getIdPickingOrder(),list[i].getDepartureDate(),list[i].getArrivalDate()} );           
+//         }   
+//       
+//       
+//     }       
     
     public Frm_DispatchReport(Frm_MenuPrincipal menu) {
         
@@ -403,12 +403,8 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         txt_NumOrden = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txt_numpicking = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_Dispatch = new javax.swing.JTable();
         btn_GenerarReporte = new javax.swing.JToggleButton();
-        btn_Export = new javax.swing.JToggleButton();
         btn_Cancelar = new javax.swing.JToggleButton();
-        btn_filtrar = new javax.swing.JButton();
         btn_clean = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -437,34 +433,6 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             }
         });
 
-        tbl_Dispatch.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Orden Despach", "Cliente", "Num Picking", "Fecha Salida", "Fecha llegada"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbl_Dispatch.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbl_DispatchMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tbl_Dispatch);
-        if (tbl_Dispatch.getColumnModel().getColumnCount() > 0) {
-            tbl_Dispatch.getColumnModel().getColumn(0).setResizable(false);
-            tbl_Dispatch.getColumnModel().getColumn(2).setResizable(false);
-            tbl_Dispatch.getColumnModel().getColumn(3).setResizable(false);
-        }
-
         btn_GenerarReporte.setText("Generar Reporte");
         btn_GenerarReporte.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -472,24 +440,10 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
             }
         });
 
-        btn_Export.setText("Exportar");
-        btn_Export.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_ExportActionPerformed(evt);
-            }
-        });
-
         btn_Cancelar.setText("Cancelar");
         btn_Cancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_CancelarActionPerformed(evt);
-            }
-        });
-
-        btn_filtrar.setText("Filtrar");
-        btn_filtrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_filtrarActionPerformed(evt);
             }
         });
 
@@ -505,43 +459,33 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
         pnl_DispatchReportLayout.setHorizontalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addComponent(btn_filtrar, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(63, 63, 63)
-                        .addComponent(btn_GenerarReporte)
-                        .addGap(67, 67, 67)
-                        .addComponent(btn_Export, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62)
-                        .addComponent(btn_clean, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                        .addComponent(btn_Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
                         .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(33, 33, 33)
+                                .addComponent(jLabel2)
                                 .addGap(18, 18, 18)
-                                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txt_NumOrden)
-                                            .addComponent(date_Ini, javax.swing.GroupLayout.DEFAULT_SIZE, 175, Short.MAX_VALUE))
-                                        .addGap(68, 68, 68)
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel2)
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGap(18, 18, 18)
-                                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(txt_numpicking)
-                                            .addComponent(date_End, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE)))))
-                            .addComponent(jLabel1))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
+                        .addComponent(btn_GenerarReporte)
+                        .addGap(163, 163, 163)
+                        .addComponent(btn_clean, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_Cancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         pnl_DispatchReportLayout.setVerticalGroup(
             pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -549,48 +493,44 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9)
-                    .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_NumOrden, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_client, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
-                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-                        .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(btn_GenerarReporte)
-                            .addComponent(btn_Export)
-                            .addComponent(btn_Cancelar)
-                            .addComponent(btn_filtrar)
-                            .addComponent(btn_clean)))
-                    .addGroup(pnl_DispatchReportLayout.createSequentialGroup()
-                        .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                .addGap(20, 20, 20)
+                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel9)
+                    .addComponent(txt_numpicking, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(date_Ini, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(date_End, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                .addGroup(pnl_DispatchReportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_GenerarReporte)
+                    .addComponent(btn_clean)
+                    .addComponent(btn_Cancelar))
+                .addGap(82, 82, 82))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
                 .addComponent(pnl_DispatchReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(32, 32, 32))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -613,11 +553,6 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txt_NumOrdenFocusLost
 
-    private void btn_ExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ExportActionPerformed
-        Prueba pru = new Prueba();
-        pru.exportarReporte();
-    }//GEN-LAST:event_btn_ExportActionPerformed
-
     private void btn_GenerarReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_GenerarReporteActionPerformed
 
     boolean bnumorden=false;  
@@ -626,7 +561,9 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     bnumorden=validanumorden();
     bnumpickin=validanumpicking();
     bvalfec=validafechas();
-        
+      
+    
+    
     if (bnumorden)    
     { 
        if (bnumpickin)
@@ -647,25 +584,36 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
       }
       else
       { 
-        idnumorden=Integer.parseInt(txt_NumOrden.getText());
+        
+       if ( ( txt_NumOrden.getText().toString().isEmpty() ) || (txt_NumOrden.getText().equals(null) ) )   
+       { idnumorden=null;} 
+       else
+       {  idnumorden=Integer.parseInt(txt_NumOrden.getText());
+       }
+       
+       if ((txt_numpicking.getText().toString().isEmpty() ) || (txt_numpicking.getText().equals(null) )  ) 
+       {idnumpicking=null;}
+       else    
+       {
         idnumpicking=Integer.parseInt(txt_numpicking.getText());
+       }
+        
+       if ((txt_client.getText().toString().isEmpty() ) || (txt_client.getText().equals(null) )  )    
+       {nameclient=""; }
+       else
+       {
         nameclient=txt_client.getText().toUpperCase();
-        Date dateIniSearch = null;
+       }
+       
+       Date dateIniSearch = null;
         Date dateEndSearch = null;
 
         if (date_Ini.getDate() != null) {
             dateIniSearch = date_Ini.getDate();
-        } else {
-            dateIniSearch = new Date();
-            dateIniSearch.setTime(0);
-            dateIniSearch=null;
         }
         if (date_End.getDate() != null) {
             dateEndSearch = date_End.getDate();
-        } else {
-            dateEndSearch = new Date();
-            dateEndSearch = null;            
-        }
+        } 
             
         reporte.mostrarReporteDepachoConFiltro(idnumorden,idnumpicking,nameclient,dateIniSearch,dateEndSearch);
       }    
@@ -688,26 +636,6 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
     }//GEN-LAST:event_txt_numpickingFocusLost
 
-    private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
-    String cadenawhere="";
-    boolean bnumorden=false;  
-    boolean bnumpickin=false;  
-    boolean bvalfec=false; 
-    bnumorden=validanumorden();
-    bnumpickin=validanumpicking();
-    bvalfec=validafechas();
-    if (bnumorden)
-    { 
-      if (bnumpickin)  
-      {
-       if(bvalfec)   
-       {cadenawhere=obtiene_where();
-        filtra_tabla(cadenawhere);
-       } 
-      }
-     }
-    }//GEN-LAST:event_btn_filtrarActionPerformed
-
     private void btn_cleanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanActionPerformed
         // TODO add your handling code here:
     txt_NumOrden.setText(null);
@@ -716,31 +644,6 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     date_Ini.setDate(null);
     date_End.setDate(null);
     }//GEN-LAST:event_btn_cleanActionPerformed
-
-    private void tbl_DispatchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_DispatchMouseClicked
-        Integer iddispatch; 
-        DispatchOrder model=null;
-        String message = "¿Desea Ver el detalle de la Orden de Despacho?";
-        String title = "Confirmación";
-        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
-        JOptionPane.setDefaultLocale(null);
-        if (reply == JOptionPane.YES_OPTION) {
-        int rowSel = tbl_Dispatch.getSelectedRow();
-        int colSel = tbl_Dispatch.getSelectedColumn();
-        iddispatch=Integer.parseInt(tbl_Dispatch.getValueAt(rowSel, 0).toString());    
-        DaoDispatchOrder dao= new DaoDispatchOrderImpl();
-        model=dao.dispatchOrderGet(iddispatch);
-        Frm_DispatchOrderDetail_Report frm_orderdetail = new Frm_DispatchOrderDetail_Report(this,model);
-        frm_orderdetail.setVisible(true);
-        frm_orderdetail.setLocationRelativeTo(null);
-        this.setVisible(false);
-        }
-       
-        
-
-
-       
-    }//GEN-LAST:event_tbl_DispatchMouseClicked
 
     private void formWindowClosed(ActionEvent evt) {
         menuaux.setEnabled(true);
@@ -755,10 +658,8 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btn_Cancelar;
-    private javax.swing.JToggleButton btn_Export;
     private javax.swing.JToggleButton btn_GenerarReporte;
     private javax.swing.JButton btn_clean;
-    private javax.swing.JButton btn_filtrar;
     private com.toedter.calendar.JDateChooser date_End;
     private com.toedter.calendar.JDateChooser date_Ini;
     private javax.swing.JLabel jLabel1;
@@ -766,9 +667,7 @@ public class Frm_DispatchReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnl_DispatchReport;
-    private javax.swing.JTable tbl_Dispatch;
     private javax.swing.JTextField txt_NumOrden;
     private javax.swing.JTextField txt_client;
     private javax.swing.JTextField txt_numpicking;
