@@ -109,6 +109,26 @@ public class ReportsDis {
         }
     }
     
+    public void mostrarReporteTransportistaConFiltro(String numplaca)
+    {
+    
+        try {
+           HashMap JasperParameter = new HashMap();  
+            Map parameters = new HashMap(); 
+            parameters.put("placa", numplaca);
+            
+            JasperReport reporte = JasperCompileManager.compileReport("ReportTranportista.jrxml");
+            JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
+            JasperViewer view = new JasperViewer(p, false);
+            view.setTitle("Guia Tranportista");
+            view.setExtendedState(Frame.MAXIMIZED_BOTH);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(ReportsDis.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }       
+    
     public void mostrarReporteDepachoConFiltro(Integer idnumorden,Integer idnumpicking,String nameclient,Date dI,Date dF) {
         try {
            HashMap JasperParameter = new HashMap();  
