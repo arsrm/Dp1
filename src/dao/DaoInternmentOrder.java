@@ -6,6 +6,7 @@
 package dao;
 
 import Model.InternmentOrder;
+import Model.LocationCellDetailInventory;
 import java.util.Date;
 import java.util.List;
 
@@ -37,6 +38,8 @@ public interface DaoInternmentOrder {
     public String IntOrdersIntern(List<Integer> ids);
     
     public String IntOrdersInternAdjustManual(List<InternmentOrder> listIntOrd);
+    
+    public String IntOrdersInternAdjustManual(List<InternmentOrder> listIntOrd, LocationCellDetailInventory locCelInv);
     
     public void IntOrdUpdStatus(Integer intOrd, Integer status);
 }

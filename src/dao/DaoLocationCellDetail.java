@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DaoLocationCellDetail {
     
-    public LocationCellDetail locationCellDetailGet(Integer id );
+    public LocationCellDetail locationCellDetailGet(Integer idWh, Integer idRack, Integer idLocCell,Integer idLocCellDet );
     
     public String locationCellDetailDel(List<Integer> ids);
     

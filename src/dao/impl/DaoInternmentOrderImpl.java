@@ -9,6 +9,7 @@ import Model.InternmentOrder;
 import Model.InternmentOrderDetail;
 import Model.LocationCell;
 import Model.LocationCellDetail;
+import Model.LocationCellDetailInventory;
 import Model.Movement;
 import Model.VirtualWarehouse;
 import Model.Warehouse;
@@ -16,6 +17,7 @@ import dao.DaoInternmentOrder;
 import dao.DaoInternmentOrderDetail;
 import dao.DaoKardex;
 import dao.DaoLocationCell;
+import dao.DaoLocationCellDetail;
 import dao.DaoPalletProduct;
 import dao.DaoProducts;
 import dao.DaoRack;
@@ -39,6 +41,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
 
     DaoInternmentOrderDetail daoProdIntDet = new DaoInternmentOrderDetailImpl();
     DaoLocationCell daoLocCell = new DaoLocationCellImpl();
+    DaoLocationCellDetail daoLocCellDetail = new DaoLocationCellDetailImpl();
     DaoWH daoWh = new DaoWHImpl();
     DaoRack daoRack = new DaoRackImpl();
     DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
@@ -293,6 +296,14 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         }
         return result;
     }
+    
+    public String IntOrderIntern(InternmentOrder intOrder,LocationCellDetailInventory locCellInv) {
+        String result = "";
+        for (InternmentOrderDetail intOrdDet : intOrder.getInternmentOrderDetail()) {
+            result += IntOrderDetailIntern(intOrder.getIdInternmentOrder(), intOrdDet,locCellInv);
+        }
+        return result;
+    }    
 
     public String IntOrderDetailIntern(Integer idIntOrder, InternmentOrderDetail intOrdDetail) {
         String result = "";
@@ -305,7 +316,7 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         Integer pesoPallet = intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox();
         for (int i = 0; i < palletProduList.size(); i++) {
             Boolean encuentraCeldaDisponible = false;
-            for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {                
+            for (int j = lastFreeLocCell; j < cantFreeLocCells; j++) {
                 Warehouse wh = daoWh.whGet(freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse());
                 LocationCell locCell = daoLocCell.LocationCellGet(1, freeLocCellList.get(j).getLocation_Cell_Rack_Warehouse_idWarehouse(),
                         freeLocCellList.get(j).getLocation_Cell_Rack_idRack(), freeLocCellList.get(j).getLocation_Cell_idLocation_Cell());
@@ -333,10 +344,11 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
                     break;
                 }
             }
-            if(encuentraCeldaDisponible==false)
+            if (encuentraCeldaDisponible == false) {
                 break;
+            }
         }
-        
+
         daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos
         if (cantPalletsIngresados < intOrdDetail.getQuantityPallets()) {
             VirtualWarehouse virtualWh = new VirtualWarehouse();
@@ -346,13 +358,45 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
             virtualWh.setDate(IntOrderGet(idIntOrder).getDate());
             virtualWh.setQuantity(intOrdDetail.getQuantityPallets() - cantPalletsIngresados);
             daoVirtualWh.VirtualWarehouseIns(virtualWh);
-            result = virtualWh.getQuantity()+" pallets del producto "+intOrdDetail.getProduct().getName()+
-                    " se ingresaron al almacén virtual.\n";
+            result = virtualWh.getQuantity() + " pallets del producto " + intOrdDetail.getProduct().getName()
+                    + " se ingresaron al almacén virtual.\n";
         }
 
         return result;
 
     }
+    
+public String IntOrderDetailIntern(Integer idIntOrder, InternmentOrderDetail intOrdDetail,LocationCellDetailInventory locCellinv) {
+        String result = "";        
+        List<Integer> palletProduList = daoPalletProduct.GetPalletsByIntOrder(idIntOrder, intOrdDetail.getProduct().getIdProduct());
+        Integer cantPalletsIngresados = 0;
+        Integer stockProd = intOrdDetail.getProduct().getPhysicalStock();
+        Integer pesoPallet = intOrdDetail.getProduct().getQuantityBoxesPerPallet() * intOrdDetail.getProduct().getWeightPerBox();
+        LocationCellDetail locCellDet = daoLocCellDetail.locationCellDetailGet(locCellinv.getIdWh(),locCellinv.getIdRack(),locCellinv.getIdLocationCell(),locCellinv.getIdLocationCellDetail());
+        for (int i = 0; i < palletProduList.size(); i++) {
+
+                    PalletProductLocaCellIns(locCellDet,idIntOrder, palletProduList.get(i), intOrdDetail);
+                    locCellDet.setAvailability(0);
+                    daoLocCell.LocationCellAvailabilityUpd(1, locCellDet.getLocation_Cell_Rack_Warehouse_idWarehouse(),
+                            locCellDet.getLocation_Cell_Rack_idRack(), locCellinv.getIdLocationCell(), locCellDet.getIdLocation_Cell_Detail(), 0);
+                    Movement mov = new Movement();
+                    mov.setDate(IntOrderGet(idIntOrder).getDate());
+                    mov.setIdProduct(intOrdDetail.getProduct().getIdProduct());
+                    mov.setIdWh(locCellDet.getLocation_Cell_Rack_Warehouse_idWarehouse());
+                    mov.setStock_inicial(stockProd);
+                    stockProd += intOrdDetail.getProduct().getQuantityBoxesPerPallet();
+                    mov.setStock_final(stockProd);
+                    mov.setType_Movement_id(1);
+                    mov.setType_Movement_idSubtype(1);
+                    daoKardex.MovementIns(mov);
+                    cantPalletsIngresados++;
+        }
+
+        daoProduct.ProductUpdStock(intOrdDetail.getProduct().getIdProduct(), cantPalletsIngresados, 1);//1 indica Ingreso de productos       
+
+        return result;
+
+    }    
 
     public List<LocationCellDetail> GetFreeLocationCellsDetail(Integer idProduct) {
         List<LocationCellDetail> locCellDetList = null;
@@ -474,6 +518,16 @@ public class DaoInternmentOrderImpl implements DaoInternmentOrder {
         String result = null;
         for (InternmentOrder intOrd : listIntOrd) {
             result = IntOrderIntern(intOrd);
+//            IntOrdUpdStatus(intOrd.getIdInternmentOrder(), 1);
+        }
+        return result;
+    }
+
+    @Override
+    public String IntOrdersInternAdjustManual(List<InternmentOrder> listIntOrd, LocationCellDetailInventory locCelInv) {
+        String result = null;
+        for (InternmentOrder intOrd : listIntOrd) {
+            result = IntOrderIntern(intOrd,locCelInv);
 //            IntOrdUpdStatus(intOrd.getIdInternmentOrder(), 1);
         }
         return result;

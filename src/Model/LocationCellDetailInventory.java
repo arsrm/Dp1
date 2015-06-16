@@ -17,6 +17,33 @@ public class LocationCellDetailInventory {
     Integer idColumn;
     Integer idLocationCellDetail;
     Integer availability;
+    Integer idPallet;
+    Integer idProduct;
+    Integer idLocationCell;
+
+    public Integer getIdLocationCell() {
+        return idLocationCell;
+    }
+
+    public void setIdLocationCell(Integer idLocationCell) {
+        this.idLocationCell = idLocationCell;
+    }
+
+    public Integer getIdProduct() {
+        return idProduct;
+    }
+
+    public void setIdProduct(Integer idProduct) {
+        this.idProduct = idProduct;
+    }
+
+    public Integer getIdPallet() {
+        return idPallet;
+    }
+
+    public void setIdPallet(Integer idPallet) {
+        this.idPallet = idPallet;
+    }      
 
     public Integer getIdWh() {
         return idWh;

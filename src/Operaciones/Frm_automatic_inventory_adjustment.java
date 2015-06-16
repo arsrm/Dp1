@@ -5,16 +5,38 @@
  */
 package Operaciones;
 
+import Model.InternmentOrder;
+import Model.InternmentOrderDetail;
 import Model.LocationCellDetailInventory;
+import Model.Log;
+import Model.Movement;
+import Model.PalletProduct;
+import Model.Product;
 import Model.Rack;
 import Model.Warehouse;
 import Seguridad.Frm_MenuPrincipal;
+import dao.DaoInternmentOrder;
+import dao.DaoInternmentOrderDetail;
+import dao.DaoKardex;
 import dao.DaoLocationCell;
 import dao.DaoLocationCellDetail;
+import dao.DaoLog;
+import dao.DaoPallet;
+import dao.DaoPalletIni;
+import dao.DaoPalletProduct;
+import dao.DaoProducts;
 import dao.DaoRack;
 import dao.DaoWH;
+import dao.impl.DaoInternmentOrderDetailImpl;
+import dao.impl.DaoInternmentOrderImpl;
+import dao.impl.DaoKardexImpl;
 import dao.impl.DaoLocationCellDetailImpl;
 import dao.impl.DaoLocationCellImpl;
+import dao.impl.DaoLogImpl;
+import dao.impl.DaoPalletImpl;
+import dao.impl.DaoPalletIniImpl;
+import dao.impl.DaoPalletProductImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoRackImpl;
 import dao.impl.DaoWHImpl;
 import java.io.BufferedReader;
@@ -24,6 +46,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JFileChooser;
@@ -45,6 +68,13 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
     DaoRack daoRack = new DaoRackImpl();
     DaoLocationCell daoLocationCell = new DaoLocationCellImpl();
     DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
+    DaoProducts daoProduct = new DaoProdImpl();
+    DaoPalletProduct daoPalletProd = new DaoPalletProductImpl();
+    DaoInternmentOrder daoIntOrder = new DaoInternmentOrderImpl();
+    DaoInternmentOrderDetail daoIntOrdDetail = new DaoInternmentOrderDetailImpl();
+    DaoPallet daoPallet = new DaoPalletImpl();
+    DaoKardex daoMov = new DaoKardexImpl();
+    DaoPalletIni daoPalletIni = new DaoPalletIniImpl();
     List<Warehouse> whList;
     List<Rack> rackList;
     Integer idWhSelected;
@@ -53,6 +83,8 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
     List<LocationCellDetailInventory> listLocCellInventVirtual = null;
     List<LocationCellDetailInventory> listLocCellInventManual = null;
     String directoryFileInventManual = null;
+    List<Integer> listLocCellToAdjust = null;
+    Integer opAjusteRealizado=0;
 
     public Frm_automatic_inventory_adjustment(Frm_MenuPrincipal menu) {
         this.setTitle("Ajuste automático de inventario");
@@ -89,7 +121,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_Inventory = new javax.swing.JTable();
         btn_compare = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btn_automaticAdjust = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -154,9 +186,9 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(cbo_wh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txt_date, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -190,7 +222,12 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Realizar ajuste");
+        btn_automaticAdjust.setText("Realizar ajuste");
+        btn_automaticAdjust.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_automaticAdjustActionPerformed(evt);
+            }
+        });
 
         btn_cancel.setText("Cancelar");
         btn_cancel.addActionListener(new java.awt.event.ActionListener() {
@@ -209,7 +246,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(btn_compare)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
+                        .addComponent(btn_automaticAdjust)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btn_cancel))
                     .addComponent(jScrollPane1)
@@ -226,7 +263,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_compare)
-                    .addComponent(jButton2)
+                    .addComponent(btn_automaticAdjust)
                     .addComponent(btn_cancel))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
@@ -267,8 +304,10 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         if (directoryFileInventManual == null) {
             ok_option = JOptionPane.showOptionDialog(new JFrame(), "Seleccione un archivo", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         } else {
+            int contador = 0;
             String line = null;
             listLocCellInventManual = new ArrayList<>();
+            listLocCellToAdjust = new ArrayList<>();
             File file = new File(directoryFileInventManual);
             BufferedReader reader = null;
 
@@ -279,12 +318,20 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                 while ((line = reader.readLine()) != null) {
                     LocationCellDetailInventory locCellInvent = new LocationCellDetailInventory();
                     String[] lineArray = line.split(",");
-                    locCellInvent.setIdRack(Integer.parseInt(lineArray[0]));
-                    locCellInvent.setIdRow(Integer.parseInt(lineArray[2]));
-                    locCellInvent.setIdColumn(Integer.parseInt(lineArray[3]));
-                    locCellInvent.setIdLocationCellDetail(Integer.parseInt(lineArray[4]));
-                    locCellInvent.setAvailability(Integer.parseInt(lineArray[5]));
+                    locCellInvent.setIdWh(Integer.parseInt(lineArray[0]));
+                    locCellInvent.setIdRack(Integer.parseInt(lineArray[1]));
+                    locCellInvent.setIdLocationCell(Integer.parseInt(lineArray[2]));
+                    locCellInvent.setIdRow(Integer.parseInt(lineArray[3]));
+                    locCellInvent.setIdColumn(Integer.parseInt(lineArray[4]));
+                    locCellInvent.setIdLocationCellDetail(Integer.parseInt(lineArray[5]));
+                    locCellInvent.setAvailability(Integer.parseInt(lineArray[6]));
+                    locCellInvent.setIdPallet(Integer.parseInt(lineArray[7]));
+                    locCellInvent.setIdProduct(Integer.parseInt(lineArray[8]));
                     listLocCellInventManual.add(locCellInvent);
+                    if (listLocCellInventVirtual.get(contador).getAvailability() != locCellInvent.getAvailability()) {
+                        listLocCellToAdjust.add(contador);
+                    }
+                    contador++;
                 }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -318,12 +365,75 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_selectFIleActionPerformed
 
+    private void btn_automaticAdjustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_automaticAdjustActionPerformed
+        DaoLog daoLog = new DaoLogImpl();
+        Log logSI = null;
+        Product product;
+        for (int i = 0; i < listLocCellToAdjust.size(); i++) {
+            int idLocCellToAdjust = listLocCellToAdjust.get(i);
+            if (listLocCellInventVirtual.get(idLocCellToAdjust).getAvailability() == 1) {//si la disponibilidad es 1 entonces se debe insertar el pallet
+                product = daoProduct.ProductsGet(listLocCellInventManual.get(idLocCellToAdjust).getIdProduct());
+                insertPalletProduct(product, listLocCellInventManual.get(idLocCellToAdjust).getIdPallet());
+                InternmentOrder intOrder = daoIntOrder.IntOrderGet(999999999);
+                List<InternmentOrderDetail> intOrderDetList = new ArrayList<>();
+                InternmentOrderDetail intOrdDetail = new InternmentOrderDetail();
+                List<InternmentOrder> internOrderList = new ArrayList<>();
+                intOrdDetail.setIdInternmentOrderDetail(daoIntOrdDetail.IntOrderDetailMaxId(product.getIdProduct(), 999999999) + 1);
+                intOrdDetail.setProduct(product);
+                intOrdDetail.setQuantityPallets(1);
+                intOrdDetail.setStatus(1);
+                intOrderDetList.add(intOrdDetail);
+                intOrder.setInternmentOrderDetail(intOrderDetList);
+                internOrderList.add(intOrder);
+                daoIntOrdDetail.IntOrderDetailIns(999999999, intOrdDetail);
+                daoIntOrder.IntOrdersInternAdjustManual(internOrderList,listLocCellInventManual.get(idLocCellToAdjust));
+                daoMov.MovementUpdTypeMov(1, 3, daoMov.MovementGetMaxId());
+                daoLog.clientIns("Se ha realizado un internamiento por ajuste de inventario automático ", Frm_adjustManual.class.toString(), logSI.getIduser());
+            } else {//si la disponibilidad es 0 entonces se debe liberar la celda
+                Integer floorSelected = listLocCellInventVirtual.get(idLocCellToAdjust).getIdRow();
+                Integer columnSelected = listLocCellInventVirtual.get(idLocCellToAdjust).getIdColumn();
+                Integer cellDetailSelected = listLocCellInventVirtual.get(idLocCellToAdjust).getIdLocationCellDetail();
+                Integer idLocCell = listLocCellInventVirtual.get(idLocCellToAdjust).getIdLocationCell();
+                Integer idWhSel = listLocCellInventVirtual.get(idLocCellToAdjust).getIdWh();
+                Integer idRackSelected = listLocCellInventVirtual.get(idLocCellToAdjust).getIdRack();
+                PalletProduct palletProd = daoPallet.palletProducLocatioCellDetailGet(idWhSel, idRackSelected, idLocCell, cellDetailSelected);
+                daoLocationCell.LocationCellAvailabilityUpd(1, idWhSel, idRackSelected, idLocCell, cellDetailSelected, 1);//Se actualiza la disponibilidad a 1
+                Movement mov = new Movement();
+                mov.setIdProduct(palletProd.getIdproduct());
+                mov.setIdWh(idWhSel);
+                mov.setType_Movement_id(2);
+                mov.setType_Movement_idSubtype(3);
+                Product prod = daoProduct.ProductsGet(palletProd.getIdproduct());
+                mov.setStock_inicial(prod.getPhysicalStock());
+                mov.setStock_final(prod.getPhysicalStock() - prod.getQuantityBoxesPerPallet());
+                mov.setDate(new Date());
+                daoMov.MovementIns(mov);
+                List<Integer> pallets = new ArrayList<>();
+                pallets.add(palletProd.getIdpallet());
+                daoPalletIni.PalletsIniUpdStatus(pallets, 2);
+                daoPalletProd.palletProductByLocaCellUpdStatus(0, palletProd.getIdpallet(), prod.getTrademark(), prod.getIdProduct(), idLocCell, cellDetailSelected, idRackSelected, idWhSelected);
+                daoProduct.ProductUpdStock(prod.getIdProduct(), 1, 2);//se actualiza el stock con un pallet con idMovimiento 2 (salida)
+                daoLog.clientIns("Se ha realizado una salida por ajuste de inventario automático ", Frm_adjustManual.class.toString(), logSI.getIduser());
+            }
+        }
+        initializeTable();
+    }//GEN-LAST:event_btn_automaticAdjustActionPerformed
+
+    public void insertPalletProduct(Product product, Integer idPallet) {
+        List<Integer> listidpallet = new ArrayList<>();
+        listidpallet.add(idPallet);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        cal.add(Calendar.DATE, product.getTimeExpiration());
+        daoPalletProd.PalletProductInsMasive(listidpallet, product.getTrademark(), product.getIdProduct(), cal.getTime(), 999999999);
+    }
+
     public void initializeTable() {
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
         String availabilityVirtual;
         String availabilityManual = "-";
-        String adjust;
+        String typeAdjust="-";
         try {
             for (int i = 0; i < listLocCellInventVirtual.size(); i++) {
                 if (listLocCellInventVirtual.get(i).getAvailability() == 1) {
@@ -338,6 +448,15 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
                         availabilityManual = "Ocupado";
                     }
                 }
+                
+                if(opAjusteRealizado==1){
+                    if(listLocCellInventVirtual.get(i).getAvailability() != listLocCellInventManual.get(i).getAvailability()
+                            && listLocCellInventVirtual.get(i).getAvailability() == 1)
+                        typeAdjust = "Ingreso por ajuste";
+                    if(listLocCellInventVirtual.get(i).getAvailability() != listLocCellInventManual.get(i).getAvailability()
+                            && listLocCellInventVirtual.get(i).getAvailability() == 0)
+                        typeAdjust = "Salida por ajuste";
+                }
 
                 Object[] fila = {listLocCellInventVirtual.get(i).getIdRack(),
                     listLocCellInventVirtual.get(i).getIdRow(), listLocCellInventVirtual.get(i).getIdColumn(),
@@ -350,11 +469,11 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_automaticAdjust;
     private javax.swing.JButton btn_cancel;
     private javax.swing.JButton btn_compare;
     private javax.swing.JButton btn_selectFIle;
     private javax.swing.JComboBox cbo_wh;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
