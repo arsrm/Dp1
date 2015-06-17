@@ -492,7 +492,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                         idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
                         idPickingOrderDetail = pickingOrderDetailList.get(i).getIdPicking_Order_Detail();
                         int status = pickingOrderDetailList.get(i).getDispatchStatus();
-                        if (status == 2) {
+                        if (status == 2 || status == 1) {
                             //lo pondre inactivo
                             daoPickingOrderDetail.pickingOrderDetailDel(idPickingOrderDetail, idPickingOrder, 4);
                             daoPickingOrderDetail.pickingOrderDetailReturnToWarehouse(idPickingOrderDetail, idPickingOrder);

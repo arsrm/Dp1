@@ -44,7 +44,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("report2.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+   //        JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -100,7 +100,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportKardexSinFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteKardex.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Kardex sin filtro");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);

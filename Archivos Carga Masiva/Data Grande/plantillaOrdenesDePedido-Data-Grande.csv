@@ -1,899 +1,900 @@
-NroOrden,1,
+NroOrden,16,
 Fecha Estimada,17/06/2015,
 Cliente,10345678927,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,1,1
 2,2,1
-FIN DETALLE,,
-NroOrden,2,
+FIN DETALLE,0,
+NroOrden,17,
 Fecha Estimada,17/06/2015,
 Cliente,18439849222,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,3,1
 2,4,1
-FIN DETALLE,,
-NroOrden,3,
+FIN DETALLE,0,
+NroOrden,18,
 Fecha Estimada,17/06/2015,
 Cliente,23446556775,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,4,1
 2,5,1
-FIN DETALLE,,
-NroOrden,4,
-Fecha Estimada,17/06/2015,
-Cliente,13456893234,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
-NroOrden,5,
-Fecha Estimada,17/06/2015,
-Cliente,49373920333,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
-NroOrden,6,
-Fecha Estimada,17/06/2015,
-Cliente,32457832923,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
-NroOrden,7,
-Fecha Estimada,17/06/2015,
-Cliente,83494999372,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,11,1
-2,12,1
-FIN DETALLE,,
-NroOrden,8,
-Fecha Estimada,17/06/2015,
-Cliente,29598922400,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,13,1
-2,14,1
-FIN DETALLE,,
-NroOrden,9,
-Fecha Estimada,17/06/2015,
-Cliente,10503089392,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,15,1
-2,16,1
-FIN DETALLE,,
-NroOrden,10,
-Fecha Estimada,17/06/2015,
-Cliente,20485291948,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,17,1
-2,18,1
-FIN DETALLE,,
-NroOrden,11,
-Fecha Estimada,17/06/2015,
-Cliente,19294030302,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,19,1
-2,20,1
-FIN DETALLE,,
-NroOrden,12,
-Fecha Estimada,17/06/2015,
-Cliente,18693919266,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,1,1
-2,2,1
-FIN DETALLE,,
-NroOrden,13,
-Fecha Estimada,17/06/2015,
-Cliente,78328923493,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,3,1
-2,4,1
-FIN DETALLE,,
-NroOrden,14,
-Fecha Estimada,17/06/2015,
-Cliente,45459284022,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
-NroOrden,15,
-Fecha Estimada,17/06/2015,
-Cliente,30302095494,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
-NroOrden,16,
-Fecha Estimada,17/06/2015,
-Cliente,45898989321,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
-NroOrden,17,
-Fecha Estimada,17/06/2015,
-Cliente,56839201853,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,11,1
-2,12,1
-FIN DETALLE,,
-NroOrden,18,
-Fecha Estimada,17/06/2015,
-Cliente,18500000423,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,13,1
-2,14,1
-FIN DETALLE,,
+FIN DETALLE,0,
 NroOrden,19,
 Fecha Estimada,17/06/2015,
-Cliente,28998989897,
+Cliente,13456893234,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,15,1
-2,16,1
-FIN DETALLE,,
+1,5,1
+2,6,1
+FIN DETALLE,0,
 NroOrden,20,
 Fecha Estimada,17/06/2015,
-Cliente,38903881890,
+Cliente,49373920333,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,17,1
-2,18,1
-FIN DETALLE,,
+1,7,1
+2,8,1
+FIN DETALLE,0,
 NroOrden,21,
 Fecha Estimada,17/06/2015,
-Cliente,48954920394,
+Cliente,32457832923,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,19,1
-2,20,1
-FIN DETALLE,,
+1,9,1
+2,10,1
+FIN DETALLE,0,
 NroOrden,22,
 Fecha Estimada,17/06/2015,
-Cliente,22229454954,
+Cliente,83494999372,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,1,1
-2,2,1
-FIN DETALLE,,
+1,11,1
+2,12,1
+FIN DETALLE,0,
 NroOrden,23,
 Fecha Estimada,17/06/2015,
-Cliente,67923493939,
+Cliente,29598922400,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,3,1
-2,4,1
-FIN DETALLE,,
+1,13,1
+2,14,1
+FIN DETALLE,0,
 NroOrden,24,
 Fecha Estimada,17/06/2015,
-Cliente,70234970703,
+Cliente,10503089392,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
+1,15,1
+2,16,1
+FIN DETALLE,0,
 NroOrden,25,
 Fecha Estimada,17/06/2015,
-Cliente,38111100042,
+Cliente,20485291948,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
+1,17,1
+2,18,1
+FIN DETALLE,0,
 NroOrden,26,
 Fecha Estimada,17/06/2015,
-Cliente,17878305033,
+Cliente,19294030302,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
+1,19,1
+2,20,1
+FIN DETALLE,0,
 NroOrden,27,
 Fecha Estimada,17/06/2015,
-Cliente,60178883311,
+Cliente,18693919266,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,11,1
-2,12,1
-FIN DETALLE,,
+1,1,1
+2,2,1
+FIN DETALLE,0,
 NroOrden,28,
 Fecha Estimada,17/06/2015,
-Cliente,86252560321,
+Cliente,78328923493,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,13,1
-2,14,1
-FIN DETALLE,,
+1,3,1
+2,4,1
+FIN DETALLE,0,
 NroOrden,29,
 Fecha Estimada,17/06/2015,
-Cliente,23888518590,
+Cliente,45459284022,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,15,1
-2,16,1
-FIN DETALLE,,
+1,5,1
+2,6,1
+FIN DETALLE,0,
 NroOrden,30,
 Fecha Estimada,17/06/2015,
-Cliente,76341800385,
+Cliente,30302095494,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,17,1
-2,18,1
-FIN DETALLE,,
+1,7,1
+2,8,1
+FIN DETALLE,0,
 NroOrden,31,
 Fecha Estimada,17/06/2015,
-Cliente,10345678927,
+Cliente,45898989321,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,19,1
-2,20,1
-FIN DETALLE,,
+1,9,1
+2,10,1
+FIN DETALLE,0,
 NroOrden,32,
 Fecha Estimada,17/06/2015,
-Cliente,18439849222,
+Cliente,56839201853,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,1,1
-2,2,1
-FIN DETALLE,,
+1,11,1
+2,12,1
+FIN DETALLE,0,
 NroOrden,33,
 Fecha Estimada,17/06/2015,
-Cliente,23446556775,
+Cliente,18500000423,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,3,1
-2,4,1
-FIN DETALLE,,
+1,13,1
+2,14,1
+FIN DETALLE,0,
 NroOrden,34,
 Fecha Estimada,17/06/2015,
-Cliente,13456893234,
+Cliente,28998989897,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
+1,15,1
+2,16,1
+FIN DETALLE,0,
 NroOrden,35,
 Fecha Estimada,17/06/2015,
-Cliente,49373920333,
+Cliente,38903881890,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
+1,17,1
+2,18,1
+FIN DETALLE,0,
 NroOrden,36,
 Fecha Estimada,17/06/2015,
-Cliente,32457832923,
+Cliente,48954920394,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
+1,19,1
+2,20,1
+FIN DETALLE,0,
 NroOrden,37,
 Fecha Estimada,17/06/2015,
-Cliente,83494999372,
+Cliente,22229454954,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,11,1
-2,12,1
-FIN DETALLE,,
+1,1,1
+2,2,1
+FIN DETALLE,0,
 NroOrden,38,
 Fecha Estimada,17/06/2015,
-Cliente,29598922400,
+Cliente,67923493939,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,13,1
-2,14,1
-FIN DETALLE,,
+1,3,1
+2,4,1
+FIN DETALLE,0,
 NroOrden,39,
 Fecha Estimada,17/06/2015,
-Cliente,10503089392,
+Cliente,70234970703,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,15,1
-2,16,1
-FIN DETALLE,,
+1,5,1
+2,6,1
+FIN DETALLE,0,
 NroOrden,40,
 Fecha Estimada,17/06/2015,
-Cliente,20485291948,
+Cliente,38111100042,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,17,1
-2,18,1
-FIN DETALLE,,
+1,7,1
+2,8,1
+FIN DETALLE,0,
 NroOrden,41,
 Fecha Estimada,17/06/2015,
-Cliente,19294030302,
+Cliente,17878305033,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
-1,19,1
-2,20,1
-FIN DETALLE,,
+1,9,1
+2,10,1
+FIN DETALLE,0,
 NroOrden,42,
 Fecha Estimada,17/06/2015,
-Cliente,18693919266,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,1,1
-2,2,1
-FIN DETALLE,,
-NroOrden,43,
-Fecha Estimada,17/06/2015,
-Cliente,78328923493,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,3,1
-2,4,1
-FIN DETALLE,,
-NroOrden,44,
-Fecha Estimada,17/06/2015,
-Cliente,45459284022,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
-NroOrden,45,
-Fecha Estimada,17/06/2015,
-Cliente,30302095494,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
-NroOrden,46,
-Fecha Estimada,17/06/2015,
-Cliente,45898989321,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
-NroOrden,47,
-Fecha Estimada,17/06/2015,
-Cliente,56839201853,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,11,1
-2,12,1
-FIN DETALLE,,
-NroOrden,48,
-Fecha Estimada,17/06/2015,
-Cliente,18500000423,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,13,1
-2,14,1
-FIN DETALLE,,
-NroOrden,49,
-Fecha Estimada,17/06/2015,
-Cliente,28998989897,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,15,1
-2,16,1
-FIN DETALLE,,
-NroOrden,50,
-Fecha Estimada,17/06/2015,
-Cliente,38903881890,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,17,1
-2,18,1
-FIN DETALLE,,
-NroOrden,51,
-Fecha Estimada,17/06/2015,
-Cliente,48954920394,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,19,1
-2,20,1
-FIN DETALLE,,
-NroOrden,52,
-Fecha Estimada,17/06/2015,
-Cliente,22229454954,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,1,1
-2,2,1
-FIN DETALLE,,
-NroOrden,53,
-Fecha Estimada,17/06/2015,
-Cliente,67923493939,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,3,1
-2,4,1
-FIN DETALLE,,
-NroOrden,54,
-Fecha Estimada,17/06/2015,
-Cliente,70234970703,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,5,1
-2,6,1
-FIN DETALLE,,
-NroOrden,55,
-Fecha Estimada,17/06/2015,
-Cliente,38111100042,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,7,1
-2,8,1
-FIN DETALLE,,
-NroOrden,56,
-Fecha Estimada,17/06/2015,
-Cliente,17878305033,
-Estado,2,
-DETALLE,,
-Nro Linea,idProducto,Cantidad Pallets
-1,9,1
-2,10,1
-FIN DETALLE,,
-NroOrden,57,
-Fecha Estimada,17/06/2015,
 Cliente,60178883311,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,11,1
 2,12,1
-FIN DETALLE,,
-NroOrden,58,
+FIN DETALLE,0,
+NroOrden,43,
 Fecha Estimada,17/06/2015,
 Cliente,86252560321,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,13,1
 2,14,1
-FIN DETALLE,,
-NroOrden,59,
+FIN DETALLE,0,
+NroOrden,44,
 Fecha Estimada,17/06/2015,
 Cliente,23888518590,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,15,1
 2,16,1
-FIN DETALLE,,
-NroOrden,60,
+FIN DETALLE,0,
+NroOrden,45,
 Fecha Estimada,17/06/2015,
 Cliente,76341800385,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,17,1
 2,18,1
-FIN DETALLE,,
-NroOrden,61,
+FIN DETALLE,0,
+NroOrden,46,
 Fecha Estimada,17/06/2015,
 Cliente,10345678927,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,19,1
 2,20,1
-FIN DETALLE,,
-NroOrden,62,
+FIN DETALLE,0,
+NroOrden,47,
 Fecha Estimada,17/06/2015,
 Cliente,18439849222,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,1,1
 2,2,1
-FIN DETALLE,,
-NroOrden,63,
+FIN DETALLE,0,
+NroOrden,48,
 Fecha Estimada,17/06/2015,
 Cliente,23446556775,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,3,1
 2,4,1
-FIN DETALLE,,
-NroOrden,64,
+FIN DETALLE,0,
+NroOrden,49,
 Fecha Estimada,17/06/2015,
 Cliente,13456893234,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,5,1
 2,6,1
-FIN DETALLE,,
-NroOrden,65,
+FIN DETALLE,0,
+NroOrden,50,
 Fecha Estimada,17/06/2015,
 Cliente,49373920333,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,7,1
 2,8,1
-FIN DETALLE,,
-NroOrden,66,
+FIN DETALLE,0,
+NroOrden,51,
 Fecha Estimada,17/06/2015,
 Cliente,32457832923,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,9,1
 2,10,1
-FIN DETALLE,,
-NroOrden,67,
+FIN DETALLE,0,
+NroOrden,52,
 Fecha Estimada,17/06/2015,
 Cliente,83494999372,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,11,1
 2,12,1
-FIN DETALLE,,
-NroOrden,68,
+FIN DETALLE,0,
+NroOrden,53,
 Fecha Estimada,17/06/2015,
 Cliente,29598922400,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,13,1
 2,14,1
-FIN DETALLE,,
-NroOrden,69,
+FIN DETALLE,0,
+NroOrden,54,
 Fecha Estimada,17/06/2015,
 Cliente,10503089392,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,15,1
 2,16,1
-FIN DETALLE,,
-NroOrden,70,
+FIN DETALLE,0,
+NroOrden,55,
 Fecha Estimada,17/06/2015,
 Cliente,20485291948,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,17,1
 2,18,1
-FIN DETALLE,,
-NroOrden,71,
+FIN DETALLE,0,
+NroOrden,56,
 Fecha Estimada,17/06/2015,
 Cliente,19294030302,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,19,1
 2,20,1
-FIN DETALLE,,
-NroOrden,72,
+FIN DETALLE,0,
+NroOrden,57,
 Fecha Estimada,17/06/2015,
 Cliente,18693919266,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,1,1
 2,2,1
-FIN DETALLE,,
-NroOrden,73,
+FIN DETALLE,0,
+NroOrden,58,
 Fecha Estimada,17/06/2015,
 Cliente,78328923493,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,3,1
 2,4,1
-FIN DETALLE,,
-NroOrden,74,
+FIN DETALLE,0,
+NroOrden,59,
 Fecha Estimada,17/06/2015,
 Cliente,45459284022,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,5,1
 2,6,1
-FIN DETALLE,,
-NroOrden,75,
+FIN DETALLE,0,
+NroOrden,60,
 Fecha Estimada,17/06/2015,
 Cliente,30302095494,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,7,1
 2,8,1
-FIN DETALLE,,
-NroOrden,76,
+FIN DETALLE,0,
+NroOrden,61,
 Fecha Estimada,17/06/2015,
 Cliente,45898989321,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,9,1
 2,10,1
-FIN DETALLE,,
-NroOrden,77,
+FIN DETALLE,0,
+NroOrden,62,
 Fecha Estimada,17/06/2015,
 Cliente,56839201853,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,11,1
 2,12,1
-FIN DETALLE,,
-NroOrden,78,
+FIN DETALLE,0,
+NroOrden,63,
 Fecha Estimada,17/06/2015,
 Cliente,18500000423,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,13,1
 2,14,1
-FIN DETALLE,,
-NroOrden,79,
+FIN DETALLE,0,
+NroOrden,64,
 Fecha Estimada,17/06/2015,
 Cliente,28998989897,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,15,1
 2,16,1
-FIN DETALLE,,
-NroOrden,80,
+FIN DETALLE,0,
+NroOrden,65,
 Fecha Estimada,17/06/2015,
 Cliente,38903881890,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,17,1
 2,18,1
-FIN DETALLE,,
-NroOrden,81,
+FIN DETALLE,0,
+NroOrden,66,
 Fecha Estimada,17/06/2015,
 Cliente,48954920394,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,19,1
 2,20,1
-FIN DETALLE,,
-NroOrden,82,
+FIN DETALLE,0,
+NroOrden,67,
 Fecha Estimada,17/06/2015,
 Cliente,22229454954,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,1,1
 2,2,1
-FIN DETALLE,,
-NroOrden,83,
+FIN DETALLE,0,
+NroOrden,68,
 Fecha Estimada,17/06/2015,
 Cliente,67923493939,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,3,1
 2,4,1
-FIN DETALLE,,
-NroOrden,84,
+FIN DETALLE,0,
+NroOrden,69,
 Fecha Estimada,17/06/2015,
 Cliente,70234970703,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,5,1
 2,6,1
-FIN DETALLE,,
-NroOrden,85,
+FIN DETALLE,0,
+NroOrden,70,
 Fecha Estimada,17/06/2015,
 Cliente,38111100042,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,7,1
 2,8,1
-FIN DETALLE,,
-NroOrden,86,
+FIN DETALLE,0,
+NroOrden,71,
 Fecha Estimada,17/06/2015,
 Cliente,17878305033,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,9,1
 2,10,1
-FIN DETALLE,,
-NroOrden,87,
+FIN DETALLE,0,
+NroOrden,72,
 Fecha Estimada,17/06/2015,
 Cliente,60178883311,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,11,1
 2,12,1
-FIN DETALLE,,
-NroOrden,88,
+FIN DETALLE,0,
+NroOrden,73,
 Fecha Estimada,17/06/2015,
 Cliente,86252560321,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,13,1
 2,14,1
-FIN DETALLE,,
-NroOrden,89,
+FIN DETALLE,0,
+NroOrden,74,
 Fecha Estimada,17/06/2015,
 Cliente,23888518590,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,15,1
 2,16,1
-FIN DETALLE,,
-NroOrden,90,
+FIN DETALLE,0,
+NroOrden,75,
 Fecha Estimada,17/06/2015,
 Cliente,76341800385,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,17,1
 2,18,1
-FIN DETALLE,,
-NroOrden,91,
+FIN DETALLE,0,
+NroOrden,76,
 Fecha Estimada,17/06/2015,
 Cliente,10345678927,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,19,1
 2,20,1
-FIN DETALLE,,
-NroOrden,92,
+FIN DETALLE,0,
+NroOrden,77,
 Fecha Estimada,17/06/2015,
 Cliente,18439849222,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,1,1
 2,2,1
-FIN DETALLE,,
-NroOrden,93,
+FIN DETALLE,0,
+NroOrden,78,
 Fecha Estimada,17/06/2015,
 Cliente,23446556775,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,3,1
 2,4,1
-FIN DETALLE,,
-NroOrden,94,
+FIN DETALLE,0,
+NroOrden,79,
 Fecha Estimada,17/06/2015,
 Cliente,13456893234,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,5,1
 2,6,1
-FIN DETALLE,,
-NroOrden,95,
+FIN DETALLE,0,
+NroOrden,80,
 Fecha Estimada,17/06/2015,
 Cliente,49373920333,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,7,1
 2,8,1
-FIN DETALLE,,
-NroOrden,96,
+FIN DETALLE,0,
+NroOrden,81,
 Fecha Estimada,17/06/2015,
 Cliente,32457832923,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,9,1
 2,10,1
-FIN DETALLE,,
-NroOrden,97,
+FIN DETALLE,0,
+NroOrden,82,
 Fecha Estimada,17/06/2015,
 Cliente,83494999372,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,11,1
 2,12,1
-FIN DETALLE,,
-NroOrden,98,
+FIN DETALLE,0,
+NroOrden,83,
 Fecha Estimada,17/06/2015,
 Cliente,29598922400,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,13,1
 2,14,1
-FIN DETALLE,,
-NroOrden,99,
+FIN DETALLE,0,
+NroOrden,84,
 Fecha Estimada,17/06/2015,
 Cliente,10503089392,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,15,1
 2,16,1
-FIN DETALLE,,
-NroOrden,100,
+FIN DETALLE,0,
+NroOrden,85,
 Fecha Estimada,17/06/2015,
 Cliente,20485291948,
 Estado,2,
-DETALLE,,
+DETALLE,0,
 Nro Linea,idProducto,Cantidad Pallets
 1,17,1
 2,18,1
+FIN DETALLE,0,
+NroOrden,86,
+Fecha Estimada,17/06/2015,
+Cliente,19294030302,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,19,1
+2,20,1
+FIN DETALLE,0,
+NroOrden,87,
+Fecha Estimada,17/06/2015,
+Cliente,18693919266,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,1,1
+2,2,1
+FIN DETALLE,0,
+NroOrden,88,
+Fecha Estimada,17/06/2015,
+Cliente,78328923493,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,3,1
+2,4,1
+FIN DETALLE,0,
+NroOrden,89,
+Fecha Estimada,17/06/2015,
+Cliente,45459284022,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,5,1
+2,6,1
+FIN DETALLE,0,
+NroOrden,90,
+Fecha Estimada,17/06/2015,
+Cliente,30302095494,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,7,1
+2,8,1
+FIN DETALLE,0,
+NroOrden,91,
+Fecha Estimada,17/06/2015,
+Cliente,45898989321,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,9,1
+2,10,1
+FIN DETALLE,0,
+NroOrden,92,
+Fecha Estimada,17/06/2015,
+Cliente,56839201853,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,11,1
+2,12,1
+FIN DETALLE,0,
+NroOrden,93,
+Fecha Estimada,17/06/2015,
+Cliente,18500000423,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,13,1
+2,14,1
+FIN DETALLE,0,
+NroOrden,94,
+Fecha Estimada,17/06/2015,
+Cliente,28998989897,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,15,1
+2,16,1
+FIN DETALLE,0,
+NroOrden,95,
+Fecha Estimada,17/06/2015,
+Cliente,38903881890,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,17,1
+2,18,1
+FIN DETALLE,0,
+NroOrden,96,
+Fecha Estimada,17/06/2015,
+Cliente,48954920394,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,19,1
+2,20,1
+FIN DETALLE,0,
+NroOrden,97,
+Fecha Estimada,17/06/2015,
+Cliente,22229454954,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,1,1
+2,2,1
+FIN DETALLE,0,
+NroOrden,98,
+Fecha Estimada,17/06/2015,
+Cliente,67923493939,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,3,1
+2,4,1
+FIN DETALLE,0,
+NroOrden,99,
+Fecha Estimada,17/06/2015,
+Cliente,70234970703,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,5,1
+2,6,1
+FIN DETALLE,0,
+NroOrden,100,
+Fecha Estimada,17/06/2015,
+Cliente,38111100042,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,7,1
+2,8,1
+FIN DETALLE,0,
+NroOrden,101,
+Fecha Estimada,17/06/2015,
+Cliente,17878305033,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,9,1
+2,10,1
+FIN DETALLE,0,
+NroOrden,102,
+Fecha Estimada,17/06/2015,
+Cliente,60178883311,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,11,1
+2,12,1
+FIN DETALLE,0,
+NroOrden,103,
+Fecha Estimada,17/06/2015,
+Cliente,86252560321,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,13,1
+2,14,1
+FIN DETALLE,0,
+NroOrden,104,
+Fecha Estimada,17/06/2015,
+Cliente,23888518590,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,15,1
+2,16,1
+FIN DETALLE,0,
+NroOrden,105,
+Fecha Estimada,17/06/2015,
+Cliente,76341800385,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,17,1
+2,18,1
+FIN DETALLE,0,
+NroOrden,106,
+Fecha Estimada,17/06/2015,
+Cliente,10345678927,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,19,1
+2,20,1
+FIN DETALLE,0,
+NroOrden,107,
+Fecha Estimada,17/06/2015,
+Cliente,18439849222,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,1,1
+2,2,1
+FIN DETALLE,0,
+NroOrden,108,
+Fecha Estimada,17/06/2015,
+Cliente,23446556775,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,3,1
+2,4,1
+FIN DETALLE,0,
+NroOrden,109,
+Fecha Estimada,17/06/2015,
+Cliente,13456893234,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,5,1
+2,6,1
+FIN DETALLE,0,
+NroOrden,110,
+Fecha Estimada,17/06/2015,
+Cliente,49373920333,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,7,1
+2,8,1
+FIN DETALLE,0,
+NroOrden,111,
+Fecha Estimada,17/06/2015,
+Cliente,32457832923,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,9,1
+2,10,1
+FIN DETALLE,0,
+NroOrden,112,
+Fecha Estimada,17/06/2015,
+Cliente,83494999372,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,11,1
+2,12,1
+FIN DETALLE,0,
+NroOrden,113,
+Fecha Estimada,17/06/2015,
+Cliente,29598922400,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,13,1
+2,14,1
+FIN DETALLE,0,
+NroOrden,114,
+Fecha Estimada,17/06/2015,
+Cliente,10503089392,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,15,1
+2,16,1
+FIN DETALLE,0,
+NroOrden,115,
+Fecha Estimada,17/06/2015,
+Cliente,20485291948,
+Estado,2,
+DETALLE,0,
+Nro Linea,idProducto,Cantidad Pallets
+1,17,1
+2,18,1
+FIN DETALLE,0,

@@ -514,12 +514,13 @@ public class Frm_adjustManual extends javax.swing.JFrame {
                     } else {
                         JOptionPane.showMessageDialog(this, "La ubicación no tiene ningún Pallet asociado");
                     }
-                    int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha realizado el ajuste manual de inventario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                    
+                    }
+                int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha realizado el ajuste manual de inventario con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
                     if (ok_option == JOptionPane.OK_OPTION) {
                         menu_padre.setVisible(true);
                         menu_padre.setLocationRelativeTo(null);
                         this.dispose();
-                    }
                 }
 
             }

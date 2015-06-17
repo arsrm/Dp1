@@ -56,7 +56,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
             String routes = null;
-            Path path = Paths.get(".\\Imagenes\\mapWMS.png");
+            Path path = Paths.get("Imagenes/mapWMS.png");
            
             BufferedImage imageMap;
             public Imagen() {

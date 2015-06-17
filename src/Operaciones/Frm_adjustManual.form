@@ -110,7 +110,7 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="btn_searchPallet" alignment="0" pref="83" max="32767" attributes="0"/>
+                              <Component id="btn_searchPallet" alignment="0" max="32767" attributes="0"/>
                               <Component id="lbl_validatePallet" min="-2" max="-2" attributes="0"/>
                               <Component id="btn_searchProduct" max="32767" attributes="0"/>
                           </Group>

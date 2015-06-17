@@ -411,7 +411,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
         });
         menu_operaciones.add(op_Carga_Datos);
 
-        jMenu6.setText("Ajustes y Movimientos");
+        jMenu6.setText("Ajustes");
 
         op_adjustManual.setText("Ajuste Manual");
         op_adjustManual.addActionListener(new java.awt.event.ActionListener() {

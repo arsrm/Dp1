@@ -125,7 +125,6 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(800, 600));
         setResizable(false);
         setSize(new java.awt.Dimension(800, 600));
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -418,6 +417,9 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
             }
         }
         opAjusteRealizado=1;
+        Object[] options = {"OK"};
+        int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha realizado el ajuste automático con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                        if (ok_option == JOptionPane.OK_OPTION) {}
         initializeTable();
     }//GEN-LAST:event_btn_automaticAdjustActionPerformed
 
@@ -438,6 +440,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
         String typeAdjust="-";
         try {
             for (int i = 0; i < listLocCellInventVirtual.size(); i++) {
+                typeAdjust="-";
                 if (listLocCellInventVirtual.get(i).getAvailability() == 1) {
                     availabilityVirtual = "Libre";
                 } else {
@@ -462,7 +465,7 @@ public class Frm_automatic_inventory_adjustment extends javax.swing.JFrame {
 
                 Object[] fila = {listLocCellInventVirtual.get(i).getIdRack(),
                     listLocCellInventVirtual.get(i).getIdRow(), listLocCellInventVirtual.get(i).getIdColumn(),
-                    listLocCellInventVirtual.get(i).getIdLocationCellDetail(), availabilityVirtual, availabilityManual, "-"};
+                    listLocCellInventVirtual.get(i).getIdLocationCellDetail(),availabilityVirtual, availabilityManual, typeAdjust};
                 modelo.addRow(fila);
 
             }
