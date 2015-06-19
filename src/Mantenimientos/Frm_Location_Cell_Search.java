@@ -300,21 +300,24 @@ public class Frm_Location_Cell_Search extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosed
 
     private void tbl_location_cellMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_location_cellMouseClicked
-//        Rack rack = null;
-//        Integer idRackSel;
-//        if (evt.getSource() == tbl_location_cell) {
-//            int rowSel = tbl_location_cell.getSelectedRow();
-//            int colSel = tbl_location_cell.getSelectedColumn();
-//            if (colSel != 6) {
-//                this.setVisible(false);
-//                idRackSel = Integer.parseInt(tbl_location_cell.getValueAt(rowSel, 0).toString());
-//                rack = daoRack.rackGet(idRackSel);
-//
-//                Frm_Rack frm_rack = new Frm_Rack(this, rack);
-//                frm_rack.setVisible(true);
-//                frm_rack.setLocationRelativeTo(null);                
-//            }
-//        }
+        LocationCell locationCell = null;
+        int idDT,idWH,idRCK,idLC;
+        if (evt.getSource() == tbl_location_cell) {
+            int rowSel = tbl_location_cell.getSelectedRow();
+            int colSel = tbl_location_cell.getSelectedColumn();
+            if (colSel != 8) {
+                this.setVisible(false);
+                idDT = Integer.parseInt(tbl_location_cell.getValueAt(rowSel, 0).toString());
+                idWH = Integer.parseInt(tbl_location_cell.getValueAt(rowSel, 1).toString());
+                idRCK = Integer.parseInt(tbl_location_cell.getValueAt(rowSel, 2).toString());
+                idLC = Integer.parseInt(tbl_location_cell.getValueAt(rowSel, 3).toString());
+                locationCell = daoLocationCell.LocationCellGet(idDT, idWH, idRCK, idLC);
+
+                Frm_Location_Cell frm_location_cell = new Frm_Location_Cell(this, locationCell);
+                frm_location_cell.setVisible(true);
+                frm_location_cell.setLocationRelativeTo(null);                
+            }
+        }
     }//GEN-LAST:event_tbl_location_cellMouseClicked
 
     private void btn_deleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteActionPerformed
