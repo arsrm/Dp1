@@ -20,5 +20,11 @@ public interface DaoExecutionDetail {
    public List<ExecutionDetail> executionDetailQry(Integer idExecutionAlgorithm);
     
    public ExecutionDetail executionDetailGet(Integer idExecutionAlgorith,Integer idDispatch,Integer idPicking);
+   
+    public List<ExecutionDetail> executionDetailGetByVehicleOrdered(Integer idExecutionAlgorithm, Integer idVehicle);
+    
+    public Integer countVehiclesInExecution(Integer idExecutionAlgorithm) ;
+    
+    public List<Integer> getClientsFromRoute(Integer idExecutionAlgorithm, Integer idVehicle);
     
 }

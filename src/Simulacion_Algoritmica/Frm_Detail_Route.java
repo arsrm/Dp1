@@ -49,11 +49,14 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
         initComponents();
     }
     
-    public Frm_Detail_Route(Frm_Detail_Algorithm frm_da, String route, List<DispatchOrder> listDO, Vehicle veh,List<Client> cliList) {
+    public Frm_Detail_Route(Frm_Detail_Algorithm frm_da, String route, Vehicle veh,List<Client> cliList) {
         frm_daAux = frm_da;
         routeAux = route;
-        listDOAux = listDO;
         vehicleAux = veh;
+        if(routeAux == null){
+            createRoute();
+        }
+        
         listCli = cliList;
         initComponents();
         txt_plate.setText(vehicleAux.getLicense_plate());
@@ -62,6 +65,16 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
         showClients();
     }
 
+    private void createRoute(){
+        int sizeRoute = vehicleAux.getRoute().size();
+        routeAux = "";
+        for(int i=0;i<sizeRoute;i++){
+            if(i==sizeRoute-1)
+                routeAux += vehicleAux.getRoute().get(i).toString();
+            else
+                routeAux += vehicleAux.getRoute().get(i).toString()+"-";
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -205,8 +218,8 @@ public class Frm_Detail_Route extends javax.swing.JFrame {
             // TODO add your handling code here:
             List<String> routes = new ArrayList<>();
             routes.add(routeAux);
-            Frm_Show_Route_Solution fsrs = new Frm_Show_Route_Solution(this,routes);
-            fsrs.setLocation(400, 150);
+            Frm_Show_Route_Solution fsrs = new Frm_Show_Route_Solution(this,routes); 
+            fsrs.setExtendedState(JFrame.MAXIMIZED_BOTH);
             fsrs.setVisible(true);
             this.setVisible(false);
         }catch (IOException ex) {

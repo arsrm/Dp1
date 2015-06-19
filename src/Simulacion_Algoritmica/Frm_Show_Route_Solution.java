@@ -84,6 +84,8 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
           
             Graphics2D g2 = (Graphics2D) grafico;
+            g2.setStroke(new BasicStroke(5));
+            g2.setColor(Color.BLUE);
             if(routes!=null){
                 String[] clients = routes.split("-");
                 int sizeRoute = clients.length;
@@ -92,13 +94,13 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
                     Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
                     Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
                     g2.drawLine(dis.getPos_x(),dis.getPos_y(),finish.getPos_x(),finish.getPos_y());
-                    g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawString((i+1)+" "+finish.getName(),finish.getPos_x()-15,finish.getPos_y()-15);
                     g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
                 }else if(i==sizeRoute-2){
                      Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
                      Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
                      g2.drawLine(start.getPos_x(),start.getPos_y(),dis.getPos_x(),dis.getPos_y());
-                     g2.drawString((i+1)+" "+dis.getName(),dis.getPos_x(),dis.getPos_y());
+                     g2.drawString(dis.getName(),dis.getPos_x()-15,dis.getPos_y()-15);
                      g2.drawLine(dis.getPos_x(),dis.getPos_y(),dis.getPos_x(),dis.getPos_y());
                      break;
 
@@ -106,7 +108,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
                     Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
                     Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
                     g2.drawLine(start.getPos_x(),start.getPos_y(),finish.getPos_x(),finish.getPos_y());
-                    g2.drawString((i+1)+" "+finish.getName(),finish.getPos_x(),finish.getPos_y());
+                    g2.drawString((i+1)+" "+finish.getName(),finish.getPos_x()-15,finish.getPos_y()-15);
                     g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
                  }
                 }   

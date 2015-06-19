@@ -62,7 +62,7 @@ public class Frm_MenuPrincipal extends javax.swing.JFrame {
     
     Log logSI = new Log();
     DaoLog daoLog =new DaoLogImpl();
-    DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
+    //DaoStateRequestOrder daoStateRequestOrder = new DaoStateRequestOrderImpl();
     DaoRequestOrder daoRequestOrder = new DaoRequestOrderImpl();
     
     //gzavala-inicio 24/05

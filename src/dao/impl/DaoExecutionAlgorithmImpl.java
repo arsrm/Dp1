@@ -49,8 +49,6 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
                 ps.setDouble(3, execution.getFunction_value());
                 ps.setInt(4, execution.getVehicles_number());
                 
-                
-                
                 int ctos = ps.executeUpdate();
                 if (ctos == 0) {
                     throw new SQLException("0 filas afectadas");
@@ -116,7 +114,7 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
         ExecutionAlgorithm execute =null;
         Integer id=0;
         String sql ="select idExecutionAlgorithm,date,status,function_value,vehicles_number "
-                +" From  execute_algorithm where idExecutionAlgorithm = ?";
+                +" From  execution_algorithm where idExecutionAlgorithm = ?";
 
 
         Connection cn = db.getConnection();
@@ -165,7 +163,7 @@ public class DaoExecutionAlgorithmImpl implements DaoExecutionAlgorithm{
         if (cn != null) {
             try {
                 PreparedStatement ps = cn.prepareStatement(sql);
-                ps.setDate(1, (java.sql.Date) date);
+                ps.setDate(1, new java.sql.Date(date.getTime()));
                 ResultSet rs = ps.executeQuery();
 
                 list = new LinkedList<>();

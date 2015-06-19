@@ -80,7 +80,8 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
                 +"Execution_Algorithm_idExecutionAlgorithm,Dispatch_Order_idDispatch_Order,"
                 + "Dispatch_Order_Picking_Order_idPicking_Order,Vehicle_idVehicle,"
                 + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver,route_order "
-                +"From  execution_detail where Execution_Algorithm_idExecutionAlgorithm=?";
+                +"From  execution_detail where Execution_Algorithm_idExecutionAlgorithm=? "
+                + "order by Vehicle_idVehicle,route_order";
 
         Connection cn = db.getConnection();
         if (cn != null) {
@@ -159,5 +160,120 @@ public class DaoExecutionDetailImpl implements DaoExecutionDetail{
 
         return executionDetail;
     }
+    
+    @Override
+    public List<ExecutionDetail> executionDetailGetByVehicleOrdered(Integer idExecutionAlgorithm, Integer idVehicle) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<ExecutionDetail> list = null;
+        String sql =  "select "
+                +"Execution_Algorithm_idExecutionAlgorithm,Dispatch_Order_idDispatch_Order,"
+                + "Dispatch_Order_Picking_Order_idPicking_Order,Vehicle_idVehicle,"
+                + "Vehicle_Vehicle_State_idVehicle_State,Vehicle_Driver_idDriver,route_order "
+                +"From  execution_detail where Execution_Algorithm_idExecutionAlgorithm=? "
+                +" and Vehicle_idVehicle = ? "
+                + "order by Vehicle_idVehicle,route_order";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                
+                ps.setInt(1,idExecutionAlgorithm);
+                ps.setInt(2,idVehicle);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    ExecutionDetail execute = new ExecutionDetail();
+                    execute.setIdExecutionAlgorithm(rs.getInt(1));
+                    execute.setIdDispatch_Order(rs.getInt(2));
+                    execute.setIdPicking_Order(rs.getInt(3));
+                    execute.setIdVehicle(rs.getInt(4));
+                    execute.setIdVehicle_State(rs.getInt(5));
+                    execute.setIdDriver(rs.getInt(6));
+                    execute.setOrder_route(rs.getInt(7));
+                    list.add(execute);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+    
+    @Override
+    public Integer countVehiclesInExecution(Integer idExecutionAlgorithm) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Integer count = 0;
+        ExecutionDetail executionDetail = null;
+        String sql =  "select COUNT(DISTINCT Vehicle_idVehicle) as count from execution_detail where Execution_Algorithm_idExecutionAlgorithm = ? "
+                + "order by Vehicle_idVehicle;";
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                ps.setInt(1, idExecutionAlgorithm);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    count = rs.getInt("count");
+                    
+                }
+
+            } catch (SQLException e) {
+                count = 0;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+
+        return count;
+    }
+    
+    @Override
+    public List<Integer> getClientsFromRoute(Integer idExecutionAlgorithm, Integer idVehicle) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Integer> list = null;
+        String sql =  "select  DISTINCT d.idClient from execution_detail e, dispatch_order d"
+                + " where Execution_Algorithm_idExecutionAlgorithm = ? and Vehicle_idVehicle = ? "
+                + "and d.idDispatch_Order = e.Dispatch_Order_idDispatch_Order order by route_order ;";
+
+
+        Connection cn = db.getConnection();
+        if (cn != null) {
+            try {
+                PreparedStatement ps = cn.prepareStatement(sql);
+                
+                ps.setInt(1,idExecutionAlgorithm);
+                ps.setInt(2,idVehicle);
+                ResultSet rs = ps.executeQuery();
+
+                list = new LinkedList<>();
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    list.add(id);
+                }
+
+            } catch (SQLException e) {
+                list = null;
+            } finally {
+                try {
+                    cn.close();
+                } catch (SQLException e) {
+                }
+            }
+        }
+        return list;
+    }
+    
     
 }
