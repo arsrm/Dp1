@@ -36,9 +36,9 @@ public class tabuSearchManager {
     private ArrayList<Integer> initialSolution = new ArrayList<>();//---> SOLUCION INICIAL
     private double [][] distances;//---> MATRIZ DE COSTO (DE PUNTO A PUNTO)
     private int stoppingCriterion;//---> CRITERIO DE PARADA
-    private int maxSizeTL = 100; //---> TAMAÑO MAXIMO DE LA LISTA TABU
+    private int maxSizeTL = 20; //---> TAMAÑO MAXIMO DE LA LISTA TABU
     private int maxNumbIteration =100; //--->NUMERO MAXIMO DE ITERACIONES PENALIZADAS POR SOLUCION.
-    private int neighborpivot = 3;
+    private int neighborpivot = 1;
     
     
     public tabuSearchManager(){
@@ -423,7 +423,7 @@ public class tabuSearchManager {
     public double calculateCostPerArist(int pivot, int next,int posVecList,double freeCapacity ){
         double cost = 0;
         Vehicle v =  getVehicleList().get(posVecList);
-        double factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(next).getPriority()*1.0);
+        double factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(next).getPriority()*1.0);
         System.out.println("PRIORITY "+getClientList().get(next).getPriority());
         double factor2 = 1.0;
         cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
@@ -784,7 +784,7 @@ public class tabuSearchManager {
                 freeCapacity=v.getCapacity();
                 int indexInit = getClientIndex(solution.get(i));
                 int indexEnd = getClientIndex(solution.get(i+1));
-                factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(indexEnd).getPriority()*1.0);
+                factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(indexEnd).getPriority()*1.0);
                 factor2 = 1.0;
                 cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2));
             }else {
@@ -794,7 +794,7 @@ public class tabuSearchManager {
                     //EN BASE A LOS DESPACHO SE CALCULA EL PESO TOTAL
                     //SE CREA EN LA BASE CUANDO SE EJECUTA LA SIMULACION LEYENDO LOS DESPACHOS
                     //freeCapacity-=clientList.get(indexInit).getTotalWeight();
-                    factor1 = (v.getDispatchNumber()*1.0)/(getClientList().get(indexEnd).getPriority()*1.0);
+                    factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(indexEnd).getPriority()*1.0);
                 }else{
                     factor1 = (v.getDispatchNumber()*1.0)/(1.0);
                 }

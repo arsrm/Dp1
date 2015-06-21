@@ -16,6 +16,7 @@ import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -56,7 +57,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     public class Imagen extends javax.swing.JPanel {
             ImageIcon simbolo = null;
             String routes = null;
-            Path path = Paths.get("Imagenes/mapWMS.png");
+            Path path = Paths.get("Imagenes/test.png");
            
             BufferedImage imageMap;
             public Imagen() {
@@ -82,10 +83,11 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             public void paint(Graphics grafico) {
             Dimension height = getSize();
             grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
-          
+            
             Graphics2D g2 = (Graphics2D) grafico;
             g2.setStroke(new BasicStroke(5));
-            g2.setColor(Color.BLUE);
+            g2.setColor(Color.RED);
+            g2.setFont(new Font("default",Font.BOLD,14));
             if(routes!=null){
                 String[] clients = routes.split("-");
                 int sizeRoute = clients.length;

@@ -46,7 +46,7 @@ public class Frm_Client_Location extends javax.swing.JFrame {
 
         ImageIcon simbolo = null;
 
-        Path path = Paths.get("Imagenes/mapWMS.png");
+        Path path = Paths.get("Imagenes/test.png");
 
         BufferedImage imageMap;
 
