@@ -52,6 +52,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     public Date dateF;
 
     SimpleDateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /**
      * Creates new form Frm_KardexReport
      */
@@ -135,8 +136,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+        });
 
         tbl_Wh.setBorder(javax.swing.BorderFactory.createTitledBorder("Almacen"));
 
@@ -268,7 +274,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                 .addGap(6, 6, 6))
         );
 
-        btn_Kardex.setText("Filtrar");
+        btn_Kardex.setText("Vista Previa");
         btn_Kardex.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_KardexActionPerformed(evt);
@@ -338,7 +344,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                         .addComponent(btn_Report)
                         .addGap(154, 154, 154)
                         .addComponent(btn_Export)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 170, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addGap(127, 127, 127)
                         .addComponent(btn_Cancel)))
@@ -428,7 +434,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 //                }
 //            }
 //        }
-        
+
         if (cbo_trademark.getSelectedItem() != null) {
             if (cbo_trademark.getSelectedItem() != "Todos") {
                 for (int i = 0; i < trademarkList.size(); i++) {
@@ -436,13 +442,12 @@ public class Frm_KardexReport extends javax.swing.JFrame {
                         idtrademark = trademarkList.get(i).getId_Trademark();
                     }
                 }
+            } else {
+                idtrademark = null;
             }
-            else{
-                idtrademark=null;
-            }
-          
+
         }
-        
+
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
     private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
@@ -450,9 +455,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         //para reporte kardex sin filtro 2
         Calendar dateIniCal = Calendar.getInstance();
         Calendar dateFinCal = Calendar.getInstance();
-        
-        
-        
+
         Date dateIniSearch = null;
         Date dateEndSearch = null;
 
@@ -498,7 +501,13 @@ public class Frm_KardexReport extends javax.swing.JFrame {
 //        if (txt_EAN.getText().length() != 0) {
 //            idProduct = producto.getIdProduct();
 //        }
-        
+        if (txt_idWh.getText().length() != 0) {
+            idAlmacen = Integer.parseInt(txt_idWh.getText());
+        }
+        if (txt_EAN.getText().length() != 0) {
+            idProduct = producto.getIdProduct();
+        }
+
         if (date_Ini.getDate() != null) {
             dateIniSearch = date_Ini.getDate();
             dateIniCal.setTime(date_Ini.getDate());
@@ -515,28 +524,26 @@ public class Frm_KardexReport extends javax.swing.JFrame {
             dateFinCal.setTime(new Date());
         }
         if (dateEndSearch.before(dateIniSearch)) {
-                JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
-        }
-        else{
-        
-        if (idProduct == null && idAlmacen == null) {
-            
-            
-            reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
-           // reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
-        }
-        if (idProduct != null && idAlmacen == null) {
-            
-            reporte.mostrarReporteKardexXProducto(idProduct,dateIniSearch, dateEndSearch);
+            JOptionPane.showMessageDialog(this, "La Fecha Fin debe ser mayor que la Fecha Inicio");
+        } else {
 
-        }
-        if (idProduct == null && idAlmacen != null) {
+            if (idProduct == null && idAlmacen == null) {
 
-            reporte.mostrarReporteKardexXAlmacen(idAlmacen,dateIniSearch, dateEndSearch);
-        }
-        if (idProduct != null && idAlmacen != null) {
-            reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateIniSearch, dateEndSearch);
-        }
+                reporte.mostrarReporteKardexSinFiltro(dateIniSearch, dateEndSearch);
+                // reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
+            }
+            if (idProduct != null && idAlmacen == null) {
+
+                reporte.mostrarReporteKardexXProducto(idProduct, dateIniSearch, dateEndSearch);
+
+            }
+            if (idProduct == null && idAlmacen != null) {
+
+                reporte.mostrarReporteKardexXAlmacen(idAlmacen, dateIniSearch, dateEndSearch);
+            }
+            if (idProduct != null && idAlmacen != null) {
+                reporte.mostrarReporteKardexConFiltro(idProduct, idAlmacen, dateIniSearch, dateEndSearch);
+            }
         }
     }//GEN-LAST:event_btn_ReportActionPerformed
 
@@ -551,6 +558,11 @@ public class Frm_KardexReport extends javax.swing.JFrame {
         date_Ini.setDate(null);
         date_End.setDate(null);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        menuaux.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_formWindowClosed
 
     public void setIdWh(Integer id) {
 
@@ -609,8 +621,7 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     private void initializeTable() {
         modelo.getDataVector().removeAllElements();
         modelo.fireTableDataChanged();
-        
-        
+
         try {
             for (int i = 0; i < movementList.size(); i++) {
                 Integer entrada = 0;

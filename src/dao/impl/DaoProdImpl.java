@@ -449,12 +449,12 @@ public class DaoProdImpl implements DaoProducts {
             try {
                 Product product = ProductsGet(idProduct);
                 PreparedStatement ps = cn.prepareStatement(sql);
-                if (idMovimiento == 1) {
+                if (idMovimiento == 1) {//internamiento
                     ps.setInt(1, product.getPhysicalStock() + cantPallets * product.getQuantityBoxesPerPallet());
                     ps.setInt(2, product.getFreeStock()+ cantPallets * product.getQuantityBoxesPerPallet());
-                } else {
+                } else {//salida
                     ps.setInt(1, product.getPhysicalStock() - cantPallets * product.getQuantityBoxesPerPallet());
-                    ps.setInt(2, product.getFreeStock()+ cantPallets * product.getQuantityBoxesPerPallet());
+                    ps.setInt(2, product.getFreeStock()- cantPallets * product.getQuantityBoxesPerPallet());
                 }
                 ps.setInt(3, idProduct);
                 ps.executeUpdate();

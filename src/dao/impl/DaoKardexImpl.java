@@ -87,7 +87,7 @@ public class DaoKardexImpl implements DaoKardex {
                     + "Type_Movement_idSubtype, "
                     + "stock_initial, "
                     + "stock_final, "
-                    + "Product_idProduct,4487 "
+                    + "Product_idProduct, "
                     + "Warehouse_idWarehouse "
                     + "FROM Movement "
                     + "WHERE date >= ? "

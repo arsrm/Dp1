@@ -66,7 +66,7 @@ public class Prueba {
         }
     }
     
-    public void mostrarReporteKardexConFiltro(Integer idA, Integer idP, Date dI, Date dF) {
+    public void mostrarReporteKardexConFiltro(Integer idP, Integer idA, Date dI, Date dF) {
         try {
            HashMap JasperParameter = new HashMap();  
             Map parameters = new HashMap(); 
