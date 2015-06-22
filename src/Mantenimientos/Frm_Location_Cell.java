@@ -8,26 +8,34 @@ package Mantenimientos;
 
 import Model.Distribution_Center;
 import Model.LocationCell;
-import Model.LocationCellDetail;
-import Model.Log;
+import Model.PalletProduct;
 import Model.Pallet_Product_Location;
+import Model.Product;
 import Model.Rack;
+import Model.Trademark;
 import Model.Warehouse;
 import dao.DaoDistributionCenter;
 import dao.DaoLocationCellDetail;
-import dao.DaoLog;
+import dao.DaoPalletProduct;
 import dao.DaoPallet_Product_Location;
+import dao.DaoProducts;
 import dao.DaoRack;
+import dao.DaoTrademark;
 import dao.DaoWH;
 import dao.impl.DaoDistributionCenterImpl;
 import dao.impl.DaoLocationCellDetailImpl;
-import dao.impl.DaoLogImpl;
+import dao.impl.DaoPalletProductImpl;
 import dao.impl.DaoPallet_Producto_LocationImpl;
+import dao.impl.DaoProdImpl;
 import dao.impl.DaoRackImpl;
+import dao.impl.DaoTrademarkImpl;
 import dao.impl.DaoWHImpl;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DebugGraphics;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.border.TitledBorder;
 
 /**
  *
@@ -52,13 +60,19 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
     Frm_Location_Cell_Search menu_padre = new Frm_Location_Cell_Search();
     LocationCell location_cell = null;
     
-    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();
-    LocationCellDetail locationCellDetailOne = new LocationCellDetail();
-    LocationCellDetail locationCellDetailTwo = new LocationCellDetail();
+    DaoLocationCellDetail daoLocationCellDetail = new DaoLocationCellDetailImpl();    
     
     DaoPallet_Product_Location daoPalletProductLocation = new DaoPallet_Producto_LocationImpl();
-    Pallet_Product_Location palletProductLocationOne = new Pallet_Product_Location();
-    Pallet_Product_Location palletProductLocationTwo = new Pallet_Product_Location();
+    List<Pallet_Product_Location> palletProductLocationList = new ArrayList<>();
+    
+    DaoPalletProduct daoPalletProduct = new DaoPalletProductImpl();
+    PalletProduct palletProduct = new PalletProduct();
+    
+    DaoProducts daoProduct = new DaoProdImpl();
+    Product product = new Product();
+    
+    DaoTrademark daoTrademark = new DaoTrademarkImpl();
+    Trademark trademark = new Trademark();
     
     public Frm_Location_Cell(Frm_Location_Cell_Search menu, LocationCell location_cell) {
         setTitle("Celdas de Ubicacion"); 
@@ -96,7 +110,35 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
         txt_state = new javax.swing.JTextField();
         lbl_state = new javax.swing.JLabel();
         pnl_detail_1 = new javax.swing.JPanel();
+        lbl_trademark1 = new javax.swing.JLabel();
+        lbl_product1 = new javax.swing.JLabel();
+        lbl_quantity_per_box1 = new javax.swing.JLabel();
+        lbl_weight_per_box1 = new javax.swing.JLabel();
+        lbl_quantity_boxes_per_pallet1 = new javax.swing.JLabel();
+        txt_trademark1 = new javax.swing.JTextField();
+        txt_product1 = new javax.swing.JTextField();
+        txt_quantity_per_box1 = new javax.swing.JTextField();
+        txt_weight_per_box1 = new javax.swing.JTextField();
+        txt_quantity_boxes_per_pallet1 = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        lbl_codean128_1 = new javax.swing.JLabel();
         pnl_detail_2 = new javax.swing.JPanel();
+        lbl_trademark2 = new javax.swing.JLabel();
+        lbl_product2 = new javax.swing.JLabel();
+        lbl_quantity_per_box2 = new javax.swing.JLabel();
+        lbl_weight_per_box2 = new javax.swing.JLabel();
+        lbl_quantity_boxes_per_pallet2 = new javax.swing.JLabel();
+        txt_trademark2 = new javax.swing.JTextField();
+        txt_product2 = new javax.swing.JTextField();
+        txt_quantity_per_box2 = new javax.swing.JTextField();
+        txt_weight_per_box2 = new javax.swing.JTextField();
+        txt_quantity_boxes_per_pallet2 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        lbl_codean128_2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -181,7 +223,7 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(txt_column, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(txt_state))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addContainerGap(97, Short.MAX_VALUE))
         );
         pnl_location_cell_detailLayout.setVerticalGroup(
             pnl_location_cell_detailLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -200,29 +242,201 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
         );
 
         pnl_detail_1.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle 1"));
+        pnl_detail_1.setMaximumSize(new java.awt.Dimension(386, 320));
+        pnl_detail_1.setMinimumSize(new java.awt.Dimension(386, 320));
+        pnl_detail_1.setPreferredSize(new java.awt.Dimension(386, 320));
+
+        lbl_trademark1.setText("Marca");
+
+        lbl_product1.setText("Producto");
+
+        lbl_quantity_per_box1.setText("Unidades por Empaque");
+
+        lbl_weight_per_box1.setText("Peso Neto por Empaque");
+
+        lbl_quantity_boxes_per_pallet1.setText("Empaques por Pallet");
+
+        txt_trademark1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_product1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_quantity_per_box1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_weight_per_box1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_quantity_boxes_per_pallet1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        jLabel1.setText("Unidades");
+
+        jLabel2.setText("Kg.");
+
+        jLabel3.setText("Empaques");
+
+        lbl_codean128_1.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        lbl_codean128_1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_codean128_1.setText("NO ASIGNADO");
 
         javax.swing.GroupLayout pnl_detail_1Layout = new javax.swing.GroupLayout(pnl_detail_1);
         pnl_detail_1.setLayout(pnl_detail_1Layout);
         pnl_detail_1Layout.setHorizontalGroup(
             pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnl_detail_1Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_trademark1)
+                    .addComponent(lbl_product1)
+                    .addComponent(lbl_quantity_per_box1)
+                    .addComponent(lbl_weight_per_box1)
+                    .addComponent(lbl_quantity_boxes_per_pallet1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_detail_1Layout.createSequentialGroup()
+                        .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txt_weight_per_box1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                            .addComponent(txt_quantity_boxes_per_pallet1)
+                            .addComponent(txt_quantity_per_box1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addGap(27, 27, 27)
+                        .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)))
+                    .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txt_trademark1)
+                        .addComponent(txt_product1, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)))
+                .addContainerGap(54, Short.MAX_VALUE))
+            .addGroup(pnl_detail_1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_codean128_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnl_detail_1Layout.setVerticalGroup(
             pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 264, Short.MAX_VALUE)
+            .addGroup(pnl_detail_1Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addComponent(lbl_codean128_1)
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_trademark1)
+                    .addComponent(txt_trademark1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_product1)
+                    .addComponent(txt_product1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_quantity_per_box1)
+                    .addComponent(txt_quantity_per_box1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_weight_per_box1)
+                    .addComponent(txt_weight_per_box1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_quantity_boxes_per_pallet1)
+                    .addComponent(txt_quantity_boxes_per_pallet1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addContainerGap(66, Short.MAX_VALUE))
         );
 
         pnl_detail_2.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle 2"));
+        pnl_detail_2.setMaximumSize(new java.awt.Dimension(326, 320));
+        pnl_detail_2.setMinimumSize(new java.awt.Dimension(326, 320));
+
+        lbl_trademark2.setText("Marca");
+
+        lbl_product2.setText("Producto");
+
+        lbl_quantity_per_box2.setText("Unidades por Empaque");
+
+        lbl_weight_per_box2.setText("Peso Neto por Empaque");
+
+        lbl_quantity_boxes_per_pallet2.setText("Empaques por Pallet");
+
+        txt_trademark2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_product2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_quantity_per_box2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_weight_per_box2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        txt_quantity_boxes_per_pallet2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+
+        jLabel4.setText("Unidades");
+
+        jLabel5.setText("Kg.");
+
+        jLabel6.setText("Empaques");
+
+        lbl_codean128_2.setFont(new java.awt.Font("Tahoma", 0, 10)); // NOI18N
+        lbl_codean128_2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_codean128_2.setText("NO ASIGNADO");
 
         javax.swing.GroupLayout pnl_detail_2Layout = new javax.swing.GroupLayout(pnl_detail_2);
         pnl_detail_2.setLayout(pnl_detail_2Layout);
         pnl_detail_2Layout.setHorizontalGroup(
             pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnl_detail_2Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_trademark2)
+                    .addComponent(lbl_product2)
+                    .addComponent(lbl_quantity_per_box2)
+                    .addComponent(lbl_weight_per_box2)
+                    .addComponent(lbl_quantity_boxes_per_pallet2))
+                .addGap(35, 35, 35)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txt_trademark2)
+                        .addComponent(txt_product2, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE))
+                    .addGroup(pnl_detail_2Layout.createSequentialGroup()
+                        .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_quantity_boxes_per_pallet2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(txt_weight_per_box2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                                .addComponent(txt_quantity_per_box2, javax.swing.GroupLayout.Alignment.LEADING)))
+                        .addGap(27, 27, 27)
+                        .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5))))
+                .addContainerGap(73, Short.MAX_VALUE))
+            .addGroup(pnl_detail_2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_codean128_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         pnl_detail_2Layout.setVerticalGroup(
             pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(pnl_detail_2Layout.createSequentialGroup()
+                .addGap(26, 26, 26)
+                .addComponent(lbl_codean128_2)
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_trademark2)
+                    .addComponent(txt_trademark2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_product2)
+                    .addComponent(txt_product2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_quantity_per_box2)
+                    .addComponent(txt_quantity_per_box2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
+                .addGap(18, 18, 18)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_weight_per_box2)
+                    .addComponent(txt_weight_per_box2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addGap(20, 20, 20)
+                .addGroup(pnl_detail_2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lbl_quantity_boxes_per_pallet2)
+                    .addComponent(txt_quantity_boxes_per_pallet2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -230,20 +444,23 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(25, 692, Short.MAX_VALUE)
-                .addComponent(btn_cancel)
-                .addGap(33, 33, 33))
-            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnl_location_cell, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(pnl_location_cell_detail, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(pnl_detail_1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
+                        .addComponent(pnl_detail_1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pnl_detail_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btn_cancel)
+                        .addGap(33, 33, 33))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(pnl_location_cell_detail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(205, 205, 205))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -255,7 +472,7 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(pnl_detail_1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnl_detail_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(pnl_detail_2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_cancel)
                 .addContainerGap())
@@ -265,6 +482,9 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     private void initializeForm() {
+        String cadena = "";
+        int idDC,idWH,idRack;
+        
         txt_distribution_center.setEnabled(false);
         txt_warehouse.setEnabled(false);
         txt_rack.setEnabled(false);
@@ -272,11 +492,24 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
         txt_column.setEnabled(false);
         txt_state.setEnabled(false);
         
-        distributionCenter = daoDistributionCenter.distribution_centerGet(location_cell.getRack_Warehouse_Distribution_Center_idDistribution_Center());
-        warehouse = daoWarehouse.whGet(location_cell.getRack_Warehouse_idWarehouse());
-        rack = daoRack.rackGet(location_cell.getRack_idRack());        
+        txt_trademark1.setEnabled(false);
+        txt_product1.setEnabled(false);
+        txt_quantity_per_box1.setEnabled(false);
+        txt_weight_per_box1.setEnabled(false);
+        txt_quantity_boxes_per_pallet1.setEnabled(false);
         
+        txt_trademark2.setEnabled(false);
+        txt_product2.setEnabled(false);
+        txt_quantity_per_box2.setEnabled(false);
+        txt_weight_per_box2.setEnabled(false);
+        txt_quantity_boxes_per_pallet2.setEnabled(false);
         
+        idDC = location_cell.getRack_Warehouse_Distribution_Center_idDistribution_Center();
+        distributionCenter = daoDistributionCenter.distribution_centerGet(idDC);
+        idWH = location_cell.getRack_Warehouse_idWarehouse();
+        warehouse = daoWarehouse.whGet(idWH);
+        idRack = location_cell.getRack_idRack();
+        rack = daoRack.rackGet(idRack);                                
         
         txt_distribution_center.setText(distributionCenter.getName());
         txt_warehouse.setText(warehouse.getDescription());
@@ -289,21 +522,90 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
         else if (location_cell.getLocation_State_idLocation_State()==2)
             txt_state.setText("No Disponible");
         else txt_state.setText("En reparacion");
-//        cbo_distribution_center.setEnabled(false);
-//        for(int i=0; i<distributionCenterList.size();i++){
-//            if(distributionCenterList.get(i).getIdDistribution_Center() == rack.getWarehouse_Distribution_Center_idDistribution_Center()){
-//                if(cbo_distribution_center.getSelectedItem()!=null) cbo_distribution_center.removeAllItems();
-//                cbo_distribution_center.addItem(distributionCenterList.get(i).getName());
-//            }
-//        }
-//        cbo_warehouse.setEnabled(false);
-//        for(int i=0; i<warehouseList.size();i++){
-//            if(warehouseList.get(i).getIdWarehouse()== rack.getWarehouse_idWarehouse()){
-//                if(cbo_warehouse.getSelectedItem()!=null) cbo_warehouse.removeAllItems();
-//                cbo_warehouse.addItem(warehouseList.get(i).getDescription());
-//            }
-//        }
-
+        
+        // busqueda de una lista de detalles con pallets_by_product para una celda de ubicacion
+        cadena = " Location_Cell_Detail_idDistribution_Center = " + idDC + 
+                " AND Location_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse = " + idWH +
+                " AND Location_Cell_Detail_Location_Cell_Rack_idRack = " + idRack +
+                " AND Location_Cell_Detail_Location_Cell_idLocation_Cell = " + location_cell.getIdLocation_Cell() +
+                " AND status = 1";
+        
+        palletProductLocationList = daoPalletProductLocation.GetPallet_Product_LocationWhere(cadena);
+        if (palletProductLocationList!=null){
+            fillDetails(palletProductLocationList);
+        }
+        
+    }
+    
+    public void fillDetails (List<Pallet_Product_Location> palletProductLocationList){
+        int idPalletProduct,idProduct;
+        // si alguno de los dos detalles de la lista es null quiere decir que no esta en uso
+        if (palletProductLocationList.size()>0 && palletProductLocationList.get(0)!=null){
+            // sacar info de Pallet_By_Product para sacar el codigo ean
+            idPalletProduct = palletProductLocationList.get(0).getPallet_By_Product_Pallet_idPallet();
+            palletProduct = daoPalletProduct.getPalletProductById(idPalletProduct);
+            // sacar info del producto
+            idProduct = palletProductLocationList.get(0).getPallet_By_Product_Product_idProduct();
+            product = daoProduct.ProductsGet(idProduct);
+            //llenar info
+            if (palletProduct!=null){
+                lbl_codean128_1.setText(palletProduct.getCod_ean128().trim());                
+            }
+            
+            if (product!=null){
+                trademark = daoTrademark.TrademarkGetById(product.getTrademark());
+                if (trademark!=null){
+                    txt_trademark1.setText(trademark.getName());
+                }                                
+                txt_product1.setText(product.getName().trim());
+                txt_quantity_per_box1.setText(product.getQuantityPerBox().toString());
+                txt_weight_per_box1.setText(product.getWeightPerBox().toString());
+                txt_quantity_boxes_per_pallet1.setText(product.getQuantityBoxesPerPallet().toString());
+            }
+            
+        }else{
+            // llenar con vacios
+            lbl_codean128_1.setText("NO ASIGNADO");
+            txt_trademark1.setText("NO ASIGNADO");
+            txt_product1.setText("NO ASIGNADO");
+            txt_quantity_per_box1.setText("0");
+            txt_weight_per_box1.setText("0");
+            txt_quantity_boxes_per_pallet1.setText("0");
+        }
+        
+        if (palletProductLocationList.size()>1 && palletProductLocationList.get(1)!=null){
+            // sacar info de Pallet_By_Product para sacar el codigo ean
+            idPalletProduct = palletProductLocationList.get(1).getPallet_By_Product_Pallet_idPallet();
+            palletProduct = daoPalletProduct.getPalletProductById(idPalletProduct);
+            // sacar info del producto
+            idProduct = palletProductLocationList.get(1).getPallet_By_Product_Product_idProduct();
+            product = daoProduct.ProductsGet(idProduct);
+            //llenar info
+            if (palletProduct!=null){
+                lbl_codean128_2.setText(palletProduct.getCod_ean128().trim());
+            }
+            
+            if (product!=null){
+                trademark = daoTrademark.TrademarkGetById(product.getTrademark());
+                if (trademark!=null){
+                    txt_trademark2.setText(trademark.getName());
+                }                                
+                txt_product2.setText(product.getName().trim());
+                txt_quantity_per_box2.setText(product.getQuantityPerBox().toString());
+                txt_weight_per_box2.setText(product.getWeightPerBox().toString());
+                txt_quantity_boxes_per_pallet2.setText(product.getQuantityBoxesPerPallet().toString());
+            }
+            
+        }else{
+            // llenar con vacios
+            lbl_codean128_2.setText("NO ASIGNADO");
+            txt_trademark2.setText("NO ASIGNADO");
+            txt_product2.setText("NO ASIGNADO");
+            txt_quantity_per_box2.setText("0");
+            txt_weight_per_box2.setText("0");
+            txt_quantity_boxes_per_pallet2.setText("0");
+        }
+        
     }
     
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
@@ -354,21 +656,49 @@ public class Frm_Location_Cell extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel lbl_codean128_1;
+    private javax.swing.JLabel lbl_codean128_2;
     private javax.swing.JLabel lbl_column;
     private javax.swing.JLabel lbl_distribution_center;
+    private javax.swing.JLabel lbl_product1;
+    private javax.swing.JLabel lbl_product2;
+    private javax.swing.JLabel lbl_quantity_boxes_per_pallet1;
+    private javax.swing.JLabel lbl_quantity_boxes_per_pallet2;
+    private javax.swing.JLabel lbl_quantity_per_box1;
+    private javax.swing.JLabel lbl_quantity_per_box2;
     private javax.swing.JLabel lbl_rack;
     private javax.swing.JLabel lbl_row;
     private javax.swing.JLabel lbl_state;
+    private javax.swing.JLabel lbl_trademark1;
+    private javax.swing.JLabel lbl_trademark2;
     private javax.swing.JLabel lbl_warehouse;
+    private javax.swing.JLabel lbl_weight_per_box1;
+    private javax.swing.JLabel lbl_weight_per_box2;
     private javax.swing.JPanel pnl_detail_1;
     private javax.swing.JPanel pnl_detail_2;
     private javax.swing.JPanel pnl_location_cell;
     private javax.swing.JPanel pnl_location_cell_detail;
     private javax.swing.JTextField txt_column;
     private javax.swing.JTextField txt_distribution_center;
+    private javax.swing.JTextField txt_product1;
+    private javax.swing.JTextField txt_product2;
+    private javax.swing.JTextField txt_quantity_boxes_per_pallet1;
+    private javax.swing.JTextField txt_quantity_boxes_per_pallet2;
+    private javax.swing.JTextField txt_quantity_per_box1;
+    private javax.swing.JTextField txt_quantity_per_box2;
     private javax.swing.JTextField txt_rack;
     private javax.swing.JTextField txt_row;
     private javax.swing.JTextField txt_state;
+    private javax.swing.JTextField txt_trademark1;
+    private javax.swing.JTextField txt_trademark2;
     private javax.swing.JTextField txt_warehouse;
+    private javax.swing.JTextField txt_weight_per_box1;
+    private javax.swing.JTextField txt_weight_per_box2;
     // End of variables declaration//GEN-END:variables
 }
