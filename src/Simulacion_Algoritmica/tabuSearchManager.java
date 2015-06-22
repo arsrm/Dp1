@@ -36,8 +36,8 @@ public class tabuSearchManager {
     private ArrayList<Integer> initialSolution = new ArrayList<>();//---> SOLUCION INICIAL
     private double [][] distances;//---> MATRIZ DE COSTO (DE PUNTO A PUNTO)
     private int stoppingCriterion;//---> CRITERIO DE PARADA
-    private int maxSizeTL = 20; //---> TAMAÑO MAXIMO DE LA LISTA TABU
-    private int maxNumbIteration =100; //--->NUMERO MAXIMO DE ITERACIONES PENALIZADAS POR SOLUCION.
+    private int maxSizeTL = 10; //---> TAMAÑO MAXIMO DE LA LISTA TABU
+    private int maxNumbIteration =10; //--->NUMERO MAXIMO DE ITERACIONES PENALIZADAS POR SOLUCION.
     private int neighborpivot = 1;
     
     
@@ -387,16 +387,16 @@ public class tabuSearchManager {
                         nextClientIndex = searchBestNextClient(pivot,i);
                     }
                         if(nextClientIndex!=-1){
-                            actualRouteCost += calculateCostPerArist( pivot, nextClientIndex, i, freeCapacity );
+                            double actualRoute = calculateCostPerArist( pivot, nextClientIndex, i, freeCapacity );
+                            actualRouteCost += actualRoute;
                             distanciaRecorrida=distances[pivot][nextClientIndex];
                             //para ponerlo en el camion verificamos que si hay capacidad para poner el pedido
                             if(getClientList().get(nextClientIndex).getTotalWeight()<=freeCapacity){//si hay espacio, lo inserto
                                 //como se puede adicionar tambien se debe evitar el problema de la mariposa
                                 if(pivot!=0){//no voy a verificar este problema si es que aun me encuentro en el CD
                                     double directDistance = distances[0][nextClientIndex];
-                                    System.out.println("DISTANCIA ACTUAL "+distanciaRecorrida);
-                                    System.out.println("DISTANCIA DIRECTA "+directDistance);
-                                    if(directDistance<distanciaRecorrida && i!=sizeVehicules-1){//si me resulta ir mejor con un nuevo vehiculo
+                                    double directRoute = calculateCostPerArist(0,nextClientIndex,i,freeCapacity);
+                                    if(actualRoute>directRoute && i!=sizeVehicules-1){//si me resulta ir mejor con un nuevo vehiculo
                                       break;  
                                     }
                                 }
@@ -424,7 +424,6 @@ public class tabuSearchManager {
         double cost = 0;
         Vehicle v =  getVehicleList().get(posVecList);
         double factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(next).getPriority()*1.0);
-        System.out.println("PRIORITY "+getClientList().get(next).getPriority());
         double factor2 = 1.0;
         cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
         return cost;
@@ -444,7 +443,7 @@ public class tabuSearchManager {
             if(i==0)
                 costRoutes[i]=0;
             else
-               costRoutes[i]= (Double)((double)(getVehicleList().get(veh).getDispatchNumber()/(double)getClientList().get(i).getPriority())*(distances[pivot][i])); 
+               costRoutes[i]= (Double)((double)(getVehicleList().get(veh).getDispatchNumber()*(double)getClientList().get(i).getPriority())*(distances[pivot][i])); 
         }
         int[] costIndexes = new int[sizeClients];
         int aux;
@@ -493,8 +492,8 @@ public class tabuSearchManager {
                     }else{
                         double actualCost = 0;
                         double bestIndexCost = 0;
-                        actualCost =((double)getVehicleList().get(veh).getDispatchNumber()/(double)getClientList().get(i).getPriority())*(distances[pivot][i]);
-                        bestIndexCost =((double)getVehicleList().get(veh).getDispatchNumber()/(double)getClientList().get(bestIndex).getPriority())*(distances[pivot][bestIndex]);
+                        actualCost =((double)getVehicleList().get(veh).getDispatchNumber()*(double)getClientList().get(i).getPriority())*(distances[pivot][i]);
+                        bestIndexCost =((double)getVehicleList().get(veh).getDispatchNumber()*(double)getClientList().get(bestIndex).getPriority())*(distances[pivot][bestIndex]);
                         if(actualCost<bestIndexCost){//si es mejor el costo (osea menor) lo elegimos
                             bestIndex = i;
                         }
@@ -698,7 +697,7 @@ public class tabuSearchManager {
                         auxiliar[1]=solution.get(j);
                         ArrayList<Integer> newSol = createSolutionRoute(auxiliar,solution);
                         boolean isFeasible = isFeasibleSolution(newSol);
-                        if(isFeasible==true){
+                        if(isFeasible==true && avoidButterflyProblem(newSol)==true){
                             int [] neighbor = new int[2];
                             neighbor[0] = solution.get(i);
                             neighbor[1] = solution.get(j);
@@ -711,6 +710,23 @@ public class tabuSearchManager {
         }
         return neighbors;
     }
+    
+    private boolean avoidButterflyProblem(ArrayList<Integer> solution){
+        int size = solution.size();
+        for(int i=1;i<size;i++){
+            if(solution.get(i-1)!=0 && solution.get(i)!=0){
+                int indexi = getClientIndex(solution.get(i));
+                int indexi2 = getClientIndex(solution.get(i-1));
+                double actualCost = distances[indexi2][indexi];
+                double newCost = distances[0][indexi];
+                if(actualCost>newCost)
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    
     
     public boolean isFeasibleSolution(ArrayList<Integer> solution){
         int size = solution.size();

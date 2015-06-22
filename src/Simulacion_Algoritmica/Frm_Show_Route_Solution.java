@@ -81,6 +81,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     //Se crea un método cuyo parámetro debe ser un objeto Graphics
 
             public void paint(Graphics grafico) {
+                super.paintComponent(grafico);
             Dimension height = getSize();
             grafico.drawImage(simbolo.getImage(), 0, 0,simbolo.getIconWidth(), simbolo.getIconHeight(), null);
             
@@ -117,7 +118,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
             }
            
             setOpaque(false);
-            super.paintComponent(grafico);
+            
         }
     }
     
@@ -140,9 +141,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         setTitle("VISUALIZACIÓN DE LA RUTA");
         initComponents();
         listPerSol = solutionsPerList;
-        printMap();
-        
-        showRoute(solutionsPerList.get(0));
+        printMap(solutionsPerList.get(0));
         flagWindow = 1;
     }
     
@@ -150,7 +149,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
     
      
 
-     private void printMap(){
+     private void printMap(String sol){
         imagen = new Imagen();
         int width = imagen.simbolo.getIconWidth();
         int height = imagen.simbolo.getIconHeight();
@@ -161,11 +160,13 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         JScrollPane scroll = new JScrollPane(pnl_img);        
         scroll.setBounds(10,80,1200,600);        
         scroll.setAutoscrolls(true);
-        pnl_img.add(imagen);
-        pnl_img.repaint();
         scroll.setViewportView(pnl_img);
         scroll.getViewport().setView(pnl_img); 
         this.add(scroll);
+        imagen.routes = sol;
+        pnl_img.add(imagen);
+        pnl_img.repaint();
+        
     }
     
     /**
@@ -248,41 +249,7 @@ public class Frm_Show_Route_Solution extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_formWindowClosing
 
-    private void showRoute(String sol){
-        //imagen = new Imagen();
-        imagen.refresh();
-        imagen.routes = sol;
-        pnl_img.add(imagen);
-        pnl_img.repaint();
-         Graphics2D g2 = (Graphics2D) pnl_img.getGraphics();
-         imagen.routes = sol;
-         String[] clients = sol.split("-");
-            int sizeRoute = clients.length;
-            for(int i=0;i<sizeRoute;i++){
-             if(Integer.parseInt(clients[i])==0){
-                Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
-                Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
-                g2.drawLine(dis.getPos_x(),dis.getPos_y(),finish.getPos_x(),finish.getPos_y());
-                g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
-                g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
-            }else if(i==sizeRoute-2){
-                 Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
-                 Distribution_Center dis = daoDB.distribution_centerGetQry().get(0);
-                 g2.drawLine(start.getPos_x(),start.getPos_y(),dis.getPos_x(),dis.getPos_y());
-                 g2.drawString(dis.getName(),dis.getPos_x(),dis.getPos_y());
-                 g2.drawLine(dis.getPos_x(),dis.getPos_y(),dis.getPos_x(),dis.getPos_y());
-                 break;
-                 
-            }else{
-                Client start = daoClient.clientGet(Integer.parseInt(clients[i]));
-                Client finish = daoClient.clientGet(Integer.parseInt(clients[i+1]));
-                g2.drawLine(start.getPos_x(),start.getPos_y(),finish.getPos_x(),finish.getPos_y());
-                g2.drawString(finish.getName(),finish.getPos_x(),finish.getPos_y());
-                g2.drawLine(finish.getPos_x(),finish.getPos_y(),finish.getPos_x(),finish.getPos_y());
-             }
-        }
-        
-    }
+    
    
     
 

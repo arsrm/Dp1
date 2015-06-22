@@ -480,7 +480,7 @@ public class Frm_Load_RequestOrder extends javax.swing.JFrame {
 
         @Override
         public Void doInBackground() throws Exception {
-            
+           progress_bar.setIndeterminate(true);  
            Object[] options = {"OK"};
             if ( JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?", 
             "Advertencias", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) { 
