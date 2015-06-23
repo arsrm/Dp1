@@ -314,7 +314,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Lucida Grande" size="9" style="3"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="La m&#xe1;xima prioridad es 10"/>
+            <Property name="text" type="java.lang.String" value="La m&#xe1;xima prioridad es 1"/>
           </Properties>
         </Component>
       </SubComponents>

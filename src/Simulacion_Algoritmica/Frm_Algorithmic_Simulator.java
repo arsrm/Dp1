@@ -623,40 +623,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                 else{
                     fillTable();
                     btn_generate_routes.setEnabled(true);
-                    clientList = new ArrayList<>();
-                clientList = daoClient.clientQry();
-                clientToAlgorithm = new ArrayList<>();
-                //se realiza el trabajo de seleccionar todos los despachos
-                dispatchOrderListForAlgorithm = new ArrayList<>();
-                int size = dispatchOrderList.size();
-                for(int i=0;i<size;i++){
-                    if((Boolean)table_dispatch_orders.getValueAt(i,3)==false)
-                        dispatchOrderListForAlgorithm.add(dispatchOrderList.get(i));
-                }
-                //tenemos la lista de despachos
-                //debemos transformarlo en lista de clientes
-                setCDtoClientList();
-                setDispatchToClient(dispatchOrderListForAlgorithm);
-
-                //ya tenemos la lista de vehiculos
-                //ya tenemos la lista de clientes
-                //se realiza la busqueda tabu
-               
-                ok_option = JOptionPane.showOptionDialog(new JFrame(),"Los datos han sido cargados para la ejecución.","Mensaje",JOptionPane.PLAIN_MESSAGE,JOptionPane.QUESTION_MESSAGE,null,options,options[0]);
-                if(ok_option == JOptionPane.OK_OPTION){
                     
-                    tSManager = new tabuSearchManager(vehicleList,clientToAlgorithm,(Integer)spn_number_iterations.getValue());
-                    runAlgorithm();
-                    //se procede a asignar
-                    //LLENAR DATA
-                    
-                    Frm_Detail_Algorithm frm_srs;
-                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag,tSManager.getInitialSolutionCost());
-                    frm_srs.setLocationRelativeTo(null);
-                    frm_srs.setVisible(true);
-                    Frm_Algorithmic_Simulator.this.setVisible(false);
-
-                }
                 //se realiza el trabajo de seleccionar todos los despachos
                 }   
             }

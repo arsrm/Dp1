@@ -192,7 +192,7 @@ public class Frm_Client extends javax.swing.JFrame {
         op_priority.setToolTipText("");
 
         lbl_declaimerpriority.setFont(new java.awt.Font("Lucida Grande", 3, 9)); // NOI18N
-        lbl_declaimerpriority.setText("La máxima prioridad es 10");
+        lbl_declaimerpriority.setText("La máxima prioridad es 1");
 
         javax.swing.GroupLayout pnl_client_priorityLayout = new javax.swing.GroupLayout(pnl_client_priority);
         pnl_client_priority.setLayout(pnl_client_priorityLayout);
