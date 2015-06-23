@@ -378,9 +378,11 @@ public class Frm_InternmentOrder_Search extends javax.swing.JFrame {
                     case 0:
                         status = "Inactivo";
                 }
-                Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
-                    intOrderList.get(i).getDate(), status, false};
-                modelo.addRow(fila);
+                if (intOrderList.get(i).getIdInternmentOrder() != 999999999) {
+                    Object[] fila = {intOrderList.get(i).getIdInternmentOrder(),
+                        intOrderList.get(i).getDate(), status, false};
+                    modelo.addRow(fila);
+                }
             }
         } catch (Exception e) {
         }
