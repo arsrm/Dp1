@@ -26,7 +26,7 @@ public class tabuSearchManager {
     
     private  List<Vehicle> vehicleList = new ArrayList<>(); //--> LISTA DE CAMIONES
     private  List<Client> clientList = new ArrayList<>(); //---> LISTA DE CLIENTES
-
+    private double initialSolutionCost ;
     /**
      * @param aVehicleList the vehicleList to set
      */
@@ -65,6 +65,20 @@ public class tabuSearchManager {
      */
     public void setDistances(double[][] distances) {
         this.distances = distances;
+    }
+
+    /**
+     * @return the initialSolutionCost
+     */
+    public double getInitialSolutionCost() {
+        return initialSolutionCost;
+    }
+
+    /**
+     * @param initialSolutionCost the initialSolutionCost to set
+     */
+    public void setInitialSolutionCost(double initialSolutionCost) {
+        this.initialSolutionCost = initialSolutionCost;
     }
     
     public class neighborElement{
@@ -257,6 +271,7 @@ public class tabuSearchManager {
         pero luego se crea moviendo la primera solucion como el 2do el mejor, 3ero el mejor,etc
         */
         ArrayList<Integer> firstSolution = generateFirstBestSolution(0);
+        showRoute(firstSolution);
         int sizeFirstSolution = firstSolution.size();
         double initialCost = calculateFunctionCost(firstSolution);
         int clientsNumb = getClientList().size()-1;
@@ -375,7 +390,7 @@ public class tabuSearchManager {
               //pivote 0 indica el punto de partida que es el CD
                for(int j=0;j<sizeClients;j++){//buscamos al siguiente cliente próximo
                     if(firstTime ==true){//si es el primer cliente
-                        if(position==0){
+                       if(position==0){
                               nextClientIndex = searchBestNextClient(pivot,i);//-->buscamos el siguiente 1er mejor cliente.
                         }else{
                              nextClientIndex = searchNBestNextClient(pivot,position,i);//-->buscamos el siguiente N mejor cliente.
@@ -387,7 +402,7 @@ public class tabuSearchManager {
                         nextClientIndex = searchBestNextClient(pivot,i);
                     }
                         if(nextClientIndex!=-1){
-                            double actualRoute = calculateCostPerArist( pivot, nextClientIndex, i, freeCapacity );
+                            double actualRoute = calculateCostPerArist( pivot, nextClientIndex, i );
                             actualRouteCost += actualRoute;
                             distanciaRecorrida=distances[pivot][nextClientIndex];
                             //para ponerlo en el camion verificamos que si hay capacidad para poner el pedido
@@ -395,8 +410,8 @@ public class tabuSearchManager {
                                 //como se puede adicionar tambien se debe evitar el problema de la mariposa
                                 if(pivot!=0){//no voy a verificar este problema si es que aun me encuentro en el CD
                                     double directDistance = distances[0][nextClientIndex];
-                                    double directRoute = calculateCostPerArist(0,nextClientIndex,i,freeCapacity);
-                                    if(actualRoute>directRoute && i!=sizeVehicules-1){//si me resulta ir mejor con un nuevo vehiculo
+                                    double directRoute = calculateCostPerArist(0,nextClientIndex,i);
+                                    if(distanciaRecorrida>directDistance && i!=sizeVehicules-1){//si me resulta ir mejor con un nuevo vehiculo
                                       break;  
                                     }
                                 }
@@ -420,12 +435,12 @@ public class tabuSearchManager {
         return initialSol;
     }
     
-    public double calculateCostPerArist(int pivot, int next,int posVecList,double freeCapacity ){
+    public double calculateCostPerArist(int pivot, int next,int posVecList ){
         double cost = 0;
         Vehicle v =  getVehicleList().get(posVecList);
         double factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(next).getPriority()*1.0);
         double factor2 = 1.0;
-        cost=(Double)((factor1)*distances[pivot][next]*(factor2)/1000.0);
+        cost=(Double)((factor1)*distances[pivot][next]*(factor2));
         return cost;
     }
     
@@ -504,14 +519,28 @@ public class tabuSearchManager {
         return bestIndex;
     }
     
+    public boolean avoidButterfly(int pivot,int positionDestiny,int veh){
+        if(pivot!=0){
+            double actualCost = calculateCostPerArist(pivot, positionDestiny, veh);
+            double directCost = calculateCostPerArist(0, positionDestiny, veh);
+            if(actualCost<directCost)
+                return true;
+            else
+                return false;
+        }
+        return true;
+    }
+       
+    
     public ArrayList<Integer> OptimizeTSearch(){        
         ArrayList<Integer> actualSolution = new ArrayList<Integer>();
         ArrayList<tabuElement> tabuList = new ArrayList<>(); 
         //Primero generar la solucion inicial
         initialSolution = generateInitialSolution();
-        
+        System.out.println("*********************");
+        showRoute(initialSolution);
         actualSolution = initialSolution;
-        showRoute(actualSolution);
+        this.setInitialSolutionCost(calculateFunctionCost(actualSolution));
         //Realizar el bucle de parada:
         int index = 0;
         for(int i=0;i<stoppingCriterion;i++){
@@ -812,7 +841,7 @@ public class tabuSearchManager {
                     //freeCapacity-=clientList.get(indexInit).getTotalWeight();
                     factor1 = (v.getDispatchNumber()*1.0)*(getClientList().get(indexEnd).getPriority()*1.0);
                 }else{
-                    factor1 = (v.getDispatchNumber()*1.0)/(1.0);
+                    factor1 = (v.getDispatchNumber()*1.0)*(1.0);
                 }
                 factor2 = (double)1.0;
                 cost+=(Double)((factor1)*distances[indexInit][indexEnd]*(factor2));

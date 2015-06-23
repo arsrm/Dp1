@@ -651,7 +651,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                     //LLENAR DATA
                     
                     Frm_Detail_Algorithm frm_srs;
-                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag);
+                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag,tSManager.getInitialSolutionCost());
                     frm_srs.setLocationRelativeTo(null);
                     frm_srs.setVisible(true);
                     Frm_Algorithmic_Simulator.this.setVisible(false);
@@ -707,7 +707,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
                     //LLENAR DATA
                     
                     Frm_Detail_Algorithm frm_srs;
-                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag);
+                    frm_srs = new Frm_Detail_Algorithm(Frm_Algorithmic_Simulator.this,listPerSolutions,tSManager,dispatchOrderListForAlgorithm,tabuCost,flag,tSManager.getInitialSolutionCost());
                     frm_srs.setLocationRelativeTo(null);
                     frm_srs.setVisible(true);
                     Frm_Algorithmic_Simulator.this.setVisible(false);
@@ -797,7 +797,7 @@ public class Frm_Algorithmic_Simulator extends javax.swing.JFrame {
         client.setName(cd.getName());
         client.setStatus(0);
         client.setTotalWeight(0.0);
-        client.setPriority(0);
+        client.setPriority(1);
         clientToAlgorithm.add(client);
         
     }

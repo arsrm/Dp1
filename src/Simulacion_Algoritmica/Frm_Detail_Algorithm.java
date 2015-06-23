@@ -91,7 +91,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         initComponents();
     }
 
-    public Frm_Detail_Algorithm(Frm_Algorithmic_Simulator frm_fas,List<String>listPerSolution, tabuSearchManager tsManager, List<DispatchOrder> dispatchList,Double cost,Integer flag ){
+    public Frm_Detail_Algorithm(Frm_Algorithmic_Simulator frm_fas,List<String>listPerSolution, tabuSearchManager tsManager, List<DispatchOrder> dispatchList,Double cost,Integer flag, Double initialCost ){
         frm_fasAux = frm_fas;
         listPerSolutionAux = listPerSolution;
         tabuCost = cost;
@@ -107,6 +107,7 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         dispatchListAux = dispatchList;
         model = (DefaultTableModel) table_vehicles.getModel();
         txt_cost.setText(tabuCost.toString());
+        txt_InitialSolution.setText(initialCost.toString());
         fillTable();
         
     }
@@ -369,6 +370,8 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         btn_Save = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         txt_cost = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        txt_InitialSolution = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -400,8 +403,8 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jScrollPane1)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -418,6 +421,15 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         jLabel1.setText("Valor Función Objetivo:");
 
         txt_cost.setEditable(false);
+        txt_cost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_costActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Valor Función Objetivo (Inicial): ");
+
+        txt_InitialSolution.setEditable(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -430,11 +442,15 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btn_Save))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_InitialSolution, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txt_cost, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(txt_cost, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 9, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -443,7 +459,9 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txt_cost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txt_cost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(txt_InitialSolution, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -552,12 +570,18 @@ public class Frm_Detail_Algorithm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_SaveActionPerformed
 
+    private void txt_costActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_costActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_costActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_Save;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable table_vehicles;
+    private javax.swing.JTextField txt_InitialSolution;
     private javax.swing.JTextField txt_cost;
     // End of variables declaration//GEN-END:variables
 }
