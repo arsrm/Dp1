@@ -753,6 +753,7 @@ public class Frm_PickingOrder_Search extends javax.swing.JFrame {
                     mov.setIdWh(ppl.getLocation_Cell_Detail_Location_Cell_Rack_Warehouse_idWarehouse());
                     Product product = daoProduct.ProductsGet(ppl.getPallet_By_Product_Product_idProduct());
                     mov.setStock_inicial(product.getPhysicalStock());
+                    daoProduct.ProductUpdStock(product.getIdProduct(), 1, 2);
                     mov.setStock_final(product.getPhysicalStock() - product.getQuantityBoxesPerPallet());
                     mov.setType_Movement_id(2);
                     mov.setType_Movement_idSubtype(1);

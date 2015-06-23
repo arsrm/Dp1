@@ -64,7 +64,7 @@ import tool.SelectAllHeader;
  */
 public class Frm_ReturnProducts extends javax.swing.JFrame {
     Frm_MenuPrincipal menuaux = new Frm_MenuPrincipal();
-    Frm_DispatchOrder_Detail frm_dodAux = new Frm_DispatchOrder_Detail();
+    Frm_DispatchOrder_Detail frm_dodAux =null;
     
     DaoDispatchOrder daoDispatchOrder = new DaoDispatchOrderImpl();
     DispatchOrder dispatchOrder = null;
@@ -479,7 +479,7 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
     private void btn_returnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_returnActionPerformed
 
         int idDispatchDetail=0,idPickingOrder,idPickingOrderDetail,initialStock,finalStock;
-        
+        int countReturnProducts = 0;
         
         Object[] options = {"OK"};
         if (JOptionPane.showConfirmDialog(new JFrame(), "¿Desea realizar acción?",
@@ -488,11 +488,13 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                 for (int i = 0; i < tbl_products.getRowCount(); i++) {
                     getProductList();
                     if ((Boolean) tbl_products.getValueAt(i, 4)) {
+                        
                         idDispatchDetail = Integer.parseInt(tbl_products.getValueAt(i, 0).toString());
                         idPickingOrder = pickingOrderDetailList.get(i).getPicking_Order_idPicking_Order();
                         idPickingOrderDetail = pickingOrderDetailList.get(i).getIdPicking_Order_Detail();
                         int status = pickingOrderDetailList.get(i).getDispatchStatus();
                         if (status == 2 || status == 1) {
+                            countReturnProducts++;
                             //lo pondre inactivo
                             daoPickingOrderDetail.pickingOrderDetailDel(idPickingOrderDetail, idPickingOrder, 4);
                             daoPickingOrderDetail.pickingOrderDetailReturnToWarehouse(idPickingOrderDetail, idPickingOrder);
@@ -544,14 +546,18 @@ public class Frm_ReturnProducts extends javax.swing.JFrame {
                     }
                 }
                 int ok_option = JOptionPane.showOptionDialog(new JFrame(), "Se ha registrado la devolución con éxito", "Mensaje", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
-                if(cancelAll == 1){//cancelar la orden de despacho y de pedido
+                if(cancelAll == 1 || countReturnProducts==tbl_products.getRowCount()){//cancelar la orden de despacho y de pedido
                     daoDispatchOrder.dispatchOrderDel(dispatchOrder.getIdDispatch_Order());
                     PickingOrder po = daoPickingOrder.pickingOrderGet(dispatchOrder.getIdPickingOrder());
                     RequestOrder ro = daoRequestOrder.requestOrderGet(po.getIdRequest_Order());
                     StateRequestOrder state = daoStateOrderRequest.stateRequestOrderGet(3);
                     ro.setStateRequestOrder(state);
                     daoRequestOrder.requestOrderUpd(ro);
-                    frm_dodAux.setVisible(true);
+                    if(frm_dodAux!=null){
+                        frm_dodAux.setVisible(true);
+                        frm_dodAux.cancellOrder(dispatchOrder.getIdDispatch_Order());
+                    }
+                        
                     this.dispose();
                 }
                 initializeTable();

@@ -105,7 +105,7 @@ public class Frm_RequestOrder_Search extends javax.swing.JFrame {
 
         @Override
         public Void doInBackground() throws Exception {
-            
+           progress_bar.setIndeterminate(true); 
            Object[] options = {"OK"};
             if(ifNoColummnSelected()==false){
                 requestOrderListToPicking =  new ArrayList<>();

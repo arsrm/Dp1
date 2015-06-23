@@ -447,6 +447,7 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
     }
     
     private void fillTable(){
+        refreshGrid();
         List<PickingOrderDetail> list = daoPickingOrderDetail.pickingOrderDetailQry(dispatchOrderAux.getIdPickingOrder());
         if(list!=null){
             int size = list.size();
@@ -522,6 +523,11 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_confirmActionPerformed
 
+    private void refreshGrid(){
+        model.getDataVector().removeAllElements();
+        model.fireTableDataChanged();
+    }
+    
     private void updateRequestOrder(RequestOrder ro){
         //verificamos dos cosas:
         //1: con los despachos que ya se han hecho, ya se han entregado o cancelado
@@ -580,7 +586,12 @@ public class Frm_DispatchOrder_Detail extends javax.swing.JFrame {
         frm_pl.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_legendActionPerformed
 
-    
+    public void cancellOrder(int idDispatch){
+        dispatchOrderAux = daoDispatchOrder.dispatchOrderGet(idDispatch);
+        fillData();
+        btn_confirm.setEnabled(false);
+        btn_delete.setEnabled(false);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
