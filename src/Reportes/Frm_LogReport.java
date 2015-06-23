@@ -51,7 +51,7 @@ public class Frm_LogReport extends javax.swing.JFrame {
         btn_Limpiar = new javax.swing.JButton();
         btn_cancelar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Fecha Inicio:");
 
