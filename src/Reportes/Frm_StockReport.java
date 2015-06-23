@@ -17,6 +17,7 @@ import dao.impl.DaoKardexImpl;
 import dao.impl.DaoProdImpl;
 import dao.impl.DaoTrademarkImpl;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -42,8 +43,8 @@ public class Frm_StockReport extends javax.swing.JFrame {
     List<Movement> movList = new ArrayList<>();
     List<Product> productList = new ArrayList<>();
     DefaultTableModel modelo;
-    public Integer idAl;
-    public Integer idP;
+    public Integer idAl = null;
+    public Integer idP = null;
     public Date dateI;
     public Date dateF;
 
@@ -349,77 +350,115 @@ public class Frm_StockReport extends javax.swing.JFrame {
                         idtrademark = trademarkList.get(i).getId_Trademark();
                     }
                 }
+            } else {
+                idtrademark = null;
             }
-            else{
-                idtrademark=null;
-            }
-          
+
         }
     }//GEN-LAST:event_cbo_trademarkActionPerformed
 
     private void btn_ReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_ReportActionPerformed
 
         Prueba reporte = new Prueba();
-     
+
+        Calendar dateIniCal = Calendar.getInstance();
+        Calendar dateFinCal = Calendar.getInstance();
+
+        Date dateIniSearch = null;
         Date dateEndSearch = null;
-        
-        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()==0 && date_End.getDate()==null)
-        {
-          
-            reporte.mostrarReporteStockSinFiltro();
-        }
-        
-        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()==0 && date_End.getDate()==null)
-        {
+
+//        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()==0 && date_End.getDate()==null)
+//        {
+//          
+//            reporte.mostrarReporteStockSinFiltro();
+//        }
+//        
+//        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()==0 && date_End.getDate()==null)
+//        {
+//            idAl = Integer.parseInt(txt_Almacen.getText());
+//            reporte.mostrarReporteStockXAlamacen(idAl);
+//        }
+//        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()!=0 && date_End.getDate()==null)
+//        {
+//            idP = producto.getIdProduct();
+//            reporte.mostrarReporteStockXProducto(idP);
+//        }
+//        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()==0 && date_End.getDate()!=null)
+//        {
+//            dateEndSearch = date_End.getDate();
+//            reporte.mostrarReporteStockXFecha(dateEndSearch);
+//        }
+//        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()!=0 && date_End.getDate()==null){
+//            
+//            
+//            idAl = Integer.parseInt(txt_Almacen.getText());
+//            idP = producto.getIdProduct();
+//            dateEndSearch = new Date();
+//            
+//            reporte.mostrarReporteStockXAlmacenYProducto(idAl,idP);
+//
+//            
+//        }
+//        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()==0 && date_End.getDate()!=null){
+//            idAl = Integer.parseInt(txt_Almacen.getText());
+//            dateEndSearch = date_End.getDate();
+//            reporte.mostrarReporteStockXAlmacenYFecha(idAl,dateEndSearch);
+//        }
+//        
+//        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()!=0 && date_End.getDate()!=null){
+//            idP = producto.getIdProduct();
+//            dateEndSearch = date_End.getDate();
+//            reporte.mostrarReporteStockXProductoYFecha(idP,dateEndSearch);
+//        }
+//
+//        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()!=0 && date_End.getDate()!=null){
+//            idAl = Integer.parseInt(txt_Almacen.getText());
+//            idP = producto.getIdProduct();
+//            dateEndSearch = date_End.getDate();
+//            reporte.mostrarReporteStockConFiltro(idAl,idP,dateEndSearch);
+//        }
+        if (txt_Almacen.getText().length() != 0) {
             idAl = Integer.parseInt(txt_Almacen.getText());
-            reporte.mostrarReporteStockXAlamacen(idAl);
         }
-        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()!=0 && date_End.getDate()==null)
-        {
+        if (txt_EAN.getText().length() != 0) {
             idP = producto.getIdProduct();
-            reporte.mostrarReporteStockXProducto(idP);
         }
-        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()==0 && date_End.getDate()!=null)
-        {
+
+        if (date_End.getDate() != null) {
             dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXFecha(dateEndSearch);
-        }
-        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()!=0 && date_End.getDate()==null){
-            
-            
-            idAl = Integer.parseInt(txt_Almacen.getText());
-            idP = producto.getIdProduct();
+            dateFinCal.setTime(date_End.getDate());
+        } else {
             dateEndSearch = new Date();
-            
-            reporte.mostrarReporteStockXAlmacenYProducto(idAl,idP);
-
-            
-        }
-        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()==0 && date_End.getDate()!=null){
-            idAl = Integer.parseInt(txt_Almacen.getText());
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXAlmacenYFecha(idAl,dateEndSearch);
-        }
-        
-        if(txt_Almacen.getText().length() == 0 && txt_EAN.getText().length()!=0 && date_End.getDate()!=null){
-            idP = producto.getIdProduct();
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockXProductoYFecha(idP,dateEndSearch);
+            dateFinCal.setTime(new Date());
         }
 
-        if(txt_Almacen.getText().length() != 0 && txt_EAN.getText().length()!=0 && date_End.getDate()!=null){
-            idAl = Integer.parseInt(txt_Almacen.getText());
-            idP = producto.getIdProduct();
-            dateEndSearch = date_End.getDate();
-            reporte.mostrarReporteStockConFiltro(idAl,idP,dateEndSearch);
+        if (idP == null && idAl == null) {
+
+            reporte.mostrarReporteStockSinFiltro();
+            // reporte.mostrarReporteKardexSinFiltro2(formatDate.format(dateIniCal.getTime()),formatDate.format(dateFinCal.getTime()));
         }
-        
+        if (idP != null && idAl == null) {
+
+            reporte.mostrarReporteStockXProductoYFecha(idP, dateEndSearch);
+
+        }
+        if (idP == null && idAl != null) {
+
+            reporte.mostrarReporteStockXAlmacenYFecha(idAl, dateEndSearch);
+        }
+        if (idP != null && idAl != null) {
+            reporte.mostrarReporteStockConFiltro(idAl, idP, dateEndSearch);
+        }
+
+
     }//GEN-LAST:event_btn_ReportActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       txt_Almacen.setText(null);
-       txt_EAN.setText(null);
-       date_End.setDate(null);
+        idAl = null;
+        idP = null;
+        txt_Almacen.setText(null);
+        txt_EAN.setText(null);
+        date_End.setDate(null);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void setIdWh(Integer id) {

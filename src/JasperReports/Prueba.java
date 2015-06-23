@@ -122,7 +122,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportKardexXProducto.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteKardexProducto.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Kardex");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -143,7 +143,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportKardexXAlmacen.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteKardexAlmacén.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Kardex");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -174,7 +174,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockSinFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteKardex.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -196,7 +196,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockConFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteKardex.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -217,7 +217,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockxAlmacen.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteStockAlmacén.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -238,7 +238,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockxProducto.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteStockProducto.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -281,7 +281,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockxAP.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteStock.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -302,7 +302,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockxAF.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteStock.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -323,7 +323,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportStockxPF.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteStock.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -341,7 +341,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportLibreDispSinFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, null, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteLibreDisponibilidad.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -362,7 +362,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportLibreDispConFiltro.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteLibreDisponibilidad.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte de Stock");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -384,7 +384,7 @@ public class Prueba {
             JasperReport reporte = JasperCompileManager.compileReport("reportL.jrxml");
             JasperPrint p = JasperFillManager.fillReport(reporte, parameters, cn);
             
-//            JasperExportManager.exportReportToPdfFile(p,"Reportes/reporteReceta.pdf");
+            JasperExportManager.exportReportToPdfFile(p,"Reportes/ReporteLog.pdf");
             JasperViewer view = new JasperViewer(p, false);
             view.setTitle("Reporte Log");
             view.setExtendedState(Frame.MAXIMIZED_BOTH);

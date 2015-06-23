@@ -24,7 +24,8 @@
 	</parameter>
 	<queryString>
 		<![CDATA[SELECT m.Warehouse_idWarehouse, CONCAT(p.name," ",tr.name), max(m.date), m.stock_final  FROM Movement m JOIN Type_Movement t on m.Type_Movement_idType_Movement = t.idType_Movement and m.Type_Movement_idSubtype = t.idSubtype join Product p on p.idProduct = m.Product_idProduct join Trademark tr on p.Trademark_id_Trademark = tr.id_Trademark where m.date<=$P{dateStock}
- AND  m.Warehouse_idWarehouse= $P{idW} AND m.Product_idProduct = $P{idP};]]>
+ AND  m.Warehouse_idWarehouse= $P{idW} AND m.Product_idProduct = $P{idP}
+group by p.idProduct order by m.Warehouse_idWarehouse;]]>
 	</queryString>
 	<field name="Warehouse_idWarehouse" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>

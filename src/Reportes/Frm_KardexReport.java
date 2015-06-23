@@ -553,6 +553,8 @@ public class Frm_KardexReport extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_ExportActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        idAlmacen = null;
+        idProduct = null;
         txt_idWh.setText(null);
         txt_EAN.setText(null);
         date_Ini.setDate(null);
